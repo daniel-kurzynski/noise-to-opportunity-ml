@@ -18,12 +18,18 @@
 	</properties>
 
 	<dependencies>
+		<!-- Machine learning libraries -->
+		<dependency>
+			<groupId>org.apache.mahout</groupId>
+			<artifactId>mahout-core</artifactId>
+			<version>0.9</version>
+		</dependency>
+		<!-- Scala libraries -->
 		<dependency>
 			<groupId>org.scala-lang</groupId>
 			<artifactId>scala-library</artifactId>
 			<version>${scala.version}</version>
 		</dependency>
-
 		<!-- Test -->
 		<dependency>
 			<groupId>org.scalatest</groupId>
