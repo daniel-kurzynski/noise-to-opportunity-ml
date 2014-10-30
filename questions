@@ -1,6 +1,17 @@
 Mapping between blog posts and brochures?
+What do the columns in the traning data mean?
 How are we supposed to do ML, if there is no training data?
 
 How to access database from database visualizer.
 
 Evaluation?
+
+Tools/Language/Technologie/Frameworks? --> weka/mahout/MLib (hadoop)
+
+Recommender Systems (you do want to recommend a product for every blog post, because that would lead to low precision)
+Key phrase extraction
+
+Fixed weekly two-meetings?
+
+Next steps:
+Cross-validation with training set
