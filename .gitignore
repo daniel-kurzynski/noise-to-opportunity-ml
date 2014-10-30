@@ -1,3 +1,6 @@
+# data files
+data
+
 # use glob syntax.
 *.class
 *.bak
