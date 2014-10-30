@@ -1,0 +1,28 @@
+Task
+------------------------------------------
+Recommend business/advertisement brochures for people's blog posts on e.g. LinkedIn.
+Furthermore, find out the relevance of a classification for the seller, i.e. how likely is the seller to sell his/her product to the blog post's author.
+
+Further ideas:
+	Key phrase extraction, to make the advertisement better. Something like: "You need a solution for xxx. [SAP BlaBla] might be right for you."
+	Add amazon products (their descriptions) to test set base
+	Crawl LinkedIn posts/profile pages for better results
+	Search Google AdWords paper
+
+Technology
+------------------------------------------
+Command-line tool, which reads from files and prints to console
+Libraries
+	- Weka
+	- Mahout
+	- MLib
+
+What do the columns in the traning data mean?
+
+Evaluation
+------------------------------------------
+For first steps:
+Cross-validation with training set
+
+Build a website, where people can set the gold-standard.
+Important: Do not recommend a product for every blog post.
