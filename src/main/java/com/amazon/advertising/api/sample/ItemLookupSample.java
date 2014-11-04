@@ -106,7 +106,7 @@ public class ItemLookupSample {
             put("Service", "AWSECommerceService");
             put("AssociateTag", "PutYourAssociateTagHere");
             put("Version", "2011-08-01");
-            put("Operation", "ItemSearch"/*OPERATIONS.ItemSearch.toString()*/);
+            put("Operation", OPERATIONS.ItemSearch.toString());
 //            put("ItemId", ITEM_ID);
             put("Keywords", "Java Books");
             put("SearchIndex", "Books");
@@ -114,7 +114,7 @@ public class ItemLookupSample {
         }};
 
         requestUrl = helper.sign(params);
-//        System.out.println(requestUrl);
+        System.out.println(requestUrl);
         try {
             System.out.println("==== REVIEWS: ====");
             for(String url: getReviewsUrls(requestUrl)){
@@ -147,7 +147,7 @@ public class ItemLookupSample {
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         DocumentBuilder db = dbf.newDocumentBuilder();
         Document doc = db.parse(requestUrl);
-        System.out.println(doc.getDocumentURI());
+//        System.out.println(doc.getDocumentURI());
         NodeList urlNodes = doc.getElementsByTagName("URL");
         List<String> urls = new ArrayList<>();
         for (int i = 0; i < urlNodes.getLength(); i++){
