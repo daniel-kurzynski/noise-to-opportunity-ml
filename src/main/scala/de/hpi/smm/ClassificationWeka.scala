@@ -8,34 +8,51 @@ import weka.classifiers.functions.SMO
 import weka.core.{Instance, Instances}
 import weka.core.converters.CSVLoader
 import weka.filters.Filter
-import weka.filters.unsupervised.attribute.StringToWordVector
+import weka.filters.unsupervised.attribute.{Reorder, NominalToString, StringToWordVector}
 import scala.collection.JavaConversions._
 
 object ClassificationWeka {
 	def main(args: Array[String]): Unit = {
-		val loader = new CSVLoader()
-		loader.setSource(new File("data/brochures.csv"))
-		val dataSet = loader.getDataSet
-		dataSet.setClassIndex(2)
-		val filter = new StringToWordVector()
-		filter.setInputFormat(dataSet)
-		val filteredData: Instances = Filter.useFilter(dataSet, filter);
 
-		val classifier = new SMO()
-		val classifier2 = new SMO();
-		classifier2.buildClassifier(filteredData);
+		val trainingData = loadTrainingData()
+
+		val stringToWordVectorFilter: StringToWordVector = new StringToWordVector
+		stringToWordVectorFilter.setInputFormat(trainingData)
+		val filteredData: Instances = Filter.useFilter(trainingData, stringToWordVectorFilter)
+
+		val smo: SMO = new SMO
+		smo.buildClassifier(filteredData)
 
 		filteredData.enumerateInstances().zipWithIndex.foreach { case (instanceObject, index) =>
 			val instance = instanceObject.asInstanceOf[Instance]
-			val classifiedValue = classifier2.classifyInstance(instance)
+			val classifiedValue = smo.classifyInstance(instance)
 			val instanceValue = instance.classValue()
-			if(classifiedValue != instanceValue)
-			println(s"${index} Classifier: ${classifiedValue}, Real: ${instanceValue}")
+			if(classifiedValue!=instanceValue)
+				println(s"${index} Classifier: ${classifiedValue}, Real: ${instanceValue}")
 
 		}
-		val evaluation = new Evaluation(filteredData);
-		evaluation.crossValidateModel(classifier, filteredData, 10, new Random(1));
 
-		println(evaluation.toClassDetailsString()+evaluation.toMatrixString());
+		val evaluation: Evaluation = new Evaluation(filteredData)
+		evaluation.crossValidateModel(smo, filteredData, 10, new Random(1))
+		System.out.println(evaluation.toClassDetailsString + evaluation.toMatrixString)
+	}
+
+	def loadTrainingData(): Instances ={
+		val loader: CSVLoader = new CSVLoader
+		loader.setSource(new File("data/brochures.csv"))
+
+		val dataset: Instances = loader.getDataSet
+		dataset.setClassIndex(2)
+
+		val reorder: Reorder = new Reorder
+		reorder.setAttributeIndicesArray(Array(2, 1))
+		reorder.setInputFormat(dataset)
+
+		val reoderedData: Instances = Filter.useFilter(dataset, reorder)
+
+		val nominalToString: NominalToString = new NominalToString
+		nominalToString.setInputFormat(reoderedData)
+
+		return Filter.useFilter(reoderedData, nominalToString)
 	}
 }
