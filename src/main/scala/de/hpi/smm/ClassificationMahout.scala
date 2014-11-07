@@ -55,8 +55,10 @@ class ClassificationMahout {
 		/*
 		 * TRAINING
 		 */
-		Random.shuffle(vectors).foreach { case (v, clazzId) =>
-			learningAlgorithm.train(clazzId, v)
+		(1 to 5).foreach { _ =>
+			Random.shuffle(vectors).foreach { case (v, clazzId) =>
+				learningAlgorithm.train(clazzId, v)
+			}
 		}
 		learningAlgorithm.close()
 
@@ -66,7 +68,7 @@ class ClassificationMahout {
 		vectors.foreach { case (v, clazzId) =>
 			val res = learningAlgorithm.classifyFull(v)
 			val maxIndex = res.maxValueIndex()
-			println(s"Result: $maxIndex, Actual: $clazzId")
+			println(s"${(maxIndex == clazzId).toString.toUpperCase}, Classification: $maxIndex, Actual: $clazzId")
 		}
 	}
 
