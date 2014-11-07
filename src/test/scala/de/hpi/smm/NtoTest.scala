@@ -6,7 +6,7 @@
 //
 //@RunWith(classOf[JUnitRunner])
 //class NtoTest extends FunSuite {
-//	test("An empty list should be empty") {
+//	test("") {
 //		assert(true)
 //	}
 //}
