@@ -18,6 +18,12 @@
 	</properties>
 
 	<dependencies>
+		<!-- CSV reader -->
+		<dependency>
+			<groupId>com.github.tototoshi</groupId>
+			<artifactId>scala-csv_2.11</artifactId>
+			<version>1.0.0</version>
+		</dependency>
 		<!-- Machine learning libraries -->
 		<dependency>
 			<groupId>org.apache.mahout</groupId>
