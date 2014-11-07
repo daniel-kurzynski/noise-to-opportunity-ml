@@ -13,11 +13,12 @@ object Main {
 
 	def main(args: Array[String]): Unit = {
 		val encoder: FeatureVectorEncoder = new StaticWordValueEncoder("text")
-		val analyzer: Analyzer = new StandardAnalyzer(Version.LUCENE_46)
 		val in = new StringReader("text to magically vectorize")
 
+		val analyzer: Analyzer = new StandardAnalyzer(Version.LUCENE_46)
 		val ts: TokenStream = analyzer.tokenStream("body", in)
 		val termAtt = ts.addAttribute(classOf[CharTermAttribute])
+
 		val v1 = new RandomAccessSparseVector(100)
 		ts.reset()
 		while (ts.incrementToken()) {
