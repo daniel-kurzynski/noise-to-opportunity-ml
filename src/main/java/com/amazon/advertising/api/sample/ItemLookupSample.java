@@ -21,11 +21,9 @@
 
 package com.amazon.advertising.api.sample;
 
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -35,6 +33,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+
 
 /*
  * This class shows how to make a simple authenticated ItemLookup call to the
@@ -53,13 +52,13 @@ public class ItemLookupSample {
     /*
      * Your AWS Access Key ID, as taken from the AWS Your Account page.
      */
-    private static final String AWS_ACCESS_KEY_ID = "AKIAIXIO43RVEO33FP7A";
+    // private static final String AWS_ACCESS_KEY_ID = "AKIAIXIO43RVEO33FP7A";
 
     /*
      * Your AWS Secret Key corresponding to the above ID, as taken from the AWS
      * Your Account page.
      */
-    private static final String AWS_SECRET_KEY = "eeV6V0W5Vt0rNNeq7TwSkLhNTEMD/5k89d5bM6Dp";
+    // private static final String AWS_SECRET_KEY = "eeV6V0W5Vt0rNNeq7TwSkLhNTEMD/5k89d5bM6Dp";
 
     /*
      * Use one of the following end-points, according to the region you are
@@ -81,12 +80,19 @@ public class ItemLookupSample {
      * locale of your choice.
      */
     private static final String ITEM_ID = "0545010225";
+    private static final String KEY_FILE = "src/main/resources/keys.conf";
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         /*
          * Set up the signed requests helper 
          */
-        com.amazon.advertising.api.sample.SignedRequestsHelper helper;
+        SignedRequestsHelper helper;
+
+        Properties p = new Properties();
+        p.load(new FileInputStream(KEY_FILE));
+        String AWS_SECRET_KEY = p.getProperty("AWS_SECRET_KEY", "NO_KEY_THERE");
+        String AWS_ACCESS_KEY_ID = p.getProperty("AWS_ACCESS_KEY_ID", "NO_KEY_THERE");
+
         try {
             helper = SignedRequestsHelper.getInstance(ENDPOINT, AWS_ACCESS_KEY_ID, AWS_SECRET_KEY);
         } catch (Exception e) {
