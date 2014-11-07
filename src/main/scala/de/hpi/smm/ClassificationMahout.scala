@@ -16,8 +16,18 @@ import scala.util.Random
 
 class ClassificationMahout {
 
+	// Define the size of the feature space
 	val FEATURES = 10000
+
+	// Classes
 	val products = new Dictionary()
+
+	// Feature encoders
+	val encoder = new StaticWordValueEncoder("words")
+	encoder.setProbes(2)
+	val biasEncoder = new ConstantValueEncoder("constant")
+
+	// Read entries from CSV
 	val entries = {
 		val csvReader = CSVReader.open("data/brochures.csv")
 		val lines = csvReader.iterator.toList
@@ -25,18 +35,8 @@ class ClassificationMahout {
 		lines
 	}
 
-	def classify(): Unit = {
-		val traceDictionary = new util.TreeMap[String, util.Set[Integer]]()
 
-		val encoder = new StaticWordValueEncoder("body")
-		encoder.setProbes(2)
-		encoder.setTraceDictionary(traceDictionary)
-
-		val biasEncoder = new ConstantValueEncoder("intercept")
-		biasEncoder.setTraceDictionary(traceDictionary)
-
-		val analyzer = new StandardAnalyzer(Version.LUCENE_46)
-
+	def classifyBrochures(): Unit = {
 		initializeProductsDictionary()
 
 		val learningAlgorithm =
@@ -47,53 +47,63 @@ class ClassificationMahout {
 				.lambda(3.0e-5)
 				.learningRate(20)
 
-		val vectors = entries.map { case Seq(id, text, clazz, _) =>
-			val clazzId = products.intern(clazz)
-			val words = mutable.Map[String, Int]()
+		/*
+		 * VECTORIZATION
+		 */
+		val vectors = buildFeatureFectors()
 
-			val ts = analyzer.tokenStream("body", new StringReader(text))
-			val termAtt = ts.addAttribute(classOf[CharTermAttribute])
-			ts.reset()
-			while (ts.incrementToken()) {
-				val termBuffer = termAtt.buffer()
-				val termLen = termAtt.length()
-				val w = new String(termBuffer, 0, termLen)
-				words.get(w) match {
-					case Some(c) => words += w -> (c + 1)
-					case None => words += w -> 1
-				}
-			}
-			ts.close()
-
-			val v = new RandomAccessSparseVector(FEATURES)
-			biasEncoder.addToVector(null, 1, v)
-//			encoder.addToVector(null, 50, v)
-			words.foreach { case (word, count) =>
-				encoder.addToVector(word, Math.log(1 + count), v)
-			}
-			(v, clazzId)
-		}
-
+		/*
+		 * TRAINING
+		 */
 		Random.shuffle(vectors).foreach { case (v, clazzId) =>
 			learningAlgorithm.train(clazzId, v)
 		}
 		learningAlgorithm.close()
 
+		/*
+		 * EVALUATION
+		 */
 		vectors.foreach { case (v, clazzId) =>
-			val res = learningAlgorithm.classify(v)
-			val it = res.all().iterator()
-
-			val values = new Array[Double](4)
-			var i = 1
-			while (it.hasNext) {
-				values(i) = it.next.get()
-				i+= 1
-			}
-			values(0) = 1 - values.sum
-
-			val maxIndex = values.zipWithIndex.maxBy(_._1)._2
+			val res = learningAlgorithm.classifyFull(v)
+			val maxIndex = res.maxValueIndex()
 			println(s"Result: $maxIndex, Actual: $clazzId")
 		}
+	}
+
+	def buildFeatureFectors(): List[(RandomAccessSparseVector, Int)] = {
+		val analyzer = new StandardAnalyzer(Version.LUCENE_46)
+		entries.map { case Seq(id, text, clazz, _) =>
+			// retrieve class id
+			val clazzId = products.intern(clazz)
+
+			val words = buildWordMap(analyzer, text)
+
+			val v = new RandomAccessSparseVector(FEATURES)
+			biasEncoder.addToVector(null, 1, v)
+			//			encoder.addToVector(null, 50, v)
+			words.foreach { case (word, count) =>
+				encoder.addToVector(word, Math.log(1 + count), v)
+			}
+			(v, clazzId)
+		}
+	}
+
+	def buildWordMap(analyzer: StandardAnalyzer, text: String): mutable.Map[String, Int] = {
+		val words = mutable.Map[String, Int]()
+		val ts = analyzer.tokenStream("body", new StringReader(text))
+		val termAtt = ts.addAttribute(classOf[CharTermAttribute])
+		ts.reset()
+		while (ts.incrementToken()) {
+			val termBuffer = termAtt.buffer()
+			val termLen = termAtt.length()
+			val w = new String(termBuffer, 0, termLen)
+			words.get(w) match {
+				case Some(c) => words += w -> (c + 1)
+				case None => words += w -> 1
+			}
+		}
+		ts.close()
+		words
 	}
 
 	private def initializeProductsDictionary(): Unit = {

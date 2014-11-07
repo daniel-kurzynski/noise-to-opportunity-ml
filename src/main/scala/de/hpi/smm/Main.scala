@@ -13,7 +13,7 @@ object Main {
 
 	def main(args: Array[String]): Unit = {
 		val classification = new ClassificationMahout
-		classification.classify()
+		classification.classifyBrochures()
 //		// io
 //		val in = new StringReader("text text text to magically vectorize")
 //		// Lucene tokenization
