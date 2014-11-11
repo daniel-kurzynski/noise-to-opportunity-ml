@@ -111,10 +111,16 @@ else:
 print("Loading 20 newsgroups dataset for categories:")
 print(categories if categories else "all")
 
+# type: sklearn.datasets.base.Bunch / dict; keys are attributes
+# data -> list of articles
+# target -> numpy.ndarray of target indeces(see target_names)
+# target_names -> list of target names, index -> id of target
+# filenames -> numpy.ndarray of filenames, originally storing the data
 data_train = fetch_20newsgroups(subset='train', categories=categories,
                                 shuffle=True, random_state=42,
                                 remove=remove)
 
+# type: sklearn.datasets.base.Bunch / dict; keys are attributes
 data_test = fetch_20newsgroups(subset='test', categories=categories,
                                shuffle=True, random_state=42,
                                remove=remove)
@@ -137,6 +143,7 @@ print("%d categories" % len(categories))
 print()
 
 # split a training set and a test set
+# type: numpy.ndarray
 y_train, y_test = data_train.target, data_test.target
 
 print("Extracting features from the training dataset using a sparse vectorizer")
