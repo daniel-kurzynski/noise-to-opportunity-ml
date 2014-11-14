@@ -7,8 +7,9 @@ import com.github.tototoshi.csv.CSVReader
 import org.apache.lucene.analysis.standard.StandardAnalyzer
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute
 import org.apache.lucene.util.Version
+import org.apache.mahout.classifier.naivebayes.{NaiveBayesModel, StandardNaiveBayesClassifier}
 import org.apache.mahout.classifier.sgd.{L1, OnlineLogisticRegression}
-import org.apache.mahout.math.RandomAccessSparseVector
+import org.apache.mahout.math.{ConstantVector, SparseRowMatrix, DenseMatrix, RandomAccessSparseVector}
 import org.apache.mahout.vectorizer.encoders.{Dictionary, ConstantValueEncoder, StaticWordValueEncoder}
 
 import scala.collection.mutable
@@ -39,28 +40,29 @@ class ClassificationMahout {
 	def classifyBrochures(): Unit = {
 		initializeProductsDictionary()
 
-		val learningAlgorithm =
-			new OnlineLogisticRegression(
-				4, FEATURES, new L1())
-				.alpha(1).stepOffset(1000)
-				.decayExponent(0.9)
-				.lambda(3.0e-5)
-				.learningRate(20)
-
 		/*
 		 * VECTORIZATION
 		 */
 		val vectors = buildFeatureFectors()
+		val specialVectors = vectors.map(_._1.asInstanceOf[org.apache.mahout.math.Vector]).toArray
+		val matrix = new SparseRowMatrix(entries.size, FEATURES, specialVectors)
+		val featureWeightVector = new ConstantVector(1.0, FEATURES)
+		val labelWeightVector = new ConstantVector(1.0, products.size())
+		val thetaNormalizer = new ConstantVector(1.0, FEATURES)
+
+		val model = new NaiveBayesModel(matrix, featureWeightVector, labelWeightVector, thetaNormalizer, 1.0f)
+		val learningAlgorithm =
+			new StandardNaiveBayesClassifier(model)
 
 		/*
 		 * TRAINING
 		 */
-		(1 to 5).foreach { _ =>
-			Random.shuffle(vectors).foreach { case (v, clazzId) =>
-				learningAlgorithm.train(clazzId, v)
-			}
-		}
-		learningAlgorithm.close()
+//		(1 to 5).foreach { _ =>
+//			Random.shuffle(vectors).foreach { case (v, clazzId) =>
+//				learningAlgorithm.train(clazzId, v)
+//			}
+//		}
+//		learningAlgorithm.close()
 
 		/*
 		 * EVALUATION
