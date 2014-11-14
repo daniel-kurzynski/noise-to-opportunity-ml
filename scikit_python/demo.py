@@ -146,7 +146,7 @@ def visualize_result(results):
 
 print "Brochures"
 print "=" * 50
-process("data/brochures.csv", brochure_exractor)
+process("../data/brochures.csv", brochure_exractor)
 print "=" * 50
 
 
