@@ -49,24 +49,34 @@ def process(filename, line_extractor):
   X_test = vectorizer.transform(content["data"])
   y_test = np.array(content["target"])
 
-  clf = MultinomialNB(alpha=.01)
+  result = []
 
-  t0 = time()
-  clf.fit(X_train, y_train)
-  train_time = time() - t0
-  print("train time: %0.13fs" % train_time)
+  result.append(benchmark(MultinomialNB(alpha=.01),X_train,X_test,y_train,y_test))
 
-  t0 = time()
-  pred = clf.predict(X_test)
-  test_time = time() - t0
-  print("test time:  %0.13fs" % test_time)
+  print_result(result)
 
+def print_result(result):
+	for classifier,test_time, train_time, score,confusion_matrix in result:
+		print classifier
+		print("train time: %0.13fs" % train_time)
+		print("test time:  %0.13fs" % test_time)
+		print("f1-score:   %0.13f" % score)
+		print confusion_matrix
 
-  score = metrics.f1_score(y_test, pred)
-  print("f1-score:   %0.13f" % score)
+def benchmark(classifier,X_train,X_test,y_train,y_test):
+	t0 = time()
+	classifier.fit(X_train, y_train)
+	train_time = time() - t0
 
-  print metrics.confusion_matrix(y_test, pred)
+	t0 = time()
+	pred = classifier.predict(X_test)
+	test_time = time() - t0
 
+	score = metrics.f1_score(y_test, pred)
+
+	confusion_matrix = metrics.confusion_matrix(y_test, pred)
+
+	return classifier.__class__.__name__,test_time, train_time, score,confusion_matrix
 
 print "Brochures"
 print "="*50
