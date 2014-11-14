@@ -1,53 +1,17 @@
 from os.path import dirname, join
+
 from time import time
 from sklearn import metrics
 from sklearn.cross_validation import cross_val_score
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import RidgeClassifier
 from sklearn.svm import LinearSVC
-from sklearn.linear_model import SGDClassifier
-from sklearn.linear_model import Perceptron
-from sklearn.linear_model import PassiveAggressiveClassifier
+from sklearn.linear_model import SGDClassifier, Perceptron, PassiveAggressiveClassifier
 from sklearn.naive_bayes import BernoulliNB, MultinomialNB
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.neighbors import NearestCentroid
+from sklearn.neighbors import KNeighborsClassifier, NearestCentroid
+
 import numpy as np
-
 import matplotlib.pyplot as plt
-
-
-def category_to_idx(category, content):
-	for i in range(len(content["target_names"])):
-		if category == content["target_names"][i]:
-			return i
-
-
-def read(filename, line_extractor):
-	output = {
-		"data": [],
-		"target": [],
-		"target_names": [],
-	}
-	with open(join(dirname(__file__), filename)) as f:
-		for line in f:
-			data, category = line_extractor(line)
-			output["data"].append(data)
-			if category not in output["target_names"]:
-				output["target_names"].append(category)
-			output["target"].append(category_to_idx(category, output))
-
-	return output
-
-
-def brochure_exractor(line):
-	_, data, category, _ = line.replace("\\,", "<komma>").split(",")
-	return data.replace("<komma>", ",")[1:-1], category
-
-
-def linked_in_extractor(line):
-	_, data1, data2, _, _, _, _, _, category, _, _ = line.replace("\\,", "<komma>").split(",")
-	data = data1[1:-1] + " " + data2[1:-1]
-	return data.replace("<komma>", ","), category
 
 
 def process(filename, line_extractor):
