@@ -1,4 +1,3 @@
-from os.path import dirname, join
 
 from time import time
 from sklearn import metrics
@@ -13,9 +12,13 @@ from sklearn.neighbors import KNeighborsClassifier, NearestCentroid
 import numpy as np
 import matplotlib.pyplot as plt
 
+from preprocessing import CSVReader
 
-def process(filename, line_extractor):
-	content = read(filename, line_extractor)
+
+def process(filename):
+
+	csv_reader = CSVReader()
+	content = csv_reader.read(filename)
 	vectorizer = TfidfVectorizer(sublinear_tf=True, max_df=0.5, stop_words='english')
 
 	X_train = vectorizer.fit_transform(content["data"])
@@ -117,7 +120,7 @@ def visualize_result(results):
 
 print "Brochures"
 print "=" * 50
-process("../data/brochures.csv", brochure_exractor)
+process("brochures.csv")
 print "=" * 50
 
 

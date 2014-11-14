@@ -1,17 +1,23 @@
-"""
-Reading CSV files in our fashion.
-"""
+from os.path import join
+
 class CSVReader():
-	def read(self, filename, line_extractor):
+
+	def __init__(self):
+		pass
+
+	"""
+	Reading CSV files in our fashion.
+	"""
+	def read(self, filename):
 		target_mapping = {}
 		output = {
 		"data": [],
 		"target": [],
 		"target_names": [],
 		}
-		with open(join(dirname(__file__), filename)) as f:
+		with open(join("../data", filename)) as f:
 			for line in f:
-				data, category = line_extractor(line)
+				data, category = self.brochure_exractor(line)
 				if category not in target_mapping:
 					target_mapping[category] = len(target_mapping)
 				output["data"].append(data)
