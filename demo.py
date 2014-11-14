@@ -3,7 +3,19 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 import numpy as np
 from time import time
 from sklearn import metrics
-from sklearn.naive_bayes import MultinomialNB
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.feature_extraction.text import HashingVectorizer
+from sklearn.feature_selection import SelectKBest, chi2
+from sklearn.linear_model import RidgeClassifier
+from sklearn.svm import LinearSVC
+from sklearn.linear_model import SGDClassifier
+from sklearn.linear_model import Perceptron
+from sklearn.linear_model import PassiveAggressiveClassifier
+from sklearn.naive_bayes import BernoulliNB, MultinomialNB
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.neighbors import NearestCentroid
+import numpy as np
+import matplotlib.pyplot as plt
 
 
 
@@ -49,14 +61,20 @@ def process(filename, line_extractor):
   X_test = vectorizer.transform(content["data"])
   y_test = np.array(content["target"])
 
-  result = []
+  results = []
+  for classifier, name in (
+        (RidgeClassifier(tol=1e-2, solver="lsqr"), "Ridge Classifier"),
+        (Perceptron(n_iter=50), "Perceptron"),
+        (PassiveAggressiveClassifier(n_iter=50), "Passive-Aggressive"),
+        (KNeighborsClassifier(n_neighbors=10), "kNN")):
 
-  result.append(benchmark(MultinomialNB(alpha=.01),X_train,X_test,y_train,y_test))
+  	results.append(benchmark(classifier,X_train,X_test,y_train,y_test))
 
-  print_result(result)
+  print_result(results)
+  visualize_result(results)
 
 def print_result(result):
-	for classifier,test_time, train_time, score,confusion_matrix in result:
+	for classifier, train_time, test_time, score, confusion_matrix in result:
 		print classifier
 		print("train time: %0.13fs" % train_time)
 		print("test time:  %0.13fs" % test_time)
@@ -68,6 +86,8 @@ def benchmark(classifier,X_train,X_test,y_train,y_test):
 	classifier.fit(X_train, y_train)
 	train_time = time() - t0
 
+	print train_time
+
 	t0 = time()
 	pred = classifier.predict(X_test)
 	test_time = time() - t0
@@ -76,7 +96,34 @@ def benchmark(classifier,X_train,X_test,y_train,y_test):
 
 	confusion_matrix = metrics.confusion_matrix(y_test, pred)
 
-	return classifier.__class__.__name__,test_time, train_time, score,confusion_matrix
+	return classifier.__class__.__name__,train_time, test_time, score,confusion_matrix
+
+def visualize_result(results):
+	indices = np.arange(len(results))
+
+	results = [[x[i] for x in results] for i in range(4)]
+
+	classifier_names, training_time, test_time, score = results
+	if(np.max(training_time)>0):
+		training_time = np.array(training_time) / np.max(training_time)
+	if(np.max(test_time)>0):
+		test_time = np.array(test_time) / np.max(test_time)
+
+	plt.figure(figsize=(12, 8))
+	plt.title("Score")
+	plt.barh(indices, score, .2, label="score", color='r')
+	plt.barh(indices + .3, training_time, .2, label="training time", color='g')
+	plt.barh(indices + .6, test_time, .2, label="test time", color='b')
+	plt.yticks(())
+	plt.legend(loc='best')
+	plt.subplots_adjust(left=.25)
+	plt.subplots_adjust(top=.95)
+	plt.subplots_adjust(bottom=.05)
+
+	for i, c in zip(indices, classifier_names):
+	    plt.text(-.3, i, c)
+
+	plt.show()
 
 print "Brochures"
 print "="*50
