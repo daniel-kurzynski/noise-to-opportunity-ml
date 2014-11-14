@@ -1,6 +1,7 @@
 from os.path import dirname, join
 from time import time
 from sklearn import metrics
+from sklearn.cross_validation import cross_val_score
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import RidgeClassifier
 from sklearn.svm import LinearSVC
@@ -56,11 +57,12 @@ def process(filename, line_extractor):
 	X_train = vectorizer.fit_transform(content["data"])
 	y_train = np.array(content["target"])
 
-	X_test = vectorizer.transform(content["data"])
-	y_test = np.array(content["target"])
+	# X_test = vectorizer.transform(content["data"])
+	# y_test = np.array(content["target"])
 
 	results = []
-	data = [X_train, X_test, y_train, y_test]
+	# data = [X_train, X_test, y_train, y_test]
+	data = [X_train, y_train]
 	for classifier, name in (
 			(RidgeClassifier(tol=1e-2, solver="lsqr"), "Ridge Classifier"),
 			(Perceptron(n_iter=50), "Perceptron"),
@@ -90,48 +92,53 @@ def process(filename, line_extractor):
 
 
 def print_result(result):
-	for classifier, train_time, test_time, score, confusion_matrix in result:
+	for classifier, train_time, score in result:
 		print classifier
-		print("train time: %0.13fs" % train_time)
-		print("test time:  %0.13fs" % test_time)
+		print("time: %0.13fs" % train_time)
+		# print("test time:  %0.13fs" % test_time)
 		print("f1-score:   %0.13f" % score)
-		print confusion_matrix
+		# print confusion_matrix
 
 
-def benchmark(classifier, X_train, X_test, y_train, y_test):
+def benchmark(classifier, X_train, y_train):
 	t0 = time()
-	classifier.fit(X_train, y_train)
-	train_time = time() - t0
+	score = cross_val_score(classifier, X_train, y_train, cv=5, scoring='f1')
+	t = time() - t0
+	return classifier.__class__.__name__, t, score.mean()
 
-	print train_time
+	# t0 = time()
+	# classifier.fit(X_train, y_train)
+	# train_time = time() - t0
 
-	t0 = time()
-	pred = classifier.predict(X_test)
-	test_time = time() - t0
+	# print train_time
 
-	score = metrics.f1_score(y_test, pred)
+	# t0 = time()
+	# pred = classifier.predict(X_test)
+	# test_time = time() - t0
 
-	confusion_matrix = metrics.confusion_matrix(y_test, pred)
+	# score = metrics.f1_score(y_test, pred)
 
-	return classifier.__class__.__name__, train_time, test_time, score, confusion_matrix
+	# confusion_matrix = metrics.confusion_matrix(y_test, pred)
+
+	# return classifier.__class__.__name__, train_time, test_time, score, confusion_matrix
 
 
 def visualize_result(results):
 	indices = np.arange(len(results))
 
-	results = [[x[i] for x in results] for i in range(4)]
+	results = [[x[i] for x in results] for i in range(3)]
 
-	classifier_names, training_time, test_time, score = results
-	if (np.max(training_time) > 0):
-		training_time = np.array(training_time) / np.max(training_time)
-	if (np.max(test_time) > 0):
-		test_time = np.array(test_time) / np.max(test_time)
+	classifier_names, training_time, score = results
+	# if (np.max(training_time) > 0):
+	# 	training_time = np.array(training_time) / np.max(training_time)
+	# if (np.max(test_time) > 0):
+	# 	test_time = np.array(test_time) / np.max(test_time)
 
 	plt.figure(figsize=(12, 8))
 	plt.title("Score")
 	plt.barh(indices, score, .2, label="score", color='r')
-	plt.barh(indices + .3, training_time, .2, label="training time", color='g')
-	plt.barh(indices + .6, test_time, .2, label="test time", color='b')
+	# plt.barh(indices + .3, training_time, .2, label="training time", color='g')
+	# plt.barh(indices + .6, test_time, .2, label="test time", color='b')
 	plt.yticks(())
 	plt.legend(loc='best')
 	plt.subplots_adjust(left=.25)
