@@ -14,51 +14,43 @@ import matplotlib.pyplot as plt
 
 from preprocessing import CSVReader
 
+def classifiers():
+	for clf in [
+		RidgeClassifier(tol=1e-2, solver="lsqr"),
+		Perceptron(n_iter=50),
+		PassiveAggressiveClassifier(n_iter=50),
+		KNeighborsClassifier(n_neighbors=10),
+		LinearSVC(loss='l2', penalty="l1", dual=False, tol=1e-3),
+		LinearSVC(loss='l2', penalty="l2", dual=False, tol=1e-3),
+		SGDClassifier(alpha=.0001, n_iter=50, penalty="l1"),
+		SGDClassifier(alpha=.0001, n_iter=50, penalty="l2"),
+		SGDClassifier(alpha=.0001, n_iter=50, penalty="elasticnet"),
+		NearestCentroid(),
+		MultinomialNB(alpha=.01),
+		BernoulliNB(alpha=.01),
+		]:
+		yield clf
 
-def process(filename):
+
+def process(filename, extractor, print_results = True, visualize_results = True):
 
 	csv_reader = CSVReader()
-	content = csv_reader.read(filename)
+	content = csv_reader.read(filename, extractor)
 	vectorizer = TfidfVectorizer(sublinear_tf=True, max_df=0.5, stop_words='english')
 
-	X_train = vectorizer.fit_transform(content["data"])
-	y_train = np.array(content["target"])
-
-	# X_test = vectorizer.transform(content["data"])
-	# y_test = np.array(content["target"])
-
 	results = []
-	# data = [X_train, X_test, y_train, y_test]
-	data = [X_train, y_train]
-	for classifier, name in (
-			(RidgeClassifier(tol=1e-2, solver="lsqr"), "Ridge Classifier"),
-			(Perceptron(n_iter=50), "Perceptron"),
-			(PassiveAggressiveClassifier(n_iter=50), "Passive-Aggressive"),
-			(KNeighborsClassifier(n_neighbors=10), "kNN")):
-		results.append(benchmark(classifier, *data))
-	for penalty in ["l2", "l1"]:
-		# Train Liblinear model
-		results.append(benchmark(
-			LinearSVC(loss='l2', penalty=penalty, dual=False, tol=1e-3), *data))
-		# Train SGD model
-		results.append(benchmark(SGDClassifier(alpha=.0001, n_iter=50,
-											   penalty=penalty), *data))
-	# Train SGD with Elastic Net penalty
-	results.append(benchmark(SGDClassifier(alpha=.0001, n_iter=50,
-										   penalty="elasticnet"), *data))
+	clf_args = [vectorizer.fit_transform(csv_reader.data), np.array(csv_reader.target)]
 
-	# Train NearestCentroid without threshold
-	results.append(benchmark(NearestCentroid(), *data))
+	results = [benchmark(classifier, *clf_args) for classifier in classifiers()]
 
-	# Train sparse Naive Bayes classifiers
-	results.append(benchmark(MultinomialNB(alpha=.01), *data))
-	results.append(benchmark(BernoulliNB(alpha=.01), *data))
+	if print_results:
+		print_(results)
 
-	print_result(results)
-	visualize_result(results)
+	if visualize_results:
+		visualize(results)
 
 
-def print_result(result):
+def print_(result):
 	for classifier, train_time, score in result:
 		print classifier
 		print("time: %0.13fs" % train_time)
@@ -67,14 +59,14 @@ def print_result(result):
 		# print confusion_matrix
 
 
-def benchmark(classifier, X_train, y_train):
+def benchmark(classifier, X, y):
 	t0 = time()
-	score = cross_val_score(classifier, X_train, y_train, cv=5, scoring='f1')
+	score = cross_val_score(classifier, X, y, cv=5, scoring='f1')
 	t = time() - t0
 	return classifier.__class__.__name__, t, score.mean()
 
 	# t0 = time()
-	# classifier.fit(X_train, y_train)
+	# classifier.fit(X, y)
 	# train_time = time() - t0
 
 	# print train_time
@@ -90,20 +82,21 @@ def benchmark(classifier, X_train, y_train):
 	# return classifier.__class__.__name__, train_time, test_time, score, confusion_matrix
 
 
-def visualize_result(results):
+def visualize(results):
+	def normalize(l):
+		if (np.max(l) > 0):
+			l = np.array(l) / np.max(l)
+		return l
+
 	indices = np.arange(len(results))
 
-	results = [[x[i] for x in results] for i in range(3)]
-
-	classifier_names, training_time, score = results
-	# if (np.max(training_time) > 0):
-	# 	training_time = np.array(training_time) / np.max(training_time)
-	# if (np.max(test_time) > 0):
-	# 	test_time = np.array(test_time) / np.max(test_time)
+	classifier_names, training_time, score = zip(*results)
+	# training_time = normalize(training_time)
+	# test_time = normalize(test_time)
 
 	plt.figure(figsize=(12, 8))
 	plt.title("Score")
-	plt.barh(indices, score, .2, label="score", color='r')
+	plt.barh(indices, score, .6, label="score", color="#df9800")
 	# plt.barh(indices + .3, training_time, .2, label="training time", color='g')
 	# plt.barh(indices + .6, test_time, .2, label="test time", color='b')
 	plt.yticks(())
@@ -112,19 +105,19 @@ def visualize_result(results):
 	plt.subplots_adjust(top=.95)
 	plt.subplots_adjust(bottom=.05)
 
-	for i, c in zip(indices, classifier_names):
-		plt.text(-.3, i, c)
+	for idx, clf_name in zip(indices, classifier_names):
+		plt.text(-.3, idx, clf_name)
 
 	plt.show()
 
 
 print "Brochures"
 print "=" * 50
-process("brochures.csv")
+process("brochures.csv", CSVReader.brochure_extractor)
 print "=" * 50
 
 
 # print "LinkedIn Posts"
 # print "="*50
-# process("data/linked_in_posts.csv", linked_in_extractor)
+# process("linked_in_posts.csv", CSVReader.linked_in_extractor)
 # print "="*50
