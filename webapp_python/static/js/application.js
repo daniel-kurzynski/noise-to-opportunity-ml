@@ -1,10 +1,10 @@
 require.config({
 	paths: {
-		jquery:                   './../libs/js/jquery',
-		underscore:               './../libs/js/underscore',
-		backbone:                 './../libs/js/backbone',
-		text: 					  './../libs/js/text',
-		bootstrap: 				  './../libs/js/bootstrap',  
+		jquery:                   './../libs/jquery/dist/jquery.min',
+		underscore:               './../libs/underscore/underscore-min',
+		backbone:                 './../libs/backbone/backbone',
+		text: 					  './../libs/requirejs-text/text',
+		bootstrap: 				  './../libs/bootstrap/dist/js/bootstrap.min',  
 	}
 });
 
