@@ -9,10 +9,23 @@ define([
 
 			template: _.template(DemandClassificationViewTemplate),
 
+			
+			keyMapping: {
+				121: "#btn-has-demand",
+				110: "#btn-has-no-demand",
+				49:  "#btn-category-1",
+				50:  "#btn-category-2",
+				51:  "#btn-category-3",
+				52:  "#btn-category-4"
+			},
+			
+
 			events: {
-				"click #btn-has-no-demand":			"markPostAsNoDemand",
-				"click #btn-has-demand":			"markPostAsDemand",
-				'keydown': 'keyAction'
+				"click .btn-tag":         			"tagPost",
+				"click #btn-has-no-demand":			"showNewPost",
+				"click #btn-has-demand":			"showCategoryButtons",
+				"click .btn-category":              "showNewPost",
+				"keydown":                          "keyAction"
 			},
 
 			initialize: function(options){
@@ -33,25 +46,19 @@ define([
 			},
 
 			keyAction: function(event){
-				switch(event.keyCode || event.which) {
-				    case 121: //y
-				        this.markPostAsDemand();
-				        break;
-				    case 110: //n
-				        this.markPostAsNoDemand();
-				        break;
-				}
+				code = (event.keyCode || event.which);
+				this.$el.find(this.keyMapping[code]).click();
 			},
 
-			markPostAsDemand:function(){
-				$.post('post/'+this.currentPost.id+"/demand",{demand:true});
-				this.showNewPost();
+			showCategoryButtons:function(){
+				this.$el.find(".demand-decission").hide();
+				this.$el.find(".category-decission").show();
 			},
-			
-			markPostAsNoDemand:function(){
-				$.post('post/'+this.currentPost.id+"/demand",{demand:false});
-				this.showNewPost();
-			},			
+
+			tagPost:function(event){
+				data = $(event.target).data();
+				$.post('classify_post/'+this.currentPost.id,data);
+			},		
 
 			showNewPost:function(){
 				var self = this;
