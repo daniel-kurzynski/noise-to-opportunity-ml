@@ -18,6 +18,9 @@ define([
 			initialize: function(options){
 				this.render();
 				this.unclassifiedPosts = [];
+
+				$(document).bind('keypress', _.bind(this.keyAction,this));
+
 				if(options.postId){
 					this.showPost(options.postId)
 				}
@@ -31,11 +34,11 @@ define([
 
 			keyAction: function(event){
 				switch(event.keyCode || event.which) {
-				    case 89: //y
-				        this.showNewPost();
+				    case 121: //y
+				        this.markPostAsDemand();
 				        break;
-				    case 78: //n
-				        his.showNewPost();
+				    case 110: //n
+				        this.markPostAsNoDemand();
 				        break;
 				}
 			},

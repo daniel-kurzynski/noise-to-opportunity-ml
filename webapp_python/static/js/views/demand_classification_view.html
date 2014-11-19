@@ -1,4 +1,13 @@
-<p id="post-title"><%=post.title%></p>
-<p id="post-text"><%=post.text%></p>
-<button id="btn-has-demand" type="button" class="btn btn-success">Yes (y)</button>
-<button id="btn-has-no-demand" type="button" class="btn btn-danger">No (n)</button>
+<div class="demand-classification-view">
+	<div class="container">
+	<div class="page-header">
+		<h1>Does this post describe a demand?</h1>
+		<h1><small><%=post.title%></small><h1>
+	</div>
+	<p id="post-text"><%=post.text%></p>
+	<div class="decission-panel">
+		<button id="btn-has-demand" type="button" class="btn btn-success  btn-lg">Yes (y)</button>
+		<button id="btn-has-no-demand" type="button" class="btn btn-danger  btn-lg">No (n)</button>
+	</div>
+	</div>
+<div>
