@@ -16,7 +16,8 @@ define([
 				49:  "#btn-category-1",
 				50:  "#btn-category-2",
 				51:  "#btn-category-3",
-				52:  "#btn-category-4"
+				52:  "#btn-category-4",
+				53:  "#btn-category-5"
 			},
 			
 
