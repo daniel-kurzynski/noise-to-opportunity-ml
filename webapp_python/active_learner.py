@@ -50,7 +50,7 @@ class active_learner(object):
 
 		if self.not_enghouh_posts_tagged():
 			print "Choosing radom posts"
-			return np.random.choice(self.posts,2,False)
+			return np.random.choice(self.posts,5,False)
 
 		print "Choosing uncertainty posts"
 		labledPosts = [post for post in self.posts if post.id in self.classification and self.classification[post.id]['demand']]
@@ -74,8 +74,9 @@ class active_learner(object):
 
 		sorted_confidences = np.argsort(confidences)
 
-		low_confidence_indices = sorted_confidences[-5:]
+		confidence_indices = sorted_confidences[-10:]
+		# confidence_indices.extend(sorted_confidences[:2])
 
-		return [unlabledPosts[i] for i in low_confidence_indices]
+		return [unlabledPosts[i] for i in confidence_indices]
 
 
