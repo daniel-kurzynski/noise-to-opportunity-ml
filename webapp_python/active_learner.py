@@ -4,6 +4,7 @@ import json
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import Perceptron
 import numpy as np
+from scipy import stats
 
 class active_learner(object):
 	def __init__(self):
@@ -35,8 +36,9 @@ class active_learner(object):
 		self.save_classification()
 
 	def not_enghouh_posts_tagged(self):
-		numberOfDemandPosts = sum([1 if self.classification[each]["demand"] else 0 for each in self.classification])
+		numberOfDemandPosts = sum([1 if self.classification[each]["demand"]=="demand" else 0 for each in self.classification])
 		numberOfNoDemandPosts = len(self.classification)-numberOfDemandPosts;
+		print numberOfDemandPosts, numberOfNoDemandPosts
 		if numberOfDemandPosts>0 and numberOfNoDemandPosts>0:
 			return False
 		return True
@@ -48,23 +50,32 @@ class active_learner(object):
 
 		if self.not_enghouh_posts_tagged():
 			print "Choosing radom posts"
-			return np.random.choice(self.posts,15,False)
+			return np.random.choice(self.posts,2,False)
 
 		print "Choosing uncertainty posts"
-		X = [post.data for post in self.posts]
-		y = [-1 if not post.id in self.classification else 1 if self.classification[post.id][demand] else 0 for post in self.posts]
+		labledPosts = [post for post in self.posts if post.id in self.classification and self.classification[post.id]['demand']]
+		unlabledPosts = [post for post in self.posts if not (post.id in self.classification and self.classification[post.id]['demand'])]
+		X_train = [post.data for post in labledPosts]
+		X_predict = [post.data for post in unlabledPosts]
+		y_train = [self.classification[post.id]['demand'] for post in labledPosts ]
 
 		vectorizer = TfidfVectorizer(sublinear_tf=True, max_df=0.5, stop_words='english')
-		X = vectorizer.fit_transform(X)
-		y = np.array(y)
+		X_train = vectorizer.fit_transform(X_train)
+		X_predict = vectorizer.transform(X_predict)
+		y_train = np.array(y_train)
+
 		classifier = Perceptron(n_iter=50)
 
-		classifier.fit(X,y)
+		classifier.fit(X_train,y_train)
+		# y_predict = classifier.predict(X_predict)
 
-		pred_entropies = stats.distributions.entropy(classifier.label_distributions_.T)
+		confidences = np.abs(classifier.decision_function(X_predict))
+		print confidences
 
-		uncertainty_index = np.argsort(pred_entropies)[-15:]
+		sorted_confidences = np.argsort(confidences)
 
-		print self.posts[uncertainty_index]
+		low_confidence_indices = sorted_confidences[-5:]
+
+		return [unlabledPosts[i] for i in low_confidence_indices]
 
 
