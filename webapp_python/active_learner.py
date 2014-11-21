@@ -8,6 +8,7 @@ import collections
 
 class active_learner(object):
 	def __init__(self):
+		self.classification = collections.OrderedDict()
 		self.load_posts()
 		self.load_classification()
 
@@ -26,7 +27,6 @@ class active_learner(object):
 	def load_classification(self):
 		with open('data/classification.json') as infile:
 			self.classification = json.JSONDecoder(object_pairs_hook=collections.OrderedDict).decode(infile.read())
-			# self.classification = json.OrderedDict(json.load(infile))
 
 	def save_classification(self):
 		with open('data/classification.json', 'w') as outfile:
@@ -49,19 +49,17 @@ class active_learner(object):
 		return True
 
 	def post(self, post_id):
-		return [(post, Prediction()) for post in self.posts if post.id == post_id]
+		posts = [post for post in self.posts if post.id == post_id]
+		classifier, data, _ = self.build_classifier(posts)
+		return zip(posts, self.calculate_predictions(classifier, data))
 
-	def determine_uncertain_posts(self):
-		if self.not_enough_posts_tagged():
-			print "Choosing random posts"
-			return [(post, Prediction()) for post in np.random.choice(self.posts, 5, False)]
-
-		print "Choosing uncertain posts"
-		labeledPosts  =  [post for post in self.posts if      post.id in self.classification and self.classification[post.id]['demand']]
-		unlabeledPosts = [post for post in self.posts if not (post.id in self.classification and self.classification[post.id]['demand'])]
-		X_train   = [post.data for post in labeledPosts]
-		X_predict = [post.data for post in unlabeledPosts]
-		Y_train = [self.classification[post.id]['demand'] for post in labeledPosts]
+	def build_classifier(self, unlabeled_posts = None):
+		labeled_posts  =  [post for post in self.posts if post.id in self.classification and self.classification[post.id]['demand']]
+		if unlabeled_posts is None:
+			unlabeled_posts = [post for post in self.posts if not (post.id in self.classification and self.classification[post.id]['demand'])]
+		X_train   = [post.data for post in labeled_posts]
+		X_predict = [post.data for post in unlabeled_posts]
+		Y_train = [self.classification[post.id]['demand'] for post in labeled_posts]
 
 		# Build vectorizer
 		vectorizer = TfidfVectorizer(sublinear_tf = True, max_df = 0.5, stop_words = 'english')
@@ -72,16 +70,29 @@ class active_learner(object):
 		# Train the classifier
 		classifier = Perceptron(n_iter = 50)
 		classifier.fit(X_train, Y_train)
+		return classifier, X_predict, unlabeled_posts
 
-		confidences = np.abs(classifier.decision_function(X_predict))
-		# The following line first sorts the confidences, and then extracts the predictions from these orders.
-		# The index for the highest confidence is in the last position.
-		# We then build Prediction objects for these.
-		predictions = [Prediction(classifier.classes_[confOrders[-1]], confidences[index][confOrders[-1]], index) for index, confOrders in enumerate(np.argsort(confidences))]
+	def determine_uncertain_posts(self):
+		if self.not_enough_posts_tagged():
+			print "Choosing random posts"
+			return [(post, Prediction()) for post in np.random.choice(self.posts, 5, False)]
+
+		print "Choosing uncertain posts"
+
+		classifier, X_predict, unlabeled_posts = self.build_classifier()
+		predictions = self.calculate_predictions(classifier, X_predict)
 
 		low_confidence_predictions = sorted(predictions, key = lambda prediction: prediction.conf)
 		low_confidence_predictions = low_confidence_predictions[:10]
 
-		return [(unlabeledPosts[pred.index], pred) for pred in low_confidence_predictions]
+		return [(unlabeled_posts[pred.index], pred) for pred in low_confidence_predictions]
+
+	def calculate_predictions(self, classifier, data):
+		confidences = np.abs(classifier.decision_function(data))
+		# The following line first sorts the confidences, and then extracts the predictions from these orders.
+		# The index for the highest confidence is in the last position.
+		# We then build Prediction objects for these.
+		predictions = [Prediction(classifier.classes_[confOrders[-1]], confidences[index][confOrders[-1]], index) for index, confOrders in enumerate(np.argsort(confidences))]
+		return predictions
 
 
