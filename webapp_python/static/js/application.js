@@ -29,6 +29,6 @@ define([
 	'bootstrap'
 	], function(Router){
 	new Router({$el: $(".content")});
-	Backbone.history.start({pushState: true});
+	Backbone.history.start();
 
 });
