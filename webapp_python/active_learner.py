@@ -1,6 +1,6 @@
 from os.path import join, abspath
 from post import Post
-import json
+import simplejson as json
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import Perceptron
 import numpy as np
@@ -24,12 +24,12 @@ class active_learner(object):
 		pass
 
 	def load_classification(self):
-		with open('data/classification.json') as infile:    
+		with open('data/classification.json') as infile:
 			self.classification = json.load(infile)
-			
+
 	def save_classification(self):
 		with open('data/classification.json', 'w') as outfile:
-			json.dump(self.classification, outfile)
+			json.dump(self.classification, outfile, indent = 2)
 
 	def tag_demand(self, post_id, is_demand):
 		self.classification[post_id] = {"demand": is_demand}
