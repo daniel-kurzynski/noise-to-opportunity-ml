@@ -11,6 +11,9 @@ def hello():
 @app.route("/uncertainty_posts")
 def unclassified_posts():
 	posts = learner.uncertainty_posts()
+	print "x" * 100
+	print posts
+	print "x" * 100
 	return render_template("posts.json", posts = posts)
 
 @app.route("/post/<post_id>")

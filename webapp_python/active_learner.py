@@ -48,13 +48,13 @@ class active_learner(object):
 		return True
 
 	def post(self, post_id):
-		return [post for post in self.posts if post.id == post_id]
+		return [(post, 0.0) for post in self.posts if post.id == post_id]
 
 	def uncertainty_posts(self):
 
 		if self.not_enghouh_posts_tagged():
 			print "Choosing radom posts"
-			return np.random.choice(self.posts,5,False)
+			return [(post, 0.0) for post in np.random.choice(self.posts,5,False)]
 
 		print "Choosing uncertainty posts"
 		labledPosts = [post for post in self.posts if post.id in self.classification and self.classification[post.id]['demand']]
@@ -81,6 +81,6 @@ class active_learner(object):
 		confidence_indices = sorted_confidences[-10:]
 		# confidence_indices.extend(sorted_confidences[:2])
 
-		return [unlabledPosts[i] for i in confidence_indices]
+		return [(unlabledPosts[i], confidences[i]) for i in confidence_indices]
 
 

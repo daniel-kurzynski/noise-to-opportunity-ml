@@ -1,10 +1,11 @@
 {
 	"posts":[
-		{% for post in posts %}
+		{% for post, conf in posts %}
 		{
 			"id":"{{ post.id }}",
 			"title": "{{ post.title.decode('utf-8') }}",
-			"text": "{{ post.text.decode('utf-8') }}"
+			"text": "{{ post.text.decode('utf-8') }}",
+			"confidence": {{ conf }}
 		}
 			{% if not loop.last %}
 			,
