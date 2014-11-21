@@ -28,7 +28,7 @@ define(['jquery',
 			
 		},
 
-		classifyPost:function(postId)	{
+		classifyPost: function(postId)	{
 			demandClassificationView = new DemandClassificationView({postId:postId});
 			this.changeContentView(demandClassificationView);
 		},

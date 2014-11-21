@@ -29,13 +29,13 @@ define([
 				"keydown":                          "keyAction"
 			},
 
-			initialize: function(options){
+			initialize: function(options) {
 				this.render();
 				this.unclassifiedPosts = [];
 
 				$(document).bind('keypress', _.bind(this.keyAction,this));
 
-				if(options.postId){
+				if (options.postId){
 					this.showPost(options.postId)
 				}
 				else{
@@ -43,25 +43,25 @@ define([
 				}
 			},
 
-			render: function(){
+			render: function() {
 			},
 
-			keyAction: function(event){
+			keyAction: function(event) {
 				code = (event.keyCode || event.which);
 				this.$el.find(this.keyMapping[code]).click();
 			},
 
-			showCategoryButtons:function(){
+			showCategoryButtons: function() {
 				this.$el.find(".demand-decission").hide();
 				this.$el.find(".category-decission").show();
 			},
 
-			tagPost:function(event){
+			tagPost: function(event) {
 				data = $(event.target).data();
-				$.post('classify_post/'+this.currentPost.id,data);
+				$.post('classify_post/' + this.currentPost.id, data);
 			},		
 
-			showNewPost:function(){
+			showNewPost: function() {
 				var self = this;
 				if(this.unclassifiedPosts.length<=5){
 					self.loadUncertaintyPosts(_.bind(self.showNewPost,self));
@@ -73,7 +73,7 @@ define([
 				}
 			},
 
-			showPost:function(postId){
+			showPost: function(postId) {
 				var self = this;
 				$.get("/post/"+postId, function( data ) {
 					data = JSON.parse(data);
@@ -82,7 +82,7 @@ define([
 				});
 			},
 
-			loadUncertaintyPosts:function(callback){
+			loadUncertaintyPosts: function(callback) {
 				var self = this;
 				$.get("/uncertainty_posts", function( data ) {
 					data = JSON.parse(data);

@@ -20,7 +20,7 @@ requirejs.config({
 		'bootstrap': {
 			deps: ['jquery'],
 			exports: 'Bootstrap'
-		},
+		}
 	}
 });
 

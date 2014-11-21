@@ -32,7 +32,7 @@ class active_learner(object):
 			json.dump(self.classification, outfile)
 
 	def tag_demand(self, post_id, is_demand):
-		self.classification[post_id]={"demand":is_demand}
+		self.classification[post_id] = {"demand": is_demand}
 		self.save_classification()
 
 	def not_enghouh_posts_tagged(self):
