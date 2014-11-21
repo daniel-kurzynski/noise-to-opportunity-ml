@@ -6,7 +6,7 @@ learner = active_learner()
 
 @app.route("/")
 def hello():
-    return render_template("index.html")
+	return render_template("index.html")
 
 @app.route("/uncertainty_posts")
 def unclassified_posts():
