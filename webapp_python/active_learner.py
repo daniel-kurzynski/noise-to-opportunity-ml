@@ -1,5 +1,5 @@
 from os.path import join, abspath
-from post import Post
+from post import Post, Prediction
 import simplejson as json
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import Perceptron
@@ -40,7 +40,7 @@ class active_learner(object):
 		self.classification[post_id]["category"] = category
 		self.save_classification()
 
-	def not_enghouh_posts_tagged(self):
+	def not_enough_posts_tagged(self):
 		numberOfDemandPosts = sum([1 if self.classification[each]["demand"]=="demand" else 0 for each in self.classification])
 		numberOfNoDemandPosts = len(self.classification)-numberOfDemandPosts
 		print numberOfDemandPosts, numberOfNoDemandPosts
@@ -49,39 +49,39 @@ class active_learner(object):
 		return True
 
 	def post(self, post_id):
-		return [(post, 0.0) for post in self.posts if post.id == post_id]
+		return [(post, Prediction()) for post in self.posts if post.id == post_id]
 
-	def uncertainty_posts(self):
+	def determine_uncertain_posts(self):
+		if self.not_enough_posts_tagged():
+			print "Choosing random posts"
+			return [(post, Prediction()) for post in np.random.choice(self.posts, 5, False)]
 
-		if self.not_enghouh_posts_tagged():
-			print "Choosing radom posts"
-			return [(post, 0.0) for post in np.random.choice(self.posts,5,False)]
+		print "Choosing uncertain posts"
+		labeledPosts  =  [post for post in self.posts if      post.id in self.classification and self.classification[post.id]['demand']]
+		unlabeledPosts = [post for post in self.posts if not (post.id in self.classification and self.classification[post.id]['demand'])]
+		X_train   = [post.data for post in labeledPosts]
+		X_predict = [post.data for post in unlabeledPosts]
+		Y_train = [self.classification[post.id]['demand'] for post in labeledPosts]
 
-		print "Choosing uncertainty posts"
-		labledPosts = [post for post in self.posts if post.id in self.classification and self.classification[post.id]['demand']]
-		unlabledPosts = [post for post in self.posts if not (post.id in self.classification and self.classification[post.id]['demand'])]
-		X_train = [post.data for post in labledPosts]
-		X_predict = [post.data for post in unlabledPosts]
-		y_train = [self.classification[post.id]['demand'] for post in labledPosts ]
-
-		vectorizer = TfidfVectorizer(sublinear_tf=True, max_df=0.5, stop_words='english')
-		X_train = vectorizer.fit_transform(X_train)
+		# Build vectorizer
+		vectorizer = TfidfVectorizer(sublinear_tf = True, max_df = 0.5, stop_words = 'english')
+		X_train   = vectorizer.fit_transform(X_train)
 		X_predict = vectorizer.transform(X_predict)
-		y_train = np.array(y_train)
+		Y_train   = np.array(Y_train)
 
-		classifier = Perceptron(n_iter=50)
-
-		classifier.fit(X_train,y_train)
-		# y_predict = classifier.predict(X_predict)
+		# Train the classifier
+		classifier = Perceptron(n_iter = 50)
+		classifier.fit(X_train, Y_train)
 
 		confidences = np.abs(classifier.decision_function(X_predict))
-		print confidences
+		# The following line first sorts the confidences, and then extracts the predictions from these orders.
+		# The index for the highest confidence is in the last position.
+		# We then build Prediction objects for these.
+		predictions = [Prediction(classifier.classes_[confOrders[-1]], confidences[index][confOrders[-1]], index) for index, confOrders in enumerate(np.argsort(confidences))]
 
-		sorted_confidences = np.argsort(confidences)
+		low_confidence_predictions = sorted(predictions, key = lambda prediction: prediction.conf)
+		low_confidence_predictions = low_confidence_predictions[:10]
 
-		confidence_indices = sorted_confidences[-10:]
-		# confidence_indices.extend(sorted_confidences[:2])
-
-		return [(unlabledPosts[i], confidences[i]) for i in confidence_indices]
+		return [(unlabeledPosts[pred.index], pred) for pred in low_confidence_predictions]
 
 

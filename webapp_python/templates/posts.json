@@ -5,7 +5,10 @@
 			"id":"{{ post.id }}",
 			"title": "{{ post.title.decode('utf-8') }}",
 			"text": "{{ post.text.decode('utf-8') }}",
-			"confidence": {{ conf }}
+			"confidence": {
+				"category": "{{ conf.category }}",
+				"conf": {{ conf.conf }}
+			}
 		}
 			{% if not loop.last %}
 			,

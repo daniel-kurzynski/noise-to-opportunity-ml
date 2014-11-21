@@ -10,7 +10,7 @@ def hello():
 
 @app.route("/uncertainty_posts")
 def unclassified_posts():
-	posts = learner.uncertainty_posts()
+	posts = learner.determine_uncertain_posts()
 	return render_template("posts.json", posts = posts)
 
 @app.route("/post/<post_id>")
