@@ -1,0 +1,3 @@
+[submodule "n2o_data"]
+	path = n2o_data
+	url = smm1415_n2o@code.hpi.uni-potsdam.de:smm1415_n2o.git
