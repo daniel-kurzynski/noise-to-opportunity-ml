@@ -34,9 +34,9 @@ define(['jquery',
 		},
 
 		changeContentView:function(view){
-		$el.children().detach();
-		$el.append(view.$el);
-	}
+			$el.children().detach();
+			$el.append(view.$el);
+		}
 
 		
 	});///////////////////////////////////////////////////////

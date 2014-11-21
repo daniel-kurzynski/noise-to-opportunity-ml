@@ -13,6 +13,7 @@ define([
 			keyMapping: {
 				121: "#btn-has-demand",
 				110: "#btn-has-no-demand",
+				105: "#btn-has-no-idea",
 				49:  "#btn-category-1",
 				50:  "#btn-category-2",
 				51:  "#btn-category-3",
@@ -23,7 +24,8 @@ define([
 
 			events: {
 				"click .btn-tag":         			"tagPost",
-				"click #btn-has-no-demand":			"showNewPost",
+				"click #btn-has-no-idea":			"showCategoryButtons",
+				"click #btn-has-no-demand":			"showCategoryButtons",
 				"click #btn-has-demand":			"showCategoryButtons",
 				"click .btn-category":              "showNewPost",
 				"keydown":                          "keyAction"
