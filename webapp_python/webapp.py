@@ -20,10 +20,12 @@ def post(post_id):
 
 
 @app.route('/classify_post/<post_id>', methods=['POST'])
-def tag_demand(post_id):
+def tag_post(post_id):
 	print request.form
 	if 'demand' in request.form:
 		learner.tag_demand(post_id, request.form['demand'])
+	if 'category' in request.form:
+		learner.tag_category(post_id, request.form['category'])
 	return ""
 
 if __name__ == "__main__":

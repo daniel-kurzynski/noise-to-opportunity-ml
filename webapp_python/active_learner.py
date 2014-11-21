@@ -35,9 +35,13 @@ class active_learner(object):
 		self.classification[post_id] = {"demand": is_demand}
 		self.save_classification()
 
+	def tag_category(self, post_id, category):
+		self.classification[post_id]["category"] = category
+		self.save_classification()
+
 	def not_enghouh_posts_tagged(self):
 		numberOfDemandPosts = sum([1 if self.classification[each]["demand"]=="demand" else 0 for each in self.classification])
-		numberOfNoDemandPosts = len(self.classification)-numberOfDemandPosts;
+		numberOfNoDemandPosts = len(self.classification)-numberOfDemandPosts
 		print numberOfDemandPosts, numberOfNoDemandPosts
 		if numberOfDemandPosts>0 and numberOfNoDemandPosts>0:
 			return False
