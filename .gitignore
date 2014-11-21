@@ -5,6 +5,7 @@ data
 # use glob syntax.
 *.class
 *.bak
+*.pyc
 #*.off
 
 # eclipse conf file
@@ -19,9 +20,8 @@ data
 *.iml
 
 # building
+node_modules
 target
-tmp*
-temp*
 dist
 build.log
 libs
