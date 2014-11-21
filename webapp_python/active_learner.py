@@ -4,7 +4,7 @@ import simplejson as json
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import Perceptron
 import numpy as np
-from scipy import stats
+import collections
 
 class active_learner(object):
 	def __init__(self):
@@ -25,7 +25,8 @@ class active_learner(object):
 
 	def load_classification(self):
 		with open('data/classification.json') as infile:
-			self.classification = json.load(infile)
+			self.classification = json.JSONDecoder(object_pairs_hook=collections.OrderedDict).decode(infile.read())
+			# self.classification = json.OrderedDict(json.load(infile))
 
 	def save_classification(self):
 		with open('data/classification.json', 'w') as outfile:
