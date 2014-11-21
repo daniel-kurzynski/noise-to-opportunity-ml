@@ -1,0 +1,14 @@
+{
+	"posts":[
+		{% for post in posts %}
+		{
+			"id":"{{ post.id }}",
+			"title": "{{ post.title.decode('utf-8') }}",
+			"text": "{{ post.text.decode('utf-8') }}"
+		}
+			{% if not loop.last %}
+			,
+			{% endif %}
+		{% endfor %}
+	]
+}

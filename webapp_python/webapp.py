@@ -19,11 +19,11 @@ def post(post_id):
 	return render_template("posts.json", posts = posts)
 
 
-@app.route('/classify_post/<post_id>',methods=['POST'])
+@app.route('/classify_post/<post_id>', methods=['POST'])
 def tag_demand(post_id):
 	print request.form
 	if 'demand' in request.form:
-		learner.tag_demand(post_id,request.form['demand'])
+		learner.tag_demand(post_id, request.form['demand'])
 	return ""
 
 if __name__ == "__main__":
