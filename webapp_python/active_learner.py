@@ -13,7 +13,7 @@ class active_learner(object):
 
 	def load_posts(self):
 		self.posts = []
-		with open(join(abspath("../data"), "linked_in_posts.csv")) as f:
+		with open(join(abspath("../n2o_data"), "linked_in_posts.csv")) as f:
 			for line in f:
 				id, title, text, _, _, _, _, _, category, _, _ = line.replace("\\,", "<komma>").replace("\"", "").replace("\\", "").split(",")
 				title = title.replace("<komma>", ",")
