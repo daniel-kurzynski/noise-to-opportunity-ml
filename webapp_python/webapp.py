@@ -8,15 +8,26 @@ learner = active_learner()
 def hello():
 	return render_template("index.html")
 
+@app.route("/damand_labeled_posts")
+def damand_labeled_posts():
+	posts = learner.damand_labeled_posts()
+	return render_template("damand_labeled_posts.json", posts = posts)
+
 @app.route("/uncertainty_posts")
 def unclassified_posts():
 	posts = learner.determine_uncertain_posts()
-	return render_template("posts.json", posts = posts)
+	return render_template("uncertain_posts.json", posts = posts)
+
+@app.route("/damand_certain_posts")
+def damand_certain_posts():
+	posts = learner.determine_certain_posts()
+	return render_template("uncertain_posts.json", posts = posts)
+
 
 @app.route("/post/<post_id>")
 def post(post_id):
 	posts = learner.post(post_id)
-	return render_template("posts.json", posts = posts)
+	return render_template("uncertain_posts.json", posts = posts)
 
 
 @app.route('/classify_post/<post_id>', methods=['POST'])

@@ -54,7 +54,7 @@ class active_learner(object):
 		return zip(posts, self.calculate_predictions(classifier, data))
 
 	def build_classifier(self, unlabeled_posts = None):
-		labeled_posts  =  [post for post in self.posts if post.id in self.classification and self.classification[post.id]['demand']]
+		labeled_posts  =  [post for post in self.posts if post.id in self.classification and self.classification[post.id]['demand'] and self.classification[post.id]['demand']!='noIdea']
 		if unlabeled_posts is None:
 			unlabeled_posts = [post for post in self.posts if not (post.id in self.classification and self.classification[post.id]['demand'])]
 		X_train   = [post.data for post in labeled_posts]
@@ -92,7 +92,24 @@ class active_learner(object):
 		# The following line first sorts the confidences, and then extracts the predictions from these orders.
 		# The index for the highest confidence is in the last position.
 		# We then build Prediction objects for these.
-		predictions = [Prediction(classifier.classes_[confOrders[-1]], confidences[index][confOrders[-1]], index) for index, confOrders in enumerate(np.argsort(confidences))]
+		predictions = [Prediction(classifier.classes_[confOrders[-1]], confidences[index][confOrders[-1]], index) for (index, confOrders) in enumerate(np.argsort(confidences))]
 		return predictions
+
+	def determine_certain_posts(self):
+		if self.not_enough_posts_tagged():
+			return []
+
+		classifier, X_predict, unlabeled_posts = self.build_classifier()
+		predictions = self.calculate_predictions(classifier, X_predict)
+
+		confidence_predictions = sorted(predictions, key = lambda prediction: prediction.conf)
+		high_confidence_predictions = confidence_predictions[-10:]
+
+		return [(unlabeled_posts[pred.index], pred) for pred in high_confidence_predictions]
+
+
+	def damand_labeled_posts(self):
+		demand_labled_posts = [post for post in self.posts if post.id in self.classification and self.classification[post.id]['demand']] 
+		return [(post, self.classification[post.id]['demand']) for post in demand_labled_posts]
 
 

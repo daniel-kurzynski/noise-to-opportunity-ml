@@ -1,16 +1,18 @@
 define(['jquery',
 	'underscore',
 	'backbone',
-	'views/demand_classification_view'
+	'views/demand_classification_view',
+	'views/demand_view'
 	
-	], function($, _, Backbone, DemandClassificationView) {
+	], function($, _, Backbone, DemandClassificationView, DemandView) {
 
 
 	return Backbone.Router.extend({
 
 		routes: {
-			"":    "home",
-			"classify_post/:id":             "classifyPost"
+			"":    							"home",
+			"classify_post/:id": 			"classifyPost",
+			"demand": 						"showDemandView"
 		},
 
 		initialize: function(options){
@@ -31,6 +33,11 @@ define(['jquery',
 		classifyPost: function(postId)	{
 			demandClassificationView = new DemandClassificationView({postId:postId});
 			this.changeContentView(demandClassificationView);
+		},
+
+		showDemandView:function(){
+			demandView = new DemandView();
+			this.changeContentView(demandView);
 		},
 
 		changeContentView:function(view){

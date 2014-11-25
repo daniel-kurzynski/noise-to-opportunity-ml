@@ -65,7 +65,7 @@ define([
 
 			showNewPost: function() {
 				var self = this;
-				if(this.unclassifiedPosts.length<=5){
+				if(this.unclassifiedPosts.length<=3){
 					self.loadUncertaintyPosts(_.bind(self.showNewPost,self));
 				}
 				else{
@@ -88,7 +88,7 @@ define([
 				var self = this;
 				$.get("/uncertainty_posts", function( data ) {
 					data = JSON.parse(data);
-					self.unclassifiedPosts = self.unclassifiedPosts.concat(data.posts);
+					self.unclassifiedPosts = data.posts;
 					if(callback)
 						callback();
 				})

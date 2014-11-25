@@ -15,26 +15,18 @@ class Merger:
 		with open('data/classification.json', 'w') as outfile:
 			json.dump(self.classification, outfile)
 
-	def load_conflicts(self):
-		with open('data/conflicts.json') as infile:    
-			self.conflicts = json.load(infile)
-			
-	def save_conflicts(self):
-		with open('data/conflicts.json', 'w') as outfile:
-			json.dump(self.conflicts, outfile)
-
 	def merge(self, filename):
 		with open(filename) as classification_file:    
 			another_classification = json.load(classification_file)
-			for each in another_classification:
-				if each not in self.classification:
-					self.classification[each] = another_classification[each]
+			for post_id in another_classification:
+				if post_id not in self.classification:
+					self.classification[post_id] = another_classification[post_id]
 				else:
-					if self.classification[each]['demand'] != another_classification[each]['demand']:
-						self.conflicts[each]='demand'
+					if self.classification[post_id]['demand'] != another_classification[post_id]['demand']:
+						self.conflicts[post_id]='demand'
 						continue
-					if 'category' in self.classification[each] and self.classification[each]['category'] != another_classification[each]['category']:
-						self.conflicts[each]='category'
+					if 'category' in self.classification[post_id] and self.classification[post_id]['category'] != another_classification[post_id]['category']:
+						self.conflicts[post_id]='category'
 						continue
 					
 

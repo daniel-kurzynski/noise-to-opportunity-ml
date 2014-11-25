@@ -1,0 +1,13 @@
+<table class="table table-condensed table-striped">
+	<tr>
+		<th>Text</th>
+		<th>Label</th>
+	</tr>
+	<% for (index in posts){ 
+		post = posts[index];%>
+		<tr>
+			<td><%= post.title+'\n'+post.text %></td>
+			<td><%= post.label %></td>
+		</tr>
+	<% } %>
+</table>
