@@ -10,37 +10,43 @@ define(['jquery',
 
 		routes: {
 			"":    "home",
-			"classify_post/:id": "classifyPost",
-			"classify_tagged_post/:id": "classifyTaggedPost"
+			"uncertain_posts/:id": "classifyPost",
+			"tagged_posts": "classifyTaggedPost",
+			"conflicted_post": "classifyConflictedPost"
 		},
 
 		initialize: function(options){
 			options = options || {};
 			if(!options.$el)
 				console.error("Router constructor called without $el");
-			$el = options.$el;
+			this.$el = options.$el;
 		},
 
 		////////////// Routes //////////////////
 
-		home: function(){
+		home: function() {
 			console.log("Routing home…");
 			this.classifyPost();
-			
 		},
 
-		classifyPost: function(postId)	{
-			var demandClassificationView = new DemandClassificationView( { postId: postId, tagged_only: false });
-			this.changeContentView(demandClassificationView);
+		classifyPost: function(postId) {
+			this.displayDemandView(postId, "uncertain_posts");
 		},
-		classifyTaggedPost: function(postId)	{
-			var demandClassificationView = new DemandClassificationView( { postId: postId, tagged_only: true });
+		classifyTaggedPost: function() {
+			this.displayDemandView(null, "tagged_posts");
+		},
+		classifyConflictedPost: function(postId) {
+			this.displayDemandView(postId, "conflicted_posts");
+		},
+
+		displayDemandView: function(postId, route) {
+			var demandClassificationView = new DemandClassificationView( { postId: postId, route: route });
 			this.changeContentView(demandClassificationView);
 		},
 
-		changeContentView:function(view){
-			$el.children().detach();
-			$el.append(view.$el);
+		changeContentView: function(view){
+			this.$el.children().detach();
+			this.$el.append(view.$el);
 		}
 
 		

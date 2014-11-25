@@ -32,6 +32,7 @@ define([
 			},
 
 			initialize: function(options) {
+				this.route = options.route;
 				this.render();
 				this.unclassifiedPosts = [];
 
@@ -45,8 +46,7 @@ define([
 				}
 			},
 
-			render: function() {
-			},
+			render: function() { },
 
 			keyAction: function(event) {
 				code = (event.keyCode || event.which);
@@ -59,19 +59,18 @@ define([
 			},
 
 			tagPost: function(event) {
-				data = $(event.target).data();
+				var data = $(event.target).data();
 				$.post('classify_post/' + this.currentPost.id, data);
 			},		
 
 			showNewPost: function() {
 				var self = this;
-				if(this.unclassifiedPosts.length<=5){
-					self.loadUncertainPosts(_.bind(self.showNewPost,self));
-				}
-				else{
+				if (this.unclassifiedPosts.length <= 5) {
+					self.loadPosts(_.bind(self.showNewPost, self));
+				} else {
 					self.currentPost = this.unclassifiedPosts.shift();
-					self.$el.html(self.template({post:self.currentPost}));
-					Backbone.history.navigate("classify_post/" + self.currentPost.id, {replace: true});
+					self.$el.html(self.template({ post: self.currentPost }));
+					Backbone.history.navigate(this.route + "/" + self.currentPost.id, {replace: true});
 				}
 			},
 
@@ -84,12 +83,17 @@ define([
 				});
 			},
 
-			loadUncertainPosts: function(callback) {
+			loadPosts: function(callback) {
 				var self = this;
-				$.get("/uncertain_posts", function( data ) {
+				$.get("/" + this.route, function(data) {
+					console.log("Loading more posts.");
 					data = JSON.parse(data);
 					self.unclassifiedPosts = self.unclassifiedPosts.concat(data.posts);
-					if(callback)
+					if (data.posts.length === 0) {
+						console.log("No more posts.");
+						return;
+					}
+					if (callback)
 						callback();
 				})
 			}
