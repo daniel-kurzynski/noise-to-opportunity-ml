@@ -7,7 +7,13 @@ define([
 
 		var Post = Backbone.Model.extend({
 			defaults: {
-				id: -1
+				id: -1,
+				title: "[Blog post title]",
+				text: "[Blog post text]",
+				confidence: {
+					category: "[Not classified]",
+					conf: -10
+				}
 			}
 		});
 		var Posts = Backbone.Collection.extend({
@@ -15,10 +21,8 @@ define([
 		});
 
 		return Backbone.View.extend({
-
 			template: _.template(DemandClassificationViewTemplate),
 
-			
 			keyMapping: {
 				121: "#btn-has-demand",
 				110: "#btn-has-no-demand",
@@ -33,23 +37,21 @@ define([
 
 			events: {
 				"click .btn-tag":         			"tagPost",
-				"click #btn-has-no-idea":			"showCategoryButtons",
-				"click #btn-has-no-demand":			"showCategoryButtons",
-				"click #btn-has-demand":			"showCategoryButtons",
+
+				"click .btn-demand":				"showCategoryButtons",
 				"click .btn-category":              "showNewPost",
 				"keydown":                          "keyAction"
 			},
 
 			initialize: function(options) {
+				_.bindAll(this, "render", "keyAction");
+
 				this.route = options.route;
-				this.posts = new Posts;
-
-				_.bindAll(this, "render");
-
 				this.currentPost = new Post;
+				this.posts = new Posts;
 				this.posts.on("add remove", this.render);
 
-				$(document).bind('keypress', _.bind(this.keyAction, this));
+				$(document).bind('keypress', this.keyAction);
 
 				if (options.postId)
 					this.loadPost(options.postId);
@@ -59,6 +61,7 @@ define([
 			},
 
 			render: function() {
+				// check if first element of collection changed, if yes, render
 				if (this.posts.size === 0)
 					return;
 				var firstPost = this.posts.at(0);
@@ -70,6 +73,7 @@ define([
 				Backbone.history.navigate(this.route + "/" + firstPost.id, {replace: true});
 				console.log("Rendering next post: " + firstPost.id + ".");
 
+				// precache next posts if necessary
 				if (this.posts.size() <= 5)
 					self.loadPostsFromRoute();
 			},
@@ -94,6 +98,11 @@ define([
 				this.posts.shift();
 			},
 
+
+			/*
+			 * AJAX calls to load posts
+			 */
+			// Loads a single post with a given postId.
 			loadPost: function(postId) {
 				var self = this;
 				$.get("/post/" + postId, function(data) {
@@ -102,6 +111,7 @@ define([
 				});
 			},
 
+			// Loads next posts from specified route.
 			loadPostsFromRoute: function() {
 				var self = this;
 				$.get("/" + this.route, function(data) {
