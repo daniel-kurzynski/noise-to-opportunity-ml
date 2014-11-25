@@ -36,7 +36,7 @@ define([
 				this.render();
 				this.unclassifiedPosts = [];
 
-				$(document).bind('keypress', _.bind(this.keyAction,this));
+				$(document).bind('keypress', _.bind(this.keyAction, this));
 
 				if (options.postId) {
 					this.showPost(options.postId)
@@ -49,13 +49,13 @@ define([
 			render: function() { },
 
 			keyAction: function(event) {
-				code = (event.keyCode || event.which);
+				var code = (event.keyCode || event.which);
 				this.$el.find(this.keyMapping[code]).click();
 			},
 
 			showCategoryButtons: function() {
-				this.$el.find(".demand-decission").hide();
-				this.$el.find(".category-decission").show();
+				this.$el.find(".demand-decision").hide();
+				this.$el.find(".category-decision").show();
 			},
 
 			tagPost: function(event) {
@@ -76,7 +76,7 @@ define([
 
 			showPost: function(postId) {
 				var self = this;
-				$.get("/post/"+postId, function( data ) {
+				$.get("/post/" + postId, function( data ) {
 					data = JSON.parse(data);
 					self.unclassifiedPosts = self.unclassifiedPosts.concat(data.posts);
 					self.showNewPost();

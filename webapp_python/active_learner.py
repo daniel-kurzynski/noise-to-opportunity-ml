@@ -100,7 +100,11 @@ class active_learner(object):
 		return [(unlabeled_posts[pred.index], pred) for pred in low_confidence_predictions]
 
 	def determine_tagged_posts(self):
-		return [(post, Prediction()) for post in self.posts if post.id in self.classification and not self.tagger_name in self.classification[post.id].get("demand", {})]
+		untagged_posts = [(post, Prediction()) for post in self.posts if post.id in self.classification and not self.tagger_name in self.classification[post.id].get("demand", {})]
+		print "x" * 100
+		print len(untagged_posts)
+		print "x" * 100
+		return untagged_posts
 
 	def calculate_predictions(self, classifier, data):
 		confidences = np.abs(classifier.decision_function(data))
