@@ -14,7 +14,7 @@ class active_learner(object):
 		self.classification = collections.OrderedDict()
 		self.load_posts()
 		self.load_classification()
-		self.tagger_name = open("tagger_name.conf").read()
+		self.tagger_name = open("tagger_name.conf").read().strip()
 
 	def load_posts(self):
 		self.posts = []
@@ -37,10 +37,13 @@ class active_learner(object):
 			json.dump(self.classification, outfile, indent = 2)
 
 	def tag_post(self, post_id, key, value):
-		if post_id in self.classification:
-			self.classification[post_id][key][self.tagger_name] = value
-		else:
-			self.classification[post_id] = {key: { self.tagger_name: value } }
+		if not post_id in self.classification:
+			self.classification[post_id] = {}
+		if not key in self.classification[post_id]:
+			self.classification[post_id][key] = {}
+
+		self.classification[post_id][key][self.tagger_name] = value
+
 		self.save_classification()
 
 	def not_enough_posts_tagged(self):
@@ -51,7 +54,6 @@ class active_learner(object):
 	def determine_class_from_conflicting_votes(self, post_id, key):
 		votes = self.classification[post_id][key]
 		freqs = Counter(votes.values()).most_common(2)
-		print freqs
 		if len(freqs) > 1 and freqs[0][1] == freqs[1][1]:
 			# First two votes have the same count --> conflict --> do not predict anything
 			return None
@@ -64,12 +66,12 @@ class active_learner(object):
 		return zip(posts, self.calculate_predictions(classifier, data))
 
 	def build_classifier(self, unlabeled_posts = None):
-		labeled_posts  =  [post for post in self.posts if post.id in self.classification and self.determine_class_from_conflicting_votes(self.classification[post.id], "demand") is not None]
+		labeled_posts  =  [post for post in self.posts if post.id in self.classification and self.determine_class_from_conflicting_votes(post.id, "demand") is not None]
 		if unlabeled_posts is None:
 			unlabeled_posts = [post for post in self.posts if not (post.id in self.classification and self.classification[post.id]['demand'])]
 		X_train   = [post.data for post in labeled_posts]
 		X_predict = [post.data for post in unlabeled_posts]
-		Y_train = [self.classification[post.id]['demand'] for post in labeled_posts]
+		Y_train = [self.determine_class_from_conflicting_votes(post.id, 'demand') for post in labeled_posts]
 
 		# Build vectorizer
 		vectorizer = TfidfVectorizer(sublinear_tf = True, max_df = 0.5, stop_words = 'english')
