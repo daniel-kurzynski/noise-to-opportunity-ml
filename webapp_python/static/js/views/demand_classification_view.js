@@ -12,7 +12,7 @@ define([
 				text: "No more posts are available for tagging. You finished. Yeah!",
 				confidence: {
 					category: "[Not classified]",
-					conf: -10
+					conf: -1
 				}
 			}
 		});
