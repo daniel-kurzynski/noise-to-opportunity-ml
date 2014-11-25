@@ -1,6 +1,7 @@
 # data files
 data
 *.csv
+tagger_name.conf
 
 # use glob syntax.
 *.class
