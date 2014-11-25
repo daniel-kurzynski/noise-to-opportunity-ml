@@ -8,19 +8,21 @@
 			<% } %>
 		</div>
 		<p id="post-text"><%= post.text %></p>
-		<div class="decission-panel">
-			<div class="demand-decision">
-				<button data-demand="demand"    id="btn-has-demand"    type="button" class="btn-tag btn-demand btn btn-success btn-lg">Yes (y)</button>
-				<button data-demand="no-demand" id="btn-has-no-demand" type="button" class="btn-tag btn-demand btn btn-danger btn-lg">No (n)</button>
-				<button data-demand="no-idea"   id="btn-has-no-idea"   type="button" class="btn-tag btn-demand btn btn-info btn-lg">No idea (i)</button>
+		<% if (post.confidence.conf > 10) { %>
+			<div class="decission-panel">
+				<div class="demand-decision">
+					<button data-demand="demand"    id="btn-has-demand"    type="button" class="btn-tag btn-demand btn btn-success btn-lg">Yes (y)</button>
+					<button data-demand="no-demand" id="btn-has-no-demand" type="button" class="btn-tag btn-demand btn btn-danger btn-lg">No (n)</button>
+					<button data-demand="no-idea"   id="btn-has-no-idea"   type="button" class="btn-tag btn-demand btn btn-info btn-lg">No idea (i)</button>
+				</div>
+				<div style="display: None;" class="category-decision">
+					<button data-category="LVM" id="btn-category-1" type="button" class="btn-tag btn-category btn btn-primary btn-lg">LVM (1)</button>
+					<button data-category="CRM" id="btn-category-2" type="button" class="btn-tag btn-category btn btn-primary btn-lg">CRM (2)</button>
+					<button data-category="HCM" id="btn-category-3" type="button" class="btn-tag btn-category btn btn-primary btn-lg">HCM (3)</button>
+					<button data-category="ECOM" id="btn-category-4" type="button" class="btn-tag btn-category btn btn-primary btn-lg">ECOM (4)</button>
+					<button data-category="None" id="btn-category-5" type="button" class="btn-tag btn-category btn btn-primary btn-lg">None (5)</button>
+				</div>
 			</div>
-			<div style="display: None;" class="category-decision">
-				<button data-category="LVM" id="btn-category-1" type="button" class="btn-tag btn-category btn btn-primary btn-lg">LVM (1)</button>
-				<button data-category="CRM" id="btn-category-2" type="button" class="btn-tag btn-category btn btn-primary btn-lg">CRM (2)</button>
-				<button data-category="HCM" id="btn-category-3" type="button" class="btn-tag btn-category btn btn-primary btn-lg">HCM (3)</button>
-				<button data-category="ECOM" id="btn-category-4" type="button" class="btn-tag btn-category btn btn-primary btn-lg">ECOM (4)</button>
-				<button data-category="None" id="btn-category-5" type="button" class="btn-tag btn-category btn btn-primary btn-lg">None (5)</button>
-			</div>
-		</div>
+		<% } %>
 	</div>
 </div>
