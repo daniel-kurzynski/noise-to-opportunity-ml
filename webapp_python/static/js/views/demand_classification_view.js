@@ -68,7 +68,7 @@ define([
 					return;
 				}
 				var firstPost = this.posts.at(0);
-				if (this.posts.at(0).id === this.currentPost.id)
+				if (firstPost.id === this.currentPost.id)
 					return;
 
 				this.currentPost = firstPost;
@@ -110,7 +110,7 @@ define([
 				var self = this;
 				$.get("/post/" + postId, function(data) {
 					data = JSON.parse(data);
-					self.posts = self.posts.add(data.posts);
+					self.posts.add(data.posts);
 				});
 			},
 
