@@ -1,5 +1,5 @@
 {
-	"posts":[
+	"posts": [
 		{% for post, conf in posts %}
 		{
 			"id":"{{ post.id }}",
@@ -8,7 +8,9 @@
 			"confidence": {
 				"category": "{{ conf.category }}",
 				"conf": {{ conf.conf }}
-			}
+			},
+            "demand_votes": {{ post.demand_votes }},
+            "category_votes": {{ post.category_votes }}
 		}
 			{% if not loop.last %}
 			,

@@ -11,17 +11,23 @@ def hello():
 @app.route("/uncertain_posts")
 def unclassified_posts():
 	posts = learner.determine_uncertain_posts()
-	return render_template("posts.json", posts = posts)
+	return render_template("posts.jinja2", posts = posts)
 
 @app.route("/tagged_posts")
 def tagged_posts():
 	posts = learner.determine_tagged_posts()
-	return render_template("posts.json", posts = posts)
+	return render_template("posts.jinja2", posts = posts)
+
+@app.route("/conflicted_posts")
+def conflicted_posts():
+	posts = learner.determine_conflicted_posts()
+	print posts
+	return render_template("posts.jinja2", posts = posts)
 
 @app.route("/post/<post_id>")
 def post(post_id):
 	posts = learner.post(post_id)
-	return render_template("posts.json", posts = posts)
+	return render_template("posts.jinja2", posts = posts)
 
 
 @app.route('/classify_post/<post_id>', methods=['POST'])
@@ -35,4 +41,4 @@ def tag_post(post_id):
 
 if __name__ == "__main__":
 	app.debug = True
-	app.run()
+	app.run("0.0.0.0")

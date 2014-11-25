@@ -12,7 +12,7 @@ define(['jquery',
 			"":    "home",
 			"uncertain_posts/:id(/)": "classifyPost",
 			"tagged_posts(/)": "classifyTaggedPost",
-			"conflicted_post(/)": "classifyConflictedPost"
+			"conflicted_posts(/)": "classifyConflictedPost"
 		},
 
 		initialize: function(options){

@@ -68,7 +68,7 @@ define([
 					return;
 				}
 				var firstPost = this.posts.at(0);
-				if (this.posts.at(0).id === this.currentPost.id)
+				if (firstPost.id === this.currentPost.id)
 					return;
 
 				this.currentPost = firstPost;
