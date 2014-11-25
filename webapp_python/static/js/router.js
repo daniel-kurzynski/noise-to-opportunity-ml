@@ -10,9 +10,9 @@ define(['jquery',
 
 		routes: {
 			"":    "home",
-			"uncertain_posts/:id": "classifyPost",
-			"tagged_posts": "classifyTaggedPost",
-			"conflicted_post": "classifyConflictedPost"
+			"uncertain_posts/:id(/)": "classifyPost",
+			"tagged_posts(/)": "classifyTaggedPost",
+			"conflicted_post(/)": "classifyConflictedPost"
 		},
 
 		initialize: function(options){
