@@ -2,6 +2,7 @@
 data
 *.csv
 tagger_name.conf
+n2o_data
 
 # use glob syntax.
 *.class
