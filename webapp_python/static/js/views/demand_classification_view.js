@@ -8,8 +8,8 @@ define([
 		var Post = Backbone.Model.extend({
 			defaults: {
 				id: -1,
-				title: "[Blog post title]",
-				text: "[Blog post text]",
+				title: "No more posts",
+				text: "No more posts are available for tagging. You finished. Yeah!",
 				confidence: {
 					category: "[Not classified]",
 					conf: -10
@@ -53,17 +53,20 @@ define([
 
 				$(document).bind('keypress', this.keyAction);
 
-				if (options.postId)
+				if (options.postId) {
 					this.loadPost(options.postId);
-				else {
+				} else {
 					this.loadPostsFromRoute();
 				}
+				this.render();
 			},
 
 			render: function() {
 				// check if first element of collection changed, if yes, render
-				if (this.posts.size === 0)
+				if (this.posts.size() === 0) {
+					this.$el.html(this.template({ post: new Post().attributes }));
 					return;
+				}
 				var firstPost = this.posts.at(0);
 				if (this.posts.at(0).id === this.currentPost.id)
 					return;
@@ -75,7 +78,7 @@ define([
 
 				// precache next posts if necessary
 				if (this.posts.size() <= 5)
-					self.loadPostsFromRoute();
+					this.loadPostsFromRoute();
 			},
 
 			keyAction: function(event) {
@@ -115,12 +118,12 @@ define([
 			loadPostsFromRoute: function() {
 				var self = this;
 				$.get("/" + this.route, function(data) {
-					console.log("Loading more posts.");
 					data = JSON.parse(data);
 					if (data.posts.length === 0) {
 						console.log("No more posts.");
 						return;
 					}
+					console.log("Loaded " + data.posts.length + " more posts.");
 					self.posts.add(data.posts);
 				})
 			}
