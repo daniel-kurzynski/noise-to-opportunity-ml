@@ -8,9 +8,14 @@ learner = active_learner()
 def hello():
 	return render_template("index.html")
 
-@app.route("/uncertainty_posts")
+@app.route("/uncertain_posts")
 def unclassified_posts():
 	posts = learner.determine_uncertain_posts()
+	return render_template("posts.json", posts = posts)
+
+@app.route("/tagged_posts")
+def tagged_posts():
+	posts = learner.determine_tagged_posts()
 	return render_template("posts.json", posts = posts)
 
 @app.route("/post/<post_id>")

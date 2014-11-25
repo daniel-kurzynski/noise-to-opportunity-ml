@@ -99,6 +99,9 @@ class active_learner(object):
 
 		return [(unlabeled_posts[pred.index], pred) for pred in low_confidence_predictions]
 
+	def determine_tagged_posts(self):
+		return [(post, Prediction()) for post in self.posts if post.id in self.classification and not self.tagger_name in self.classification[post.id].get("demand", {})]
+
 	def calculate_predictions(self, classifier, data):
 		confidences = np.abs(classifier.decision_function(data))
 		# The following line first sorts the confidences, and then extracts the predictions from these orders.

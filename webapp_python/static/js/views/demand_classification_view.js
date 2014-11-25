@@ -37,10 +37,10 @@ define([
 
 				$(document).bind('keypress', _.bind(this.keyAction,this));
 
-				if (options.postId){
+				if (options.postId) {
 					this.showPost(options.postId)
 				}
-				else{
+				else {
 					this.showNewPost();
 				}
 			},
@@ -66,7 +66,7 @@ define([
 			showNewPost: function() {
 				var self = this;
 				if(this.unclassifiedPosts.length<=5){
-					self.loadUncertaintyPosts(_.bind(self.showNewPost,self));
+					self.loadUncertainPosts(_.bind(self.showNewPost,self));
 				}
 				else{
 					self.currentPost = this.unclassifiedPosts.shift();
@@ -84,15 +84,15 @@ define([
 				});
 			},
 
-			loadUncertaintyPosts: function(callback) {
+			loadUncertainPosts: function(callback) {
 				var self = this;
-				$.get("/uncertainty_posts", function( data ) {
+				$.get("/uncertain_posts", function( data ) {
 					data = JSON.parse(data);
 					self.unclassifiedPosts = self.unclassifiedPosts.concat(data.posts);
 					if(callback)
 						callback();
 				})
-			},
+			}
 
 
 	});

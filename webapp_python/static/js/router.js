@@ -10,7 +10,8 @@ define(['jquery',
 
 		routes: {
 			"":    "home",
-			"classify_post/:id":             "classifyPost"
+			"classify_post/:id": "classifyPost",
+			"classify_tagged_post/:id": "classifyTaggedPost"
 		},
 
 		initialize: function(options){
@@ -29,7 +30,11 @@ define(['jquery',
 		},
 
 		classifyPost: function(postId)	{
-			demandClassificationView = new DemandClassificationView({postId:postId});
+			var demandClassificationView = new DemandClassificationView( { postId: postId, tagged_only: false });
+			this.changeContentView(demandClassificationView);
+		},
+		classifyTaggedPost: function(postId)	{
+			var demandClassificationView = new DemandClassificationView( { postId: postId, tagged_only: true });
 			this.changeContentView(demandClassificationView);
 		},
 
