@@ -2,8 +2,17 @@ define([
 	'jquery',
 	'underscore',
 	'backbone',
-	'text!views/demand_classification_view.html',
+	'text!views/demand_classification_view.html'
 	], function($, _, Backbone, DemandClassificationViewTemplate) {
+
+		var Post = Backbone.Model.extend({
+			defaults: {
+				id: -1
+			}
+		});
+		var Posts = Backbone.Collection.extend({
+			model: Post
+		});
 
 		return Backbone.View.extend({
 
@@ -33,20 +42,37 @@ define([
 
 			initialize: function(options) {
 				this.route = options.route;
-				this.render();
-				this.unclassifiedPosts = [];
+				this.posts = new Posts;
+
+				_.bindAll(this, "render");
+
+				this.currentPost = new Post;
+				this.posts.on("add remove", this.render);
 
 				$(document).bind('keypress', _.bind(this.keyAction, this));
 
-				if (options.postId) {
-					this.showPost(options.postId)
-				}
+				if (options.postId)
+					this.loadPost(options.postId);
 				else {
-					this.showNewPost();
+					this.loadPostsFromRoute();
 				}
 			},
 
-			render: function() { },
+			render: function() {
+				if (this.posts.size === 0)
+					return;
+				var firstPost = this.posts.at(0);
+				if (this.posts.at(0).id === this.currentPost.id)
+					return;
+
+				this.currentPost = firstPost;
+				this.$el.html(this.template({ post: firstPost.attributes }));
+				Backbone.history.navigate(this.route + "/" + firstPost.id, {replace: true});
+				console.log("Rendering next post: " + firstPost.id + ".");
+
+				if (this.posts.size() <= 5)
+					self.loadPostsFromRoute();
+			},
 
 			keyAction: function(event) {
 				var code = (event.keyCode || event.which);
@@ -61,40 +87,31 @@ define([
 			tagPost: function(event) {
 				var data = $(event.target).data();
 				$.post('classify_post/' + this.currentPost.id, data);
-			},		
-
-			showNewPost: function() {
-				var self = this;
-				if (this.unclassifiedPosts.length <= 5) {
-					self.loadPosts(_.bind(self.showNewPost, self));
-				} else {
-					self.currentPost = this.unclassifiedPosts.shift();
-					self.$el.html(self.template({ post: self.currentPost }));
-					Backbone.history.navigate(this.route + "/" + self.currentPost.id, {replace: true});
-				}
 			},
 
-			showPost: function(postId) {
+			showNewPost: function() {
+				// remove first post from collection, automatically triggers rerendering
+				this.posts.shift();
+			},
+
+			loadPost: function(postId) {
 				var self = this;
-				$.get("/post/" + postId, function( data ) {
+				$.get("/post/" + postId, function(data) {
 					data = JSON.parse(data);
-					self.unclassifiedPosts = self.unclassifiedPosts.concat(data.posts);
-					self.showNewPost();
+					self.posts = self.posts.add(data.posts);
 				});
 			},
 
-			loadPosts: function(callback) {
+			loadPostsFromRoute: function() {
 				var self = this;
 				$.get("/" + this.route, function(data) {
 					console.log("Loading more posts.");
 					data = JSON.parse(data);
-					self.unclassifiedPosts = self.unclassifiedPosts.concat(data.posts);
 					if (data.posts.length === 0) {
 						console.log("No more posts.");
 						return;
 					}
-					if (callback)
-						callback();
+					self.posts.add(data.posts);
 				})
 			}
 
