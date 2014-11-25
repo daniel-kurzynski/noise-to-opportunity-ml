@@ -110,7 +110,7 @@ define([
 				var self = this;
 				$.get("/post/" + postId, function(data) {
 					data = JSON.parse(data);
-					self.posts = data.posts;
+					self.posts.add(data.posts);
 				});
 			},
 

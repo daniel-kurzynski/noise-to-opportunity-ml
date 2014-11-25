@@ -1,4 +1,8 @@
 .demand-classification-view .decission-panel{
-	position: absolute;
+	position: fixed;
 	bottom: 15px;
+}
+
+.demand-classification-view #post-text{
+	margin-bottom: 80px;
 }

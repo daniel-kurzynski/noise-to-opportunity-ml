@@ -10,9 +10,12 @@ define(['jquery',
 
 		routes: {
 			"":    "home",
+			"uncertain_posts(/)": "classifyPost",
 			"uncertain_posts/:id(/)": "classifyPost",
 			"tagged_posts(/)": "classifyTaggedPost",
-			"conflicted_posts(/)": "classifyConflictedPost"
+			"tagged_posts/:id(/)": "classifyTaggedPost",
+			"conflicted_posts(/)": "classifyConflictedPost",
+			"conflicted_posts/:id(/)": "classifyConflictedPost"
 		},
 
 		initialize: function(options){
@@ -32,8 +35,8 @@ define(['jquery',
 		classifyPost: function(postId) {
 			this.displayDemandView(postId, "uncertain_posts");
 		},
-		classifyTaggedPost: function() {
-			this.displayDemandView(null, "tagged_posts");
+		classifyTaggedPost: function(postId) {
+			this.displayDemandView(postId, "tagged_posts");
 		},
 		classifyConflictedPost: function(postId) {
 			this.displayDemandView(postId, "conflicted_posts");
