@@ -5,12 +5,16 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import Perceptron
 import numpy as np
 import collections
+from collections import Counter
+
 
 class active_learner(object):
+
 	def __init__(self):
 		self.classification = collections.OrderedDict()
 		self.load_posts()
 		self.load_classification()
+		self.tagger_name = open("tagger_name.conf").read()
 
 	def load_posts(self):
 		self.posts = []
@@ -32,21 +36,27 @@ class active_learner(object):
 		with open('data/classification.json', 'w') as outfile:
 			json.dump(self.classification, outfile, indent = 2)
 
-	def tag_demand(self, post_id, is_demand):
-		self.classification[post_id] = {"demand": is_demand}
-		self.save_classification()
-
-	def tag_category(self, post_id, category):
-		self.classification[post_id]["category"] = category
+	def tag_post(self, post_id, key, value):
+		if post_id in self.classification:
+			self.classification[post_id][key][self.tagger_name] = value
+		else:
+			self.classification[post_id] = {key: { self.tagger_name: value } }
 		self.save_classification()
 
 	def not_enough_posts_tagged(self):
-		numberOfDemandPosts = sum([1 if self.classification[each]["demand"]=="demand" else 0 for each in self.classification])
-		numberOfNoDemandPosts = len(self.classification)-numberOfDemandPosts
-		print numberOfDemandPosts, numberOfNoDemandPosts
-		if numberOfDemandPosts>0 and numberOfNoDemandPosts>0:
-			return False
-		return True
+		numberOfDemandPosts = sum([1 if self.determine_class_from_conflicting_votes(post_id, "demand") == "demand" else 0 for post_id in self.classification])
+		numberOfNoDemandPosts = len(self.classification) - numberOfDemandPosts
+		return not (numberOfDemandPosts > 0 and numberOfNoDemandPosts > 0)
+
+	def determine_class_from_conflicting_votes(self, post_id, key):
+		votes = self.classification[post_id][key]
+		freqs = Counter(votes.values()).most_common(2)
+		print freqs
+		if len(freqs) > 1 and freqs[0][1] == freqs[1][1]:
+			# First two votes have the same count --> conflict --> do not predict anything
+			return None
+		else:
+			return freqs[0][0]
 
 	def post(self, post_id):
 		posts = [post for post in self.posts if post.id == post_id]
@@ -54,7 +64,7 @@ class active_learner(object):
 		return zip(posts, self.calculate_predictions(classifier, data))
 
 	def build_classifier(self, unlabeled_posts = None):
-		labeled_posts  =  [post for post in self.posts if post.id in self.classification and self.classification[post.id]['demand']]
+		labeled_posts  =  [post for post in self.posts if post.id in self.classification and self.determine_class_from_conflicting_votes(self.classification[post.id], "demand") is not None]
 		if unlabeled_posts is None:
 			unlabeled_posts = [post for post in self.posts if not (post.id in self.classification and self.classification[post.id]['demand'])]
 		X_train   = [post.data for post in labeled_posts]
