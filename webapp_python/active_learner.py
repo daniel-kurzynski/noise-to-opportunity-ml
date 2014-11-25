@@ -101,10 +101,31 @@ class active_learner(object):
 
 	def determine_tagged_posts(self):
 		untagged_posts = [(post, Prediction()) for post in self.posts if post.id in self.classification and not self.tagger_name in self.classification[post.id].get("demand", {})]
-		print "x" * 100
-		print len(untagged_posts)
-		print "x" * 100
 		return untagged_posts
+
+	def determine_conflicted_posts(self):
+		conflicting_posts = []
+
+		for post in self.posts:
+			if not post.id in self.classification:
+				continue
+			classification = self.classification[post.id]
+			if not "demand" in classification:
+				continue
+			if not "category" in classification:
+				continue
+
+			demand_votes   = classification["demand"]
+			category_votes = classification["category"]
+			if (len(set(demand_votes.values())) <= 1 and
+				len(set(category_votes.values())) <= 1):
+				continue
+
+			# we have a conflict!
+			post.demand_votes   = json.dumps(demand_votes)
+			post.category_votes = json.dumps(category_votes)
+			conflicting_posts.append((post, Prediction()))
+		return conflicting_posts
 
 	def calculate_predictions(self, classifier, data):
 		confidences = np.abs(classifier.decision_function(data))
