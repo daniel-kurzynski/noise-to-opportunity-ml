@@ -32,7 +32,6 @@ def all_tagged_posts():
 @app.route("/conflicted_posts")
 def conflicted_posts():
 	posts = learner.determine_conflicted_posts()
-	print posts
 	return render_template("posts.jinja2", posts = posts, json=json)
 
 @app.route("/post/<post_id>")
