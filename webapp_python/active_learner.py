@@ -84,13 +84,27 @@ class active_learner(object):
 		classifier.fit(X_train, Y_train)
 		return classifier, X_predict, unlabeled_posts
 
-	def determine_uncertain_posts(self):
+
+	def predicted_posts(self, uncertain=True):
 		if self.not_enough_posts_tagged():
 			print "Choosing random posts"
-			return [(post, Prediction()) for post in np.random.choice(self.posts, 5, False)]
+			return [(post, Prediction()) for post in np.random.choice(self.posts, 5, False)],[]
 
 		print "Choosing uncertain posts"
 
+		classifier, X_predict, unlabeled_posts = self.build_classifier()
+		predictions = self.calculate_predictions(classifier, X_predict)
+
+		confidence_predictions = sorted(predictions, key = lambda prediction: prediction.confidence)
+		if(uncertain):
+			confidence_predictions = confidence_predictions[:10]
+		else:
+			confidence_predictions = confidence_predictions[-25:]
+
+		print confidence_predictions
+		return [Post.fromPost(unlabeled_posts[prediction.index],prediction=prediction) for prediction in confidence_predictions]
+
+	def determin_certain_posts(self):
 		classifier, X_predict, unlabeled_posts = self.build_classifier()
 		predictions = self.calculate_predictions(classifier, X_predict)
 
@@ -99,9 +113,9 @@ class active_learner(object):
 
 		return [Post.fromPost(unlabeled_posts[prediction.index],prediction=prediction) for prediction in low_confidence_predictions]
 
-	def determine_tagged_posts(self):
-		untagged_posts = [post for post in self.posts if post.id in self.classification and not self.tagger_name in self.classification[post.id].get("demand", {})]
-		return untagged_posts
+	def determine_tagged_posts(self, withoutMine = True):
+		tagged_posts = [Post.fromPost(post, demand_votes=self.classification[post.id].get("demand"), category_votes=self.classification[post.id].get("category")) for post in self.posts if post.id in self.classification and not (withoutMine and self.tagger_name in self.classification[post.id].get("demand", {}))]
+		return tagged_posts
 
 	def determine_conflicted_posts(self):
 		conflicting_posts = []

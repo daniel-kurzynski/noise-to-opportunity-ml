@@ -12,10 +12,10 @@
 			}
 			{% endif %}
 			{% if post.demand_votes %}
-            , "demand_votes": {{ post.demand_votes }}
+            , "demand_votes": {{ json.dumps(post.demand_votes) }}
             {% endif %}
             {% if post.category_votes %}
-            , "category_votes": {{ post.category_votes }}
+            , "category_votes": {{ json.dumps(post.category_votes) }}
             {% endif %}
 		}
 			{% if not loop.last %}

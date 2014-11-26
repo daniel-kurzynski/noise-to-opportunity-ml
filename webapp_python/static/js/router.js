@@ -2,7 +2,7 @@ define(['jquery',
 	'underscore',
 	'backbone',
 	'views/demand_classification_view',
-	'views/demand_view'
+	'views/overview_view'
 	
 	], function($, _, Backbone, DemandClassificationView, DemandView) {
 
@@ -11,10 +11,12 @@ define(['jquery',
 
 		routes: {
 			"":    "home",
-			"uncertain_posts(/)": "classifyPost",
-			"uncertain_posts/:id(/)": "classifyPost",
-			"tagged_posts(/)": "classifyTaggedPost",
-			"tagged_posts/:id(/)": "classifyTaggedPost",
+			"uncertain_posts(/)": "classifyUncertainPost",
+			"uncertain_posts/:id(/)": "classifyUncertainPost",
+			"certain_posts(/)": "classifyCertainPost",
+			"certain_posts/:id(/)": "classifyCertainPost",
+			"tagged_by_others_posts(/)": "classifyTaggedPost",
+			"tagged_by_others_posts/:id(/)": "classifyTaggedPost",
 			"conflicted_posts(/)": "classifyConflictedPost",
 			"conflicted_posts/:id(/)": "classifyConflictedPost",
 			"demand": "displayDemandView"
@@ -31,14 +33,17 @@ define(['jquery',
 
 		home: function() {
 			console.log("Routing home…");
-			this.classifyPost();
+			this.classifyUncertainPost();
 		},
 
-		classifyPost: function(postId) {
+		classifyUncertainPost: function(postId) {
 			this.displayDemandClassificationView(postId, "uncertain_posts");
 		},
+		classifyCertainPost: function(postId) {
+			this.displayDemandClassificationView(postId, "certain_posts");
+		},
 		classifyTaggedPost: function(postId) {
-			this.displayDemandClassificationView(postId, "tagged_posts");
+			this.displayDemandClassificationView(postId, "tagged_by_others_posts");
 		},
 		classifyConflictedPost: function(postId) {
 			this.displayDemandClassificationView(postId, "conflicted_posts");

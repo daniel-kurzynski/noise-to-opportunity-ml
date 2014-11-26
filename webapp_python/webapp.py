@@ -1,5 +1,6 @@
 from flask import Flask, request, render_template,session
 from active_learner import active_learner
+import simplejson as json
 app = Flask(__name__)
 
 learner = active_learner()
@@ -9,25 +10,35 @@ def hello():
 	return render_template("index.html")
 
 @app.route("/uncertain_posts")
-def unclassified_posts():
-	posts = learner.determine_uncertain_posts()
-	return render_template("posts.jinja2", posts = posts)
+def uncertain_posts():
+	posts = learner.predicted_posts()
+	return render_template("posts.jinja2", posts = posts, json=json)
 
-@app.route("/tagged_posts")
-def tagged_posts():
+@app.route("/certain_posts")
+def certain_posts():
+	posts = learner.predicted_posts(uncertain=False)
+	return render_template("posts.jinja2", posts = posts, json=json)
+
+@app.route("/tagged_by_others_posts")
+def tagged_by_others_posts():
 	posts = learner.determine_tagged_posts()
-	return render_template("posts.jinja2", posts = posts)
+	return render_template("posts.jinja2", posts = posts, json=json)
+
+@app.route("/all_tagged_posts")
+def all_tagged_posts():
+	posts = learner.determine_tagged_posts(withoutMine = False)
+	return render_template("posts.jinja2", posts = posts, json=json)
 
 @app.route("/conflicted_posts")
 def conflicted_posts():
 	posts = learner.determine_conflicted_posts()
 	print posts
-	return render_template("posts.jinja2", posts = posts)
+	return render_template("posts.jinja2", posts = posts, json=json)
 
 @app.route("/post/<post_id>")
 def post(post_id):
 	posts = learner.post(post_id)
-	return render_template("posts.jinja2", posts = posts)
+	return render_template("posts.jinja2", posts = posts, json=json)
 
 
 @app.route('/classify_post/<post_id>', methods=['POST'])

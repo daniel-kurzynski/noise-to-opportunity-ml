@@ -1,13 +1,17 @@
 <table class="table table-condensed table-striped">
 	<tr>
 		<th>Text</th>
-		<th>Label</th>
+		<th>Daniel</th>
+		<th>Stefan</th>
+		<th>Dima</th>
 	</tr>
 	<% for (index in posts){ 
 		post = posts[index];%>
 		<tr>
 			<td><%= post.title+'\n'+post.text %></td>
-			<td><%= post.label %></td>
+			<td><%= post.demand_votes.daniel %></td>
+			<td><%= post.demand_votes.stefan %></td>
+			<td><%= post.demand_votes.dima %></td>
 		</tr>
 	<% } %>
 </table>
