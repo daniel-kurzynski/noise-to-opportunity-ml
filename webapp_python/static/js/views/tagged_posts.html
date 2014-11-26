@@ -6,8 +6,14 @@
 		<th>Dima</th>
 	</tr>
 	<% for (index in posts){ 
-		post = posts[index];%>
-		<tr>
+		post = posts[index];
+		var style = "";
+		if(_.uniq(_.map(post.demand_votes,function(value,key){return value})).length>1){
+			style = "class='danger'";
+		}
+
+	%>
+		<tr <%= style %> >
 			<td><%= post.title+'\n'+post.text %></td>
 			<td><%= post.demand_votes.daniel %></td>
 			<td><%= post.demand_votes.stefan %></td>
