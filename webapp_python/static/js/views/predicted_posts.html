@@ -5,8 +5,13 @@
 		<th>Predicted Label</th>
 	</tr>
 	<% for (index in posts){ 
-		post = posts[index];%>
-		<tr>
+		post = posts[index];
+		var style = "";
+		if(post.prediction.category=="demand"){
+			style = "class='success'";
+		}
+		%>
+		<tr <%= style %> >
 			<td><%= post.title+'\n'+post.text %></td>
 			<td><%= post.prediction.confidence %></td>
 			<td><%= post.prediction.category %></td>
