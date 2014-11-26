@@ -1,0 +1,15 @@
+<table class="table table-condensed table-striped">
+	<tr>
+		<th>Text</th>
+		<th>Confidence</th>
+		<th>Predicted Label</th>
+	</tr>
+	<% for (index in posts){ 
+		post = posts[index];%>
+		<tr>
+			<td><%= post.title+'\n'+post.text %></td>
+			<td><%= post.prediction.confidence %></td>
+			<td><%= post.prediction.category %></td>
+		</tr>
+	<% } %>
+</table>
