@@ -1,9 +1,10 @@
 define(['jquery',
 	'underscore',
 	'backbone',
-	'views/demand_classification_view'
+	'views/demand_classification_view',
+	'views/demand_view'
 	
-	], function($, _, Backbone, DemandClassificationView) {
+	], function($, _, Backbone, DemandClassificationView, DemandView) {
 
 
 	return Backbone.Router.extend({
@@ -15,7 +16,8 @@ define(['jquery',
 			"tagged_posts(/)": "classifyTaggedPost",
 			"tagged_posts/:id(/)": "classifyTaggedPost",
 			"conflicted_posts(/)": "classifyConflictedPost",
-			"conflicted_posts/:id(/)": "classifyConflictedPost"
+			"conflicted_posts/:id(/)": "classifyConflictedPost",
+			"demand": "displayDemandView"
 		},
 
 		initialize: function(options){
@@ -33,18 +35,23 @@ define(['jquery',
 		},
 
 		classifyPost: function(postId) {
-			this.displayDemandView(postId, "uncertain_posts");
+			this.displayDemandClassificationView(postId, "uncertain_posts");
 		},
 		classifyTaggedPost: function(postId) {
-			this.displayDemandView(postId, "tagged_posts");
+			this.displayDemandClassificationView(postId, "tagged_posts");
 		},
 		classifyConflictedPost: function(postId) {
-			this.displayDemandView(postId, "conflicted_posts");
+			this.displayDemandClassificationView(postId, "conflicted_posts");
 		},
 
-		displayDemandView: function(postId, route) {
-			var demandClassificationView = new DemandClassificationView( { postId: postId, route: route });
+		displayDemandClassificationView: function(postId, route) {
+			var demandClassificationView = new DemandClassificationView({ postId: postId, route: route });
 			this.changeContentView(demandClassificationView);
+		},
+
+		displayDemandView: function(){
+			var demandView = new DemandView();
+			this.changeContentView(demandView);
 		},
 
 		changeContentView: function(view){

@@ -10,10 +10,6 @@ define([
 				id: -1,
 				title: "No more posts",
 				text: "No more posts are available for tagging. You finished. Yeah!",
-				confidence: {
-					category: "[Not classified]",
-					conf: -1
-				}
 			}
 		});
 		var Posts = Backbone.Collection.extend({

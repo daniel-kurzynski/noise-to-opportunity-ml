@@ -63,7 +63,7 @@ class active_learner(object):
 	def post(self, post_id):
 		posts = [post for post in self.posts if post.id == post_id]
 		classifier, data, _ = self.build_classifier(posts)
-		return zip(posts, self.calculate_predictions(classifier, data))
+		return [Post.fromPost(posts[prediction.index],prediction=prediction) for prediction in self.calculate_predictions(classifier, data)]
 
 	def build_classifier(self, unlabeled_posts = None):
 		labeled_posts  =  [post for post in self.posts if post.id in self.classification and self.determine_class_from_conflicting_votes(post.id, "demand") is not None]
@@ -94,13 +94,13 @@ class active_learner(object):
 		classifier, X_predict, unlabeled_posts = self.build_classifier()
 		predictions = self.calculate_predictions(classifier, X_predict)
 
-		low_confidence_predictions = sorted(predictions, key = lambda prediction: prediction.conf)
+		low_confidence_predictions = sorted(predictions, key = lambda prediction: prediction.confidence)
 		low_confidence_predictions = low_confidence_predictions[:10]
 
-		return [(unlabeled_posts[pred.index], pred) for pred in low_confidence_predictions]
+		return [Post.fromPost(unlabeled_posts[prediction.index],prediction=prediction) for prediction in low_confidence_predictions]
 
 	def determine_tagged_posts(self):
-		untagged_posts = [(post, Prediction()) for post in self.posts if post.id in self.classification and not self.tagger_name in self.classification[post.id].get("demand", {})]
+		untagged_posts = [post for post in self.posts if post.id in self.classification and not self.tagger_name in self.classification[post.id].get("demand", {})]
 		return untagged_posts
 
 	def determine_conflicted_posts(self):
@@ -124,7 +124,7 @@ class active_learner(object):
 			# we have a conflict!
 			post.demand_votes   = json.dumps(demand_votes)
 			post.category_votes = json.dumps(category_votes)
-			conflicting_posts.append((post, Prediction()))
+			conflicting_posts.append(post)
 		return conflicting_posts
 
 	def calculate_predictions(self, classifier, data):

@@ -3,13 +3,15 @@
 		<div class="page-header">
 			<h1>Does this post describe a demand?</h1>
 			<h1><small><%= post.title %></small></h1>
-			<% if (post.confidence.conf !== -1) { %>
-				<h2><small>Current category: <%= post.confidence.category %>, Current confidence: <%= post.confidence.conf %></small></h2>
+			<% if (post.prediction) { %>
+				<h2><small>Current category: <%= post.prediction.category %>, Current confidence: <%= post.prediction.confidence %></small></h2>
 			<% } %>
+			<% if (post.demand_votes && post.category_votes) { %>
 			<h3><%= JSON.stringify(post.demand_votes) %> <%= JSON.stringify(post.category_votes) %></h3>
+			<% } %>
 		</div>
 		<p id="post-text"><%= post.text %></p>
-		<% if (post.confidence.conf !== -1) { %>
+		<% if (post.id !== -1) { %>
 			<div class="decission-panel">
 				<div class="demand-decision">
 					<button data-demand="demand"    id="btn-has-demand"    type="button" class="btn-tag btn-demand btn btn-success btn-lg">Yes (y)</button>
