@@ -68,7 +68,7 @@ define([
 					return;
 
 				this.currentPost = firstPost;
-				this.$el.html(this.template({ post: firstPost.attributes }));
+				this.$el.html(this.template({ post: firstPost.attributes, route:this.route }));
 				Backbone.history.navigate(this.route + "/" + firstPost.id, {replace: true});
 				console.log("Rendering next post: " + firstPost.id + ".");
 

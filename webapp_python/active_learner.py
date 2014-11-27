@@ -136,8 +136,8 @@ class active_learner(object):
 				continue
 
 			# we have a conflict!
-			post.demand_votes   = json.dumps(demand_votes)
-			post.category_votes = json.dumps(category_votes)
+			post.demand_votes   = demand_votes
+			post.category_votes = category_votes
 			conflicting_posts.append(post)
 		return conflicting_posts
 

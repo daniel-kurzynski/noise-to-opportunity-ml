@@ -6,7 +6,7 @@
 			<% if (post.prediction) { %>
 				<h2><small>Current category: <%= post.prediction.category %>, Current confidence: <%= post.prediction.confidence %></small></h2>
 			<% } %>
-			<% if (post.demand_votes && post.category_votes) { %>
+			<% if (post.demand_votes && post.category_votes && route!="tagged_by_others_posts") { %>
 			<h3><%= JSON.stringify(post.demand_votes) %> <%= JSON.stringify(post.category_votes) %></h3>
 			<% } %>
 		</div>
