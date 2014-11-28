@@ -1,6 +1,8 @@
 from flask import Flask, request, render_template,session
 from active_learner import active_learner
 import simplejson as json
+from flask.ext.compress import Compress
+compress = Compress()
 app = Flask(__name__)
 
 learner = active_learner()
@@ -16,17 +18,17 @@ def uncertain_posts():
 
 @app.route("/certain_posts")
 def certain_posts():
-	posts = learner.predicted_posts(uncertain=False)
+	posts = learner.predicted_posts(type="certain")
+	return render_template("posts.jinja2", posts = posts, json=json)
+
+@app.route("/all_predicted_posts")
+def all_predicted_posts():
+	posts = learner.predicted_posts(type="all")
 	return render_template("posts.jinja2", posts = posts, json=json)
 
 @app.route("/tagged_by_others_posts")
 def tagged_by_others_posts():
 	posts = learner.determine_tagged_posts()
-	return render_template("posts.jinja2", posts = posts, json=json)
-
-@app.route("/all_tagged_posts")
-def all_tagged_posts():
-	posts = learner.determine_tagged_posts(withoutMine = False)
 	return render_template("posts.jinja2", posts = posts, json=json)
 
 @app.route("/conflicted_posts")
@@ -50,5 +52,6 @@ def tag_post(post_id):
 	return ""
 
 if __name__ == "__main__":
+	compress = Compress()
 	app.debug = True
 	app.run("0.0.0.0")
