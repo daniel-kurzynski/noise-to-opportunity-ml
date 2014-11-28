@@ -1,14 +1,15 @@
-package de.hpi.smm
+package de.hpi.smm.classifierfoo
 
 import java.io.File
 import java.util.Random
 
 import weka.classifiers.Evaluation
 import weka.classifiers.functions.SMO
-import weka.core.{Instance, Instances}
 import weka.core.converters.CSVLoader
+import weka.core.{Instance, Instances}
 import weka.filters.Filter
-import weka.filters.unsupervised.attribute.{Reorder, NominalToString, StringToWordVector}
+import weka.filters.unsupervised.attribute.{NominalToString, Reorder, StringToWordVector}
+
 import scala.collection.JavaConversions._
 
 object ClassificationWeka {

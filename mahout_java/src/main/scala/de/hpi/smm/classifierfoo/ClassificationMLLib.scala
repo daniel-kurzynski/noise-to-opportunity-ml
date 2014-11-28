@@ -1,6 +1,4 @@
-package de.hpi.smm
-
-import weka.core.converters.CSVLoader
+package de.hpi.smm.classifierfoo
 
 
 object ClassificationMLLib {
