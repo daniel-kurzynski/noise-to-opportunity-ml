@@ -28,7 +28,7 @@ object Main {
 			features.touch(post)
 			println(post.wholeText)
 			println(new ImperativeNumberFeature().extract(post))
-		}(1)
+		}()
 		val featureFile = new File("../n2o_data/features.csv")
 		val writer = new CSVWriter(new FileWriter(featureFile), CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER)
 		writer.writeNext(features.names)
