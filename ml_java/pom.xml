@@ -18,6 +18,18 @@
 	</properties>
 
 	<dependencies>
+		<!-- Stanford NLP classes -->
+		<dependency>
+			<groupId>edu.stanford.nlp</groupId>
+			<artifactId>stanford-corenlp</artifactId>
+			<version>3.5.0</version>
+		</dependency>
+		<dependency>
+			<groupId>edu.stanford.nlp</groupId>
+			<artifactId>stanford-corenlp</artifactId>
+			<version>3.5.0</version>
+			<classifier>models</classifier>
+		</dependency>
 		<!-- For tokenization, stemming, stopping -->
 		<dependency>
 			<groupId>org.apache.lucene</groupId>
@@ -64,6 +76,11 @@
             <groupId>org.apache.spark</groupId>
             <artifactId>spark-mllib_2.10</artifactId>
             <version>1.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.lambdaworks</groupId>
+            <artifactId>jacks_2.11</artifactId>
+            <version>2.3.3</version>
         </dependency>
 
         <dependency>

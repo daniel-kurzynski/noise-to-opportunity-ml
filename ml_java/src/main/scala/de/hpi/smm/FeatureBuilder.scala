@@ -1,9 +1,15 @@
 package de.hpi.smm
 
 class FeatureBuilder {
+	def names: Array[String] = features.map(_.name).toArray
+
 
 	var posts = List[Post]()
 	var features: List[Feature] = List()
+
+	val relevantNeedWords = List("anyone", "opportunity", "need", "must", "have", "you", "required", "require", "please",
+	"offering", "offer", "advice", "thank", "share", "sharing", "expertise", "urgent", "urgently", "appreciated",
+	"informative", "guide")
 
 	/**
 	 * Demand posts often contain more questions than normal posts,
@@ -26,7 +32,9 @@ class FeatureBuilder {
 	 * Captures common need words like "required", "need" etc.
 	 */
 	def needWords(): FeatureBuilder = {
-		// TODO IMPLEMENT
+		relevantNeedWords.foreach { word =>
+			addFeature(new NeedWordFeature(word))
+		}
 		this
 	}
 	/**
@@ -62,10 +70,17 @@ class FeatureBuilder {
 	}
 	def buildFeatureVector(): Array[Array[Double]] = {
 		val featureVec = Array.ofDim[Double](posts.size, features.size)
-		features.zipWithIndex.foreach { case (feature, i) =>
-			featureVec(i) = feature.extract(post)
+		val featuresWithIndex = features.zipWithIndex
+		posts.zipWithIndex.foreach { case (post, i) =>
+			features.zipWithIndex.foreach { case (feature, j) =>
+				featureVec(i)(j) = feature.extract(post)
+			}
 		}
 		featureVec
+	}
+
+	private def addFeature(feature: Feature): Unit = {
+		features ::= feature
 	}
 }
 
