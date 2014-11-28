@@ -23,7 +23,7 @@ class Post(object):
 		else:
 			return freqs[0][0]
 
-def build_data(class_names):
+def build_data():
 	print "=== Bag of Words Extractor ==="
 	with open('../webapp_python/data/classification.json') as infile:
 		classification = json.JSONDecoder(object_pairs_hook=collections.OrderedDict).decode(infile.read())
@@ -38,7 +38,7 @@ def build_data(class_names):
 
 	labeled_posts = [post
 			for post in posts
-				if post.is_labeled() and post.get_class() in class_names]
+				if post.is_labeled() and post.get_class() != "no-idea"]
 
 	# Build vectorizer
 	vectorizer = TfidfVectorizer(sublinear_tf = True, max_df = 0.5, stop_words = 'english')

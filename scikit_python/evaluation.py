@@ -43,7 +43,7 @@ if __name__ == "__main__":
 	classifier = Perceptron(n_iter = 50)
 	for build_data in [bow, custom_features]:
 		print
-		X, y = build_data(class_names = {"demand": 0, "no-demand": 1})
+		X, y = build_data()
 		evaluate_classifier(classifier, X, y)
 		cm = conf_matrix(classifier, X, y)
 		print cm
