@@ -34,11 +34,11 @@ object Main {
 		val writer = new CSVWriter(new FileWriter(featureFile), CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER)
 //		writer.writeNext(features.names)
 		features.buildFeatureVector { (post, instance) =>
-      val line = new Array[String](instance.size + 2)
-      line(0) = post.id
-      line(line.size - 1) = post.extractClass()
-      System.arraycopy(instance.map(_.toString), 0, line, 1, instance.size)
-      writer.writeNext(line)
+			val line = new Array[String](instance.size + 2)
+			line(0) = post.id
+			line(line.size - 1) = post.extractClass()
+			System.arraycopy(instance.map(_.toString), 0, line, 1, instance.size)
+			writer.writeNext(line)
 		}
 		writer.close()
 	}
@@ -51,12 +51,10 @@ object Main {
 		var lineNumber: Int = 1
 		var line: Array[String] = reader.readNext()
 		while (line != null && lineNumber <= count) {
-			if (line.size != 11)
-				println(s"WRONG LINE NUMBER SIZE in $lineNumber")
 			lineNumber += 1
-			val id = line(0)
+			val id    = line(0)
 			val title = line(1)
-			val text = line(2)
+			val text  = line(2)
 
 			val rawPost = RawPost(id, title, text)
 
@@ -95,6 +93,4 @@ object Main {
 		}
 		sentences
 	}
-
-
 }
