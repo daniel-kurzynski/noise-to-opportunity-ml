@@ -7,8 +7,15 @@ import au.com.bytecode.opencsv.CSVReader
 object Main {
 
 	def main(args: Array[String]): Unit = {
+		val features = FeatureBuilder()
+			.questionNumber()
+			.imperativeWords()
+			.mostCommonWordsFromBOW()
+			.needWords()
+			.share()
+			.thankYou()
 		extractPostsLinewise { post =>
-			println(post)
+			features.buildFeatureVector(post)
 		}(1)
 	}
 
