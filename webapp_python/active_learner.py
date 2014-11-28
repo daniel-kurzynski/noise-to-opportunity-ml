@@ -86,7 +86,7 @@ class active_learner(object):
 		return classifier, X_train, Y_train, X_predict, unlabeled_posts
 
 
-	def predicted_posts(self, type = "uncertain"):
+	def predicted_posts(self, type):
 		if self.not_enough_posts_tagged():
 			print "Choosing random posts"
 			return [(post, Prediction()) for post in np.random.choice(self.posts, 5, False)],[]
@@ -122,7 +122,7 @@ class active_learner(object):
 				category_votes=self.classification[post.id].get("category"),
 				demand=self.determine_class_from_conflicting_votes(post.id,"demand"),
 				category=self.determine_class_from_conflicting_votes(post.id,"category")
-			) 
+			)
 			for post in self.posts 
 			if post.id in self.classification and not (withoutMine and self.tagger_name in self.classification[post.id].get("demand", {}))
 		]
