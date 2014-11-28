@@ -27,11 +27,6 @@ def all_tagged_posts():
 	posts = learner.determine_tagged_posts(withoutMine = False)
 	return render_template("posts.jinja2", posts = posts, json=json)
 
-@app.route("/all_tagged_posts")
-def all_tagged_posts():
-	posts = learner.determine_tagged_posts(withoutMine = False)
-	return render_template("posts.jinja2", posts = posts, json=json)
-
 @app.route("/tagged_by_others_posts")
 def tagged_by_others_posts():
 	posts = learner.determine_tagged_posts()
