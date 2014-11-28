@@ -131,8 +131,8 @@ class active_learner(object):
 
 			demand_votes   = classification["demand"]
 			category_votes = classification["category"]
-			if (len(set(demand_votes.values())) <= 1 and
-				len(set(category_votes.values())) <= 1):
+			if (self.determine_class_from_conflicting_votes(post.id, "demand") is not None and
+				self.determine_class_from_conflicting_votes(post.id, "category") is not None):
 				continue
 
 			# we have a conflict!
