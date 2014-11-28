@@ -1,0 +1,5 @@
+flask
+simplejson
+numpy
+scipy
+scikit-learn
