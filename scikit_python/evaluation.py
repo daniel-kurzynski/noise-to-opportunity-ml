@@ -14,25 +14,22 @@ def score(y_true, y_pred, score_function, label_index):
 	return score_function(y_true, y_pred, average=None)[label_index]
 
 def evaluate_classifier(classifier, X, y):
-	f1_demand_scorer = make_scorer(score, greater_is_better=True, score_function=f1_score, label_index=0)
-	f1_no_demand_scorer = make_scorer(score, greater_is_better=True, score_function=f1_score, label_index=1)
-
-	recall_demand_scorer = make_scorer(score, greater_is_better=True, score_function=recall_score, label_index=0)
-	recall_no_demand_scorer = make_scorer(score, greater_is_better=True, score_function=recall_score, label_index=1)
-
-
-	precision_demand_scorer = make_scorer(score, greater_is_better=True, score_function=precision_score, label_index=0)
+	# f1_demand_scorer           = make_scorer(score, greater_is_better=True, score_function=f1_score, label_index=0)
+	# f1_no_demand_scorer        = make_scorer(score, greater_is_better=True, score_function=f1_score, label_index=1)
+	recall_demand_scorer       = make_scorer(score, greater_is_better=True, score_function=recall_score, label_index=0)
+	recall_no_demand_scorer    = make_scorer(score, greater_is_better=True, score_function=recall_score, label_index=1)
+	precision_demand_scorer    = make_scorer(score, greater_is_better=True, score_function=precision_score, label_index=0)
 	precision_no_demand_scorer = make_scorer(score, greater_is_better=True, score_function=precision_score, label_index=1)
 
 
-	print "f1-demand          ", cross_val_score(classifier, X, y, cv=5, scoring=f1_demand_scorer).mean()
-	print "f1-no-demand       ", cross_val_score(classifier, X, y, cv=5, scoring=f1_no_demand_scorer).mean()
+	# print "F1-demand          ", cross_val_score(classifier, X, y, cv=5, scoring=f1_demand_scorer).mean()
+	# print "F1-no-demand       ", cross_val_score(classifier, X, y, cv=5, scoring=f1_no_demand_scorer).mean()
 
-	print "recall-demand      ", cross_val_score(classifier, X, y, cv=5, scoring=recall_demand_scorer).mean()
-	print "recall-no-demand   ", cross_val_score(classifier, X, y, cv=5, scoring=recall_no_demand_scorer).mean()
+	print "Recall-demand      ", cross_val_score(classifier, X, y, cv=5, scoring=recall_demand_scorer).mean()
+	print "Recall-no-demand   ", cross_val_score(classifier, X, y, cv=5, scoring=recall_no_demand_scorer).mean()
 
-	print "precision-demand   ", cross_val_score(classifier, X, y, cv=5, scoring=precision_demand_scorer).mean()
-	print "precision-no-demand", cross_val_score(classifier, X, y, cv=5, scoring=precision_no_demand_scorer).mean()
+	print "Precision-demand   ", cross_val_score(classifier, X, y, cv=5, scoring=precision_demand_scorer).mean()
+	print "Precision-no-demand", cross_val_score(classifier, X, y, cv=5, scoring=precision_no_demand_scorer).mean()
 
 def conf_matrix(classifier, X, y):
 	X_train, X_test, y_train, y_test = train_test_split(X, y, random_state = 0)
