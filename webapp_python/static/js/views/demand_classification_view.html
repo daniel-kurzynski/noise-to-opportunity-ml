@@ -7,7 +7,24 @@
 				<h2><small>Current category: <%= post.prediction.category %>, Current confidence: <%= post.prediction.confidence %></small></h2>
 			<% } %>
 			<% if (post.demand_votes && post.category_votes && route!="tagged_by_others_posts") { %>
-			<h3><%= JSON.stringify(post.demand_votes) %> <%= JSON.stringify(post.category_votes) %></h3>
+			<table class="table table-condensed table-striped">
+				<tr>
+					<th>Daniel (Demand)</th>
+					<th>Stefan (Demand)</th>
+					<th>Dima (Demand)</th>
+					<th>Daniel (Product)</th>
+					<th>Stefan (Product)</th>
+					<th>Dima (Product)</th>
+				</tr>
+				<tr>
+					<td><%= post.demand_votes.daniel %></td>
+					<td><%= post.demand_votes.stefan %></td>
+					<td><%= post.demand_votes.dima %></td>
+					<td><%= post.category_votes.daniel %></td>
+					<td><%= post.category_votes.stefan %></td>
+					<td><%= post.category_votes.dima %></td>
+				</tr>
+			</table>
 			<% } %>
 		</div>
 		<p id="post-text"><%= post.text %></p>
