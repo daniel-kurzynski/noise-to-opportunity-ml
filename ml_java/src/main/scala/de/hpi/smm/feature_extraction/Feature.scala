@@ -1,4 +1,6 @@
-package de.hpi.smm
+package de.hpi.smm.feature_extraction
+
+import de.hpi.smm.domain.Post
 
 abstract class Feature {
 

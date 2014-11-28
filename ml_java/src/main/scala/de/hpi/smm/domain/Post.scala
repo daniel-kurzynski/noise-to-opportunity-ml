@@ -1,4 +1,4 @@
-package de.hpi.smm
+package de.hpi.smm.domain
 
 case class RawPost(id: String, title: String, text: String) {
 	def wholeText: String = s"$title $text"

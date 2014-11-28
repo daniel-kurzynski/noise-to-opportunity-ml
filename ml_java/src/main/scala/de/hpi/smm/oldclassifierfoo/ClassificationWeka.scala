@@ -1,4 +1,4 @@
-package de.hpi.smm.classifierfoo
+package de.hpi.smm.oldclassifierfoo
 
 import java.io.File
 import java.util.Random

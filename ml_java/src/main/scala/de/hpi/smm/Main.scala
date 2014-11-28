@@ -5,6 +5,8 @@ import java.util
 
 import au.com.bytecode.opencsv.{CSVWriter, CSVReader}
 import com.lambdaworks.jacks.JacksMapper
+import de.hpi.smm.domain.{Word, RawPost, Post}
+import de.hpi.smm.feature_extraction.FeatureBuilder
 import edu.stanford.nlp.ling.CoreAnnotations._
 import edu.stanford.nlp.pipeline.{Annotation, StanfordCoreNLP}
 import edu.stanford.nlp.util.CoreMap

@@ -1,4 +1,6 @@
-package de.hpi.smm
+package de.hpi.smm.feature_extraction
+
+import de.hpi.smm.domain.Post
 
 class FeatureBuilder {
 	def names: Array[String] = features.map(_.name).toArray
@@ -16,7 +18,7 @@ class FeatureBuilder {
 	 * especially many questions in a row sometimes
 	 */
 	def questionNumber(): FeatureBuilder = {
-		// TODO IMPLEMENT
+		addFeature(new QuestionNumberFeature())
 		this
 	}
 
