@@ -8,6 +8,7 @@ ids, features, class_names = [], [], []
 with open(join(dirname(__file__), "features.csv")) as f:
 	for line in f:
 		content = line.strip().split(",")
+		if not content: continue
 		ids.append(content[0])
 		features.append([float(val) for val in content[1:-1]])
 		class_names.append(content[-1])
