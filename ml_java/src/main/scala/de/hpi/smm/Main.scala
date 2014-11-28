@@ -18,7 +18,7 @@ object Main {
 	def main(args: Array[String]): Unit = {
 		val features = FeatureBuilder()
 			.questionNumber()
-			.imperativeWords()
+//			.imperativeWords()
 			.mostCommonWordsFromBOW()
 			.needWords()
 			.share()
@@ -26,8 +26,8 @@ object Main {
 
 		extractPostsLinewise { post =>
 			features.touch(post)
-			println(post.wholeText)
-			println(new ImperativeNumberFeature().extract(post))
+//			println(post.wholeText)
+//			println(new ImperativeNumberFeature().extract(post))
 		}()
 		val featureFile = new File("../n2o_data/features.csv")
 		val writer = new CSVWriter(new FileWriter(featureFile), CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER)
