@@ -1,10 +1,31 @@
 package de.hpi.smm
 
-import com.github.tototoshi.csv._
+import java.io.{FileReader, File}
+
+import au.com.bytecode.opencsv.CSVReader
+
 object Main {
 
 	def main(args: Array[String]): Unit = {
-		val reader = CSVReader.open(new File("../"))
+		extractPostsLinewise { post =>
+			println(post)
+		}(1)
+	}
+
+	def extractPostsLinewise(extractor: Post => Unit)(count: Int = Int.MaxValue): Unit = {
+		val postsFile = new File("../n2o_data/linked_in_posts.csv")
+		val reader = new CSVReader(new FileReader(postsFile))
+
+		var lineNumber: Int = 1
+		var line: Array[String] = reader.readNext()
+		while (line != null && lineNumber <= count) {
+			if (line.size != 11)
+				println("WRONG LINE NUMBER SIZE in $lineNumber")
+			lineNumber += 1
+			extractor(Post(line(0), line(1), line(2)))
+			line = reader.readNext()
+		}
+		reader.close()
 
 	}
 
