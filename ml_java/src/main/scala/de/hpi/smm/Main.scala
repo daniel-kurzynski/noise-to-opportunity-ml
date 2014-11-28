@@ -7,8 +7,6 @@ import au.com.bytecode.opencsv.{CSVWriter, CSVReader}
 object Main {
 
 	def main(args: Array[String]): Unit = {
-		val featureFile = new File("../n2o_data/features.csv")
-		val writer = new CSVWriter(new FileWriter(featureFile))
 		val features = FeatureBuilder()
 			.questionNumber()
 			.imperativeWords()
@@ -23,6 +21,12 @@ object Main {
 //			val vec = features.buildFeatureVector(post)
 //			writer.writeNext(vec.map(_.toString))
 		}(1)
+		val featureFile = new File("../n2o_data/features.csv")
+		val writer = new CSVWriter(new FileWriter(featureFile), CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER)
+		writer.writeNext(features.names)
+		features.buildFeatureVector().foreach { instance =>
+			writer.writeNext(instance.map(_.toString))
+		}
 		writer.close()
 	}
 
