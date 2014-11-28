@@ -13,12 +13,12 @@ class active_learner(object):
 
 	def __init__(self):
 		self.classification = collections.OrderedDict()
+		self.posts = []
 		self.load_posts()
 		self.load_classification()
 		self.tagger_name = open("tagger_name.conf").read().strip()
 
 	def load_posts(self):
-		self.posts = []
 		with open(join(abspath("../n2o_data"), "linked_in_posts.csv")) as f:
 			for line in f:
 				id, title, text, _, _, _, _, _, category, _, _ = line.replace("\\,", "<komma>").replace("\"", "").replace("\\", "").split(",")
@@ -163,7 +163,7 @@ class active_learner(object):
 	def evaluate_classifier(self):
 		evaluation = {}
 		classifier, X_train, Y_train, _, _ = self.build_classifier()
-		evaluation["f1"] = cross_val_score(classifier, X_train, Y_train, cv=5, scoring='f1').mean()
-		evaluation["recall"] = cross_val_score(classifier, X_train, Y_train, cv=5, scoring='recall').mean()
+		evaluation["f1"]        = cross_val_score(classifier, X_train, Y_train, cv=5, scoring='f1').mean()
+		evaluation["recall"]    = cross_val_score(classifier, X_train, Y_train, cv=5, scoring='recall').mean()
 		evaluation["precision"] = cross_val_score(classifier, X_train, Y_train, cv=5, scoring='precision').mean()
 		return evaluation
