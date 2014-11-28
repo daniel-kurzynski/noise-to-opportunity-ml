@@ -10,19 +10,25 @@ case class Post(
 	               text: String,
 	               sentences: Seq[Seq[Word]],
 	               classification: Map[String, Map[String, String]]) {
+
+	/*
+	 * Helper functions for quick access to necessary data structures
+	 */
 	def wholeText: String = s"$title $text"
 
-	def numberOfQuestions: Int = {
-		sentences.count { sentence =>
-			sentence.last.text == "?"
-		}
-	}
-
-	def tokens: Seq[String] = {
+	def textTokens: Seq[String] = {
 		sentences.flatMap { sentence =>
 			sentence.map { word => word.text }
 		}
 	}
+
+	def tokens: Seq[Word] = {
+		sentences.flatMap { sentence => sentence }
+	}
+
+	/*
+	 * Helper functions for calculating new information
+	 */
 
 	def extractClass(): String = {
 		val groups = classification("demand").values.groupBy { word => word }.map { case (word, words) => (word, words.size)}

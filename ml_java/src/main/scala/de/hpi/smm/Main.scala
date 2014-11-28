@@ -26,7 +26,7 @@ object Main {
 		extractPostsLinewise { post =>
 			features.touch(post)
 			println(post.wholeText)
-			println(post.numberOfQuestions)
+
 //			val vec = features.buildFeatureVector(post)
 //			writer.writeNext(vec.map(_.toString))
 		}(1)
@@ -48,10 +48,9 @@ object Main {
 		val postsFile = new File("../n2o_data/linked_in_posts.csv")
 		val reader = new CSVReader(new FileReader(postsFile))
 
-		var lineNumber: Int = 1
+		var postCount: Int = 1
 		var line: Array[String] = reader.readNext()
-		while (line != null && lineNumber <= count) {
-			lineNumber += 1
+		while (line != null && postCount <= count) {
 			val id    = line(0)
 			val title = line(1)
 			val text  = line(2)
@@ -59,6 +58,7 @@ object Main {
 			val rawPost = RawPost(id, title, text)
 
 			if (classifiedPosts.keySet.contains(id)) {
+				postCount += 1
 				val sentences = detectSentences(rawPost)
 				extractor(Post(id, title, text, sentences, classifiedPosts(id)))
 			}
@@ -70,7 +70,8 @@ object Main {
 	def detectSentences(rawPost: RawPost): Seq[Seq[Word]] = {
 		val props = new util.Properties()
 //		props.put("annotators", "tokenize,ssplit,pos,lemma,ner")
-		props.put("annotators", "tokenize,ssplit")
+		props.put("annotators", "tokenize,ssplit,pos")
+//		props.put("annotators", "tokenize,ssplit")
 		val pipeline = new StanfordCoreNLP(props)
 
 		val document = new Annotation(rawPost.wholeText)

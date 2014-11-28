@@ -26,7 +26,7 @@ class FeatureBuilder {
 	 * Demand posts often contain imperative clauses like "help me", "share your information"
 	 */
 	def imperativeWords(): FeatureBuilder = {
-		// TODO IMPLEMENT
+		addFeature(new ImperativeNumberFeature())
 		this
 	}
 
