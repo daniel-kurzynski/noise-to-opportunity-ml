@@ -1,14 +1,16 @@
-package de.hpi.smm
+package de.hpi.smm.feature_extraction
+
+import de.hpi.smm.domain.Post
 
 abstract class Feature {
 
 	/**
-	 * Name of a feature, will be the header in the csv file
+	 * Name of a feature, will be the header in the csv file.
 	 */
 	def name: String
 
 	/**
-	 * Extract a feature vector element from a post
+	 * Extract a feature vector element from a post.
 	 */
 	def extract(post: Post): Double
 
@@ -20,11 +22,4 @@ abstract class Feature {
 	 * with that post.
 	 */
 	def touch(post: Post): Unit = {}
-}
-
-class NeedWordFeature(word: String) extends Feature {
-	def name = word
-	override def extract(post: Post): Double = {
-		post.tokens.count(_ == word)
-	}
 }
