@@ -24,12 +24,6 @@
 			<artifactId>scala-csv_2.11</artifactId>
 			<version>1.0.0</version>
 		</dependency>
-		<!-- Machine learning libraries -->
-		<dependency>
-			<groupId>org.apache.mahout</groupId>
-			<artifactId>mahout-core</artifactId>
-			<version>0.9</version>
-		</dependency>
 		<!-- Scala libraries -->
 		<dependency>
 			<groupId>org.scala-lang</groupId>
