@@ -17,8 +17,10 @@ object Main {
 			.share()
 			.thankYou()
 		extractPostsLinewise { post =>
-			val vec = features.buildFeatureVector(post)
-			writer.writeNext(vec.map(_.toString))
+			println(post.data)
+			println(post.tokens.mkString(" "))
+//			val vec = features.buildFeatureVector(post)
+//			writer.writeNext(vec.map(_.toString))
 		}(1)
 		writer.close()
 	}
@@ -33,7 +35,12 @@ object Main {
 			if (line.size != 11)
 				println("WRONG LINE NUMBER SIZE in $lineNumber")
 			lineNumber += 1
-			extractor(Post(line(0), line(1), line(2)))
+			val id = line(0)
+			val title = line(1)
+			val text = line(2)
+			val wholeText = s"$title $text"
+			val tokens = TokenizerHelper.tokenize(wholeText, false)
+			extractor(Post(id, title, text, tokens))
 			line = reader.readNext()
 		}
 		reader.close()

@@ -2,8 +2,7 @@ package de.hpi.smm
 
 class FeatureBuilder {
 
-	var featurePipeline: List[Feature] = List()
-
+	var features: List[Feature] = List()
 
 	/**
 	 * Demand posts often contain more questions than normal posts,
@@ -54,13 +53,12 @@ class FeatureBuilder {
 	}
 
 	def buildFeatureVector(post: Post): Array[Double] = {
-		val features = new Array[Double](featurePipeline.size)
-		featurePipeline.zipWithIndex.foreach { case (feature, i) =>
-			features(i) = feature.extract(post)
+		val featureVec = new Array[Double](features.size)
+		features.zipWithIndex.foreach { case (feature, i) =>
+			featureVec(i) = feature.extract(post)
 		}
-		features
+		featureVec
 	}
-
 }
 
 object FeatureBuilder {
