@@ -1,5 +1,6 @@
 from os.path import join, abspath
 from post import Post, Prediction
+from sklearn.cross_validation import cross_val_score
 import simplejson as json
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import Perceptron
@@ -62,8 +63,8 @@ class active_learner(object):
 
 	def post(self, post_id):
 		posts = [post for post in self.posts if post.id == post_id]
-		classifier, data, _ = self.build_classifier(posts)
-		return [Post.fromPost(posts[prediction.index],prediction=prediction) for prediction in self.calculate_predictions(classifier, data)]
+		classifier, _,_,X_predict, _ = self.build_classifier(posts)
+		return [Post.fromPost(posts[prediction.index],prediction=prediction) for prediction in self.calculate_predictions(classifier, X_predict)]
 
 	def build_classifier(self, unlabeled_posts = None):
 		labeled_posts  =  [post for post in self.posts if post.id in self.classification and self.determine_class_from_conflicting_votes(post.id, "demand") is not None]
@@ -82,30 +83,30 @@ class active_learner(object):
 		# Train the classifier
 		classifier = Perceptron(n_iter = 50)
 		classifier.fit(X_train, Y_train)
-		return classifier, X_predict, unlabeled_posts
+		return classifier, X_train, Y_train, X_predict, unlabeled_posts
 
 
-	def predicted_posts(self, uncertain=True):
+	def predicted_posts(self, type = "uncertain"):
 		if self.not_enough_posts_tagged():
 			print "Choosing random posts"
 			return [(post, Prediction()) for post in np.random.choice(self.posts, 5, False)],[]
 
 		print "Choosing uncertain posts"
 
-		classifier, X_predict, unlabeled_posts = self.build_classifier()
+		classifier, _, _, X_predict, unlabeled_posts = self.build_classifier()
 		predictions = self.calculate_predictions(classifier, X_predict)
 
 		confidence_predictions = sorted(predictions, key = lambda prediction: prediction.confidence)
-		if(uncertain):
-			confidence_predictions = confidence_predictions[:10]
+		
+		if type == "uncertain":
+				confidence_predictions = confidence_predictions[:10]
 		else:
 			confidence_predictions = confidence_predictions[-25:]
-
-		print confidence_predictions
+		
 		return [Post.fromPost(unlabeled_posts[prediction.index],prediction=prediction) for prediction in confidence_predictions]
 
 	def determin_certain_posts(self):
-		classifier, X_predict, unlabeled_posts = self.build_classifier()
+		classifier, _, _, X_predict, unlabeled_posts = self.build_classifier()
 		predictions = self.calculate_predictions(classifier, X_predict)
 
 		low_confidence_predictions = sorted(predictions, key = lambda prediction: prediction.confidence)
@@ -114,7 +115,17 @@ class active_learner(object):
 		return [Post.fromPost(unlabeled_posts[prediction.index],prediction=prediction) for prediction in low_confidence_predictions]
 
 	def determine_tagged_posts(self, withoutMine = True):
-		tagged_posts = [Post.fromPost(post, demand_votes=self.classification[post.id].get("demand"), category_votes=self.classification[post.id].get("category")) for post in self.posts if post.id in self.classification and not (withoutMine and self.tagger_name in self.classification[post.id].get("demand", {}))]
+		tagged_posts = [
+			Post.fromPost(
+				post,
+				demand_votes=self.classification[post.id].get("demand"),
+				category_votes=self.classification[post.id].get("category"),
+				demand=self.determine_class_from_conflicting_votes(post.id,"demand"),
+				category=self.determine_class_from_conflicting_votes(post.id,"category")
+			) 
+			for post in self.posts 
+			if post.id in self.classification and not (withoutMine and self.tagger_name in self.classification[post.id].get("demand", {}))
+		]
 		return tagged_posts
 
 	def determine_conflicted_posts(self):
@@ -149,4 +160,11 @@ class active_learner(object):
 		predictions = [Prediction(classifier.classes_[confOrders[-1]], confidences[index][confOrders[-1]], index) for index, confOrders in enumerate(np.argsort(confidences))]
 		return predictions
 
-
+	def evaluate_classifier(self):
+		evaluation = {}
+		_, X_train, Y_train, _, _ = self.build_classifier()
+		classifier = 
+		evaluation["f1"] = cross_val_score(classifier, X_train, Y_train, cv=5, scoring='f1').mean()
+		evaluation["recall"] = cross_val_score(classifier, X_train, Y_train, cv=5, scoring='recall').mean()
+		evaluation["precision"] = cross_val_score(classifier, X_train, Y_train, cv=5, scoring='precision').mean()
+		return evaluation
