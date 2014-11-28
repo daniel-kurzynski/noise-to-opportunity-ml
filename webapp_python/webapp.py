@@ -2,6 +2,7 @@ from flask import Flask, request, render_template,session
 from active_learner import active_learner
 import simplejson as json
 from flask.ext.compress import Compress
+
 compress = Compress()
 app = Flask(__name__)
 
@@ -57,6 +58,6 @@ def tag_post(post_id):
 	return ""
 
 if __name__ == "__main__":
-	compress = Compress()
 	app.debug = True
+	compress.init_app(app)
 	app.run("0.0.0.0")
