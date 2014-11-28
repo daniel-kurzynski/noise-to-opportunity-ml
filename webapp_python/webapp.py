@@ -21,9 +21,9 @@ def certain_posts():
 	posts = learner.predicted_posts(type="certain")
 	return render_template("posts.jinja2", posts = posts, json=json)
 
-@app.route("/all_predicted_posts")
-def all_predicted_posts():
-	posts = learner.predicted_posts(type="all")
+@app.route("/all_tagged_posts")
+def all_tagged_posts():
+	posts = learner.determine_tagged_posts(withoutMine = False)
 	return render_template("posts.jinja2", posts = posts, json=json)
 
 @app.route("/tagged_by_others_posts")
