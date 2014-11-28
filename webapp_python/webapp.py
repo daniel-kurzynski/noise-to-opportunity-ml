@@ -2,6 +2,7 @@ from flask import Flask, request, render_template,session
 from active_learner import active_learner
 import simplejson as json
 from flask.ext.compress import Compress
+
 compress = Compress()
 app = Flask(__name__)
 
@@ -13,12 +14,17 @@ def hello():
 
 @app.route("/uncertain_posts")
 def uncertain_posts():
-	posts = learner.predicted_posts()
+	posts = learner.predicted_posts(type = "uncertain")
 	return render_template("posts.jinja2", posts = posts, json=json)
 
 @app.route("/certain_posts")
 def certain_posts():
-	posts = learner.predicted_posts(type="certain")
+	posts = learner.predicted_posts(type = "certain")
+	return render_template("posts.jinja2", posts = posts, json=json)
+
+@app.route("/all_tagged_posts")
+def all_tagged_posts():
+	posts = learner.determine_tagged_posts(withoutMine = False)
 	return render_template("posts.jinja2", posts = posts, json=json)
 
 @app.route("/all_tagged_posts")
@@ -52,6 +58,6 @@ def tag_post(post_id):
 	return ""
 
 if __name__ == "__main__":
-	compress = Compress()
 	app.debug = True
+	compress.init_app(app)
 	app.run("0.0.0.0")

@@ -1,9 +1,10 @@
 from os.path import join, abspath
 from post import Post, Prediction
-from sklearn.cross_validation import cross_val_score
+from sklearn.cross_validation import cross_val_score, train_test_split
 import simplejson as json
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import Perceptron
+from sklearn.metrics import confusion_matrix
 import numpy as np
 import collections
 from collections import Counter
@@ -13,12 +14,12 @@ class active_learner(object):
 
 	def __init__(self):
 		self.classification = collections.OrderedDict()
+		self.posts = []
 		self.load_posts()
 		self.load_classification()
 		self.tagger_name = open("tagger_name.conf").read().strip()
 
 	def load_posts(self):
-		self.posts = []
 		with open(join(abspath("../n2o_data"), "linked_in_posts.csv")) as f:
 			for line in f:
 				id, title, text, _, _, _, _, _, category, _, _ = line.replace("\\,", "<komma>").replace("\"", "").replace("\\", "").split(",")
@@ -66,19 +67,28 @@ class active_learner(object):
 		classifier, _,_,X_predict, _ = self.build_classifier(posts)
 		return [Post.fromPost(posts[prediction.index],prediction=prediction) for prediction in self.calculate_predictions(classifier, X_predict)]
 
-	def build_classifier(self, unlabeled_posts = None):
-		labeled_posts  =  [post for post in self.posts if post.id in self.classification and self.determine_class_from_conflicting_votes(post.id, "demand") is not None]
-		if unlabeled_posts is None:
-			unlabeled_posts = [post for post in self.posts if not (post.id in self.classification and self.classification[post.id]['demand'])]
-		X_train   = [post.data for post in labeled_posts]
-		X_predict = [post.data for post in unlabeled_posts]
-		Y_train = [self.determine_class_from_conflicting_votes(post.id, 'demand') for post in labeled_posts]
+	def build_classifier(self, unlabeled_posts = None, use_no_idea = True):
+		labeled_posts  =  [post
+			for post in self.posts
+				if post.id in self.classification \
+					and self.determine_class_from_conflicting_votes(post.id, "demand") is not None]
+
+		if not use_no_idea:
+			labeled_posts = [post
+				for post in labeled_posts
+					if self.determine_class_from_conflicting_votes(post.id, 'demand') is not None \
+					and self.determine_class_from_conflicting_votes(post.id, 'demand') != "no-idea"]
+
+		unlabeled_posts = unlabeled_posts or [post
+			for post in self.posts
+				if not (post.id in self.classification \
+					and self.classification[post.id]['demand'])]
 
 		# Build vectorizer
 		vectorizer = TfidfVectorizer(sublinear_tf = True, max_df = 0.5, stop_words = 'english')
-		X_train   = vectorizer.fit_transform(X_train)
-		X_predict = vectorizer.transform(X_predict)
-		Y_train   = np.array(Y_train)
+		X_train   = vectorizer.fit_transform([post.data for post in labeled_posts])
+		X_predict = vectorizer.transform([post.data for post in unlabeled_posts])
+		Y_train = np.array([self.determine_class_from_conflicting_votes(post.id, 'demand') for post in labeled_posts])
 
 		# Train the classifier
 		classifier = Perceptron(n_iter = 50)
@@ -86,7 +96,7 @@ class active_learner(object):
 		return classifier, X_train, Y_train, X_predict, unlabeled_posts
 
 
-	def predicted_posts(self, type = "uncertain"):
+	def predicted_posts(self, type):
 		if self.not_enough_posts_tagged():
 			print "Choosing random posts"
 			return [(post, Prediction()) for post in np.random.choice(self.posts, 5, False)],[]
@@ -97,12 +107,12 @@ class active_learner(object):
 		predictions = self.calculate_predictions(classifier, X_predict)
 
 		confidence_predictions = sorted(predictions, key = lambda prediction: prediction.confidence)
-		
+
 		if type == "uncertain":
 				confidence_predictions = confidence_predictions[:10]
 		else:
 			confidence_predictions = confidence_predictions[-25:]
-		
+
 		return [Post.fromPost(unlabeled_posts[prediction.index],prediction=prediction) for prediction in confidence_predictions]
 
 	def determin_certain_posts(self):
@@ -122,8 +132,8 @@ class active_learner(object):
 				category_votes=self.classification[post.id].get("category"),
 				demand=self.determine_class_from_conflicting_votes(post.id,"demand"),
 				category=self.determine_class_from_conflicting_votes(post.id,"category")
-			) 
-			for post in self.posts 
+			)
+			for post in self.posts
 			if post.id in self.classification and not (withoutMine and self.tagger_name in self.classification[post.id].get("demand", {}))
 		]
 		return tagged_posts
@@ -163,7 +173,14 @@ class active_learner(object):
 	def evaluate_classifier(self):
 		evaluation = {}
 		classifier, X_train, Y_train, _, _ = self.build_classifier()
-		evaluation["f1"] = cross_val_score(classifier, X_train, Y_train, cv=5, scoring='f1').mean()
-		evaluation["recall"] = cross_val_score(classifier, X_train, Y_train, cv=5, scoring='recall').mean()
+		evaluation["f1"]        = cross_val_score(classifier, X_train, Y_train, cv=5, scoring='f1').mean()
+		evaluation["recall"]    = cross_val_score(classifier, X_train, Y_train, cv=5, scoring='recall').mean()
 		evaluation["precision"] = cross_val_score(classifier, X_train, Y_train, cv=5, scoring='precision').mean()
 		return evaluation
+
+	def conf_matrix(self):
+		classifier, X, y, _, _ = self.build_classifier(use_no_idea = False)
+		X_train, X_test, y_train, y_test = train_test_split(X, y, random_state = 0)
+		y_pred = classifier.fit(X_train, y_train).predict(X_test)
+		return confusion_matrix(y_test, y_pred)
+
