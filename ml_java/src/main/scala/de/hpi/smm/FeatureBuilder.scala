@@ -68,15 +68,10 @@ class FeatureBuilder {
 		posts ::= post
 		features.foreach { feature => feature.touch(post) }
 	}
-	def buildFeatureVector(): Array[Array[Double]] = {
-		val featureVec = Array.ofDim[Double](posts.size, features.size)
-		val featuresWithIndex = features.zipWithIndex
-		posts.zipWithIndex.foreach { case (post, i) =>
-			features.zipWithIndex.foreach { case (feature, j) =>
-				featureVec(i)(j) = feature.extract(post)
-			}
+	def buildFeatureVector(vectorHandler: (Post, Array[Double]) => Unit): Unit = {
+		posts.foreach { post =>
+      vectorHandler(post, features.map { feature => feature.extract(post) }.toArray)
 		}
-		featureVec
 	}
 
 	private def addFeature(feature: Feature): Unit = {

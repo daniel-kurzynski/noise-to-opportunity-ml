@@ -5,7 +5,7 @@ from sklearn.linear_model import Perceptron
 
 ids, features, class_names = [], [], []
 
-with open(join(dirname(__file__), "features.csv")) as f:
+with open(join(dirname(dirname(__file__)), "n2o_data/features.csv")) as f:
 	for line in f:
 		content = line.strip().split(",")
 		if not content: continue
@@ -26,10 +26,11 @@ def convert_class_names(names):
 X = np.array(features)
 y = np.array(convert_class_names(class_names))
 
-print X, y
+print X.shape, y.shape
 classifier = Perceptron(n_iter = 50)
 
-score = cross_val_score(classifier, X, y, cv=3, scoring='f1').mean()
+print "f1", cross_val_score(classifier, X, y, cv=3, scoring='f1').mean()
+print "precision", cross_val_score(classifier, X, y, cv=3, scoring='precision').mean()
+print "recall", cross_val_score(classifier, X, y, cv=3, scoring='recall').mean()
 
-print score
 
