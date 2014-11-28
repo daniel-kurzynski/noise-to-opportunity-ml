@@ -1,8 +1,13 @@
 package de.hpi.smm
 
 import java.io.{FileWriter, FileReader, File}
+import java.util
 
 import au.com.bytecode.opencsv.{CSVWriter, CSVReader}
+import edu.stanford.nlp.ling.CoreAnnotations._
+import edu.stanford.nlp.pipeline.{Annotation, StanfordCoreNLP}
+import edu.stanford.nlp.util.CoreMap
+import scala.collection.JavaConverters._
 
 object Main {
 
@@ -16,7 +21,7 @@ object Main {
 			.thankYou()
 		extractPostsLinewise { post =>
 			features.touch(post)
-			println(post.data)
+			println(post.wholeText)
 			println(post.tokens.mkString(" "))
 //			val vec = features.buildFeatureVector(post)
 //			writer.writeNext(vec.map(_.toString))
@@ -38,18 +43,41 @@ object Main {
 		var line: Array[String] = reader.readNext()
 		while (line != null && lineNumber <= count) {
 			if (line.size != 11)
-				println("WRONG LINE NUMBER SIZE in $lineNumber")
+				println(s"WRONG LINE NUMBER SIZE in $lineNumber")
 			lineNumber += 1
 			val id = line(0)
 			val title = line(1)
 			val text = line(2)
-			val wholeText = s"$title $text"
-			val tokens = TokenizerHelper.tokenize(wholeText, false)
+			val rawPost = RawPost(id, title, text)
+			val tokens = TokenizerHelper.tokenize(rawPost.wholeText, false)
 			extractor(Post(id, title, text, tokens))
 			line = reader.readNext()
 		}
 		reader.close()
+	}
 
+	def detectSentences(rawPost: RawPost): Unit = {
+		val props = new util.Properties()
+//		props.put("annotators", "tokenize, ssplit, pos, lemma, ner, parse, dcoref")
+		props.put("annotators", "ssplit")
+		val pipeline = new StanfordCoreNLP(props)
+//
+		val document = new Annotation(rawPost.wholeText)
+//
+//		pipeline.annotate(document)
+//
+//		val sentences: util.List[CoreMap] = document.get(classOf[SentencesAnnotation])
+//
+//		sentences.asScala.foreach { sentence =>
+//			sentence.get(classOf[TokensAnnotation]).asScala.foreach { token =>
+//				val word = token.get(classOf[TextAnnotation])
+//				val pos = token.get(classOf[PartOfSpeechAnnotation])
+//				val ner = token.get(classOf[NamedEntityTagAnnotation])
+//				print(s"$word ")
+//			}
+//			println()
+//		}
+//		println("##########################################################")
 	}
 
 }
