@@ -36,6 +36,7 @@ define([
 
 				"click .btn-demand":				"showCategoryButtons",
 				"click .btn-category":              "showNewPost",
+				"click .btn-next":                  "showNewPost",
 				"keydown":                          "keyAction"
 			},
 
