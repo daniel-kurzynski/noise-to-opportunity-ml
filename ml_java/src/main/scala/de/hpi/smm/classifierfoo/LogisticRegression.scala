@@ -1,4 +1,4 @@
-package de.hpi.smm
+package de.hpi.smm.classifierfoo
 
 class LogisticRegression {
 

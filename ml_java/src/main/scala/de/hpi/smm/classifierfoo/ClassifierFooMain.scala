@@ -1,19 +1,13 @@
-package de.hpi.smm
+package de.hpi.smm.classifierfoo
 
-import java.io.StringReader
-
-import org.apache.lucene.analysis.tokenattributes.CharTermAttribute
-import org.apache.lucene.analysis.{TokenStream, Analyzer}
-import org.apache.lucene.analysis.standard.StandardAnalyzer
-import org.apache.lucene.util.Version
-import org.apache.mahout.math.{SequentialAccessSparseVector, RandomAccessSparseVector}
-import org.apache.mahout.vectorizer.encoders.{FeatureVectorEncoder, StaticWordValueEncoder}
-
-object Main {
+object ClassifierFooMain {
 
 	def main(args: Array[String]): Unit = {
-		val classification = new ClassificationMahout
-		classification.classifyBrochures()
+//		val classification = new ClassificationMahout
+//		classification.classifyBrochures()
+
+
+
 //		// io
 //		val in = new StringReader("text text text to magically vectorize")
 //		// Lucene tokenization

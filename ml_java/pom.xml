@@ -18,17 +18,23 @@
 	</properties>
 
 	<dependencies>
+		<!-- For tokenization, stemming, stopping -->
+		<dependency>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-core</artifactId>
+			<version>4.8.1</version>
+		</dependency>
+		<!-- Commmon analyzers, e.g. for English, PorterStemmer -->
+		<dependency>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-analyzers-common</artifactId>
+			<version>4.8.1</version>
+		</dependency>
 		<!-- CSV reader -->
 		<dependency>
-			<groupId>com.github.tototoshi</groupId>
-			<artifactId>scala-csv_2.11</artifactId>
-			<version>1.0.0</version>
-		</dependency>
-		<!-- Machine learning libraries -->
-		<dependency>
-			<groupId>org.apache.mahout</groupId>
-			<artifactId>mahout-core</artifactId>
-			<version>0.9</version>
+			<groupId>net.sf.opencsv</groupId>
+			<artifactId>opencsv</artifactId>
+			<version>2.3</version>
 		</dependency>
 		<!-- Scala libraries -->
 		<dependency>

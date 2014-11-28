@@ -17,6 +17,12 @@
             {% if post.category_votes %}
             , "category_votes": {{ json.dumps(post.category_votes) }}
             {% endif %}
+            {% if post.demand %}
+            , "demand": {{ json.dumps(post.demand) }}
+            {% endif %}
+            {% if post.category %}
+            , "category": {{ json.dumps(post.category) }}
+            {% endif %}
 		}
 			{% if not loop.last %}
 			,
