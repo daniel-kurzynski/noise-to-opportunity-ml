@@ -162,8 +162,7 @@ class active_learner(object):
 
 	def evaluate_classifier(self):
 		evaluation = {}
-		_, X_train, Y_train, _, _ = self.build_classifier()
-		classifier = 
+		classifier, X_train, Y_train, _, _ = self.build_classifier()
 		evaluation["f1"] = cross_val_score(classifier, X_train, Y_train, cv=5, scoring='f1').mean()
 		evaluation["recall"] = cross_val_score(classifier, X_train, Y_train, cv=5, scoring='recall').mean()
 		evaluation["precision"] = cross_val_score(classifier, X_train, Y_train, cv=5, scoring='precision').mean()
