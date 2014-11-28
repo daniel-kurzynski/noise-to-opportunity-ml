@@ -2,6 +2,7 @@ package de.hpi.smm
 
 class FeatureBuilder {
 
+	var posts = List[Post]()
 	var features: List[Feature] = List()
 
 	/**
@@ -52,8 +53,15 @@ class FeatureBuilder {
 		this
 	}
 
-	def buildFeatureVector(post: Post): Array[Double] = {
-		val featureVec = new Array[Double](features.size)
+	/**
+	 * Add a new posts to this feature builder, and store it for internal use.
+	 */
+	def touch(post: Post): Unit = {
+		posts ::= post
+		features.foreach { feature => feature.touch(post) }
+	}
+	def buildFeatureVector(): Array[Array[Double]] = {
+		val featureVec = Array.ofDim[Double](posts.size, features.size)
 		features.zipWithIndex.foreach { case (feature, i) =>
 			featureVec(i) = feature.extract(post)
 		}

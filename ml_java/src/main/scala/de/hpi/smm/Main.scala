@@ -17,6 +17,7 @@ object Main {
 			.share()
 			.thankYou()
 		extractPostsLinewise { post =>
+			features.touch(post)
 			println(post.data)
 			println(post.tokens.mkString(" "))
 //			val vec = features.buildFeatureVector(post)
