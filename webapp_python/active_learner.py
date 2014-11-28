@@ -1,13 +1,13 @@
 from os.path import join, abspath
 from post import Post, Prediction
-from sklearn.cross_validation import cross_val_score, train_test_split
 import simplejson as json
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import Perceptron
-from sklearn.metrics import confusion_matrix
 import numpy as np
 import collections
 from collections import Counter
+
+
 
 
 class active_learner(object):
@@ -170,17 +170,4 @@ class active_learner(object):
 		predictions = [Prediction(classifier.classes_[confOrders[-1]], confidences[index][confOrders[-1]], index) for index, confOrders in enumerate(np.argsort(confidences))]
 		return predictions
 
-	def evaluate_classifier(self):
-		evaluation = {}
-		classifier, X_train, Y_train, _, _ = self.build_classifier()
-		evaluation["f1"]        = cross_val_score(classifier, X_train, Y_train, cv=5, scoring='f1').mean()
-		evaluation["recall"]    = cross_val_score(classifier, X_train, Y_train, cv=5, scoring='recall').mean()
-		evaluation["precision"] = cross_val_score(classifier, X_train, Y_train, cv=5, scoring='precision').mean()
-		return evaluation
-
-	def conf_matrix(self):
-		classifier, X, y, _, _ = self.build_classifier(use_no_idea = False)
-		X_train, X_test, y_train, y_test = train_test_split(X, y, random_state = 0)
-		y_pred = classifier.fit(X_train, y_train).predict(X_test)
-		return confusion_matrix(y_test, y_pred)
 
