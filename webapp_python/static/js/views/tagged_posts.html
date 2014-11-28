@@ -1,14 +1,18 @@
 <table class="table table-condensed table-striped">
 	<tr>
 		<th>Text</th>
-		<th>Daniel</th>
-		<th>Stefan</th>
-		<th>Dima</th>
+		<th>Daniel (Demand)</th>
+		<th>Stefan (Demand)</th>
+		<th>Dima (Demand)</th>
+		<th>Daniel (Product)</th>
+		<th>Stefan (Product)</th>
+		<th>Dima (Product)</th>
 	</tr>
 	<% for (index in posts){ 
 		post = posts[index];
 		var style = "";
-		if(_.uniq(_.map(post.demand_votes,function(value,key){return value})).length>1){
+		if(_.uniq(_.map(post.demand_votes,function(value,key){return value})).length>1 || 
+			_.uniq(_.map(post.category_votes,function(value,key){return value})).length>1){
 			style = "class='danger'";
 		}
 
@@ -18,6 +22,9 @@
 			<td><%= post.demand_votes.daniel %></td>
 			<td><%= post.demand_votes.stefan %></td>
 			<td><%= post.demand_votes.dima %></td>
+			<td><%= post.category_votes.daniel %></td>
+			<td><%= post.category_votes.stefan %></td>
+			<td><%= post.category_votes.dima %></td>
 		</tr>
 	<% } %>
 </table>
