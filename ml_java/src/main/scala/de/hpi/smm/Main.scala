@@ -17,7 +17,8 @@ object Main {
 			.share()
 			.thankYou()
 		extractPostsLinewise { post =>
-			println(post.text)
+			println(post.data)
+			println(post.tokens.mkString(" "))
 //			val vec = features.buildFeatureVector(post)
 //			writer.writeNext(vec.map(_.toString))
 		}(1)
@@ -37,7 +38,9 @@ object Main {
 			val id = line(0)
 			val title = line(1)
 			val text = line(2)
-			extractor(Post(id, title, text))
+			val wholeText = s"$title $text"
+			val tokens = TokenizerHelper.tokenize(wholeText, false)
+			extractor(Post(id, title, text, tokens))
 			line = reader.readNext()
 		}
 		reader.close()

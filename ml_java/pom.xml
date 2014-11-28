@@ -18,6 +18,18 @@
 	</properties>
 
 	<dependencies>
+		<!-- For tokenization, stemming, stopping -->
+		<dependency>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-core</artifactId>
+			<version>4.8.1</version>
+		</dependency>
+		<!-- Commmon analyzers, e.g. for English, PorterStemmer -->
+		<dependency>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-analyzers-common</artifactId>
+			<version>4.8.1</version>
+		</dependency>
 		<!-- CSV reader -->
 		<dependency>
 			<groupId>net.sf.opencsv</groupId>
