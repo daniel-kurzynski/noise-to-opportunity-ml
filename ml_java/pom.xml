@@ -65,6 +65,11 @@
             <artifactId>spark-mllib_2.10</artifactId>
             <version>1.1.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.lambdaworks</groupId>
+            <artifactId>jacks_2.11</artifactId>
+            <version>2.3.3</version>
+        </dependency>
 
         <dependency>
             <groupId>com.typesafe</groupId>
