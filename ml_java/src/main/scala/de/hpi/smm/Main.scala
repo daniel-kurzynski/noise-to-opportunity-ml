@@ -1,12 +1,14 @@
 package de.hpi.smm
 
-import java.io.{FileReader, File}
+import java.io.{FileWriter, FileReader, File}
 
-import au.com.bytecode.opencsv.CSVReader
+import au.com.bytecode.opencsv.{CSVWriter, CSVReader}
 
 object Main {
 
 	def main(args: Array[String]): Unit = {
+		val featureFile = new File("../n2o_data/features.csv")
+		val writer = new CSVWriter(new FileWriter(featureFile))
 		val features = FeatureBuilder()
 			.questionNumber()
 			.imperativeWords()
@@ -15,8 +17,10 @@ object Main {
 			.share()
 			.thankYou()
 		extractPostsLinewise { post =>
-			features.buildFeatureVector(post)
+			val vec = features.buildFeatureVector(post)
+			writer.writeNext(vec.map(_.toString))
 		}(1)
+		writer.close()
 	}
 
 	def extractPostsLinewise(extractor: Post => Unit)(count: Int = Int.MaxValue): Unit = {
