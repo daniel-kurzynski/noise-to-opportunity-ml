@@ -1,6 +1,5 @@
 
 from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.linear_model import Perceptron
 import simplejson as json, numpy as np, collections
 
 
@@ -24,7 +23,8 @@ class Post(object):
 		else:
 			return freqs[0][0]
 
-def build_classifier_and_data(class_names):
+def build_data(class_names):
+	print "=== Bag of Words Extractor ==="
 	with open('../webapp_python/data/classification.json') as infile:
 		classification = json.JSONDecoder(object_pairs_hook=collections.OrderedDict).decode(infile.read())
 
@@ -45,4 +45,4 @@ def build_classifier_and_data(class_names):
 	X_train   = vectorizer.fit_transform([post.data for post in labeled_posts])
 	y_train = np.array([post.get_class() for post in labeled_posts])
 
-	return Perceptron(n_iter = 50), X_train, y_train
+	return X_train, y_train

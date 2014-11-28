@@ -1,8 +1,8 @@
 from os.path import dirname, join
 import numpy as np
-from sklearn.linear_model import Perceptron
 
-def build_classifier_and_data(class_names):
+def build_data(class_names):
+	print "=== Custom Feature Extractor ==="
 	ids, features, target = [], [], []
 	with open(join(dirname(dirname(__file__)), "n2o_data/features.csv")) as f:
 		first = True
@@ -17,5 +17,5 @@ def build_classifier_and_data(class_names):
 			features.append([float(val) for val in content[1:-1]])
 			target.append(class_names[cls])
 
-	return Perceptron(n_iter = 50), np.array(features), np.array(target)
+	return np.array(features), np.array(target)
 
