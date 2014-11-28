@@ -23,11 +23,11 @@ object Main {
 
 		extractPostsLinewise { post =>
 			features.touch(post)
-			//println(post.data)
-			//println(post.tokens.mkString(" "))
+			println(post.wholeText)
+			println(post.numberOfQuestions)
 //			val vec = features.buildFeatureVector(post)
 //			writer.writeNext(vec.map(_.toString))
-		}()
+		}(1)
 		val featureFile = new File("../n2o_data/features.csv")
 		val writer = new CSVWriter(new FileWriter(featureFile), CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER)
 //		writer.writeNext(features.names)
@@ -57,36 +57,41 @@ object Main {
 			val text = line(2)
 
 			val rawPost = RawPost(id, title, text)
-			val tokens = TokenizerHelper.tokenize(rawPost.wholeText, false)
-      if (classified_posts.keySet.contains(id))
-			  extractor(Post(id, title, text, tokens, classified_posts(id)))
+
+			if (classified_posts.keySet.contains(id)) {
+				val sentences = detectSentences(rawPost)
+				extractor(Post(id, title, text, sentences, classified_posts(id)))
+			}
 			line = reader.readNext()
 		}
 		reader.close()
 	}
 
-	def detectSentences(rawPost: RawPost): Unit = {
+	def detectSentences(rawPost: RawPost): Seq[Seq[Word]] = {
 		val props = new util.Properties()
-//		props.put("annotators", "tokenize, ssplit, pos, lemma, ner, parse, dcoref")
-		props.put("annotators", "ssplit")
+//		props.put("annotators", "tokenize,ssplit,pos,lemma,ner")
+		props.put("annotators", "tokenize,ssplit")
 		val pipeline = new StanfordCoreNLP(props)
-//
+
 		val document = new Annotation(rawPost.wholeText)
-//
-//		pipeline.annotate(document)
-//
-//		val sentences: util.List[CoreMap] = document.get(classOf[SentencesAnnotation])
-//
-//		sentences.asScala.foreach { sentence =>
-//			sentence.get(classOf[TokensAnnotation]).asScala.foreach { token =>
-//				val word = token.get(classOf[TextAnnotation])
-//				val pos = token.get(classOf[PartOfSpeechAnnotation])
-//				val ner = token.get(classOf[NamedEntityTagAnnotation])
-//				print(s"$word ")
-//			}
-//			println()
-//		}
-//		println("##########################################################")
+
+		pipeline.annotate(document)
+
+		val annotatedSentences: util.List[CoreMap] = document.get(classOf[SentencesAnnotation])
+
+		var sentences = Vector[Vector[Word]]()
+
+		annotatedSentences.asScala.foreach { sentence =>
+			var currentSentence = Vector[Word]()
+			sentence.get(classOf[TokensAnnotation]).asScala.foreach { token =>
+				val word = token.get(classOf[TextAnnotation])
+				val pos = token.get(classOf[PartOfSpeechAnnotation])
+				val ner = token.get(classOf[NamedEntityTagAnnotation])
+				currentSentence :+= Word(word, pos, ner)
+			}
+			sentences :+= currentSentence
+		}
+		sentences
 	}
 
 
