@@ -6,10 +6,11 @@ import java.util
 import au.com.bytecode.opencsv.{CSVWriter, CSVReader}
 import com.lambdaworks.jacks.JacksMapper
 import de.hpi.smm.domain.{Word, RawPost, Post}
-import de.hpi.smm.feature_extraction.FeatureBuilder
+import de.hpi.smm.feature_extraction.{ImperativeNumberFeature, FeatureBuilder}
 import edu.stanford.nlp.ling.CoreAnnotations._
 import edu.stanford.nlp.pipeline.{Annotation, StanfordCoreNLP}
 import edu.stanford.nlp.util.CoreMap
+import edu.stanford.nlp.util.logging.RedwoodConfiguration
 import scala.collection.JavaConverters._
 
 object Main {
@@ -26,13 +27,11 @@ object Main {
 		extractPostsLinewise { post =>
 			features.touch(post)
 			println(post.wholeText)
-
-//			val vec = features.buildFeatureVector(post)
-//			writer.writeNext(vec.map(_.toString))
+			println(new ImperativeNumberFeature().extract(post))
 		}(1)
 		val featureFile = new File("../n2o_data/features.csv")
 		val writer = new CSVWriter(new FileWriter(featureFile), CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER)
-//		writer.writeNext(features.names)
+		writer.writeNext(features.names)
 		features.buildFeatureVector { (post, instance) =>
 			val line = new Array[String](instance.size + 2)
 			line(0) = post.id
@@ -72,7 +71,11 @@ object Main {
 //		props.put("annotators", "tokenize,ssplit,pos,lemma,ner")
 		props.put("annotators", "tokenize,ssplit,pos")
 //		props.put("annotators", "tokenize,ssplit")
+
+		// shut down logging, initialize, start logging
+		RedwoodConfiguration.empty().capture(System.err).apply()
 		val pipeline = new StanfordCoreNLP(props)
+		RedwoodConfiguration.current().clear().apply()
 
 		val document = new Annotation(rawPost.wholeText)
 

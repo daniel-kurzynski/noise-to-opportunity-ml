@@ -24,7 +24,12 @@ class ImperativeNumberFeature extends Feature {
 
 	override def extract(post: Post): Double = {
 		post.tokens.count { word =>
-			word.pos == "VB"
+			if (word.pos == "VB") {
+//				println(word)
+				true
+			}
+			else
+				false
 		}
 	}
 }
