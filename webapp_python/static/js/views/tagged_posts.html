@@ -10,6 +10,8 @@
 	</tr>
 	<% for (index in posts){ 
 		post = posts[index];
+		post.demand_votes = post.demand_votes || {};
+		post.category_votes = post.category_votes || {}
 		var style = "";
 		if(_.uniq(_.map(post.demand_votes,function(value,key){return value})).length>1 || 
 			_.uniq(_.map(post.category_votes,function(value,key){return value})).length>1){
