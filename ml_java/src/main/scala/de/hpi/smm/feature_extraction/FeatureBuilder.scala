@@ -1,4 +1,6 @@
-package de.hpi.smm
+package de.hpi.smm.feature_extraction
+
+import de.hpi.smm.domain.Post
 
 class FeatureBuilder {
 	def names: Array[String] = features.map(_.name).toArray
@@ -16,7 +18,7 @@ class FeatureBuilder {
 	 * especially many questions in a row sometimes
 	 */
 	def questionNumber(): FeatureBuilder = {
-		// TODO IMPLEMENT
+		addFeature(new QuestionNumberFeature())
 		this
 	}
 
@@ -24,7 +26,7 @@ class FeatureBuilder {
 	 * Demand posts often contain imperative clauses like "help me", "share your information"
 	 */
 	def imperativeWords(): FeatureBuilder = {
-		// TODO IMPLEMENT
+		addFeature(new ImperativeNumberFeature())
 		this
 	}
 
@@ -68,15 +70,10 @@ class FeatureBuilder {
 		posts ::= post
 		features.foreach { feature => feature.touch(post) }
 	}
-	def buildFeatureVector(): Array[Array[Double]] = {
-		val featureVec = Array.ofDim[Double](posts.size, features.size)
-		val featuresWithIndex = features.zipWithIndex
-		posts.zipWithIndex.foreach { case (post, i) =>
-			features.zipWithIndex.foreach { case (feature, j) =>
-				featureVec(i)(j) = feature.extract(post)
-			}
+	def buildFeatureVector(vectorHandler: (Post, Array[Double]) => Unit): Unit = {
+		posts.foreach { post =>
+      vectorHandler(post, features.map { feature => feature.extract(post) }.toArray)
 		}
-		featureVec
 	}
 
 	private def addFeature(feature: Feature): Unit = {
