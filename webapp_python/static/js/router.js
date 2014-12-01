@@ -60,9 +60,12 @@ define(['jquery',
 		},
 
 		changeContentView: function(view){
+			if(this.currentView)
+				this.currentView.undelegateEvents()
+			this.currentView = view;
 			this.$el.children().detach();
 			this.$el.append(view.$el);
-		}
+		},
 
 		
 	});///////////////////////////////////////////////////////
