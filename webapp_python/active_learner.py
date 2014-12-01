@@ -38,7 +38,7 @@ class active_learner(object):
 		with open('data/classification.json', 'w') as outfile:
 			json.dump(self.classification, outfile, indent = 2)
 
-	def tag_post(self, post_id, key, value):
+	def tag_post(self, tagger, post_id, key, value):
 		if not post_id in self.classification:
 			self.classification[post_id] = {}
 		if not key in self.classification[post_id]:
@@ -99,7 +99,7 @@ class active_learner(object):
 	def predicted_posts(self, type):
 		if self.not_enough_posts_tagged():
 			print "Choosing random posts"
-			return [(post, Prediction()) for post in np.random.choice(self.posts, 5, False)],[]
+			return [Post.fromPost(post) for post in np.random.choice(self.posts, 5, False)]
 
 		print "Choosing uncertain posts"
 
@@ -124,7 +124,7 @@ class active_learner(object):
 
 		return [Post.fromPost(unlabeled_posts[prediction.index],prediction=prediction) for prediction in low_confidence_predictions]
 
-	def determine_tagged_posts(self, withoutMine = True):
+	def determine_tagged_posts(self, tagger = None):
 		tagged_posts = [
 			Post.fromPost(
 				post,
@@ -134,7 +134,7 @@ class active_learner(object):
 				category=self.determine_class_from_conflicting_votes(post.id,"category")
 			)
 			for post in self.posts
-			if post.id in self.classification and not (withoutMine and self.tagger_name in self.classification[post.id].get("demand", {}))
+			if post.id in self.classification and not (tagger and tagger in self.classification[post.id].get("demand", {}))
 		]
 		return tagged_posts
 

@@ -24,12 +24,14 @@ def certain_posts():
 
 @app.route("/all_tagged_posts")
 def all_tagged_posts():
-	posts = learner.determine_tagged_posts(withoutMine = False)
+	posts = learner.determine_tagged_posts()
 	return render_template("posts.jinja2", posts = posts, json=json)
 
 @app.route("/tagged_by_others_posts")
 def tagged_by_others_posts():
-	posts = learner.determine_tagged_posts()
+	tagger = request.args.get('tagger', 'anonymous');
+	print tagger;
+	posts = learner.determine_tagged_posts(tagger=tagger)
 	return render_template("posts.jinja2", posts = posts, json=json)
 
 @app.route("/conflicted_posts")
@@ -45,11 +47,11 @@ def post(post_id):
 
 @app.route('/classify_post/<post_id>', methods=['POST'])
 def tag_post(post_id):
-	print request.form
+	tagger=request.form['tagger'];
 	if 'demand' in request.form:
-		learner.tag_post(post_id, 'demand', request.form['demand'])
+		learner.tag_post(tagger, post_id, 'demand', request.form['demand'])
 	if 'category' in request.form:
-		learner.tag_post(post_id, 'category', request.form['category'])
+		learner.tag_post(tagger, post_id, 'category', request.form['category'])
 	return ""
 
 if __name__ == "__main__":

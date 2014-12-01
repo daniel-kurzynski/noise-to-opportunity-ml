@@ -2,9 +2,9 @@ define(['jquery',
 	'underscore',
 	'backbone',
 	'views/demand_classification_view',
-	'views/overview_view'
-	
-	], function($, _, Backbone, DemandClassificationView, DemandView) {
+	'views/overview_view',
+	'views/tagger_view'	
+	], function($, _, Backbone, DemandClassificationView, DemandView, TaggerView) {
 
 
 	return Backbone.Router.extend({
@@ -19,7 +19,8 @@ define(['jquery',
 			"tagged_by_others_posts/:id(/)": "classifyTaggedPost",
 			"conflicted_posts(/)": "classifyConflictedPost",
 			"conflicted_posts/:id(/)": "classifyConflictedPost",
-			"demand": "displayDemandView"
+			"demand": "displayDemandView",
+			"tagger": "displayTaggerView"
 		},
 
 		initialize: function(options){
@@ -27,6 +28,7 @@ define(['jquery',
 			if(!options.$el)
 				console.error("Router constructor called without $el");
 			this.$el = options.$el;
+			this.navigationView = options.navigationView;
 		},
 
 		////////////// Routes //////////////////
@@ -34,6 +36,10 @@ define(['jquery',
 		home: function() {
 			console.log("Routing home…");
 			this.classifyUncertainPost();
+		},
+
+		isTaggerNameSet:function(){
+			return(localStorage.tagger && localStorage.tagger!="")
 		},
 
 		classifyUncertainPost: function(postId) {
@@ -50,8 +56,22 @@ define(['jquery',
 		},
 
 		displayDemandClassificationView: function(postId, route) {
-			var demandClassificationView = new DemandClassificationView({ postId: postId, route: route });
-			this.changeContentView(demandClassificationView);
+			if(this.isTaggerNameSet()){
+				var demandClassificationView = new DemandClassificationView({ postId: postId, route: route });
+				this.changeContentView(demandClassificationView);
+			}
+			else{
+				this.displayTaggerView();
+			}
+		},
+
+		displayTaggerView: function() {
+			Backbone.history.navigate("#tagger", {replace: true});
+			var taggerView  = new TaggerView({
+				router:this,
+				navigationView: this.navigationView
+			});
+			this.changeContentView(taggerView);
 		},
 
 		displayDemandView: function(){

@@ -37,7 +37,8 @@ define([
 				"click .btn-demand":				"showCategoryButtons",
 				"click .btn-category":              "showNewPost",
 				"click .btn-next":                  "showNewPost",
-				"keydown":                          "keyAction"
+				"keydown":                          "keyAction",
+				"change .tagger-name":				"changeTaggerName"
 			},
 
 			initialize: function(options) {
@@ -47,6 +48,8 @@ define([
 				this.currentPost = new Post;
 				this.posts = new Posts;
 				this.posts.on("add remove", this.render);
+
+				this.localStorage = localStorage || {}
 
 				$(document).bind('keypress', this.keyAction);
 
@@ -90,6 +93,7 @@ define([
 
 			tagPost: function(event) {
 				var data = $(event.target).data();
+				data.tagger = localStorage.tagger
 				$.post('classify_post/' + this.currentPost.id, data);
 			},
 
@@ -114,7 +118,7 @@ define([
 			// Loads next posts from specified route.
 			loadPostsFromRoute: function() {
 				var self = this;
-				$.get("/" + this.route, function(data) {
+				$.get("/" + this.route, {tagger: localStorage.tagger}, function(data) {
 					data = JSON.parse(data);
 					if (data.posts.length === 0) {
 						console.log("No more posts.");
@@ -123,6 +127,11 @@ define([
 					console.log("Loaded " + data.posts.length + " more posts.");
 					self.posts.add(data.posts);
 				})
+			},
+
+			changeTaggerName:function(){
+				this.localStorage.taggerName = this.$el.find('#tagger-name').val();
+				console.log(this.localStorage.taggerName);
 			}
 
 

@@ -26,9 +26,16 @@ requirejs.config({
 
 define([
 	'router',
+	'views/navigation_view',
 	'bootstrap'
-	], function(Router){
-	new Router({$el: $(".content")});
-	Backbone.history.start();
+	], function(Router, NavigationView){
+		var navigationView = new NavigationView({$el: $(".navigation-view")});
+
+		new Router({
+			$el: $(".content"), 
+			navigationView:navigationView
+		});
+
+		Backbone.history.start();
 
 });
