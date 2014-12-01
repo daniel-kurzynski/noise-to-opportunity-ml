@@ -17,7 +17,6 @@ class active_learner(object):
 		self.posts = []
 		self.load_posts()
 		self.load_classification()
-		self.tagger_name = open("tagger_name.conf").read().strip()
 
 	def load_posts(self):
 		with open(join(abspath("../n2o_data"), "linked_in_posts.csv")) as f:
