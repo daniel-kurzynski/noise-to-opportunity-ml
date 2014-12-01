@@ -54,9 +54,9 @@ class active_learner(object):
 		return not (numberOfDemandPosts > 0 and numberOfNoDemandPosts > 0)
 
 	def determine_class_from_conflicting_votes(self, post_id, key):
-		votes = self.classification[post_id][key]
+		votes = self.classification.get(post_id,{}).get(key,{});
 		freqs = Counter(votes.values()).most_common(2)
-		if len(freqs) > 1 and freqs[0][1] == freqs[1][1]:
+		if (len(freqs) == 0) or (len(freqs) > 1 and freqs[0][1] == freqs[1][1]):
 			# First two votes have the same count --> conflict --> do not predict anything
 			return None
 		else:
