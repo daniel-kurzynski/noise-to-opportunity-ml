@@ -43,7 +43,7 @@ class active_learner(object):
 		if not key in self.classification[post_id]:
 			self.classification[post_id][key] = {}
 
-		self.classification[post_id][key][self.tagger_name] = value
+		self.classification[post_id][key][tagger] = value
 
 		self.save_classification()
 
