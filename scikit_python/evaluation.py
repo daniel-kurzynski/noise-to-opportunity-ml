@@ -40,23 +40,35 @@ def evaluate_classifier(base_classifier, X, y):
 	print overall_confusion
 
 
+def print_mosth_weighted_features(indices, vocabulary, coef):
+	for index in indices:
+		print "%20s %.12f" %(vocabulary[index],coef[index] )
 
-def most_weighted_features(X,y, vectorizer):
+def most_weighted_features(classifier, X, y, vectorizer):
 	classifier.fit(X,y)
 	indices = np.argsort(classifier.coef_[0])
-	#print classifier.coef_[0][indices][:10]
+	demand_indices = indices[:10]
+	no_demand_indices = indices[-10:]
+
+	inverted_vocabulary = dict([[v,k] for k,v in vectorizer.vocabulary_.items()])
+
+	print "=== demand words ==="
+	print_mosth_weighted_features(demand_indices,inverted_vocabulary,classifier.coef_[0])
+
+	print "=== no demand words ==="
+	print_mosth_weighted_features(no_demand_indices,inverted_vocabulary,classifier.coef_[0])
+
+
 
 if __name__ == "__main__":
 	classifier = LogisticRegression()
 	classifier = Perceptron(n_iter = 50)
 
-	for build_data in [bow]:
+	for build_data in [bow, custom_features]:
 		X, y, vectorizer = build_data()
 		if vectorizer:
-			most_weighted_features(X,y, vectorizer)
-		# evaluate_classifier(classifier, X, y)
-		# cm = conf_matrix(classifier, X, y)
-		# print cm
+			most_weighted_features(classifier, X, y, vectorizer)
+		evaluate_classifier(classifier, X, y)
 		# Show confusion matrix in a separate window
 		# plt.matshow(cm)
 		# plt.title('Confusion matrix')
