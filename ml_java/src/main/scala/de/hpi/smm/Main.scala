@@ -16,6 +16,8 @@ import scala.collection.JavaConverters._
 object Main {
 
 	def main(args: Array[String]): Unit = {
+		// TODO
+		// Analyze tf-idf on both demand and no-demand
 		val features = FeatureBuilder()
 			.questionNumber()
 //			.imperativeWords()
