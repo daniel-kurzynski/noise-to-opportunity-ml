@@ -49,6 +49,8 @@ def print_mosth_weighted_features(indices, vocabulary, coef):
 
 def most_weighted_features(classifier, X, y, vectorizer):
 	classifier.fit(X, y)
+	if not hasattr(classifier, "coef_"):
+		return
 	indices = np.argsort(classifier.coef_[0])
 	demand_indices = indices[:10]
 	no_demand_indices = indices[-10:]
@@ -75,7 +77,7 @@ if __name__ == "__main__":
 
 	for build_data in [bow, custom_features]:
 		X, y, vectorizer = build_data()
-		if vectorizer and hasattr(classifier, "coef_"):
+		if vectorizer:
 			most_weighted_features(classifier, X, y, vectorizer)
 		X = X.todense() if issparse(X) else X
 		evaluate_classifier(classifier, X, y)
