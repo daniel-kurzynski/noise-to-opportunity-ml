@@ -54,13 +54,21 @@ def conf_matrix(classifier, X, y):
 	y_pred = classifier.fit(X_train, y_train).predict(X_test)
 	return confusion_matrix(y_true, y_pred)
 
+
+def most_weighted_features(X,y, vectorizer):
+	classifier.fit(X,y)
+	indices = np.argsort(classifier.coef_[0])
+	#print classifier.coef_[0][indices][:10]
+
 if __name__ == "__main__":
 	classifier = Perceptron(n_iter = 50)
-	for build_data in [bow, custom_features]:
-		print
-		X, y = build_data()
-		evaluate_classifier(classifier, X, y)
-		cm = conf_matrix(classifier, X, y)
+
+	for build_data in [bow]:
+		X, y, vectorizer = build_data()
+		if vectorizer:
+			most_weighted_features(X,y, vectorizer)
+		# evaluate_classifier(classifier, X, y)
+		# cm = conf_matrix(classifier, X, y)
 		# print cm
 		# Show confusion matrix in a separate window
 		# plt.matshow(cm)

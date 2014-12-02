@@ -16,5 +16,5 @@ def build_data():
 			features.append([float(val) for val in content[1:-1]])
 			target.append(cls)
 
-	return np.array(features), np.array(target)
+	return np.array(features), np.array(target), None
 

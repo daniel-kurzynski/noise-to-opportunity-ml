@@ -45,4 +45,4 @@ def build_data():
 	X_train   = vectorizer.fit_transform([post.data for post in labeled_posts])
 	y_train = np.array([post.get_class() for post in labeled_posts])
 
-	return X_train, y_train
+	return X_train, y_train, vectorizer
