@@ -8,7 +8,8 @@ from scipy.sparse import issparse
 from bag_of_words import build_data as bow
 from custom_features import build_data as custom_features
 
-from sklearn.linear_model import LogisticRegression, Perceptron
+from sklearn.linear_model import LogisticRegression, Perceptron, SGDClassifier, RidgeClassifier
+from sklearn.svm import LinearSVC
 from sklearn.tree import DecisionTreeClassifier
 
 def score(y_true, y_pred, score_function, label_index):
@@ -42,7 +43,6 @@ def evaluate_classifier(base_classifier, X, y):
 	print "Recall-Demand:    ", overall_tp / float(overall_tp + overall_confusion[0][1]), " (micro)"
 	print overall_confusion
 
-
 def print_mosth_weighted_features(indices, vocabulary, coef):
 	for index in indices:
 		print "%20s %.12f" %(vocabulary[index],coef[index] )
@@ -67,6 +67,9 @@ if __name__ == "__main__":
 	classifier = LogisticRegression()
 	classifier = Perceptron(n_iter = 50)
 	classifier = DecisionTreeClassifier()
+	classifier = SGDClassifier()
+	classifier = RidgeClassifier()
+	classifier = LinearSVC()
 
 	print classifier.__class__
 
