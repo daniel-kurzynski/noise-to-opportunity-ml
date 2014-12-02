@@ -1,32 +1,24 @@
-from sklearn.metrics import f1_score, recall_score, \
-	precision_score, make_scorer, \
-	confusion_matrix
-from sklearn.cross_validation import cross_val_score, train_test_split, ShuffleSplit
+from sklearn.metrics import recall_score, \
+	precision_score, confusion_matrix
+from sklearn.cross_validation import ShuffleSplit
 from sklearn.base import clone
-
+import numpy as np
 
 from bag_of_words import build_data as bow
 from custom_features import build_data as custom_features
 
-from sklearn.linear_model import Perceptron
+from sklearn.linear_model import LogisticRegression, Perceptron
 
 def score(y_true, y_pred, score_function, label_index):
 	return score_function(y_true, y_pred, average=None)[label_index]
 
 def evaluate_classifier(base_classifier, X, y):
-	# f1_demand_scorer           = make_scorer(score, greater_is_better=True, score_function=f1_score, label_index=0)
-	# f1_no_demand_scorer        = make_scorer(score, greater_is_better=True, score_function=f1_score, label_index=1)
-	recall_demand_scorer       = make_scorer(score, greater_is_better=True, score_function=recall_score, label_index=0)
-	recall_no_demand_scorer    = make_scorer(score, greater_is_better=True, score_function=recall_score, label_index=1)
-	precision_demand_scorer    = make_scorer(score, greater_is_better=True, score_function=precision_score, label_index=0)
-	precision_no_demand_scorer = make_scorer(score, greater_is_better=True, score_function=precision_score, label_index=1)
+	splitter = ShuffleSplit(X.shape[0], n_iter = 5, test_size = 0.2, random_state = 17)
 
+	precision_scores = []
+	recall_scores    = []
 
-	# print "F1-demand          ", cross_val_score(classifier, X, y, cv=5, scoring=f1_demand_scorer).mean()
-	# print "F1-no-demand       ", cross_val_score(classifier, X, y, cv=5, scoring=f1_no_demand_scorer).mean()
-
-	splitter = ShuffleSplit(X.shape[0], n_iter = 5, test_size = 0.2)
-
+	overall_confusion = np.array([[0, 0], [0, 0]])
 
 	for train_index, test_index in splitter:
 		classifier = clone(base_classifier)
@@ -35,32 +27,25 @@ def evaluate_classifier(base_classifier, X, y):
 		y_predict = classifier.predict(X[test_index])
 		y_true  = y[test_index]
 
-		print confusion_matrix(y_true, y_predict)
-		# print precision_score(y_true, y_predict, average = None)
-		print recall_score(y_true, y_predict, average = None)
+		overall_confusion = overall_confusion + confusion_matrix(y_true, y_predict)
+		precision_scores.append(precision_score(y_true, y_predict, average = None)[0])
+		recall_scores.append(recall_score(y_true, y_predict, average = None)[0])
 
+	print "Precision-Demand: ", sum(precision_scores) / float(len(precision_scores)),     " (macro)"
+	print "Recall-Demand:    ", sum(recall_scores)    / float(len(recall_scores)),        " (macro)"
 
+	overall_tp = overall_confusion[0][0]
+	print "Precision-Demand: ", overall_tp / float(overall_tp + overall_confusion[1][0]), " (micro)"
+	print "Precision-Demand: ", overall_tp / float(overall_tp + overall_confusion[0][1]), " (micro)"
+	print overall_confusion
 
-
-
-	# print "Recall-demand      ", cross_val_score(base_classifier, X, y, cv=5, scoring=recall_demand_scorer).mean()
-	# print "Recall-no-demand   ", cross_val_score(base_classifier, X, y, cv=5, scoring=recall_no_demand_scorer).mean()
-	#
-	# print "Precision-demand   ", cross_val_score(base_classifier, X, y, cv=5, scoring=precision_demand_scorer).mean()
-	# print "Precision-no-demand", cross_val_score(base_classifier, X, y, cv=5, scoring=precision_no_demand_scorer).mean()
-
-def conf_matrix(classifier, X, y):
-	X_train, X_test, y_train, y_true = train_test_split(X, y, random_state = 0)
-	y_pred = classifier.fit(X_train, y_train).predict(X_test)
-	return confusion_matrix(y_true, y_pred)
 
 if __name__ == "__main__":
+	classifier = LogisticRegression()
 	classifier = Perceptron(n_iter = 50)
 	for build_data in [bow, custom_features]:
-		print
 		X, y = build_data()
 		evaluate_classifier(classifier, X, y)
-		cm = conf_matrix(classifier, X, y)
 		# print cm
 		# Show confusion matrix in a separate window
 		# plt.matshow(cm)
