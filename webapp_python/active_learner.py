@@ -63,8 +63,7 @@ class active_learner(object):
 
 	def post(self, post_id):
 		posts = [post for post in self.posts if post.id == post_id]
-		classifier, _,_,X_predict, _ = self.build_classifier(posts)
-		return [Post.fromPost(posts[prediction.index],prediction=prediction) for prediction in self.calculate_predictions(classifier, X_predict)]
+		return posts;
 
 	def build_classifier(self, unlabeled_posts = None, use_no_idea = True):
 		labeled_posts  =  [post

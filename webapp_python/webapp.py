@@ -2,6 +2,7 @@ from flask import Flask, request, render_template,session
 from active_learner import active_learner
 import simplejson as json
 from flask.ext.compress import Compress
+import numpy as np
 
 compress = Compress()
 app = Flask(__name__)
@@ -11,6 +12,19 @@ learner = active_learner()
 @app.route("/")
 def hello():
 	return render_template("index.html")
+
+@app.route("/posts")
+def posts():
+	tagger = request.args.get('tagger', 'anonymous');
+	posts = learner.predicted_posts(type = "uncertain")
+	certain = learner.predicted_posts(type = "certain")
+	tagged = learner.determine_tagged_posts(tagger=tagger)
+	conflicted = learner.determine_conflicted_posts()
+	posts.extend(certain)
+	posts.extend(tagged)
+	posts.extend(conflicted)
+	posts = np.random.choice(posts, 10, False)
+	return render_template("posts.jinja2", posts = posts, json=json)
 
 @app.route("/uncertain_posts")
 def uncertain_posts():

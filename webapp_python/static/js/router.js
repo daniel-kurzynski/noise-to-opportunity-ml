@@ -11,6 +11,8 @@ define(['jquery',
 
 		routes: {
 			"":    "home",
+			"posts(/)": "classifyPost",
+			"posts/:id(/)": "classifyPost",
 			"uncertain_posts(/)": "classifyUncertainPost",
 			"uncertain_posts/:id(/)": "classifyUncertainPost",
 			"certain_posts(/)": "classifyCertainPost",
@@ -35,13 +37,16 @@ define(['jquery',
 
 		home: function() {
 			console.log("Routing home…");
-			this.classifyUncertainPost();
+			this.classifyPost();
 		},
 
 		isTaggerNameSet:function(){
 			return(localStorage.tagger && localStorage.tagger!="")
 		},
 
+		classifyPost: function(postId) {
+			this.displayDemandClassificationView(postId, "posts");
+		},
 		classifyUncertainPost: function(postId) {
 			this.displayDemandClassificationView(postId, "uncertain_posts");
 		},
