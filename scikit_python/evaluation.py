@@ -36,7 +36,7 @@ def evaluate_classifier(base_classifier, X, y):
 
 	overall_tp = overall_confusion[0][0]
 	print "Precision-Demand: ", overall_tp / float(overall_tp + overall_confusion[1][0]), " (micro)"
-	print "Precision-Demand: ", overall_tp / float(overall_tp + overall_confusion[0][1]), " (micro)"
+	print "Recall-Demand: ",    overall_tp / float(overall_tp + overall_confusion[0][1]), " (micro)"
 	print overall_confusion
 
 
