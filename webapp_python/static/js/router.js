@@ -11,6 +11,7 @@ define(['jquery',
 
 		routes: {
 			"":    "home",
+			"posts": "classifyPost",
 			"uncertain_posts(/)": "classifyUncertainPost",
 			"uncertain_posts/:id(/)": "classifyUncertainPost",
 			"certain_posts(/)": "classifyCertainPost",
@@ -42,6 +43,9 @@ define(['jquery',
 			return(localStorage.tagger && localStorage.tagger!="")
 		},
 
+		classifyPost: function(postId) {
+			this.displayDemandClassificationView(postId, "posts");
+		},
 		classifyUncertainPost: function(postId) {
 			this.displayDemandClassificationView(postId, "uncertain_posts");
 		},
