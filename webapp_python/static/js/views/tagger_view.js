@@ -8,10 +8,13 @@ define([
 			template: _.template(TaggerViewTemplate),
 
 			events: {
-				"click .tagger-name-button": "changeTaggerName"
+				"click .tagger-name-button": "changeTaggerName",
+				"keydown #tagger-name-input": "keyAction"
 			},
 
 			initialize: function(options) {
+				_.bindAll(this, "keyAction");
+
 				if(!window.localStorage)
 					window.localStorage = {};
 
@@ -23,6 +26,13 @@ define([
 
 			render: function() {
 				this.$el.html(this.template({tagger:localStorage.tagger}));
+			},
+
+			keyAction:function(){
+				var code = (event.keyCode || event.which);
+				if(code==13){
+					this.changeTaggerName();
+				}
 			},
 
 			changeTaggerName:function(){
