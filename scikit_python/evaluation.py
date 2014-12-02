@@ -3,11 +3,13 @@ from sklearn.metrics import recall_score, \
 from sklearn.cross_validation import ShuffleSplit
 from sklearn.base import clone
 import numpy as np
+from scipy.sparse import issparse
 
 from bag_of_words import build_data as bow
 from custom_features import build_data as custom_features
 
 from sklearn.linear_model import LogisticRegression, Perceptron
+from sklearn.tree import DecisionTreeClassifier
 
 def score(y_true, y_pred, score_function, label_index):
 	return score_function(y_true, y_pred, average=None)[label_index]
@@ -22,6 +24,7 @@ def evaluate_classifier(base_classifier, X, y):
 
 	for train_index, test_index in splitter:
 		classifier = clone(base_classifier)
+
 		classifier.fit(X[train_index], y[train_index])
 
 		y_predict = classifier.predict(X[test_index])
@@ -45,7 +48,7 @@ def print_mosth_weighted_features(indices, vocabulary, coef):
 		print "%20s %.12f" %(vocabulary[index],coef[index] )
 
 def most_weighted_features(classifier, X, y, vectorizer):
-	classifier.fit(X,y)
+	classifier.fit(X, y)
 	indices = np.argsort(classifier.coef_[0])
 	demand_indices = indices[:10]
 	no_demand_indices = indices[-10:]
@@ -63,11 +66,15 @@ def most_weighted_features(classifier, X, y, vectorizer):
 if __name__ == "__main__":
 	classifier = LogisticRegression()
 	classifier = Perceptron(n_iter = 50)
+	classifier = DecisionTreeClassifier()
+
+	print classifier.__class__
 
 	for build_data in [bow, custom_features]:
 		X, y, vectorizer = build_data()
-		if vectorizer:
+		if vectorizer and hasattr(classifier, "coef_"):
 			most_weighted_features(classifier, X, y, vectorizer)
+		X = X.todense() if issparse(X) else X
 		evaluate_classifier(classifier, X, y)
 		# Show confusion matrix in a separate window
 		# plt.matshow(cm)
