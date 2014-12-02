@@ -31,6 +31,7 @@ def build_data():
 	posts = []
 	with open("../n2o_data/linked_in_posts.csv") as f:
 		for line in f:
+			line = line.replace("<br />", "")
 			id, title, text, _, _, _, _, _, category, _, _ = line.replace("\\,", "<komma>").replace("\"", "").replace("\\", "").split(",")
 			title = title.replace("<komma>", ",")
 			text = text.replace("<komma>", ",")

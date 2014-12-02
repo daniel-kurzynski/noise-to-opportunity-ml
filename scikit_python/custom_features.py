@@ -7,6 +7,7 @@ def build_data():
 	with open(join(dirname(dirname(__file__)), "n2o_data/features.csv")) as f:
 		first = True
 		for line in f:
+			line = line.replace("<br />", "")
 			if first: first = False; continue
 			content = line.strip().split(",")
 			cls = content[-1]
