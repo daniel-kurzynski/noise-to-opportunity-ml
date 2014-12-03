@@ -5,12 +5,13 @@ from sklearn.base import clone
 import numpy as np
 from scipy.sparse import issparse
 
-from bag_of_words import build_data as bow
+from bag_of_words    import build_data as bow
 from custom_features import build_data as custom_features
 
 from sklearn.linear_model import LogisticRegression, Perceptron, SGDClassifier, RidgeClassifier
-from sklearn.svm import LinearSVC
-from sklearn.tree import DecisionTreeClassifier
+from sklearn.svm          import LinearSVC
+from sklearn.tree         import DecisionTreeClassifier
+from sklearn.naive_bayes  import MultinomialNB, BernoulliNB
 
 def score(y_true, y_pred, score_function, label_index):
 	return score_function(y_true, y_pred, average=None)[label_index]
@@ -68,10 +69,12 @@ def most_weighted_features(classifier, X, y, vectorizer):
 if __name__ == "__main__":
 	classifier = LogisticRegression()
 	classifier = Perceptron(n_iter = 50)
+	classifier = MultinomialNB()
 	classifier = DecisionTreeClassifier()
 	classifier = SGDClassifier()
 	classifier = RidgeClassifier()
 	classifier = LinearSVC()
+	classifier = BernoulliNB()
 
 	print classifier.__class__
 
