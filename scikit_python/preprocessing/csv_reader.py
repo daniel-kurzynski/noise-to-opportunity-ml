@@ -1,5 +1,3 @@
-from os.path import join, abspath
-
 class CSVReader(object):
 
 	def __init__(self):
@@ -11,8 +9,8 @@ class CSVReader(object):
 	"""
 	Reading CSV files in our fashion.
 	"""
-	def read(self, filename, extractor):
-		with open(join(abspath("../data"), filename)) as f:
+	def read(self, fpath, extractor):
+		with open(fpath) as f:
 			for line in f:
 				data, category = extractor(line)
 				if category not in self.target_mapping:

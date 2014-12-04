@@ -1,6 +1,7 @@
-
 from sklearn.feature_extraction.text import TfidfVectorizer
 import simplejson as json, numpy as np, collections
+
+from preprocessing import CSVReader
 
 
 class Post(object):
@@ -23,7 +24,7 @@ class Post(object):
 		else:
 			return freqs[0][0]
 
-def build_data():
+def build_demand_data():
 	print "=== Bag of Words Extractor ==="
 	with open('../webapp_python/data/classification.json') as infile:
 		classification = json.JSONDecoder(object_pairs_hook=collections.OrderedDict).decode(infile.read())
@@ -47,3 +48,9 @@ def build_data():
 	y_train = np.array([post.get_class() for post in labeled_posts])
 
 	return X_train, y_train, vectorizer
+
+
+def build_product_data():
+	csv_reader = CSVReader()
+	csv_reader.read("../n2o_data/brochures.csv", CSVReader.brochure_extractor)
+	return None, None, None, None

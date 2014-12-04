@@ -5,9 +5,6 @@ from sklearn.base import clone
 import numpy as np
 from scipy.sparse import issparse
 
-from bag_of_words    import build_data as bow
-from custom_features import build_data as custom_features
-
 from sklearn.linear_model import LogisticRegression, Perceptron, SGDClassifier, RidgeClassifier
 from sklearn.svm          import LinearSVC
 from sklearn.tree         import DecisionTreeClassifier
@@ -16,7 +13,18 @@ from sklearn.naive_bayes  import MultinomialNB, BernoulliNB
 def score(y_true, y_pred, score_function, label_index):
 	return score_function(y_true, y_pred, average=None)[label_index]
 
-def evaluate_classifier(base_classifier, X, y):
+def validate(base_classifier, X_train, y_train, X_test, y_true):
+	base_classifier.fit(X_train, y_train)
+	y_pred = base_classifier.predict(X_test)
+
+	recall = recall_score(y_true, y_pred)
+	prec = precision_score(y_true, y_pred)
+	conf_matrix = confusion_matrix(y_true, y_pred)
+
+	print "Recall:\t{:f}\nPrecision:\t{:f}".format(recall, prec)
+	print conf_matrix
+
+def cross_validate(base_classifier, X, y):
 	splitter = ShuffleSplit(X.shape[0], n_iter = 5, test_size = 0.2, random_state = 17)
 
 	precision_scores = []
@@ -46,7 +54,7 @@ def evaluate_classifier(base_classifier, X, y):
 
 def print_mosth_weighted_features(indices, vocabulary, coef):
 	for index in indices:
-		print "%20s %.12f" %(vocabulary[index],coef[index] )
+		print "{:^20s} {:f}".format(vocabulary[index], coef[index])
 
 def most_weighted_features(classifier, X, y, vectorizer):
 	classifier.fit(X, y)
@@ -65,25 +73,52 @@ def most_weighted_features(classifier, X, y, vectorizer):
 	print_mosth_weighted_features(no_demand_indices,inverted_vocabulary,classifier.coef_[0])
 
 
-
-if __name__ == "__main__":
-	classifier = LogisticRegression()
-	classifier = Perceptron(n_iter = 50)
-	classifier = MultinomialNB()
-	classifier = DecisionTreeClassifier()
-	classifier = SGDClassifier()
-	classifier = RidgeClassifier()
-	classifier = LinearSVC()
-	classifier = BernoulliNB()
-
-	print classifier.__class__
+def run_demand(classifier):
+	t = "===== Demand Evalutation of %s =====" %classifier.__class__.__name__
+	print t
+	from bag_of_words    import build_demand_data as bow
+	from custom_features import build_demand_data as custom_features
 
 	for build_data in [bow, custom_features]:
 		X, y, vectorizer = build_data()
 		if vectorizer:
 			most_weighted_features(classifier, X, y, vectorizer)
 		X = X.todense() if issparse(X) else X
-		evaluate_classifier(classifier, X, y)
+		cross_validate(classifier, X, y)
+	print "=" * len(t)
+
+def run_product(classifier):
+	from bag_of_words    import build_product_data as bow
+	from custom_features import build_product_data as custom_features
+	print "===== Product Evalutation ====="
+	# for build_data in [bow, custom_features]:
+
+	validate(classifier, *bow())
+
+	print "==============================="
+
+
+if __name__ == "__main__":
+	classifier = [
+		LogisticRegression(),
+		Perceptron(n_iter = 50),
+		MultinomialNB(),
+		DecisionTreeClassifier(),
+		SGDClassifier(),
+		RidgeClassifier(),
+		LinearSVC(),
+		BernoulliNB()]
+
+	LOG_REGRESSION, \
+	PERCEPTRON, \
+	MULTI_NB, \
+	DTC, \
+	SGD, \
+	RIDGE, \
+	LIN_SVC, \
+	BERNOULLI_NB = range(len(classifier))
+
+	run_demand(classifier[BERNOULLI_NB])
 		# Show confusion matrix in a separate window
 		# plt.matshow(cm)
 		# plt.title('Confusion matrix')
