@@ -17,11 +17,13 @@ def validate(base_classifier, X_train, y_train, X_test, y_true):
 	base_classifier.fit(X_train, y_train)
 	y_pred = base_classifier.predict(X_test)
 
+	print X_train.shape, X_test.shape
+
 	recall = recall_score(y_true, y_pred)
 	prec = precision_score(y_true, y_pred)
 	conf_matrix = confusion_matrix(y_true, y_pred)
 
-	print "Recall:\t{:f}\nPrecision:\t{:f}".format(recall, prec)
+	print "{:<20s}{:f}\n{:<20s}{:f}".format("Recall:", recall, "Precision:", prec)
 	print conf_matrix
 
 def cross_validate(base_classifier, X, y):
@@ -91,9 +93,10 @@ def run_product(classifier):
 	from bag_of_words    import build_product_data as bow
 	from custom_features import build_product_data as custom_features
 	print "===== Product Evalutation ====="
-	# for build_data in [bow, custom_features]:
 
-	validate(classifier, *bow())
+	X_train, y_train, X_test, y_true = bow()
+
+	validate(classifier, X_train, y_train, X_test, y_true)
 
 	print "==============================="
 
@@ -118,7 +121,11 @@ if __name__ == "__main__":
 	LIN_SVC, \
 	BERNOULLI_NB = range(len(classifier))
 
-	run_demand(classifier[BERNOULLI_NB])
+	# run_demand(classifier[BERNOULLI_NB])
+	run_product(classifier[BERNOULLI_NB])
+
+
+
 		# Show confusion matrix in a separate window
 		# plt.matshow(cm)
 		# plt.title('Confusion matrix')

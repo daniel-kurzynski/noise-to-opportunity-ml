@@ -11,11 +11,13 @@ class Data(object):
 	def is_labeled(self):
 		return self.classification is not None
 
-	def get_class(self):
-		votes = self.classification["demand"]
+	def get_class(self, key):
+		if isinstance(self.classification, str): return self.classification
+		votes = self.classification[key]
 		freqs = collections.Counter(votes.values()).most_common(2)
 		if len(freqs) > 1 and freqs[0][1] == freqs[1][1]:
 			# First two votes have the same count --> conflict --> do not predict anything
+			raise Exception("we have a conflict at doc %s: %s!" %(self.id, str(self.classification)))
 			return None
 		else:
 			return freqs[0][0]
@@ -44,9 +46,13 @@ class CSVReader(object):
 			self.data = [extractor(line, self.classification) for line in f]
 
 	@staticmethod
-	def brochure_extractor(line):
-		_, data, category, _ = line.replace("\\,", "<komma>").split(",")
-		return data.replace("<komma>", ",")[1:-1], category
+	def brochure_extractor(line, classification):
+		line = reduce(
+			lambda l, replacements: l.replace(replacements[0], replacements[1]),
+			CSVReader.replacements,
+			line)
+		idx, data, category, _ = line.split(",")
+		return Data(idx, text = data.replace("<komma>", ","), classification = category)
 
 
 	@staticmethod
