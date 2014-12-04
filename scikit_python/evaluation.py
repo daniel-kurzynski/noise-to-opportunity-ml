@@ -3,11 +3,13 @@ from sklearn.metrics import recall_score, \
 from sklearn.cross_validation import ShuffleSplit
 from sklearn.base import clone
 import numpy as np
+from sklearn.lda import LDA
 
 from bag_of_words import build_data as bow
 from custom_features import build_data as custom_features
 
 from sklearn.linear_model import LogisticRegression, Perceptron
+import matplotlib.pyplot as plt
 
 def score(y_true, y_pred, score_function, label_index):
 	return score_function(y_true, y_pred, average=None)[label_index]
@@ -58,6 +60,30 @@ def most_weighted_features(classifier, X, y, vectorizer):
 	print "=== no demand words ==="
 	print_mosth_weighted_features(no_demand_indices,inverted_vocabulary,classifier.coef_[0])
 
+def reduce_dimensonality(method, X,Y):
+	X_new = method.fit_transform(X,y)
+	if(X_new.shape[1]<2):
+		X_new = [[x,0] for x in X_new]
+
+	X_new = np.array(X_new)
+	XY = np.array(zip(X_new,y))
+
+	x0_demand = [x[0][0] for x in XY if x[1]=="demand"]
+	x1_demand = [x[0][1] for x in XY if x[1]=="demand"]
+
+	x0_no_demand = [x[0][0] for x in XY if x[1]=="no-demand"]
+	x1_no_demand = [x[0][1] for x in XY if x[1]=="no-demand"]
+
+	return x0_demand, x1_demand, x0_no_demand, x1_no_demand
+
+def visualize_posts(X,y):
+	lda = LDA(n_components=2)
+	x0_demand, x1_demand, x0_no_demand, x1_no_demand = reduce_dimensonality(lda,X,y)
+
+	plt.scatter(x0_demand,x1_demand, marker='+')
+	plt.scatter(x0_no_demand,x1_no_demand, marker='o')
+	plt.show()
+
 
 
 if __name__ == "__main__":
@@ -66,9 +92,10 @@ if __name__ == "__main__":
 
 	for build_data in [bow, custom_features]:
 		X, y, vectorizer = build_data()
-		if vectorizer:
-			most_weighted_features(classifier, X, y, vectorizer)
-		evaluate_classifier(classifier, X, y)
+		# if vectorizer:
+		# 	most_weighted_features(classifier, X, y, vectorizer)
+		# evaluate_classifier(classifier, X, y)
+		visualize_posts(X,y)
 		# Show confusion matrix in a separate window
 		# plt.matshow(cm)
 		# plt.title('Confusion matrix')
