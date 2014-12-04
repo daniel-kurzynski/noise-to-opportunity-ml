@@ -4,9 +4,12 @@ from sklearn.cross_validation import ShuffleSplit
 from sklearn.base import clone
 import numpy as np
 from sklearn.lda import LDA
+from scipy.sparse import issparse
 
-from bag_of_words import build_data as bow
-from custom_features import build_data as custom_features
+from sklearn.linear_model import LogisticRegression, Perceptron, SGDClassifier, RidgeClassifier
+from sklearn.svm          import LinearSVC
+from sklearn.tree         import DecisionTreeClassifier
+from sklearn.naive_bayes  import MultinomialNB, BernoulliNB
 
 from sklearn.linear_model import LogisticRegression, Perceptron
 import matplotlib.pyplot as plt
@@ -14,7 +17,18 @@ import matplotlib.pyplot as plt
 def score(y_true, y_pred, score_function, label_index):
 	return score_function(y_true, y_pred, average=None)[label_index]
 
-def evaluate_classifier(base_classifier, X, y):
+def validate(base_classifier, X_train, y_train, X_test, y_true):
+	base_classifier.fit(X_train, y_train)
+	y_pred = base_classifier.predict(X_test)
+
+	recall = recall_score(y_true, y_pred)
+	prec = precision_score(y_true, y_pred)
+	conf_matrix = confusion_matrix(y_true, y_pred)
+
+	print "{:<20s}{:f}\n{:<20s}{:f}".format("Recall:", recall, "Precision:", prec)
+	print conf_matrix
+
+def cross_validate(base_classifier, X, y):
 	splitter = ShuffleSplit(X.shape[0], n_iter = 5, test_size = 0.2, random_state = 17)
 
 	precision_scores = []
@@ -24,6 +38,7 @@ def evaluate_classifier(base_classifier, X, y):
 
 	for train_index, test_index in splitter:
 		classifier = clone(base_classifier)
+
 		classifier.fit(X[train_index], y[train_index])
 
 		y_predict = classifier.predict(X[test_index])
@@ -38,16 +53,17 @@ def evaluate_classifier(base_classifier, X, y):
 
 	overall_tp = overall_confusion[0][0]
 	print "Precision-Demand: ", overall_tp / float(overall_tp + overall_confusion[1][0]), " (micro)"
-	print "Precision-Demand: ", overall_tp / float(overall_tp + overall_confusion[0][1]), " (micro)"
+	print "Recall-Demand:    ", overall_tp / float(overall_tp + overall_confusion[0][1]), " (micro)"
 	print overall_confusion
-
 
 def print_mosth_weighted_features(indices, vocabulary, coef):
 	for index in indices:
-		print "%20s %.12f" %(vocabulary[index],coef[index] )
+		print "{:^20s} {:f}".format(vocabulary[index], coef[index])
 
 def most_weighted_features(classifier, X, y, vectorizer):
-	classifier.fit(X,y)
+	classifier.fit(X, y)
+	if not hasattr(classifier, "coef_"):
+		return
 	indices = np.argsort(classifier.coef_[0])
 	demand_indices = indices[:10]
 	no_demand_indices = indices[-10:]
@@ -60,13 +76,14 @@ def most_weighted_features(classifier, X, y, vectorizer):
 	print "=== no demand words ==="
 	print_mosth_weighted_features(no_demand_indices,inverted_vocabulary,classifier.coef_[0])
 
-def reduce_dimensonality(method, X,Y):
+def reduce_dimensonality(method, X,y):
 	X_new = method.fit_transform(X,y)
 	if(X_new.shape[1]<2):
 		X_new = [[x,0] for x in X_new]
 
 	X_new = np.array(X_new)
 	XY = np.array(zip(X_new,y))
+
 
 	x0_demand = [x[0][0] for x in XY if x[1]=="demand"]
 	x1_demand = [x[0][1] for x in XY if x[1]=="demand"]
@@ -84,18 +101,58 @@ def visualize_posts(X,y):
 	plt.scatter(x0_no_demand,x1_no_demand, marker='o')
 	plt.show()
 
+def run_demand(classifier):
+	t = "===== Demand Evalutation of %s =====" %classifier.__class__.__name__
+	print t
+	from bag_of_words    import build_demand_data as bow
+	from custom_features import build_demand_data as custom_features
+	for build_data in [bow, custom_features]:
+		X, y, vectorizer = build_data()
+		if vectorizer:
+			most_weighted_features(classifier, X, y, vectorizer)
+		X = X.todense() if issparse(X) else X
+		cross_validate(classifier, X, y)
+		visualize_posts(X,y)
+	print "=" * len(t)
+
+def run_product(classifier):
+	t = "===== Product Evalutation of %s =====" %classifier.__class__.__name__
+	print t
+	from bag_of_words    import build_product_data as bow
+	from custom_features import build_product_data as custom_features
+
+	X_train, y_train, X_test, y_true = bow()
+
+	validate(classifier, X_train, y_train, X_test, y_true)
+
+	print "=" * len(t)
 
 
 if __name__ == "__main__":
-	classifier = LogisticRegression()
-	classifier = Perceptron(n_iter = 50)
+	classifier = [
+		LogisticRegression(),
+		Perceptron(n_iter = 50),
+		MultinomialNB(),
+		DecisionTreeClassifier(),
+		SGDClassifier(),
+		RidgeClassifier(),
+		LinearSVC(),
+		BernoulliNB()]
 
-	for build_data in [bow, custom_features]:
-		X, y, vectorizer = build_data()
-		# if vectorizer:
-		# 	most_weighted_features(classifier, X, y, vectorizer)
-		# evaluate_classifier(classifier, X, y)
-		visualize_posts(X,y)
+	LOG_REGRESSION, \
+	PERCEPTRON, \
+	MULTI_NB, \
+	DTC, \
+	SGD, \
+	RIDGE, \
+	LIN_SVC, \
+	BERNOULLI_NB = range(len(classifier))
+
+	run_demand(classifier[BERNOULLI_NB])
+	# run_product(classifier[BERNOULLI_NB])
+
+
+
 		# Show confusion matrix in a separate window
 		# plt.matshow(cm)
 		# plt.title('Confusion matrix')

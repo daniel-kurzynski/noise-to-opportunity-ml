@@ -1,48 +1,45 @@
-
 from sklearn.feature_extraction.text import TfidfVectorizer
 import simplejson as json, numpy as np, collections
 
+from preprocessing import CSVReader
 
-class Post(object):
-	def __init__(self, id, title, text, classification = None):
-		self.id = id
-		self.title = title
-		self.text = text
-		self.data = title + " " + text
-		self.classification = classification
-
-	def is_labeled(self):
-		return self.classification is not None
-
-	def get_class(self):
-		votes = self.classification["demand"]
-		freqs = collections.Counter(votes.values()).most_common(2)
-		if len(freqs) > 1 and freqs[0][1] == freqs[1][1]:
-			# First two votes have the same count --> conflict --> do not predict anything
-			return None
-		else:
-			return freqs[0][0]
-
-def build_data():
-	print "=== Bag of Words Extractor ==="
+def get_labeled_posts(key, exclude):
 	with open('../webapp_python/data/classification.json') as infile:
 		classification = json.JSONDecoder(object_pairs_hook=collections.OrderedDict).decode(infile.read())
 
-	posts = []
-	with open("../n2o_data/linked_in_posts.csv") as f:
-		for line in f:
-			id, title, text, _, _, _, _, _, category, _, _ = line.replace("\\,", "<komma>").replace("\"", "").replace("\\", "").split(",")
-			title = title.replace("<komma>", ",")
-			text = text.replace("<komma>", ",")
-			posts.append(Post(id, title, text, classification.get(id)))
+	csv_reader = CSVReader(classification = classification)
+	csv_reader.read("../n2o_data/linked_in_posts.csv", CSVReader.linked_in_extractor)
 
-	labeled_posts = [post
-			for post in posts
-				if post.is_labeled() and post.get_class() != "no-idea"]
+	return [post
+			for post in csv_reader.data
+				if post.is_labeled() and post.get_class(key) != exclude]
 
+
+def build_demand_data():
+	print "=== Bag of Words Extractor ==="
+	labeled_posts = get_labeled_posts("demand", "no-idea")
 	# Build vectorizer
 	vectorizer = TfidfVectorizer(sublinear_tf = True, max_df = 0.5, stop_words = 'english')
 	X_train   = vectorizer.fit_transform([post.data for post in labeled_posts])
-	y_train = np.array([post.get_class() for post in labeled_posts])
+	y_train = np.array([post.get_class("demand") for post in labeled_posts])
 
 	return X_train, y_train, vectorizer
+
+
+def build_product_data():
+	print "=== Bag of Words Extractor ==="
+	csv_reader = CSVReader()
+	csv_reader.read("../n2o_data/brochures.csv", CSVReader.brochure_extractor)
+
+	vectorizer = TfidfVectorizer(sublinear_tf = True, max_df = 0.5, stop_words = 'english')
+	X_train   = vectorizer.fit_transform([brochure.data for brochure in csv_reader.data])
+	y_train = np.array([brochure.get_class("category") for brochure in csv_reader.data])
+
+	with open('../webapp_python/data/classification.json') as infile:
+		classification = json.JSONDecoder(object_pairs_hook=collections.OrderedDict).decode(infile.read())
+
+	labeled_posts = get_labeled_posts("category", "None")
+
+	X_test   = vectorizer.transform([post.data for post in labeled_posts])
+	y_true = np.array([post.get_class("category") for post in labeled_posts])
+	return X_train, y_train, X_test, y_true

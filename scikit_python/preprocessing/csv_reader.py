@@ -1,34 +1,67 @@
-from os.path import join, abspath
+import collections
+
+class Data(object):
+	def __init__(self, idx, title = "", text = "", classification = None):
+		self.id = idx
+		self.title = title
+		self.text = text
+		self.data = title + " " + text if title else text
+		self.classification = classification
+
+	def is_labeled(self):
+		return self.classification is not None
+
+	def get_class(self, key):
+		if isinstance(self.classification, str): return self.classification
+		votes = self.classification[key]
+		freqs = collections.Counter(votes.values()).most_common(2)
+		if len(freqs) > 1 and freqs[0][1] == freqs[1][1]:
+			# First two votes have the same count --> conflict --> do not predict anything
+			raise Exception("we have a conflict at doc %s: %s!" %(self.id, str(self.classification)))
+			return None
+		else:
+			return freqs[0][0]
+
 
 class CSVReader(object):
 
-	def __init__(self):
+	replacements = [
+		["<br />", ""],
+		["\\,", "<komma>"],
+		["\"", ""],
+		["\\", ""],
+	]
+
+
+	def __init__(self, classification = {}):
 		super(CSVReader, self).__init__()
 		self.data = []
-		self.target = []
-		self.target_mapping = {}
+		self.classification = classification
 
 	"""
 	Reading CSV files in our fashion.
 	"""
-	def read(self, filename, extractor):
-		with open(join(abspath("../data"), filename)) as f:
-			for line in f:
-				data, category = extractor(line)
-				if category not in self.target_mapping:
-					self.target_mapping[category] = len(self.target_mapping)
-				self.data.append(data)
-				self.target.append(self.target_mapping[category])
+	def read(self, fpath, extractor):
+		with open(fpath) as f:
+			self.data = [extractor(line, self.classification) for line in f]
 
 	@staticmethod
-	def brochure_extractor(line):
-		_, data, category, _ = line.replace("\\,", "<komma>").split(",")
-		return data.replace("<komma>", ",")[1:-1], category
+	def brochure_extractor(line, classification):
+		line = reduce(
+			lambda l, replacements: l.replace(replacements[0], replacements[1]),
+			CSVReader.replacements,
+			line)
+		idx, data, category, _ = line.split(",")
+		return Data(idx, text = data.replace("<komma>", ","), classification = category)
 
 
 	@staticmethod
-	def linked_in_extractor(line):
-		_, data1, data2, _, _, _, _, _, category, _, _ = line.replace("\\,", "<komma>").split(",")
-		data = data1[1:-1] + " " + data2[1:-1]
-		return data.replace("<komma>", ","), category
+	def linked_in_extractor(line, classification):
+		line = reduce(
+			lambda l, replacements: l.replace(replacements[0], replacements[1]),
+			CSVReader.replacements,
+			line)
+		idx, title, text, _, _, _, _, _, category, _, _ = line.split(",")
+		title, text = title.replace("<komma>", ","), text.replace("<komma>", ",")
+		return Data(idx, title, text, classification.get(idx))
 
