@@ -4,6 +4,7 @@ from sklearn.cross_validation import ShuffleSplit
 from sklearn.base import clone
 import numpy as np
 from sklearn.lda import LDA
+from sklearn.decomposition import PCA
 from scipy.sparse import issparse
 
 from sklearn.linear_model import LogisticRegression, Perceptron, SGDClassifier, RidgeClassifier
@@ -95,11 +96,14 @@ def reduce_dimensonality(method, X,y):
 
 def visualize_posts(X,y):
 	lda = LDA(n_components=2)
-	x0_demand, x1_demand, x0_no_demand, x1_no_demand = reduce_dimensonality(lda,X,y)
+	pca = PCA(n_components=2)
 
-	plt.scatter(x0_demand,x1_demand, marker='+')
-	plt.scatter(x0_no_demand,x1_no_demand, marker='o')
-	plt.show()
+	for method in [lda]:
+		x0_demand, x1_demand, x0_no_demand, x1_no_demand = reduce_dimensonality(lda,X,y)
+		plt.title("Reduction: " + str(method))
+		plt.scatter(x0_demand,x1_demand, c="g", marker="^", s=100)
+		plt.scatter(x0_no_demand,x1_no_demand, c="r", marker="v", s=100)
+		plt.show()
 
 def run_demand(classifier):
 	t = "===== Demand Evalutation of %s =====" %classifier.__class__.__name__
@@ -150,13 +154,3 @@ if __name__ == "__main__":
 
 	run_demand(classifier[BERNOULLI_NB])
 	# run_product(classifier[BERNOULLI_NB])
-
-
-
-		# Show confusion matrix in a separate window
-		# plt.matshow(cm)
-		# plt.title('Confusion matrix')
-		# plt.colorbar()
-		# plt.ylabel('Actual demand')
-		# plt.xlabel('Predicted demand')
-		# plt.show()
