@@ -98,8 +98,8 @@ def visualize_posts(X,y):
 	lda = LDA(n_components=2)
 	pca = PCA(n_components=2)
 
-	for method in [lda]:
-		x0_demand, x1_demand, x0_no_demand, x1_no_demand = reduce_dimensonality(lda,X,y)
+	for method in [pca, lda]:
+		x0_demand, x1_demand, x0_no_demand, x1_no_demand = reduce_dimensonality(method,X,y)
 		plt.title("Reduction: " + str(method))
 		plt.scatter(x0_demand,x1_demand, c="g", marker="^", s=100)
 		plt.scatter(x0_no_demand,x1_no_demand, c="r", marker="v", s=100)
