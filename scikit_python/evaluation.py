@@ -17,8 +17,6 @@ def validate(base_classifier, X_train, y_train, X_test, y_true):
 	base_classifier.fit(X_train, y_train)
 	y_pred = base_classifier.predict(X_test)
 
-	print X_train.shape, X_test.shape
-
 	recall = recall_score(y_true, y_pred)
 	prec = precision_score(y_true, y_pred)
 	conf_matrix = confusion_matrix(y_true, y_pred)
@@ -90,15 +88,16 @@ def run_demand(classifier):
 	print "=" * len(t)
 
 def run_product(classifier):
+	t = "===== Product Evalutation of %s =====" %classifier.__class__.__name__
+	print t
 	from bag_of_words    import build_product_data as bow
 	from custom_features import build_product_data as custom_features
-	print "===== Product Evalutation ====="
 
 	X_train, y_train, X_test, y_true = bow()
 
 	validate(classifier, X_train, y_train, X_test, y_true)
 
-	print "==============================="
+	print "=" * len(t)
 
 
 if __name__ == "__main__":

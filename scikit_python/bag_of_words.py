@@ -42,5 +42,4 @@ def build_product_data():
 
 	X_test   = vectorizer.transform([post.data for post in labeled_posts])
 	y_true = np.array([post.get_class("category") for post in labeled_posts])
-
 	return X_train, y_train, X_test, y_true
