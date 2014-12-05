@@ -101,7 +101,7 @@ def visualize_posts(X,y):
 	for method in [pca, lda]:
 		x0_demand, x1_demand, x0_no_demand, x1_no_demand = reduce_dimensonality(method,X,y)
 		plt.title("Reduction: " + str(method))
-		plt.scatter(x0_demand,x1_demand, c="g", marker="^", s=100)
+		plt.scatter(x0_demand,x1_demand, c="b", marker="^", s=100)
 		plt.scatter(x0_no_demand,x1_no_demand, c="r", marker="v", s=100)
 		plt.show()
 
@@ -126,6 +126,8 @@ def run_product(classifier):
 	from custom_features import build_product_data as custom_features
 
 	X_train, y_train, X_test, y_true = bow()
+	X_train = X_train.todense() if issparse(X_train) else X_train
+	X_test = X_test.todense() if issparse(X_test) else X_test
 
 	validate(classifier, X_train, y_train, X_test, y_true)
 
@@ -152,5 +154,5 @@ if __name__ == "__main__":
 	LIN_SVC, \
 	BERNOULLI_NB = range(len(classifier))
 
-	run_demand(classifier[BERNOULLI_NB])
-	# run_product(classifier[BERNOULLI_NB])
+	# run_demand(classifier[LIN_SVC])
+	run_product(classifier[DTC])
