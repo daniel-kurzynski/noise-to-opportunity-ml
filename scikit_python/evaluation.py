@@ -22,6 +22,8 @@ args = sys.argv
 
 if len(args) == 1:
 	print "Possible args: vis, fps, most"
+	print "Possible datasets: bow, custom"
+	sys.exit(0)
 
 from preprocessing import CSVReader
 
@@ -144,7 +146,13 @@ def run_demand(classifier):
 	print t
 	from bag_of_words    import build_demand_data as bow
 	from custom_features import build_demand_data as custom_features
-	for build_data in [bow, custom_features]:
+
+	build_datas = []
+	if "bow" in args:
+		build_datas.append(bow)
+	if "custom" in args:
+		build_datas.append(custom_features)
+	for build_data in build_datas:
 		ids, X, y, vectorizer = build_data()
 		if vectorizer and "most" in args:
 			most_weighted_features(classifier, X, y, vectorizer)
