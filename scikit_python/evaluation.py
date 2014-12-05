@@ -18,9 +18,13 @@ import matplotlib.pyplot as plt
 import sys
 from os.path import join, abspath
 
-from .webapp_python import post
 args = sys.argv
 
+from preprocessing import CSVReader
+
+csv_reader = CSVReader()
+csv_reader.read("../n2o_data/linked_in_posts.csv", CSVReader.linked_in_extractor)
+all_posts = csv_reader.data
 
 def score(y_true, y_pred, score_function, label_index):
 	return score_function(y_true, y_pred, average=None)[label_index]
@@ -54,10 +58,19 @@ def cross_validate(ids, base_classifier, X, y):
 		y_predict = classifier.predict(X[test_index])
 		y_true  = y[test_index]
 
+		assert len(y_predict) == len(y_true)
 
-		if len(ids) > 0:
-			fp = [i for i in range(len(y_true)) if y_predict[i] == "no-demand" and y_true[i] == "demand"]
-			fp_posts = [ids[i] for i in fp]
+
+		if len(ids) > 0 and "fps" in args:
+			current_ids = ids[test_index]
+			fp_posts_ids = dict([(current_ids[i], i) for i in range(len(y_true)) if y_predict[i] == "no-demand" and y_true[i] == "demand"])
+
+			fp_posts = [(fp_posts_ids[post.id], post) for post in all_posts if post.id in fp_posts_ids.keys()]
+			print fp_posts
+			for i, p in fp_posts:
+				print p.id
+				print y_true[i]
+				print p.data
 
 		overall_confusion = overall_confusion + confusion_matrix(y_true, y_predict)
 		precision_scores.append(precision_score(y_true, y_predict, average = None)[0])
@@ -169,5 +182,5 @@ if __name__ == "__main__":
 	LIN_SVC, \
 	BERNOULLI_NB = range(len(classifier))
 
-	# run_demand(classifier[LIN_SVC])
-	run_product(classifier[RIDGE])
+	run_demand(classifier[LIN_SVC])
+	# run_product(classifier[RIDGE])
