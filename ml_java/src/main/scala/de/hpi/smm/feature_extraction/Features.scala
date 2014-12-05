@@ -3,7 +3,7 @@ package de.hpi.smm.feature_extraction
 import de.hpi.smm.domain.{Case, Switch, Post}
 
 class NeedWordFeature() extends Feature {
-	def name = s"#word"
+	def name = relevantNeedWords
 
 	val relevantNeedWords = Array(
 		"advice", "anyone", "appreciated", "expertise",
@@ -25,7 +25,7 @@ class NeedWordFeature() extends Feature {
 }
 
 class QuestionNumberFeature extends Feature {
-	override def name: String = "#questions"
+	override def name: Array[String] = Array("#questions")
 
 	override def extract(): Switch = {
 		Switch(
@@ -38,7 +38,7 @@ class QuestionNumberFeature extends Feature {
 }
 
 class ImperativeNumberFeature extends Feature {
-	override def name: String = "#imperatives"
+	override def name: Array[String] = Array("#imperatives")
 
 	override def extract(): Switch = {
 		Switch(post =>
@@ -55,7 +55,7 @@ class ImperativeNumberFeature extends Feature {
 }
 
 class QuestionWordsFeature extends Feature {
-	override def name: String = "#question-words"
+	override def name: Array[String] = Array("#question-words")
 	override def extract(): Switch = {
 		Switch(post =>
 			Array(post.tokens.count { word => word.pos.startsWith("W")}.toDouble)

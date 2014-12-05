@@ -7,7 +7,7 @@ abstract class Feature {
 	/**
 	 * Name of a feature, will be the header in the csv file.
 	 */
-	def name: String
+	def name: Array[String]
 
 	/**
 	 * Returns a Switch of possible implementations for this feature.

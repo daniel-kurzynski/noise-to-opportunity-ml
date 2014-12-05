@@ -3,7 +3,7 @@ package de.hpi.smm.feature_extraction
 import de.hpi.smm.domain.{Case, Post}
 
 class FeatureBuilder {
-	def names: Array[String] = features.map(_.name).toArray
+	def names: Array[String] = features.flatMap(_.name).toArray
 
 
 	var posts = List[Post]()
