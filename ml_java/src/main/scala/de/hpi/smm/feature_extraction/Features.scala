@@ -37,10 +37,23 @@ class NeedNGramsFeature() extends Feature {
 
 	override def extract(): Switch = {
 		Switch(Case(post => {
+				val min = relevantNGrams.map(_.size).min
+				val max = relevantNGrams.map(_.size).max
+
+				Array((min to max).map { windowSize =>
+					post.textTokens.sliding(windowSize).count { t =>
+						val relevantNGram = t.seq.toArray
+						relevantNGrams.filter(_.size == windowSize).exists { ngram =>
+							ngram.deep == relevantNGram.deep
+						}
+					}.toDouble
+				}.sum)
+			}, "ngrams-one-feature"),
+			Case(post => {
 			val min = relevantNGrams.map(_.size).min
 			val max = relevantNGrams.map(_.size).max
 
-			val values = (min to max).flatMap { windowSize =>
+			(min to max).flatMap { windowSize =>
 				val currentNGrams = relevantNGrams.filter(_.size == windowSize)
 				val currentCounts = mutable.ListMap[Array[String], Double]()
 				currentNGrams.foreach { ngram =>
@@ -55,21 +68,7 @@ class NeedNGramsFeature() extends Feature {
 				val results = currentCounts.values.toArray
 				results
 			}.toArray
-			values
-		}, "ngrams-different-features"),
-			Case(post => {
-				val min = relevantNGrams.map(_.size).min
-				val max = relevantNGrams.map(_.size).max
-
-				Array((min to max).map { windowSize =>
-					post.textTokens.sliding(windowSize).count { t =>
-						val relevantNGram = t.seq.toArray
-						relevantNGrams.filter(_.size == windowSize).exists { ngram =>
-							ngram.deep == relevantNGram.deep
-						}
-					}.toDouble
-				}.sum)
-			}, "ngrams-one-feature")
+		}, "ngrams-different-features")
 		)
 	}
 
