@@ -87,7 +87,7 @@ class QuestionWordsFeature extends Feature {
 class AddressReaderFeature extends Feature {
 	override def name: Array[String] = Array("addressing-the-reader")
 
-	val addressWords = Set("you", "I")
+	val addressWords = Set("I")
 
 	override def extract(): Switch = {
 		Switch(post =>

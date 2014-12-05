@@ -196,5 +196,6 @@ if __name__ == "__main__":
 	LIN_SVC, \
 	BERNOULLI_NB = range(len(classifier))
 
-	run_demand(classifier[BERNOULLI_NB])
+	for cl in classifier:
+		run_demand(cl)
 	# run_product(classifier[RIDGE])
