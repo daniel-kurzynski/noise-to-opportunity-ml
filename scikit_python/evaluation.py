@@ -12,6 +12,7 @@ from sklearn.linear_model import LogisticRegression, Perceptron, SGDClassifier, 
 from sklearn.svm          import LinearSVC
 from sklearn.tree         import DecisionTreeClassifier
 from sklearn.naive_bayes  import MultinomialNB, BernoulliNB
+from sklearn.base         import BaseEstimator
 
 from sklearn.linear_model import LogisticRegression, Perceptron
 import matplotlib.pyplot as plt
@@ -56,7 +57,7 @@ def cross_validate(ids, base_classifier, X, y):
 	overall_confusion = np.array([[0, 0], [0, 0]])
 
 	for train_index, test_index in splitter:
-		classifier = clone(base_classifier)
+		classifier = base_classifier if "AverageClassifier" in base_classifier.__class__.__name__ else clone(base_classifier)
 
 		classifier.fit(X[train_index], y[train_index])
 
@@ -176,8 +177,39 @@ def run_product(classifier):
 	print "=" * len(t)
 
 
+class VotingClassifier(BaseEstimator):
+	def __init__(self, classifiers):
+		self.classifiers = classifiers
+
+
+	def fit(self, X, y):
+		tmp = [clone(classifier) for classifier in self.classifiers]
+		self.classifiers = tmp
+
+		for classifier in self.classifiers:
+			classifier.fit(X, y)
+
+	def predict(self, X):
+		results = []
+		for classifier in self.classifiers:
+			results.append(classifier.predict(X))
+
+		y_predict = []
+		for i in range(len(results[0])):
+			votes = [vote[i] for vote in results]
+			demand_count = votes.count("demand")
+			no_demand_count = votes.count("no-demand")
+			assert demand_count + no_demand_count == len(self.classifiers)
+			if demand_count > no_demand_count:
+				y_predict.append("demand")
+			else:
+				y_predict.append("no-demand")
+			# print votes, demand_count, no_demand_count
+
+		return y_predict
+
 if __name__ == "__main__":
-	classifier = [
+	classifiers = [
 		LogisticRegression(),
 		Perceptron(n_iter = 50),
 		MultinomialNB(),
@@ -194,8 +226,14 @@ if __name__ == "__main__":
 	SGD, \
 	RIDGE, \
 	LIN_SVC, \
-	BERNOULLI_NB = range(len(classifier))
+	BERNOULLI_NB = range(len(classifiers))
 
-	for cl in classifier:
-		run_demand(cl)
+	average_classifier = VotingClassifier(classifiers[:])
+
+	classifiers.append(average_classifier)
+
+	run_demand(average_classifier)
+	# for cl in classifiers:
+	# 	run_demand(cl)
 	# run_product(classifier[RIDGE])
+
