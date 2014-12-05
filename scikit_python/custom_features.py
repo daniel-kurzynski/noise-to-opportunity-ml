@@ -13,11 +13,13 @@ def build_demand_data():
 			cls = content[-1]
 			if not content or cls == "no-idea":
 				continue
-			ids.append(content[0])
-			features.append([float(val) for val in content[1:-1]])
+
+			print content
+			ids.append((content[0], content[1], content[2]))
+			features.append([float(val) for val in content[3:-1]])
 			target.append(cls)
 
-	return np.array(features), np.array(target), None
+	return ids, np.array(features), np.array(target), None
 
 
 def build_product_data():

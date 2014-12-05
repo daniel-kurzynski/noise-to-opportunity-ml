@@ -7,9 +7,6 @@ import numpy as np
 import collections
 from collections import Counter
 
-
-
-
 class active_learner(object):
 
 	def __init__(self):
@@ -24,7 +21,7 @@ class active_learner(object):
 				id, title, text, _, _, _, _, _, category, _, _ = line.replace("\\,", "<komma>").replace("\"", "").replace("\\", "").split(",")
 				title = title.replace("<komma>", ",")
 				text = text.replace("<komma>", ",")
-				self.posts.append(Post(id,title,text))
+				self.posts.append(Post(id, title, text))
 
 	def load_other_classification_files(self):
 		pass

@@ -45,7 +45,7 @@ object Main {
 	}
 
 	def extractPostsLinewise(extractor: Post => Unit)(count: Int = Int.MaxValue): Unit = {
-    val classifiedPosts = JacksMapper.readValue[Map[String, Map[String, Map[String, String]]]](new FileReader("../webapp_python/data/classification.json"))
+		val classifiedPosts = JacksMapper.readValue[Map[String, Map[String, Map[String, String]]]](new FileReader("../webapp_python/data/classification.json"))
 		val postsFile = new File("../n2o_data/linked_in_posts.csv")
 		val reader = new CSVReader(new FileReader(postsFile))
 

@@ -15,6 +15,12 @@ from sklearn.naive_bayes  import MultinomialNB, BernoulliNB
 
 from sklearn.linear_model import LogisticRegression, Perceptron
 import matplotlib.pyplot as plt
+import sys
+from os.path import join, abspath
+
+from .webapp_python import post
+args = sys.argv
+
 
 def score(y_true, y_pred, score_function, label_index):
 	return score_function(y_true, y_pred, average=None)[label_index]
@@ -32,7 +38,7 @@ def validate(base_classifier, X_train, y_train, X_test, y_true):
 		"Precision:", "  ".join(prec))
 	print conf_matrix
 
-def cross_validate(base_classifier, X, y):
+def cross_validate(ids, base_classifier, X, y):
 	splitter = ShuffleSplit(X.shape[0], n_iter = 5, test_size = 0.2, random_state = 17)
 
 	precision_scores = []
@@ -47,6 +53,11 @@ def cross_validate(base_classifier, X, y):
 
 		y_predict = classifier.predict(X[test_index])
 		y_true  = y[test_index]
+
+
+		if len(ids) > 0:
+			fp = [i for i in range(len(y_true)) if y_predict[i] == "no-demand" and y_true[i] == "demand"]
+			fp_posts = [ids[i] for i in fp]
 
 		overall_confusion = overall_confusion + confusion_matrix(y_true, y_predict)
 		precision_scores.append(precision_score(y_true, y_predict, average = None)[0])
@@ -82,7 +93,7 @@ def most_weighted_features(classifier, X, y, vectorizer):
 
 def reduce_dimensonality(method, X,y):
 	X_new = method.fit_transform(X,y)
-	if(X_new.shape[1]<2):
+	if X_new.shape[1]<2:
 		X_new = [[x,0] for x in X_new]
 
 	X_new = np.array(X_new)
@@ -114,12 +125,13 @@ def run_demand(classifier):
 	from bag_of_words    import build_demand_data as bow
 	from custom_features import build_demand_data as custom_features
 	for build_data in [bow, custom_features]:
-		X, y, vectorizer = build_data()
-		if vectorizer:
+		ids, X, y, vectorizer = build_data()
+		if vectorizer and "most" in args:
 			most_weighted_features(classifier, X, y, vectorizer)
 		X = X.todense() if issparse(X) else X
-		cross_validate(classifier, X, y)
-		# visualize_posts(X,y)
+		cross_validate(ids, classifier, X, y)
+		if "vis" in args:
+			visualize_posts(X,y)
 	print "=" * len(t)
 
 def run_product(classifier):

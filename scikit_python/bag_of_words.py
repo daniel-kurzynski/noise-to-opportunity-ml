@@ -23,7 +23,7 @@ def build_demand_data():
 	X_train   = vectorizer.fit_transform([post.data for post in labeled_posts])
 	y_train = np.array([post.get_class("demand") for post in labeled_posts])
 
-	return X_train, y_train, vectorizer
+	return [], X_train, y_train, vectorizer
 
 
 def build_product_data():
