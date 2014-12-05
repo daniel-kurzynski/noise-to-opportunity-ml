@@ -8,7 +8,7 @@ class NeedWordFeature() extends Feature {
 	def name = relevantNeedWords
 
 	val relevantNeedWords = Array(
-		"advice", "anyone", "appreciate", "appreciated", "curious", "expertise",
+		"advice", "anyone", "appreciate", "appreciated", "contact", "curious", "expertise",
 		"guide", "have", "informative", "interested",
 		"looking", "must", "need", "offer", "offering",
 		"opportunity", "perspective", "please", "require", "required",
@@ -127,4 +127,12 @@ class AddressReaderFeature extends Feature {
 	}
 }
 
+class ContainsEMailFeature extends Feature {
+	override def name: Array[String] = Array("contains-email")
 
+	override def extract(): Switch = {
+		Switch(post => {
+			Array(post.text.count { character => character == '@' }.toDouble)
+		})
+	}
+}

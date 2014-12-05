@@ -73,7 +73,7 @@ def cross_validate(ids, base_classifier, X, y):
 
 			fp_posts = [(fp_posts_ids[post.id], post) for post in all_posts if post.id in fp_posts_ids.keys()]
 			for i, p in fp_posts:
-				# print p.id
+				print p.id
 				# print y_true[i]
 				print p.data, "\n"
 

@@ -22,6 +22,7 @@ object Main {
 			.needWords()
 			.questionNumber()
 			.needNGrams()
+//			.containsEMail()
 //			.addressTheReader()
 //			.questionWords()
 //			.imperativeWords()

@@ -35,6 +35,11 @@ class FeatureBuilder {
 		this
 	}
 
+	def containsEMail(): FeatureBuilder = {
+		addFeature(new ContainsEMailFeature())
+		this
+	}
+
 	/**
 	 * Demand posts often contain imperative clauses like "help me", "share your information"
 	 */
