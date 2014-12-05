@@ -232,8 +232,7 @@ if __name__ == "__main__":
 
 	classifiers.append(average_classifier)
 
-	run_demand(average_classifier)
-	# for cl in classifiers:
-	# 	run_demand(cl)
+	for cl in classifiers:
+		run_demand(cl)
 	# run_product(classifier[RIDGE])
 
