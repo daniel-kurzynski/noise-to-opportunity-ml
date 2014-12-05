@@ -6,13 +6,12 @@ class NeedWordFeature() extends Feature {
 	def name = relevantNeedWords
 
 	val relevantNeedWords = Array(
-		"advice", "anyone", "appreciated", "expertise",
+		"advice", "anyone", "appreciate", "appreciated", "expertise",
 		"guide", "have", "informative", "interested",
 		"looking", "must", "need", "offer", "offering",
 		"opportunity", "please", "require", "required",
 		"share", "sharing", "thank", "urgent", "urgently",
 		"you").reverse
-
 
 	override def extract(): Switch = {
 		Switch(
@@ -22,6 +21,28 @@ class NeedWordFeature() extends Feature {
 				"need-word-with-lowercase")
 		)
 	}
+}
+
+class NeedNGramsFeature() extends Feature {
+	override def name: Array[String] = relevantNGrams.map(_.mkString(" "))
+	val relevantNGrams = Array(Array("looking", "for"), Array("interested", "in"))
+
+	override def extract(): Switch = {
+		Switch(post => {
+			val min = relevantNGrams.map(_.size).min
+			val max = relevantNGrams.map(_.size).max
+
+			Array((min to max).map { windowSize =>
+				post.textTokens.sliding(windowSize).count { t =>
+					val relevantNGram = t.seq.toArray
+					relevantNGrams.filter(_.size == windowSize).exists { ngram =>
+						ngram.deep == relevantNGram.deep
+					}
+				}.toDouble
+			}.sum)
+		})
+	}
+
 }
 
 class QuestionNumberFeature extends Feature {
@@ -63,8 +84,16 @@ class QuestionWordsFeature extends Feature {
 	}
 }
 
+class AddressReaderFeature extends Feature {
+	override def name: Array[String] = Array("addressing-the-reader")
 
-//class DummyFeature extends Feature {
-//	override def name: String = ???
-//	override def extract(post: Post): Double = ???
-//}
+	val addressWords = Set("you", "I")
+
+	override def extract(): Switch = {
+		Switch(post =>
+			Array(post.textTokens.count { word => addressWords.contains(word.toLowerCase)}.toDouble)
+		)
+	}
+}
+
+

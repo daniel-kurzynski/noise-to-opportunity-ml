@@ -19,10 +19,12 @@ object Main {
 		// TODO
 		// Analyze tf-idf on both demand and no-demand
 		val features = FeatureBuilder()
+			.needWords()
 			.questionNumber()
+			.needNGrams()
+//			.addressTheReader()
 //			.questionWords()
 //			.imperativeWords()
-			.needWords()
 
 		extractPostsLinewise { post =>
 			features.touch(post)
@@ -31,7 +33,7 @@ object Main {
 		}()
 		val featureFile = new File("../n2o_data/features.csv")
 		val writer = new CSVWriter(new FileWriter(featureFile), CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER)
-		writer.writeNext(features.names)
+		writer.writeNext(Array("id") ++ features.names)
 		features.buildFeatureVector { (post, instance) =>
 			val line = new Array[String](instance.size + 2)
 			line(0) = post.id
