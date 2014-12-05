@@ -1,5 +1,6 @@
 from sklearn.metrics import recall_score, \
 	precision_score, confusion_matrix
+from sklearn.utils.multiclass import unique_labels
 from sklearn.cross_validation import ShuffleSplit
 from sklearn.base import clone
 import numpy as np
@@ -21,12 +22,14 @@ def score(y_true, y_pred, score_function, label_index):
 def validate(base_classifier, X_train, y_train, X_test, y_true):
 	base_classifier.fit(X_train, y_train)
 	y_pred = base_classifier.predict(X_test)
-
-	recall = recall_score(y_true, y_pred)
-	prec = precision_score(y_true, y_pred)
+	labes = ["{:^7s}".format(s) for s in unique_labels(y_true, y_pred)]
+	recall = ["{:7s}".format("%.4f" %p) for p in recall_score(y_true, y_pred, average = None)]
+	prec = ["{:7s}".format("%.4f" %p) for p in precision_score(y_true, y_pred, average = None)]
 	conf_matrix = confusion_matrix(y_true, y_pred)
-
-	print "{:<20s}{:f}\n{:<20s}{:f}".format("Recall:", recall, "Precision:", prec)
+	print "{:<15s}{:s}\n{:<15s}{:s}\n{:<15s}{:s}".format(
+		"Labels:", "  ".join(labes),
+		"Recall:", "  ".join(recall),
+		"Precision:", "  ".join(prec))
 	print conf_matrix
 
 def cross_validate(base_classifier, X, y):
@@ -155,4 +158,4 @@ if __name__ == "__main__":
 	BERNOULLI_NB = range(len(classifier))
 
 	# run_demand(classifier[LIN_SVC])
-	run_product(classifier[DTC])
+	run_product(classifier[RIDGE])
