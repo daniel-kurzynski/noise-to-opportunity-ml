@@ -14,7 +14,8 @@ class QuestionNumberFeature extends Feature {
 
 	override def extract(post: Post): Double = {
 		post.sentences.count { sentence =>
-			sentence.last.text == "?"// || sentence.head.pos == "VP"
+			// Adding the part after '||' brings 6 % precision and -3 % recall
+			sentence.last.text == "?" || sentence.head.text.startsWith("W")
 		}
 	}
 }
@@ -35,11 +36,10 @@ class ImperativeNumberFeature extends Feature {
 }
 
 class QuestionWordsFeature extends Feature {
-	val questionWords = Set("where", "how", "who")
 	override def name: String = "#question-words"
 	override def extract(post: Post): Double = {
 		val counts = post.tokens.count { word =>
-			questionWords.contains(word.text.toLowerCase)
+			word.pos.startsWith("W")
 		}
 		counts
 	}
