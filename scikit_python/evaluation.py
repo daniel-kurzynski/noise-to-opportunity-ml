@@ -116,7 +116,7 @@ def run_demand(classifier):
 			most_weighted_features(classifier, X, y, vectorizer)
 		X = X.todense() if issparse(X) else X
 		cross_validate(classifier, X, y)
-		visualize_posts(X,y)
+		# visualize_posts(X,y)
 	print "=" * len(t)
 
 def run_product(classifier):
