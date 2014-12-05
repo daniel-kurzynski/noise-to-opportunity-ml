@@ -15,7 +15,7 @@ def hello():
 
 @app.route("/posts")
 def posts():
-	tagger = request.args.get('tagger', 'anonymous');
+	tagger = request.args.get('tagger', 'anonymous')
 	posts = learner.predicted_posts(type = "uncertain")
 	certain = learner.predicted_posts(type = "certain")
 	tagged = learner.determine_tagged_posts(tagger=tagger)
@@ -43,8 +43,8 @@ def all_tagged_posts():
 
 @app.route("/tagged_by_others_posts")
 def tagged_by_others_posts():
-	tagger = request.args.get('tagger', 'anonymous');
-	print tagger;
+	tagger = request.args.get('tagger', 'anonymous')
+	print tagger
 	posts = learner.determine_tagged_posts(tagger=tagger)
 	return render_template("posts.jinja2", posts = posts, json=json)
 
@@ -61,7 +61,7 @@ def post(post_id):
 
 @app.route('/classify_post/<post_id>', methods=['POST'])
 def tag_post(post_id):
-	tagger=request.form['tagger'];
+	tagger=request.form['tagger']
 	if 'demand' in request.form:
 		learner.tag_post(tagger, post_id, 'demand', request.form['demand'])
 	if 'category' in request.form:

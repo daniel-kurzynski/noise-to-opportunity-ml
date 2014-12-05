@@ -98,6 +98,9 @@ def cross_validate(ids, base_classifier, X, y):
 	print "Precision-Demand:   ", micro_precision_demand,    " (micro)"
 	print "Recall-Demand:      ", micro_recall_demand,       " (micro)"
 	print "F1-Demand:          ", micro_f1_demand,           " (micro)"
+
+	overall_precision = (overall_tp + overall_tn) / float(overall_tp + overall_tn + overall_fp + overall_fn)
+	print "Overall Precision   ", overall_precision
 	# print "Precision-NoDemand: ", micro_precision_no_demand, " (micro)"
 	# print "Recall-NoDemand:    ", micro_recall_no_demand,    " (micro)"
 	# print "F1-NoDemand:        ", micro_f1_no_demand,        " (micro)"
@@ -227,7 +230,7 @@ if __name__ == "__main__":
 		SGDClassifier(),
 		RidgeClassifier(),
 		LinearSVC(),
-		BernoulliNB()]
+		BernoulliNB(class_prior=[0.5, 0.5])]
 
 	LOG_REGRESSION, \
 	PERCEPTRON, \
