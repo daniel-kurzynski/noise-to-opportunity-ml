@@ -9,9 +9,13 @@ class FeatureBuilder {
 	var posts = List[Post]()
 	var features: List[Feature] = List()
 
-	val relevantNeedWords = List("anyone", "opportunity", "need", "must", "have", "you", "required", "require", "please",
-	"offering", "offer", "advice", "thank", "share", "sharing", "expertise", "urgent", "urgently", "appreciated",
-	"informative", "guide")
+	val relevantNeedWords = List(
+    "advice", "anyone", "appreciated", "expertise",
+    "guide", "have", "informative", "interested",
+    "looking", "must", "need", "offer", "offering",
+    "opportunity", "please", "require", "required",
+    "share", "sharing", "thank", "urgent", "urgently",
+    "you")
 
 	/**
 	 * Demand posts often contain more questions than normal posts,
