@@ -71,11 +71,10 @@ def cross_validate(ids, base_classifier, X, y):
 			fp_posts_ids = dict([(current_ids[i], i) for i in range(len(y_true)) if y_predict[i] == "no-demand" and y_true[i] == "demand"])
 
 			fp_posts = [(fp_posts_ids[post.id], post) for post in all_posts if post.id in fp_posts_ids.keys()]
-			print fp_posts
 			for i, p in fp_posts:
-				print p.id
-				print y_true[i]
-				print p.data
+				# print p.id
+				# print y_true[i]
+				print p.data, "\n"
 
 		overall_confusion = overall_confusion + confusion_matrix(y_true, y_predict)
 		precision_scores.append(precision_score(y_true, y_predict, average = None)[0])

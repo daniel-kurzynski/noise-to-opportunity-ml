@@ -18,7 +18,7 @@ case class Post(
 
 	def textTokens: Seq[String] = {
 		sentences.flatMap { sentence =>
-			sentence.map { word => word.text }
+			sentence.map { word => word.text.toLowerCase() }
 		}
 	}
 
