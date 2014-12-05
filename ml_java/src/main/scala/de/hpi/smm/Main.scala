@@ -20,6 +20,7 @@ object Main {
 		// Analyze tf-idf on both demand and no-demand
 		val features = FeatureBuilder()
 			.questionNumber()
+//			.questionWords()
 //			.imperativeWords()
 			.mostCommonWordsFromBOW()
 			.needWords()
