@@ -98,9 +98,9 @@ def cross_validate(ids, base_classifier, X, y):
 	print "Precision-Demand:   ", micro_precision_demand,    " (micro)"
 	print "Recall-Demand:      ", micro_recall_demand,       " (micro)"
 	print "F1-Demand:          ", micro_f1_demand,           " (micro)"
-	print "Precision-NoDemand: ", micro_precision_no_demand, " (micro)"
-	print "Recall-NoDemand:    ", micro_recall_no_demand,    " (micro)"
-	print "F1-NoDemand:        ", micro_f1_no_demand,        " (micro)"
+	# print "Precision-NoDemand: ", micro_precision_no_demand, " (micro)"
+	# print "Recall-NoDemand:    ", micro_recall_no_demand,    " (micro)"
+	# print "F1-NoDemand:        ", micro_f1_no_demand,        " (micro)"
 	print overall_confusion
 
 def print_mosth_weighted_features(indices, vocabulary, coef):
@@ -210,7 +210,7 @@ class VotingClassifier(BaseEstimator):
 			demand_count = votes.count("demand")
 			no_demand_count = votes.count("no-demand")
 			assert demand_count + no_demand_count == len(self.classifiers)
-			if demand_count > no_demand_count:
+			if demand_count > no_demand_count - 1:
 				y_predict.append("demand")
 			else:
 				y_predict.append("no-demand")
@@ -242,7 +242,8 @@ if __name__ == "__main__":
 
 	classifiers.append(average_classifier)
 
-	for cl in classifiers:
-		run_demand(cl)
+	run_demand(classifiers[BERNOULLI_NB])
+	# for cl in classifiers:
+	# 	run_demand(cl)
 	# run_product(classifier[RIDGE])
 

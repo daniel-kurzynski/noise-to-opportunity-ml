@@ -8,10 +8,10 @@ class NeedWordFeature() extends Feature {
 	def name = relevantNeedWords
 
 	val relevantNeedWords = Array(
-		"advice", "anyone", "appreciate", "appreciated", "expertise",
+		"advice", "anyone", "appreciate", "appreciated", "curious", "expertise",
 		"guide", "have", "informative", "interested",
 		"looking", "must", "need", "offer", "offering",
-		"opportunity", "please", "require", "required",
+		"opportunity", "perspective", "please", "require", "required",
 		"share", "sharing", "thank", "urgent", "urgently",
 		"you").reverse
 
@@ -29,10 +29,12 @@ class NeedNGramsFeature() extends Feature {
 	override def name: Array[String] = relevantNGrams.map(_.mkString(" "))
 	val relevantNGrams = Array(
 		Array("looking", "for"),
-//		Array("you", "could"),
-//		Array("could", "you"),
-//		Array("help", "me"),
-		Array("interested", "in")
+		Array("you", "could"),
+		Array("could", "you"),
+		Array("help", "me"),
+		Array("your", "thoughts"),
+		Array("interested", "in"),
+		Array("in", "advance")
 	)
 
 	override def extract(): Switch = {
@@ -44,7 +46,7 @@ class NeedNGramsFeature() extends Feature {
 					post.textTokens.sliding(windowSize).count { t =>
 						val relevantNGram = t.seq.toArray
 						relevantNGrams.filter(_.size == windowSize).exists { ngram =>
-							ngram.deep == relevantNGram.deep
+							ngram.map(_.toLowerCase).deep == relevantNGram.deep
 						}
 					}.toDouble
 				}.sum)
