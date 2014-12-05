@@ -56,7 +56,21 @@ class NeedNGramsFeature() extends Feature {
 				results
 			}.toArray
 			values
-		}, "ngrams-different-features"))
+		}, "ngrams-different-features"),
+			Case(post => {
+				val min = relevantNGrams.map(_.size).min
+				val max = relevantNGrams.map(_.size).max
+
+				Array((min to max).map { windowSize =>
+					post.textTokens.sliding(windowSize).count { t =>
+						val relevantNGram = t.seq.toArray
+						relevantNGrams.filter(_.size == windowSize).exists { ngram =>
+							ngram.deep == relevantNGram.deep
+						}
+					}.toDouble
+				}.sum)
+			}, "ngrams-one-feature")
+		)
 	}
 
 }
