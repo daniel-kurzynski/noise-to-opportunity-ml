@@ -15,7 +15,7 @@ class QuestionNumberFeature extends Feature {
 	override def extract(post: Post): Double = {
 		post.sentences.count { sentence =>
 			// Adding the part after '||' brings 6 % precision and -3 % recall
-			sentence.last.text == "?" || sentence.head.text.startsWith("W")
+			sentence.last.text == "?" || sentence.head.pos.startsWith("W")
 		}
 	}
 }
