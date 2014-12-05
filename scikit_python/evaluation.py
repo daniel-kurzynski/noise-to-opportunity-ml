@@ -85,12 +85,22 @@ def cross_validate(ids, base_classifier, X, y):
 	# print "Recall-Demand:    ", sum(recall_scores)    / float(len(recall_scores)),        " (macro)"
 
 	overall_tp = overall_confusion[0][0]
-	micro_precision = overall_tp / float(overall_tp + overall_confusion[1][0])
-	micro_recall    = overall_tp / float(overall_tp + overall_confusion[0][1])
-	micro_f1        = 2 * micro_precision * micro_recall / (micro_recall + micro_precision)
-	print "Precision-Demand: ", micro_precision, " (micro)"
-	print "Recall-Demand:    ", micro_recall,    " (micro)"
-	print "F1-Demand:        ", micro_f1,        " (micro)"
+	overall_fp = overall_confusion[1][0]
+	overall_fn = overall_confusion[0][1]
+	overall_tn = overall_confusion[1][1]
+	micro_precision_demand = overall_tp / float(overall_tp + overall_fp)
+	micro_recall_demand    = overall_tp / float(overall_tp + overall_fn)
+	micro_f1_demand        = 2 * micro_precision_demand * micro_recall_demand / (micro_recall_demand + micro_precision_demand)
+
+	micro_precision_no_demand = overall_tn / float(overall_tn + overall_fn)
+	micro_recall_no_demand    = overall_tn / float(overall_tn + overall_fp)
+	micro_f1_no_demand        = 2 * micro_precision_no_demand * micro_recall_no_demand / (micro_recall_no_demand + micro_precision_no_demand)
+	print "Precision-Demand:   ", micro_precision_demand,    " (micro)"
+	print "Recall-Demand:      ", micro_recall_demand,       " (micro)"
+	print "F1-Demand:          ", micro_f1_demand,           " (micro)"
+	print "Precision-NoDemand: ", micro_precision_no_demand, " (micro)"
+	print "Recall-NoDemand:    ", micro_recall_no_demand,    " (micro)"
+	print "F1-NoDemand:        ", micro_f1_no_demand,        " (micro)"
 	print overall_confusion
 
 def print_mosth_weighted_features(indices, vocabulary, coef):
