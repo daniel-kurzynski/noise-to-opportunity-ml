@@ -17,9 +17,9 @@ class NeedWordFeature() extends Feature {
 	override def extract(): Switch = {
 		Switch(
 			Case(post => relevantNeedWords.map { word => post.textTokens.count(_ == word).toDouble },
-				"need-word-with-lowercase"),
+				"need-word-without-lowercase"),
 			Case(post => relevantNeedWords.map { word => post.textTokens.count(_.toLowerCase == word).toDouble },
-				"need-word-without-lowercase")
+				"need-word-with-lowercase")
 		)
 	}
 }

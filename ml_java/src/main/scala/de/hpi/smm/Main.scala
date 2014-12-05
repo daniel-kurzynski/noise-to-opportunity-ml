@@ -22,10 +22,7 @@ object Main {
 			.questionNumber()
 //			.questionWords()
 //			.imperativeWords()
-			.mostCommonWordsFromBOW()
 			.needWords()
-			.share()
-			.thankYou()
 
 		extractPostsLinewise { post =>
 			features.touch(post)
