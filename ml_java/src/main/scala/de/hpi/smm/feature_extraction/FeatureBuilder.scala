@@ -26,6 +26,11 @@ class FeatureBuilder {
 		this
 	}
 
+	def questionWords(): FeatureBuilder = {
+		addFeature(new QuestionWordsFeature())
+		this
+	}
+
 	/**
 	 * Demand posts often contain imperative clauses like "help me", "share your information"
 	 */

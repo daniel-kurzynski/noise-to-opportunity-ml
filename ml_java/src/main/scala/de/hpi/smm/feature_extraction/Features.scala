@@ -14,7 +14,7 @@ class QuestionNumberFeature extends Feature {
 
 	override def extract(post: Post): Double = {
 		post.sentences.count { sentence =>
-			sentence.last.text == "?"
+			sentence.last.text == "?"// || sentence.head.pos == "VP"
 		}
 	}
 }
@@ -33,3 +33,20 @@ class ImperativeNumberFeature extends Feature {
 		}
 	}
 }
+
+class QuestionWordsFeature extends Feature {
+	val questionWords = Set("where", "how", "who")
+	override def name: String = "#question-words"
+	override def extract(post: Post): Double = {
+		val counts = post.tokens.count { word =>
+			questionWords.contains(word.text.toLowerCase)
+		}
+		counts
+	}
+}
+
+
+//class DummyFeature extends Feature {
+//	override def name: String = ???
+//	override def extract(post: Post): Double = ???
+//}
