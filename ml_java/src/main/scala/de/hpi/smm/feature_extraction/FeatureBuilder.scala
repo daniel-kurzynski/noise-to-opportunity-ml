@@ -1,6 +1,6 @@
 package de.hpi.smm.feature_extraction
 
-import de.hpi.smm.domain.Post
+import de.hpi.smm.domain.{Case, Post}
 
 class FeatureBuilder {
 	def names: Array[String] = features.map(_.name).toArray
@@ -9,13 +9,6 @@ class FeatureBuilder {
 	var posts = List[Post]()
 	var features: List[Feature] = List()
 
-	val relevantNeedWords = List(
-    "advice", "anyone", "appreciated", "expertise",
-    "guide", "have", "informative", "interested",
-    "looking", "must", "need", "offer", "offering",
-    "opportunity", "please", "require", "required",
-    "share", "sharing", "thank", "urgent", "urgently",
-    "you")
 
 	/**
 	 * Demand posts often contain more questions than normal posts,
@@ -43,9 +36,7 @@ class FeatureBuilder {
 	 * Captures common need words like "required", "need" etc.
 	 */
 	def needWords(): FeatureBuilder = {
-		relevantNeedWords.foreach { word =>
-			addFeature(new NeedWordFeature(word))
-		}
+		addFeature(new NeedWordFeature())
 		this
 	}
 	/**
@@ -80,13 +71,29 @@ class FeatureBuilder {
 		features.foreach { feature => feature.touch(post) }
 	}
 	def buildFeatureVector(vectorHandler: (Post, Array[Double]) => Unit): Unit = {
+		val allCases = features.map { feature => feature.extract().cases }
+		println(allCases)
+
+		val allCombinations = allCases.foldLeft(Seq(Seq[Case]())) { (feature, cases) =>
+			cross(feature.toList, cases.toList)
+		}
+
 		posts.foreach { post =>
-      vectorHandler(post, features.map { feature => feature.extract(post) }.toArray)
+			vectorHandler(post, features.map { feature => feature.extract().default(post) }.toArray.flatten)
 		}
 	}
 
 	private def addFeature(feature: Feature): Unit = {
 		features ::= feature
+	}
+
+
+//	def cross[X](x: Seq[X], y: Seq[X]): Seq[Seq[X]] = {
+//		for (xi <- x; yi <- y) yield Vector(xi, yi)
+//	}
+
+	def cross[X](x: Seq[Seq[X]], y: Seq[X]): Seq[Seq[X]] = {
+		for (xi <- x; yi <- y) yield xi :+ yi
 	}
 }
 

@@ -1,6 +1,6 @@
 package de.hpi.smm.feature_extraction
 
-import de.hpi.smm.domain.Post
+import de.hpi.smm.domain.{Switch, Post}
 
 abstract class Feature {
 
@@ -10,9 +10,9 @@ abstract class Feature {
 	def name: String
 
 	/**
-	 * Extract a feature vector element from a post.
+	 * Returns a Switch of possible implementations for this feature.
 	 */
-	def extract(post: Post): Double
+	def extract(): Switch
 
 	/**
 	 * Some features need to see all posts, before they can build a feature vector element,

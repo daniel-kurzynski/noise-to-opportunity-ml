@@ -1,47 +1,65 @@
 package de.hpi.smm.feature_extraction
 
-import de.hpi.smm.domain.Post
+import de.hpi.smm.domain.{Case, Switch, Post}
 
-class NeedWordFeature(word: String) extends Feature {
-	def name = s"#$word"
-	override def extract(post: Post): Double = {
-		post.textTokens.count(_ == word)
+class NeedWordFeature() extends Feature {
+	def name = s"#word"
+
+	val relevantNeedWords = Array(
+		"advice", "anyone", "appreciated", "expertise",
+		"guide", "have", "informative", "interested",
+		"looking", "must", "need", "offer", "offering",
+		"opportunity", "please", "require", "required",
+		"share", "sharing", "thank", "urgent", "urgently",
+		"you")
+
+
+	override def extract(): Switch = {
+		Switch(
+			Case(post => relevantNeedWords.map { word => post.textTokens.count(_ == word).toDouble },
+				"need-word-with-lowercase"),
+			Case(post => relevantNeedWords.map { word => post.textTokens.count(_.toLowerCase == word).toDouble },
+				"need-word-without-lowercase")
+		)
 	}
 }
 
 class QuestionNumberFeature extends Feature {
 	override def name: String = "#questions"
 
-	override def extract(post: Post): Double = {
-		post.sentences.count { sentence =>
-			// Adding the part after '||' brings 6 % precision and -3 % recall
-			sentence.last.text == "?" || sentence.head.pos.startsWith("W")
-		}
+	override def extract(): Switch = {
+		Switch(
+			Case(post => Array(post.sentences.count { sentence => sentence.last.text == "?" }.toDouble),
+				"question-number-without-question-word"),
+			Case(post => Array(post.sentences.count { sentence => sentence.last.text == "?" || sentence.head.pos.startsWith("W") }.toDouble),
+				"question-number-with-question-word")
+		)
 	}
 }
 
 class ImperativeNumberFeature extends Feature {
 	override def name: String = "#imperatives"
 
-	override def extract(post: Post): Double = {
-		post.tokens.count { word =>
-			if (word.pos == "VB") {
-//				println(word)
-				true
-			}
-			else
-				false
-		}
+	override def extract(): Switch = {
+		Switch(post =>
+			Array(post.tokens.count { word =>
+				if (word.pos == "VB") {
+	//				println(word)
+					true
+				}
+				else
+					false
+			}.toDouble)
+		)
 	}
 }
 
 class QuestionWordsFeature extends Feature {
 	override def name: String = "#question-words"
-	override def extract(post: Post): Double = {
-		val counts = post.tokens.count { word =>
-			word.pos.startsWith("W")
-		}
-		counts
+	override def extract(): Switch = {
+		Switch(post =>
+			Array(post.tokens.count { word => word.pos.startsWith("W")}.toDouble)
+		)
 	}
 }
 
