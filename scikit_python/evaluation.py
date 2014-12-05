@@ -20,6 +20,9 @@ from os.path import join, abspath
 
 args = sys.argv
 
+if len(args) == 1:
+	print "Possible args: vis, fps, most"
+
 from preprocessing import CSVReader
 
 csv_reader = CSVReader()
@@ -182,5 +185,5 @@ if __name__ == "__main__":
 	LIN_SVC, \
 	BERNOULLI_NB = range(len(classifier))
 
-	run_demand(classifier[LIN_SVC])
+	run_demand(classifier[BERNOULLI_NB])
 	# run_product(classifier[RIDGE])
