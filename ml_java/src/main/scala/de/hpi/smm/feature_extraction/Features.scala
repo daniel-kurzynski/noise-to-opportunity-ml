@@ -2,6 +2,8 @@ package de.hpi.smm.feature_extraction
 
 import de.hpi.smm.domain.{Case, Switch, Post}
 
+import scala.collection.mutable
+
 class NeedWordFeature() extends Feature {
 	def name = relevantNeedWords
 
@@ -25,22 +27,36 @@ class NeedWordFeature() extends Feature {
 
 class NeedNGramsFeature() extends Feature {
 	override def name: Array[String] = relevantNGrams.map(_.mkString(" "))
-	val relevantNGrams = Array(Array("looking", "for"), Array("interested", "in"))
+	val relevantNGrams = Array(
+		Array("looking", "for"),
+//		Array("you", "could"),
+//		Array("could", "you"),
+//		Array("help", "me"),
+		Array("interested", "in")
+	)
 
 	override def extract(): Switch = {
-		Switch(post => {
+		Switch(Case(post => {
 			val min = relevantNGrams.map(_.size).min
 			val max = relevantNGrams.map(_.size).max
 
-			Array((min to max).map { windowSize =>
-				post.textTokens.sliding(windowSize).count { t =>
-					val relevantNGram = t.seq.toArray
-					relevantNGrams.filter(_.size == windowSize).exists { ngram =>
-						ngram.deep == relevantNGram.deep
+			val values = (min to max).flatMap { windowSize =>
+				val currentNGrams = relevantNGrams.filter(_.size == windowSize)
+				val currentCounts = mutable.ListMap[Array[String], Double]()
+				currentNGrams.foreach { ngram =>
+					currentCounts(ngram) = 0
+				}
+				post.textTokens.sliding(windowSize).foreach { t =>
+					currentNGrams.foreach { ngram =>
+						if (t.seq.toArray.deep == ngram.deep)
+							currentCounts(ngram) += 1
 					}
-				}.toDouble
-			}.sum)
-		})
+				}
+				val results = currentCounts.values.toArray
+				results
+			}.toArray
+			values
+		}, "ngrams-different-features"))
 	}
 
 }

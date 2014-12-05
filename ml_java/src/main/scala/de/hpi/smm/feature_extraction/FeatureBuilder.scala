@@ -83,7 +83,6 @@ class FeatureBuilder {
 	}
 	def buildFeatureVector(vectorHandler: (Post, Array[Double]) => Unit): Unit = {
 		val allCases = features.map { feature => feature.extract().cases }
-		println(allCases)
 
 		val allCombinations = allCases.foldLeft(Seq(Seq[Case]())) { (feature, cases) =>
 			cross(feature.toList, cases.toList)

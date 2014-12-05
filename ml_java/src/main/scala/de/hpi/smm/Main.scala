@@ -33,7 +33,7 @@ object Main {
 		}()
 		val featureFile = new File("../n2o_data/features.csv")
 		val writer = new CSVWriter(new FileWriter(featureFile), CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER)
-		writer.writeNext(Array("id") ++ features.names)
+		writer.writeNext(Array("id") ++ features.names ++ Array("category"))
 		features.buildFeatureVector { (post, instance) =>
 			val line = new Array[String](instance.size + 2)
 			line(0) = post.id
