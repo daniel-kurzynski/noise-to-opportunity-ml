@@ -11,7 +11,7 @@ class NeedWordFeature() extends Feature {
 		"looking", "must", "need", "offer", "offering",
 		"opportunity", "please", "require", "required",
 		"share", "sharing", "thank", "urgent", "urgently",
-		"you")
+		"you").reverse
 
 
 	override def extract(): Switch = {
