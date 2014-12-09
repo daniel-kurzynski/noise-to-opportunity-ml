@@ -46,15 +46,22 @@ object Main {
 		writer.close()
 
 		println(s"Demand-Count: $demandPostNumber, No-Demand-Count: $noDemandPostNumber")
-		val topWords = demandCounts.toList.map { case (word, currentCounts) =>
+		val topWordsDemand = demandCounts.toList.map { case (word, currentCounts) =>
 			val demandProb   = currentCounts.demand.toDouble / demandPostNumber
 			val noDemandProb = currentCounts.noDemandCount.toDouble / noDemandPostNumber
 			val relation = demandProb / noDemandProb
-			(word, currentCounts, if (relation.isInfinite) 0 else relation)
-		}.sortBy(-_._3)
-		topWords.take(10).foreach(println)
+
+			val demandMissingProb   = (demandPostNumber - currentCounts.demand).toDouble / demandPostNumber
+			val noDemandMissingProb = (noDemandPostNumber - currentCounts.noDemandCount).toDouble / noDemandPostNumber
+			val missingRelation = noDemandMissingProb / demandMissingProb
+			(word, currentCounts, if (relation.isInfinite) 0 else relation, if (missingRelation.isInfinite) 0 else missingRelation)
+		}
+		topWordsDemand.sortBy(-_._3).take(10).foreach(println)
 		println("----------------")
-		println(topWords.find(_._1 == "looking"))
+		topWordsDemand.sortBy(-_._4).take(10).foreach(println)
+		println("----------------")
+
+		println(topWordsDemand.find(_._1 == "looking"))
 	}
 
 	def extractPostsLinewise(extractor: Post => Unit)(count: Int = Int.MaxValue): Unit = {
@@ -119,19 +126,19 @@ object Main {
 				currentSentence :+= Word(word, pos, ner)
 			}
 			sentences :+= currentSentence
-			currentSentence.map(_.text).distinct.foreach { word =>
-				demandCounts.get(word) match {
-					case Some(currentWordCount) =>
-						if (rawPost.extractClass() == "demand")
-							currentWordCount.demand += 1
-						else if (rawPost.extractClass() == "no-demand")
-							currentWordCount.noDemandCount += 1
-					case None =>
-						if (rawPost.extractClass() == "demand")
-							demandCounts += (word -> DemandCounts(1, 0))
-						else if (rawPost.extractClass() == "no-demand")
-							demandCounts += (word -> DemandCounts(0, 1))
-				}
+		}
+		sentences.flatten.map(_.text).distinct.foreach { word =>
+			demandCounts.get(word) match {
+				case Some(currentWordCount) =>
+					if (rawPost.extractClass() == "demand")
+						currentWordCount.demand += 1
+					else if (rawPost.extractClass() == "no-demand")
+						currentWordCount.noDemandCount += 1
+				case None =>
+					if (rawPost.extractClass() == "demand")
+						demandCounts += (word -> DemandCounts(1, 0))
+					else if (rawPost.extractClass() == "no-demand")
+						demandCounts += (word -> DemandCounts(0, 1))
 			}
 		}
 		sentences
