@@ -270,11 +270,19 @@ if __name__ == "__main__":
 	BERNOULLI_NB = range(len(classifiers))
 
 	average_classifier = VotingClassifier(classifiers[:])
-
 	classifiers.append(average_classifier)
 
-	# run_demand(classifiers[BERNOULLI_NB])
-	# for cl in classifiers:
-	# 	run_demand(cl)
-	run_product(classifiers[RIDGE])
+	classifier = classifiers[BERNOULLI_NB]
+
+	if "all" in args:
+		for cl in classifiers:
+			if "demand" in args:
+				run_demand(cl)
+			if "product" in args:
+				run_product(cl)
+	else:
+		if "demand" in args:
+			run_demand(classifier)
+		if "product" in args:
+			run_product(classifier)
 
