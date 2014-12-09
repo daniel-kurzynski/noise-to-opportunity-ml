@@ -26,7 +26,8 @@ class NeedWordFeature() extends Feature {
 }
 
 class NeedNGramsFeature() extends Feature {
-	override def name: Array[String] = relevantNGrams.map(_.mkString(" "))
+//	override def name: Array[String] = relevantNGrams.map(_.mkString(" "))
+	override def name: Array[String] = Array("bigrams")
 	val relevantNGrams = Array(
 		Array("looking", "for"),
 		Array("you", "could"),
