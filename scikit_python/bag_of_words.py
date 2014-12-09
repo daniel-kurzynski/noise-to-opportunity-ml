@@ -36,7 +36,7 @@ def build_demand_data():
 	y = np.array([post.get_class("demand") for post in labeled_posts])
 	X_unlabeled = vectorizer.transform([post.data for post in unlabeled_posts])
 
-	return X, y, vectorizer, X_unlabeled
+	return [], X, y, vectorizer, X_unlabeled
 
 
 def build_product_data():

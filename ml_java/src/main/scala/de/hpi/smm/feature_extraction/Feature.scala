@@ -1,18 +1,18 @@
 package de.hpi.smm.feature_extraction
 
-import de.hpi.smm.domain.Post
+import de.hpi.smm.domain.{Switch, Post}
 
 abstract class Feature {
 
 	/**
 	 * Name of a feature, will be the header in the csv file.
 	 */
-	def name: String
+	def name: Array[String]
 
 	/**
-	 * Extract a feature vector element from a post.
+	 * Returns a Switch of possible implementations for this feature.
 	 */
-	def extract(post: Post): Double
+	def extract(): Switch
 
 	/**
 	 * Some features need to see all posts, before they can build a feature vector element,

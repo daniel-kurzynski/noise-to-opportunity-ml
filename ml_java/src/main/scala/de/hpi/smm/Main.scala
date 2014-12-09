@@ -19,12 +19,13 @@ object Main {
 		// TODO
 		// Analyze tf-idf on both demand and no-demand
 		val features = FeatureBuilder()
-			.questionNumber()
-//			.imperativeWords()
-			.mostCommonWordsFromBOW()
 			.needWords()
-			.share()
-			.thankYou()
+			.questionNumber()
+			.needNGrams()
+//			.containsEMail()
+//			.addressTheReader()
+//			.questionWords()
+//			.imperativeWords()
 
 		extractPostsLinewise { post =>
 			features.touch(post)
@@ -33,7 +34,7 @@ object Main {
 		}()
 		val featureFile = new File("../n2o_data/features.csv")
 		val writer = new CSVWriter(new FileWriter(featureFile), CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER)
-		writer.writeNext(features.names)
+		writer.writeNext(Array("id") ++ features.names ++ Array("category"))
 		features.buildFeatureVector { (post, instance) =>
 			val line = new Array[String](instance.size + 2)
 			line(0) = post.id
@@ -45,7 +46,7 @@ object Main {
 	}
 
 	def extractPostsLinewise(extractor: Post => Unit)(count: Int = Int.MaxValue): Unit = {
-    val classifiedPosts = JacksMapper.readValue[Map[String, Map[String, Map[String, String]]]](new FileReader("../webapp_python/data/classification.json"))
+		val classifiedPosts = JacksMapper.readValue[Map[String, Map[String, Map[String, String]]]](new FileReader("../webapp_python/data/classification.json"))
 		val postsFile = new File("../n2o_data/linked_in_posts.csv")
 		val reader = new CSVReader(new FileReader(postsFile))
 
