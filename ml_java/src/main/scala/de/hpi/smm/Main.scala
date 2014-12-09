@@ -12,6 +12,7 @@ import edu.stanford.nlp.pipeline.{Annotation, StanfordCoreNLP}
 import edu.stanford.nlp.util.CoreMap
 import edu.stanford.nlp.util.logging.RedwoodConfiguration
 import scala.collection.JavaConverters._
+import scala.collection.mutable
 
 object Main {
 
@@ -38,11 +39,22 @@ object Main {
 		features.buildFeatureVector { (post, instance) =>
 			val line = new Array[String](instance.size + 2)
 			line(0) = post.id
-			line(line.size - 1) = post.extractClass()
+			line(line.size - 1) = post.demandClass
 			System.arraycopy(instance.map(_.toString), 0, line, 1, instance.size)
 			writer.writeNext(line)
 		}
 		writer.close()
+
+		println(s"Demand-Count: $demandPostNumber, No-Demand-Count: $noDemandPostNumber")
+		val topWords = demandCounts.toList.map { case (word, currentCounts) =>
+			val demandProb   = currentCounts.demand.toDouble / demandPostNumber
+			val noDemandProb = currentCounts.noDemandCount.toDouble / noDemandPostNumber
+			val relation = demandProb / noDemandProb
+			(word, currentCounts, if (relation.isInfinite) 0 else relation)
+		}.sortBy(-_._3)
+		topWords.take(10).foreach(println)
+		println("----------------")
+		println(topWords.find(_._1 == "looking"))
 	}
 
 	def extractPostsLinewise(extractor: Post => Unit)(count: Int = Int.MaxValue): Unit = {
@@ -57,17 +69,23 @@ object Main {
 			val title = line(1)
 			val text  = line(2)
 
-			val rawPost = RawPost(id, title, text)
+			val rawPost = RawPost(id, title, text, classifiedPosts.get(id).orNull)
 
-			if (classifiedPosts.keySet.contains(id)) {
+			if (classifiedPosts.contains(id)) {
 				postCount += 1
 				val sentences = detectSentences(rawPost)
-				extractor(Post(id, title, text, sentences, classifiedPosts(id)))
+				extractor(Post(id, title, text, sentences, rawPost.extractClass()))
 			}
 			line = reader.readNext()
 		}
 		reader.close()
 	}
+
+	case class DemandCounts(var demand: Int = 0, var noDemandCount: Int = 0)
+
+	var demandCounts = mutable.Map[String, DemandCounts]()
+	var demandPostNumber   = 0
+	var noDemandPostNumber = 0
 
 	def detectSentences(rawPost: RawPost): Seq[Seq[Word]] = {
 		val props = new util.Properties()
@@ -88,6 +106,10 @@ object Main {
 
 		var sentences = Vector[Vector[Word]]()
 
+		if (rawPost.extractClass() == "demand")
+			demandPostNumber += 1
+		else if (rawPost.extractClass() == "no-demand")
+			noDemandPostNumber += 1
 		annotatedSentences.asScala.foreach { sentence =>
 			var currentSentence = Vector[Word]()
 			sentence.get(classOf[TokensAnnotation]).asScala.foreach { token =>
@@ -97,6 +119,20 @@ object Main {
 				currentSentence :+= Word(word, pos, ner)
 			}
 			sentences :+= currentSentence
+			currentSentence.map(_.text).distinct.foreach { word =>
+				demandCounts.get(word) match {
+					case Some(currentWordCount) =>
+						if (rawPost.extractClass() == "demand")
+							currentWordCount.demand += 1
+						else if (rawPost.extractClass() == "no-demand")
+							currentWordCount.noDemandCount += 1
+					case None =>
+						if (rawPost.extractClass() == "demand")
+							demandCounts += (word -> DemandCounts(1, 0))
+						else if (rawPost.extractClass() == "no-demand")
+							demandCounts += (word -> DemandCounts(0, 1))
+				}
+			}
 		}
 		sentences
 	}
