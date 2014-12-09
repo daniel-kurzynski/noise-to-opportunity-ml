@@ -22,10 +22,10 @@ object Main {
 			.needWords()
 			.questionNumber()
 			.needNGrams()
-//			.containsEMail()
-//			.addressTheReader()
-//			.questionWords()
-//			.imperativeWords()
+			.containsEMail()
+			.addressTheReader()
+			.questionWords()
+			.imperativeWords()
 
 		extractPostsLinewise { post =>
 			features.touch(post)

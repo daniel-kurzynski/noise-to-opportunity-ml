@@ -10,8 +10,8 @@ data["inv-demand"] = None
 data["demand"] = None
 
 def make_bin(val):
-	if float(val): return 1
-	else: return 0
+	if float(val): return 1.0
+	else: return 0.0
 
 with open(join(dirname(dirname(__file__)), "n2o_data/features.csv")) as f:
 	first = True
@@ -33,7 +33,7 @@ with open(join(dirname(dirname(__file__)), "n2o_data/features.csv")) as f:
 			data[cls] = cls_data + feature
 
 		cls = "inv-" + cls
-		feature_inv = array(map(lambda x: 1 if not x else 0, feature))
+		feature_inv = array(map(lambda x: 1.0 if not x else 0.0, feature))
 		cls_data = data.get(cls)
 		if cls_data is None:
 			data[cls] = feature_inv
@@ -42,9 +42,7 @@ with open(join(dirname(dirname(__file__)), "n2o_data/features.csv")) as f:
 
 sep = "\t"
 
-with open(join(dirname(dirname(__file__)), "features_stats.csv"), "w") as f:
-	f.write(sep.join(header))
-	f.write("\n")
+def write_numbers(f):
 	c = 0
 	for cls, features in data.iteritems():
 		if c == 2: f.write("\n")
@@ -53,3 +51,21 @@ with open(join(dirname(dirname(__file__)), "features_stats.csv"), "w") as f:
 		f.write("\n")
 		c += 1
 
+def write_demands_for_each_word(f):
+	def mapper(x, y):
+		if x > 1 * y:
+			return "DEMAND"
+		elif y > 1 * x:
+			return "NO-DEMAND"
+		else: return ""
+	demand_quot = data["demand"] / (data["inv-demand"] + data["demand"])
+	no_demand_quot = data["no-demand"] / (data["inv-no-demand"] + data["no-demand"])
+	f.write(sep)
+	f.write(sep.join(map(mapper, demand_quot, no_demand_quot)))
+
+with open(join(dirname(dirname(__file__)), "features_stats.csv"), "w") as f:
+	f.write(sep.join(header))
+	f.write("\n")
+	write_numbers(f)
+	f.write("\n")
+	write_demands_for_each_word(f)
