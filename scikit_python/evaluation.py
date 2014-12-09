@@ -77,10 +77,27 @@ def most_weighted_features(classifier, X, y, vectorizer):
 	print "=== no demand words ==="
 	print_mosth_weighted_features(no_demand_indices,inverted_vocabulary,classifier.coef_[0])
 
-def reduce_dimensonality(method, X,y):
+def reduce_dimensonality(method, X,y,X_unlabeled):
 	X_new = method.fit_transform(X,y)
+
+	x0_unlabeled = []
+	x1_unlabeled = []
+
+	if X_unlabeled is not None:
+		X_unlabeled_new = method.transform(X_unlabeled)
+
+		if(X_unlabeled_new.shape[1]<2):
+			X_unlabeled_new = [[x,0] for x in X_unlabeled_new]
+			
+		X_unlabeled_new = np.array(X_unlabeled_new)
+
+		x0_unlabeled = [x[0] for x in X_unlabeled_new]
+		x1_unlabeled = [x[1] for x in X_unlabeled_new]
+
 	if(X_new.shape[1]<2):
 		X_new = [[x,0] for x in X_new]
+
+
 
 	X_new = np.array(X_new)
 	XY = np.array(zip(X_new,y))
@@ -92,17 +109,21 @@ def reduce_dimensonality(method, X,y):
 	x0_no_demand = [x[0][0] for x in XY if x[1]=="no-demand"]
 	x1_no_demand = [x[0][1] for x in XY if x[1]=="no-demand"]
 
-	return x0_demand, x1_demand, x0_no_demand, x1_no_demand
 
-def visualize_posts(X,y):
+
+	return x0_demand, x1_demand, x0_no_demand, x1_no_demand, x0_unlabeled, x1_unlabeled
+
+def visualize_posts(X,y,X_unlabeled):
 	lda = LDA(n_components=2)
 	pca = PCA(n_components=2)
 
 	for method in [pca, lda]:
-		x0_demand, x1_demand, x0_no_demand, x1_no_demand = reduce_dimensonality(method,X,y)
+		x0_demand, x1_demand, x0_no_demand, x1_no_demand, x0_unlabeled, x1_unlabeled = reduce_dimensonality(method, X, y, X_unlabeled)
 		plt.title("Reduction: " + str(method))
-		plt.scatter(x0_demand,x1_demand, c="g", marker="^", s=100)
-		plt.scatter(x0_no_demand,x1_no_demand, c="r", marker="v", s=100)
+		plt.scatter(x0_unlabeled, x1_unlabeled, c="b", marker=",", s=10)
+		plt.scatter(x0_no_demand, x1_no_demand, c="r", marker="v", s=100)
+		plt.scatter(x0_demand, x1_demand, c="g", marker="^", s=100)
+
 		plt.show()
 
 def run_demand(classifier):
@@ -111,12 +132,13 @@ def run_demand(classifier):
 	from bag_of_words    import build_demand_data as bow
 	from custom_features import build_demand_data as custom_features
 	for build_data in [bow, custom_features]:
-		X, y, vectorizer = build_data()
+		X, y, vectorizer, X_unlabeled = build_data()
 		if vectorizer:
 			most_weighted_features(classifier, X, y, vectorizer)
 		X = X.todense() if issparse(X) else X
+		X_unlabeled = X_unlabeled.todense() if issparse(X_unlabeled) else X_unlabeled
 		cross_validate(classifier, X, y)
-		visualize_posts(X,y)
+		visualize_posts(X,y, X_unlabeled)
 	print "=" * len(t)
 
 def run_product(classifier):

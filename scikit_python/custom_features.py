@@ -17,7 +17,7 @@ def build_demand_data():
 			features.append([float(val) for val in content[1:-1]])
 			target.append(cls)
 
-	return np.array(features), np.array(target), None
+	return np.array(features), np.array(target), None, None
 
 
 def build_product_data():
