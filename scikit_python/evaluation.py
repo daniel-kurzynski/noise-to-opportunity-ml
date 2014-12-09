@@ -203,9 +203,15 @@ def run_product(classifier):
 	from bag_of_words    import build_product_data as bow
 	from custom_features import build_product_data as custom_features
 
-	X_train, y_train, X_test, y_true = bow()
+	X_train, y_train, X_test, y_true, categories = bow()
 	X_train = X_train.todense() if issparse(X_train) else X_train
 	X_test = X_test.todense() if issparse(X_test) else X_test
+	for category in categories:
+
+		y_train_category = [category if y == category else "not-"+category for y in y_train]
+		y_true_category = [category if y == category else "not-"+category for y in y_true]
+
+		validate(classifier, X_train, y_train_category, X_test, y_true_category)
 
 	validate(classifier, X_train, y_train, X_test, y_true)
 
@@ -267,8 +273,8 @@ if __name__ == "__main__":
 
 	classifiers.append(average_classifier)
 
-	run_demand(classifiers[BERNOULLI_NB])
+	# run_demand(classifiers[BERNOULLI_NB])
 	# for cl in classifiers:
 	# 	run_demand(cl)
-	# run_product(classifier[RIDGE])
+	run_product(classifiers[RIDGE])
 
