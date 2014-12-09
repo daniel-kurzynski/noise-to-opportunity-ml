@@ -9,19 +9,20 @@ class NeedWordFeature() extends Feature {
 
 	val relevantNeedWords = Array(
 		"advice", "anyone", "appreciate", "appreciated", "contact", "curious", "expertise",
-		"guide", "have", "informative", "interested",
+		"have", "informative", "interested",
 		"looking", "must", "need", "offer", "offering",
-		"opportunity", "perspective", "please", "require", "required",
-		"share", "sharing", "thank", "urgent", "urgently",
+		"perspective", "please", "require", "required",
+		"share", "sharing", "thank", "thanks", "urgent", "urgently",
 		"you").reverse
 
 	override def extract(): Switch = {
 		Switch(
-      Case(post => relevantNeedWords.map { word => post.textTokens.count(_ == word).toDouble },
-    "need-word-without-lowercase"),
-      Case(post => relevantNeedWords.map { word => post.textTokens.count(_.toLowerCase == word).toDouble },
-        "need-word-with-lowercase")
-    )
+			Case(post => relevantNeedWords.map { word => post.textTokens.count(_.toLowerCase == word).toDouble },
+				"need-word-with-lowercase")
+			,
+			Case(post => relevantNeedWords.map { word => post.textTokens.count(_ == word).toDouble },
+				"need-word-without-lowercase")
+	)
 	}
 }
 
