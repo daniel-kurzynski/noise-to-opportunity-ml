@@ -23,6 +23,11 @@ object Main {
 	val demandCounts = new DemandCountsCounter()
 	var brochureCounts = new BrochuresCountsCounter()
 
+  val blacklist = Array(
+    ".", ",", ":", "-RRB-", "-LRB-",
+  "IN", "DT", "TO", "CC"
+  )
+
 	def main(args: Array[String]): Unit = {
 //		runDemandFeatureExtraction()
 
@@ -175,7 +180,7 @@ object Main {
 		}
 	}
 	private def countProductWords(brochure: Document): Unit = {
-		brochure.sentences.flatten.distinct.foreach { word =>
+		brochure.sentences.flatten.distinct.filter { word => !blacklist.contains(word.pos) }.foreach { word =>
 			if (!brochureCounts.contains(word))
 				brochureCounts(word) = BrochureCounts()
 
