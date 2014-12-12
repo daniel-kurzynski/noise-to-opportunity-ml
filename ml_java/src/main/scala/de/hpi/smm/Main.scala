@@ -5,7 +5,7 @@ import java.util
 
 import au.com.bytecode.opencsv.{CSVWriter, CSVReader}
 import com.lambdaworks.jacks.JacksMapper
-import de.hpi.smm.domain.{Word, RawPost, Post}
+import de.hpi.smm.domain.{DemandCountsCounter, Word, RawPost, Post}
 import de.hpi.smm.feature_extraction.{ImperativeNumberFeature, FeatureBuilder}
 import edu.stanford.nlp.ling.CoreAnnotations._
 import edu.stanford.nlp.pipeline.{Annotation, StanfordCoreNLP}
@@ -16,11 +16,13 @@ import scala.collection.mutable
 
 object Main {
 
+	val demandCounts = new DemandCountsCounter
+
 	def main(args: Array[String]): Unit = {
 		// TODO
 		// Analyze tf-idf on both demand and no-demand
 		val features = FeatureBuilder()
-			.needWords()
+			.needWords(demandCounts)
 			.questionNumber()
 			.needNGrams()
 			.containsEMail()
@@ -45,23 +47,13 @@ object Main {
 		}
 		writer.close()
 
-		println(s"Demand-Count: $demandPostNumber, No-Demand-Count: $noDemandPostNumber")
-		val topWordsDemand = demandCounts.toList.map { case (word, currentCounts) =>
-			val demandProb   = currentCounts.demand.toDouble / demandPostNumber
-			val noDemandProb = currentCounts.noDemandCount.toDouble / noDemandPostNumber
-			val relation = demandProb / noDemandProb
-
-			val demandMissingProb   = (demandPostNumber - currentCounts.demand).toDouble / demandPostNumber
-			val noDemandMissingProb = (noDemandPostNumber - currentCounts.noDemandCount).toDouble / noDemandPostNumber
-			val missingRelation = noDemandMissingProb / demandMissingProb
-			(word, currentCounts, if (relation.isInfinite) 0 else relation, if (missingRelation.isInfinite) 0 else missingRelation)
-		}
-		topWordsDemand.sortBy(-_._3).take(10).foreach(println)
+//		println(s"Demand-Count: $demandPostNumber, No-Demand-Count: $noDemandPostNumber")
+		demandCounts.takeTopOccurrence(10).foreach(println)
 		println("----------------")
-		topWordsDemand.sortBy(-_._4).take(10).foreach(println)
+		demandCounts.takeTopNotOccurrence(10).foreach(println)
 		println("----------------")
-
-		println(topWordsDemand.find(_._1 == "looking"))
+//
+//		println(topWordsDemand.find(_._1 == "looking"))
 	}
 
 	def extractPostsLinewise(extractor: Post => Unit)(count: Int = Int.MaxValue): Unit = {
@@ -90,10 +82,6 @@ object Main {
 
 	case class DemandCounts(var demand: Int = 0, var noDemandCount: Int = 0)
 
-	var demandCounts = mutable.Map[String, DemandCounts]()
-	var demandPostNumber   = 0
-	var noDemandPostNumber = 0
-
 	def detectSentences(rawPost: RawPost): Seq[Seq[Word]] = {
 		val props = new util.Properties()
 //		props.put("annotators", "tokenize,ssplit,pos,lemma,ner")
@@ -114,9 +102,9 @@ object Main {
 		var sentences = Vector[Vector[Word]]()
 
 		if (rawPost.extractClass() == "demand")
-			demandPostNumber += 1
+			demandCounts.newDemandPost()
 		else if (rawPost.extractClass() == "no-demand")
-			noDemandPostNumber += 1
+			demandCounts.newNoDemandPost()
 		annotatedSentences.asScala.foreach { sentence =>
 			var currentSentence = Vector[Word]()
 			sentence.get(classOf[TokensAnnotation]).asScala.foreach { token =>

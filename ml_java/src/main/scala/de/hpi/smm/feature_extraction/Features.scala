@@ -1,21 +1,28 @@
 package de.hpi.smm.feature_extraction
 
-import de.hpi.smm.domain.{Case, Switch, Post}
+import de.hpi.smm.domain.{DemandCountsCounter, Case, Switch, Post}
 
 import scala.collection.mutable
 
-class NeedWordFeature() extends Feature {
-	def name = relevantNeedWords
+class NeedWordFeature(demandCounts: DemandCountsCounter) extends Feature {
+	def name = determineRelevantWords()
 
-	val relevantNeedWords = Array(
-		"advice", "anyone", "appreciate", "appreciated", "contact", "curious", "expertise",
-		"have", "informative", "interested",
-		"looking", "must", "need", "offer", "offering",
-		"perspective", "please", "require", "required",
-		"share", "sharing", "thank", "thanks", "urgent", "urgently",
-		"you").reverse
+//	val relevantNeedWords = Array(
+//		"advice", "anyone", "appreciate", "appreciated", "contact", "curious", "expertise",
+//		"have", "informative", "interested",
+//		"looking", "must", "need", "offer", "offering",
+//		"perspective", "please", "require", "required",
+//		"share", "sharing", "thank", "thanks", "urgent", "urgently",
+//		"you").reverse
+
+	private def determineRelevantWords(): Array[String] = {
+		(demandCounts.takeTopOccurrence(5.00).map(_._1) ++
+			demandCounts.takeTopNotOccurrence(2.00).map(_._1)).toArray
+	}
 
 	override def extract(): Switch = {
+		val relevantNeedWords = determineRelevantWords()
+
 		Switch(
 			Case(post => relevantNeedWords.map { word => post.textTokens.count(_.toLowerCase == word).toDouble },
 				"need-word-with-lowercase")
