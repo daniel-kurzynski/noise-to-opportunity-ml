@@ -3,7 +3,8 @@ package de.hpi.smm.domain
 case class RawDocument(id: String,
                    title: String,
                    text: String,
-	               rawClassification: Map[String, Map[String, String]]) {
+	               rawClassification: Map[String, Map[String, String]],
+	               lang: String = null) {
 	def wholeText: String = s"$title $text"
 
 

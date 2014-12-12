@@ -83,8 +83,9 @@ object Main {
 			val id    = line(0)
 			val text  = line(1)
 			val classification = line(2)
+			val lang = line(4)
 
-			val rawPost = RawDocument(id, "", text, null)
+			val rawPost = RawDocument(id, "", text, null, lang)
 
 			brochuresCount += 1
 			val sentences = detectSentences(rawPost)
@@ -120,7 +121,13 @@ object Main {
 		val props = new util.Properties()
 //		props.put("annotators", "tokenize,ssplit,pos,lemma,ner")
 		props.put("annotators", "tokenize,ssplit,pos")
-		props.put("pos.model", "../n2o_data/german-fast.tagger")
+		if (rawPost.lang == "de") {
+//			println("Using german")
+			props.put("pos.model", "../n2o_data/german-fast.tagger")
+		}
+		else if (rawPost.lang == "en") Unit
+		else throw new RuntimeException("Unknown language.")
+
 //		props.put("annotators", "tokenize,ssplit")
 
 		// shut down logging, initialize, start logging
