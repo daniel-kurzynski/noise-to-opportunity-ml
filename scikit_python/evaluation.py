@@ -24,6 +24,7 @@ args = sys.argv
 if len(args) == 1:
 	print "Possible args: vis, fps, most"
 	print "Possible datasets: bow, custom"
+	print "Possible classifications: all, demand, product"
 	sys.exit(0)
 
 from preprocessing import CSVReader
@@ -137,7 +138,7 @@ def reduce_dimensonality(method, X,y,X_unlabeled):
 
 		if(X_unlabeled_new.shape[1]<2):
 			X_unlabeled_new = [[x,0] for x in X_unlabeled_new]
-			
+
 		X_unlabeled_new = np.array(X_unlabeled_new)
 
 		x0_unlabeled = [x[0] for x in X_unlabeled_new]
