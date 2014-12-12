@@ -122,6 +122,7 @@ public class ItemLookupSample {
         requestUrl = helper.sign(params);
         System.out.println(requestUrl);
         try {
+            System.out.println(getDetails(requestUrl));
             System.out.println("==== REVIEWS: ====");
             for(String url: getReviewsUrls(requestUrl)){
                 System.out.println(url);
@@ -147,6 +148,16 @@ public class ItemLookupSample {
 //        System.out.println("Title is \"" + title + "\"");
 //        System.out.println();
 
+    }
+
+    private static String getDetails(String requestUrl) throws ParserConfigurationException, SAXException, IOException{
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        DocumentBuilder db = dbf.newDocumentBuilder();
+        Document doc = db.parse(requestUrl);
+//        System.out.println(doc.getDocumentURI());
+        NodeList urlNodes = doc.getElementsByTagName("DetailPageURL");
+        assert urlNodes.getLength() == 1;
+        return urlNodes.item(0).getTextContent();
     }
 
     private static List<String> getReviewsUrls(String requestUrl) throws ParserConfigurationException, SAXException, IOException{
