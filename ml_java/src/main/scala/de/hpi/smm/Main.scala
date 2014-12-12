@@ -120,7 +120,7 @@ object Main {
 		val props = new util.Properties()
 //		props.put("annotators", "tokenize,ssplit,pos,lemma,ner")
 		props.put("annotators", "tokenize,ssplit,pos")
-//		props.put("")
+		props.put("pos.model", "../n2o_data/german-fast.tagger")
 //		props.put("annotators", "tokenize,ssplit")
 
 		// shut down logging, initialize, start logging
