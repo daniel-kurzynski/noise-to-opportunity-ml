@@ -1,6 +1,6 @@
 package de.hpi.smm.feature_extraction
 
-import de.hpi.smm.domain.{Switch, Post}
+import de.hpi.smm.domain.{Switch, Document}
 
 abstract class Feature {
 
@@ -21,5 +21,5 @@ abstract class Feature {
 	 * This method is called for each post, that is added as an instance, and the feature can build internal state
 	 * with that post.
 	 */
-	def touch(post: Post): Unit = {}
+	def touch(post: Document): Unit = {}
 }
