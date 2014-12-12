@@ -21,17 +21,27 @@ object Main {
 	val brochuresFile = new File("../n2o_data/brochures.csv")
 
 	val demandCounts = new DemandCountsCounter()
-	var productCounts = new ProductCountsCounter()
+	var brochureCounts = new BrochuresCountsCounter()
 
 	def main(args: Array[String]): Unit = {
-		runDemandFeatureExtraction()
-//		runProductFeatureExtraction()
+//		runDemandFeatureExtraction()
+
+		runBrochureFeatureExtraction()
 	}
 
-	def runProductFeatureExtraction(): Unit = {
-		extractPostsLinewise { brochures =>
-			println(brochures.documentClass)
+	def runBrochureFeatureExtraction(): Unit = {
+		extractBrochuresLinewise { brochure =>
+			countProductTypes(brochure)
+			countProductWords(brochure)
 		}()
+
+		brochureCounts.takeCRM(10).foreach(println)
+		println("------")
+		brochureCounts.takeECOM(10).foreach(println)
+		println("------")
+		brochureCounts.takeHCM(10).foreach(println)
+		println("------")
+		brochureCounts.takeLVM(10).foreach(println)
 	}
 
 	def runDemandFeatureExtraction(): Unit = {
@@ -47,7 +57,7 @@ object Main {
 		extractPostsLinewise { post =>
 			features.touch(post)
 			countDemandTypes(post)
-			countWords(post)
+			countDemandWords(post)
 		}()
 		val writer = new CSVWriter(new FileWriter(new File("../n2o_data/features.csv")),
 			CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER)
@@ -110,6 +120,7 @@ object Main {
 		val props = new util.Properties()
 //		props.put("annotators", "tokenize,ssplit,pos,lemma,ner")
 		props.put("annotators", "tokenize,ssplit,pos")
+//		props.put("")
 //		props.put("annotators", "tokenize,ssplit")
 
 		// shut down logging, initialize, start logging
@@ -148,16 +159,37 @@ object Main {
 	private def countDemandTypes(post: Document): Unit = {
 		demandCounts.classCounts(post.documentClass) += 1
 	}
+	private def countProductTypes(brochures: Document): Unit = {
+		brochureCounts.classCounts(brochures.documentClass) += 1
+	}
 
-	private def countWords(post: Document): Unit = {
-		post.sentences.flatten.map(_.text).distinct.foreach { word =>
+	private def countDemandWords(post: Document): Unit = {
+		post.textTokens.distinct.foreach { word =>
 			if (!demandCounts.contains(word))
-				demandCounts(word) = DemandCounts(0, 0)
+				demandCounts(word) = DemandCounts()
 
 			if (post.documentClass == "demand")
 				demandCounts(word).demand += 1
 			else if (post.documentClass == "no-demand")
 				demandCounts(word).noDemandCount += 1
+		}
+	}
+	private def countProductWords(brochure: Document): Unit = {
+		brochure.sentences.flatten.distinct.foreach { word =>
+			if (!brochureCounts.contains(word))
+				brochureCounts(word) = BrochureCounts()
+
+			brochure.documentClass match {
+				case "CRM" =>
+					brochureCounts(word).crm += 1
+				case "ECOM" =>
+					brochureCounts(word).ecom += 1
+				case "HCM" =>
+					brochureCounts(word).hcm += 1
+				case "LVM" =>
+					brochureCounts(word).lvm += 1
+				case s => throw new RuntimeException(s"Unknown class ${s.toString}")
+			}
 		}
 	}
 }
