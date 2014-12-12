@@ -47,7 +47,8 @@ class NeedNGramsFeature() extends Feature {
 	)
 
 	override def extract(): Switch = {
-		Switch(Case(post => {
+		Switch(
+      Case(post => {
 				val min = relevantNGrams.map(_.size).min
 				val max = relevantNGrams.map(_.size).max
 
