@@ -1,6 +1,6 @@
 package de.hpi.smm.domain
 
-case class RawPost(id: String,
+case class RawDocument(id: String,
                    title: String,
                    text: String,
 	               rawClassification: Map[String, Map[String, String]]) {
@@ -24,12 +24,12 @@ case class RawPost(id: String,
 	}
 }
 
-case class Post(
+case class Document(
 	               id: String,
 	               title: String,
 	               text: String,
 	               sentences: Seq[Seq[Word]],
-	               demandClass: String) {
+	               documentClass: String) {
 
 	/*
 	 * Helper functions for quick access to necessary data structures

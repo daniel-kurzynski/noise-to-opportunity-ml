@@ -1,26 +1,21 @@
 package de.hpi.smm.domain
 
-import de.hpi.smm.Main.DemandCounts
-
 import scala.collection.mutable
+
+case class DemandCounts(var demand: Int = 0, var noDemandCount: Int = 0)
 
 class DemandCountsCounter extends mutable.HashMap[String, DemandCounts] {
 
-
-	var demandPostNumber: Int = 0
-	var noDemandPostNumber: Int = 0
-	def newDemandPost(): Unit = demandPostNumber += 1
-	def newNoDemandPost(): Unit = noDemandPostNumber += 1
-
+	val classCounts = mutable.Map[String, Int]().withDefaultValue(0)
 
 	private def calculateRatios(): List[(String, DemandCounts, Double, Double)] = {
 		toList.map { case (word, currentCounts) =>
-			val demandProb   = currentCounts.demand.toDouble / demandPostNumber
-			val noDemandProb = currentCounts.noDemandCount.toDouble / noDemandPostNumber
+			val demandProb   = currentCounts.demand.toDouble / classCounts("demand")
+			val noDemandProb = currentCounts.noDemandCount.toDouble / classCounts("no-demand")
 			val relation = demandProb / noDemandProb
 
-			val demandMissingProb   = (demandPostNumber - currentCounts.demand).toDouble / demandPostNumber
-			val noDemandMissingProb = (noDemandPostNumber - currentCounts.noDemandCount).toDouble / noDemandPostNumber
+			val demandMissingProb   = (classCounts("demand") - currentCounts.demand).toDouble / classCounts("demand")
+			val noDemandMissingProb = (classCounts("no-demand") - currentCounts.noDemandCount).toDouble / classCounts("no-demand")
 			val missingRelation = noDemandMissingProb / demandMissingProb
 			(word, currentCounts, if (relation.isInfinite) 0 else relation, if (missingRelation.isInfinite) 0 else missingRelation)
 		}
