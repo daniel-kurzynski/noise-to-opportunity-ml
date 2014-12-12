@@ -9,6 +9,10 @@ class BrochuresCountsCounter extends mutable.HashMap[Word, BrochureCounts] {
 
 	def overallBrochures: Int = classCounts.values.sum
 
+  private def non_infinity(value: Double): Double = {
+    if (value.isInfinite) 0 else value
+  }
+
 	private def calculateRatios(): List[(Word, BrochureCounts, Double, Double, Double, Double)] = {
 		toList.map { case (word, currentCounts) =>
 			val crmProb  = currentCounts.crm.toDouble  / classCounts("CRM")
@@ -16,7 +20,13 @@ class BrochuresCountsCounter extends mutable.HashMap[Word, BrochureCounts] {
 			val hcmProb  = currentCounts.hcm.toDouble  / classCounts("HCM")
 			val lvmProb  = currentCounts.lvm.toDouble  / classCounts("LVM")
 
-			(word, currentCounts, crmProb, ecomProb, hcmProb, lvmProb)
+
+      val crmRelation  = crmProb  / (ecomProb + hcmProb + lvmProb)
+      val ecomRelation = ecomProb / (crmProb + hcmProb + lvmProb)
+      val hcmRelation  = hcmProb  / (ecomProb + crmProb + lvmProb)
+      val lvmRelation  = lvmProb  / (ecomProb + hcmProb + crmProb)
+
+			(word, currentCounts, non_infinity(crmRelation), non_infinity(ecomRelation), non_infinity(hcmRelation), non_infinity(lvmRelation))
 
 //			val relation = crmProb / noDemandProb
 //
