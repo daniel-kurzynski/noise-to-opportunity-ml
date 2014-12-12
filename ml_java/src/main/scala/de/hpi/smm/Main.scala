@@ -130,7 +130,7 @@ object Main {
 //			println("Using german")
 			props.put("pos.model", "../n2o_data/german-fast.tagger")
 		}
-		else if (rawPost.lang == "en") Unit
+		else if (rawPost.lang == "en" || rawPost.lang == null) Unit
 		else throw new RuntimeException("Unknown language.")
 
 //		props.put("annotators", "tokenize,ssplit")
