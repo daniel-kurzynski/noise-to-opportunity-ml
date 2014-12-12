@@ -7,8 +7,15 @@ case class RawPost(id: String,
 	def wholeText: String = s"$title $text"
 
 
-	def extractClass(): String = {
-		val groups = rawClassification("demand").values.groupBy { word => word }.map { case (word, words) => (word, words.size)}
+	def extractDemand(): String = {
+		extract("demand")
+	}
+	def extractCategory(): String = {
+		extract("category")
+	}
+
+	def extract(classKey: String): String = {
+		val groups = rawClassification(classKey).values.groupBy { word => word }.map { case (word, words) => (word, words.size)}
 		val sortedCategories = groups.toList.sortBy(-_._2)
 		if (sortedCategories.size > 1 && sortedCategories(0)._2 == sortedCategories(1)._2)
 			null

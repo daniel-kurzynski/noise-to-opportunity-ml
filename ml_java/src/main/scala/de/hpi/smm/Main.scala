@@ -63,7 +63,7 @@ object Main {
 			if (classifiedPosts.contains(id)) {
 				postCount += 1
 				val sentences = detectSentences(rawPost)
-				extractor(Post(id, title, text, sentences, rawPost.extractClass()))
+				extractor(Post(id, title, text, sentences, rawPost.extractDemand()))
 			}
 			line = reader.readNext()
 		}
@@ -88,9 +88,9 @@ object Main {
 		val annotatedSentences: util.List[CoreMap] = document.get(classOf[SentencesAnnotation])
 
 		var sentences = Vector[Vector[Word]]()
-		if (rawPost.extractClass() == "demand")
+		if (rawPost.extractDemand() == "demand")
 			demandCounts.newDemandPost()
-		else if (rawPost.extractClass() == "no-demand")
+		else if (rawPost.extractDemand() == "no-demand")
 			demandCounts.newNoDemandPost()
 
 		annotatedSentences.asScala.foreach { sentence =>
