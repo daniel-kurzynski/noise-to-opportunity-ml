@@ -44,14 +44,22 @@ object Main {
 			countProductWords(brochure)
 		}()
 
-		println("=== CRM ===")
-		brochureCounts.takeCRM(10).foreach(println)
-		println("=== ECOM ===")
-		brochureCounts.takeECOM(10).foreach(println)
-		println("=== HCM ===")
-		brochureCounts.takeHCM(10).foreach(println)
-		println("=== LVM ===")
-		brochureCounts.takeLVM(10).foreach(println)
+    println("=== CRM ===")
+    brochureCounts.takeCRM(10).foreach(println)
+    println("======")
+    brochureCounts.takeNonCRM(10).foreach(println)
+    println("=== ECOM ===")
+    brochureCounts.takeECOM(10).foreach(println)
+    println("======")
+    brochureCounts.takeNonECOM(10).foreach(println)
+    println("=== HCM ===")
+    brochureCounts.takeHCM(10).foreach(println)
+    println("======")
+    brochureCounts.takeNonHCM(10).foreach(println)
+    println("=== LVM ===")
+    brochureCounts.takeLVM(10).foreach(println)
+    println("======")
+    brochureCounts.takeNonLVM(10).foreach(println)
 	}
 
 	def runDemandFeatureExtraction(): Unit = {
@@ -192,7 +200,7 @@ object Main {
 		}
 	}
 	private def countProductWords(brochure: Document): Unit = {
-		brochure.sentences.flatten.distinct.filter { word => !blacklist.exists(word.pos.startsWith(_)) }.foreach { word =>
+		brochure.sentences.flatten.filter { word => !blacklist.exists(word.pos.startsWith) }.map(_.text).distinct.foreach { word =>
 			if (!brochureCounts.contains(word))
 				brochureCounts(word) = BrochureCounts()
 
