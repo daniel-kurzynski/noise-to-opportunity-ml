@@ -36,7 +36,6 @@ object Main {
 		writer.writeNext(features.names)
 		features.buildFeatureVector { (post, instance) =>
 			val outputLine = buildLine(post, instance)
-			System.arraycopy(instance.map(_.toString), 0, outputLine, 1, instance.size)
 			writer.writeNext(outputLine)
 		}
 		writer.close()
@@ -119,6 +118,7 @@ object Main {
 		val line = new Array[String](instance.size + 2)
 		line(0) = post.id
 		line(line.size - 1) = post.demandClass
+		System.arraycopy(instance.map(_.toString), 0, line, 1, instance.size)
 		line
 	}
 }
