@@ -5,7 +5,14 @@ import de.hpi.smm.domain.{DemandCountsCounter, Case, Post}
 
 class FeatureBuilder {
 
-	def names: Array[String] = features.flatMap(_.name).toArray
+	def names: Array[String] = {
+		val values = features.flatMap(_.name).toArray
+		val names = new Array[String](values.size + 2)
+		names(0) = "id"
+		names(names.size - 1) = "CLASS"
+		System.arraycopy(values, 0, names, 1, values.size)
+		names
+	}
 
 
 	var posts = List[Post]()

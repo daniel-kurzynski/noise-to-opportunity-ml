@@ -15,7 +15,7 @@ import scala.collection.JavaConverters._
 
 object Main {
 
-	val demandCounts = new DemandCountsCounter
+	val demandCounts = new DemandCountsCounter()
 
 	def main(args: Array[String]): Unit = {
 		val features = FeatureBuilder()
@@ -36,7 +36,6 @@ object Main {
 		writer.writeNext(features.names)
 		features.buildFeatureVector { (post, instance) =>
 			val outputLine = buildLine(post, instance)
-			System.arraycopy(instance.map(_.toString), 0, outputLine, 1, instance.size)
 			writer.writeNext(outputLine)
 		}
 		writer.close()
@@ -107,6 +106,7 @@ object Main {
 		sentences.flatten.map(_.text).distinct.foreach { word =>
 			if (!demandCounts.contains(word))
 				demandCounts(word) = DemandCounts(0, 0)
+
 			if (rawPost.extractDemand() == "demand")
 				demandCounts(word).demand += 1
 			else if (rawPost.extractDemand() == "no-demand")
@@ -119,6 +119,7 @@ object Main {
 		val line = new Array[String](instance.size + 2)
 		line(0) = post.id
 		line(line.size - 1) = post.demandClass
+		System.arraycopy(instance.map(_.toString), 0, line, 1, instance.size)
 		line
 	}
 }
