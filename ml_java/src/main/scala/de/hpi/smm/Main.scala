@@ -6,21 +6,18 @@ import java.util
 import au.com.bytecode.opencsv.{CSVWriter, CSVReader}
 import com.lambdaworks.jacks.JacksMapper
 import de.hpi.smm.domain.{DemandCountsCounter, Word, RawPost, Post}
-import de.hpi.smm.feature_extraction.{ImperativeNumberFeature, FeatureBuilder}
+import de.hpi.smm.feature_extraction.FeatureBuilder
 import edu.stanford.nlp.ling.CoreAnnotations._
 import edu.stanford.nlp.pipeline.{Annotation, StanfordCoreNLP}
 import edu.stanford.nlp.util.CoreMap
 import edu.stanford.nlp.util.logging.RedwoodConfiguration
 import scala.collection.JavaConverters._
-import scala.collection.mutable
 
 object Main {
 
 	val demandCounts = new DemandCountsCounter
 
 	def main(args: Array[String]): Unit = {
-		// TODO
-		// Analyze tf-idf on both demand and no-demand
 		val features = FeatureBuilder()
 			.needWords(demandCounts)
 			.questionNumber()
@@ -32,28 +29,21 @@ object Main {
 
 		extractPostsLinewise { post =>
 			features.touch(post)
-//			println(post.wholeText)
-//			println(new ImperativeNumberFeature().extract(post))
 		}()
-		val featureFile = new File("../n2o_data/features.csv")
-		val writer = new CSVWriter(new FileWriter(featureFile), CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER)
-		writer.writeNext(Array("id") ++ features.names ++ Array("CATEGORY"))
+		val writer = new CSVWriter(new FileWriter(new File("../n2o_data/features.csv")),
+			CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER)
+
+		writer.writeNext(features.names)
 		features.buildFeatureVector { (post, instance) =>
-			val line = new Array[String](instance.size + 2)
-			line(0) = post.id
-			line(line.size - 1) = post.demandClass
-			System.arraycopy(instance.map(_.toString), 0, line, 1, instance.size)
-			writer.writeNext(line)
+			val outputLine = buildLine(post, instance)
+			System.arraycopy(instance.map(_.toString), 0, outputLine, 1, instance.size)
+			writer.writeNext(outputLine)
 		}
 		writer.close()
 
-//		println(s"Demand-Count: $demandPostNumber, No-Demand-Count: $noDemandPostNumber")
 		demandCounts.takeTopOccurrence(10).foreach(println)
 		println("----------------")
 		demandCounts.takeTopNotOccurrence(10).foreach(println)
-		println("----------------")
-//
-//		println(topWordsDemand.find(_._1 == "looking"))
 	}
 
 	def extractPostsLinewise(extractor: Post => Unit)(count: Int = Int.MaxValue): Unit = {
@@ -94,17 +84,15 @@ object Main {
 		RedwoodConfiguration.current().clear().apply()
 
 		val document = new Annotation(rawPost.wholeText)
-
 		pipeline.annotate(document)
-
 		val annotatedSentences: util.List[CoreMap] = document.get(classOf[SentencesAnnotation])
 
 		var sentences = Vector[Vector[Word]]()
-
 		if (rawPost.extractClass() == "demand")
 			demandCounts.newDemandPost()
 		else if (rawPost.extractClass() == "no-demand")
 			demandCounts.newNoDemandPost()
+
 		annotatedSentences.asScala.foreach { sentence =>
 			var currentSentence = Vector[Word]()
 			sentence.get(classOf[TokensAnnotation]).asScala.foreach { token =>
@@ -115,6 +103,7 @@ object Main {
 			}
 			sentences :+= currentSentence
 		}
+
 		sentences.flatten.map(_.text).distinct.foreach { word =>
 			demandCounts.get(word) match {
 				case Some(currentWordCount) =>
@@ -130,5 +119,12 @@ object Main {
 			}
 		}
 		sentences
+	}
+
+	private def buildLine(post: Post, instance: Array[Double]: Array[String] = {
+		val line = new Array[String](instance.size + 2)
+		line(0) = post.id
+		line(line.size - 1) = post.demandClass
+		line
 	}
 }
