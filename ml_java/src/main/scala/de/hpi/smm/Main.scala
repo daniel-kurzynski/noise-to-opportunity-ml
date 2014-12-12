@@ -105,23 +105,17 @@ object Main {
 		}
 
 		sentences.flatten.map(_.text).distinct.foreach { word =>
-			demandCounts.get(word) match {
-				case Some(currentWordCount) =>
-					if (rawPost.extractClass() == "demand")
-						currentWordCount.demand += 1
-					else if (rawPost.extractClass() == "no-demand")
-						currentWordCount.noDemandCount += 1
-				case None =>
-					if (rawPost.extractClass() == "demand")
-						demandCounts += (word -> DemandCounts(1, 0))
-					else if (rawPost.extractClass() == "no-demand")
-						demandCounts += (word -> DemandCounts(0, 1))
-			}
+			if (!demandCounts.contains(word))
+				demandCounts(word) = DemandCounts(0, 0)
+			if (rawPost.extractDemand() == "demand")
+				demandCounts(word).demand += 1
+			else if (rawPost.extractDemand() == "no-demand")
+				demandCounts(word).noDemandCount += 1
 		}
 		sentences
 	}
 
-	private def buildLine(post: Post, instance: Array[Double]: Array[String] = {
+	private def buildLine(post: Post, instance: Array[Double]): Array[String] = {
 		val line = new Array[String](instance.size + 2)
 		line(0) = post.id
 		line(line.size - 1) = post.demandClass
