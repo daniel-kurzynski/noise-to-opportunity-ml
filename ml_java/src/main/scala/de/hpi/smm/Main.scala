@@ -15,7 +15,7 @@ import scala.collection.JavaConverters._
 
 object Main {
 
-	val demandCounts = new DemandCountsCounter
+	val demandCounts = new DemandCountsCounter()
 
 	def main(args: Array[String]): Unit = {
 		val features = FeatureBuilder()
@@ -106,6 +106,7 @@ object Main {
 		sentences.flatten.map(_.text).distinct.foreach { word =>
 			if (!demandCounts.contains(word))
 				demandCounts(word) = DemandCounts(0, 0)
+
 			if (rawPost.extractDemand() == "demand")
 				demandCounts(word).demand += 1
 			else if (rawPost.extractDemand() == "no-demand")
