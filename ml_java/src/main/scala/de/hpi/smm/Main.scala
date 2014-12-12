@@ -44,12 +44,13 @@ object Main {
 			countProductWords(brochure)
 		}()
 
+		println("=== CRM ===")
 		brochureCounts.takeCRM(10).foreach(println)
-		println("------")
+		println("=== ECOM ===")
 		brochureCounts.takeECOM(10).foreach(println)
-		println("------")
+		println("=== HCM ===")
 		brochureCounts.takeHCM(10).foreach(println)
-		println("------")
+		println("=== LVM ===")
 		brochureCounts.takeLVM(10).foreach(println)
 	}
 
