@@ -1,6 +1,6 @@
 package de.hpi.smm.feature_extraction
 
-import de.hpi.smm.domain.{DemandCountsCounter, Case, Switch, Post}
+import de.hpi.smm.domain.{DemandCountsCounter, Case, Switch, Document}
 
 import scala.collection.mutable
 

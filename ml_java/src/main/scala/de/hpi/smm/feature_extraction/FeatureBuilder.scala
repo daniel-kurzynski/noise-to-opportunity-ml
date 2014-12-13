@@ -1,7 +1,6 @@
 package de.hpi.smm.feature_extraction
 
-import de.hpi.smm.Main.DemandCounts
-import de.hpi.smm.domain.{DemandCountsCounter, Case, Post}
+import de.hpi.smm.domain.{DemandCountsCounter, Case, Document}
 
 class FeatureBuilder {
 
@@ -15,7 +14,7 @@ class FeatureBuilder {
 	}
 
 
-	var posts = List[Post]()
+	var posts = List[Document]()
 	var features: List[Feature] = List()
 
 
@@ -90,11 +89,11 @@ class FeatureBuilder {
 	/**
 	 * Add a new posts to this feature builder, and store it for internal use.
 	 */
-	def touch(post: Post): Unit = {
+	def touch(post: Document): Unit = {
 		posts ::= post
 		features.foreach { feature => feature.touch(post) }
 	}
-	def buildFeatureVector(vectorHandler: (Post, Array[Double]) => Unit): Unit = {
+	def buildFeatureVector(vectorHandler: (Document, Array[Double]) => Unit): Unit = {
 		val allCases = features.map { feature => feature.extract().cases }
 
 		val allCombinations = allCases.foldLeft(Seq(Seq[Case]())) { (feature, cases) =>

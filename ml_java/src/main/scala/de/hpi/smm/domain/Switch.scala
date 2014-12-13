@@ -2,7 +2,7 @@ package de.hpi.smm.domain
 
 case class Switch(cases: Case*) {
 
-	def this(fun: (Post => Array[Double])) = this(Case(fun, "default"))
+	def this(fun: (Document => Array[Double])) = this(Case(fun, "default"))
 
 	def numberOfCases = cases.size
 
@@ -12,12 +12,12 @@ case class Switch(cases: Case*) {
 }
 
 object Switch {
-	def apply(fun: (Post => Array[Double])) = new Switch(fun)
+	def apply(fun: (Document => Array[Double])) = new Switch(fun)
 }
 
 
-case class Case(fun: Post => Array[Double], name: String) {
+case class Case(fun: Document => Array[Double], name: String) {
 
-	def apply(post: Post): Array[Double] = fun(post)
+	def apply(post: Document): Array[Double] = fun(post)
 
 }
