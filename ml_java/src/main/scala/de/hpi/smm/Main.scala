@@ -20,8 +20,9 @@ object Main {
 	val postsFile     = new File("../n2o_data/linked_in_posts.csv")
 	val brochuresFile = new File("../n2o_data/brochures.csv")
 
-	val demandCounts = new DemandCountsCounter()
-	var brochureCounts = new BrochuresCountsCounter()
+//	val demandCounts = new DemandCountsCounter()
+//	var brochureCounts = new BrochuresCountsCounter()
+  val genericCounter = new GenericCountsCounter()
 
   val blacklist = Array(
     ".", ",", ":", "-RRB-", "-LRB-", "$",
@@ -45,21 +46,21 @@ object Main {
 		}()
 
     println("=== CRM ===")
-    brochureCounts.takeCRM(10).foreach(println)
+    genericCounter.takeTopOccurrence("CRM").take(10).foreach(println)
     println("======")
-    brochureCounts.takeNonCRM(10).foreach(println)
+    genericCounter.takeTopNotOccurrence("CRM").take(10).foreach(println)
     println("=== ECOM ===")
-    brochureCounts.takeECOM(10).foreach(println)
+    genericCounter.takeTopOccurrence("ECOM").take(10).foreach(println)
     println("======")
-    brochureCounts.takeNonECOM(10).foreach(println)
+    genericCounter.takeTopNotOccurrence("ECOM").take(10).foreach(println)
     println("=== HCM ===")
-    brochureCounts.takeHCM(10).foreach(println)
+    genericCounter.takeTopOccurrence("HCM").take(10).foreach(println)
     println("======")
-    brochureCounts.takeNonHCM(10).foreach(println)
+    genericCounter.takeTopNotOccurrence("HCM").take(10).foreach(println)
     println("=== LVM ===")
-    brochureCounts.takeLVM(10).foreach(println)
+    genericCounter.takeTopOccurrence("LVM").take(10).foreach(println)
     println("======")
-    brochureCounts.takeNonLVM(10).foreach(println)
+    genericCounter.takeTopNotOccurrence("LVM").take(10).foreach(println)
 	}
 
 	def runDemandFeatureExtraction(): Unit = {
@@ -87,9 +88,9 @@ object Main {
 		}
 		writer.close()
 
-		demandCounts.takeTopOccurrence(10).foreach(println)
+		genericCounter.takeTopOccurrence("demand").take(10).foreach(println)
 		println("----------------")
-		demandCounts.takeTopNotOccurrence(10).foreach(println)
+		genericCounter.takeTopNotOccurrence("demand").take(10).foreach(println)
 	}
 
 	def extractBrochuresLinewise(extractor: Document => Unit)(count: Int = Int.MaxValue): Unit = {
@@ -181,40 +182,24 @@ object Main {
 		line
 	}
 
+
+  // TODO: delete one of them!
 	private def countDemandTypes(post: Document): Unit = {
-		demandCounts.classCounts(post.documentClass) += 1
+		genericCounter.classCounts(post.documentClass) += 1
 	}
 	private def countProductTypes(brochures: Document): Unit = {
-		brochureCounts.classCounts(brochures.documentClass) += 1
+		genericCounter.classCounts(brochures.documentClass) += 1
 	}
 
+  // TODO: delete one of them!
 	private def countDemandWords(post: Document): Unit = {
 		post.textTokens.distinct.foreach { word =>
-			if (!demandCounts.contains(word))
-				demandCounts(word) = DemandCounts()
-
-			if (post.documentClass == "demand")
-				demandCounts(word).demand += 1
-			else if (post.documentClass == "no-demand")
-				demandCounts(word).noDemandCount += 1
+      genericCounter.wordCounts(word)(post.documentClass) += 1
 		}
 	}
 	private def countProductWords(brochure: Document): Unit = {
 		brochure.sentences.flatten.filter { word => !blacklist.exists(word.pos.startsWith) }.map(_.text).distinct.foreach { word =>
-			if (!brochureCounts.contains(word))
-				brochureCounts(word) = BrochureCounts()
-
-			brochure.documentClass match {
-				case "CRM" =>
-					brochureCounts(word).crm += 1
-				case "ECOM" =>
-					brochureCounts(word).ecom += 1
-				case "HCM" =>
-					brochureCounts(word).hcm += 1
-				case "LVM" =>
-					brochureCounts(word).lvm += 1
-				case s => throw new RuntimeException(s"Unknown class ${s.toString}")
-			}
+      genericCounter.wordCounts(word)(brochure.documentClass) += 1
 		}
 	}
 }
