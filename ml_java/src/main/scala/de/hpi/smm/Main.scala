@@ -37,9 +37,9 @@ object Main {
   )
 
 	def main(args: Array[String]): Unit = {
-//		runDemandFeatureExtraction()
+		runDemandFeatureExtraction()
 
-		runBrochureFeatureExtraction()
+//		runBrochureFeatureExtraction()
 	}
 
 	def runBrochureFeatureExtraction(): Unit = {
@@ -81,6 +81,9 @@ object Main {
 			countTypes(post)
 			countDemandWords(post)
 		}()
+
+    genericCounter.classCounts.remove("no-idea")
+
 		val writer = new CSVWriter(new FileWriter(new File("../n2o_data/features.csv")),
 			CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER)
 
