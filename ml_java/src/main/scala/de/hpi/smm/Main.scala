@@ -43,6 +43,8 @@ object Main {
 	}
 
 	def runBrochureFeatureExtraction(): Unit = {
+    genericCounter.smoothing = true
+
 		extractBrochuresLinewise { brochure =>
 			countTypes(brochure)
 			countProductWords(brochure)
@@ -67,6 +69,8 @@ object Main {
 	}
 
 	def runDemandFeatureExtraction(): Unit = {
+    genericCounter.smoothing = false
+
 		val features = FeatureBuilder()
 			.needWords(genericCounter)
 			.questionNumber()

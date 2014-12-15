@@ -16,10 +16,8 @@ class NeedWordFeature(counts: GenericCountsCounter) extends Feature {
 //		"you").reverse
 
 	private def determineRelevantWords(): Array[String] = {
-//		(demandCounts.takeTopOccurrence(5.00).map(_._1) ++
-//			demandCounts.takeTopNotOccurrence(2.00).map(_._1)).toArray
-
-    Array()
+		(counts.takeTopOccurrence("demand", 5.0).map(_._1) ++
+			counts.takeTopNotOccurrence("demand", 2.0).map(_._1)).toArray
 	}
 
 	override def extract(): Switch = {
