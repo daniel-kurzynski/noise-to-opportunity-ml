@@ -13,6 +13,9 @@ import edu.stanford.nlp.util.CoreMap
 import edu.stanford.nlp.util.logging.RedwoodConfiguration
 import scala.collection.JavaConverters._
 
+import scala.collection.mutable
+
+
 object Main {
 
 	val classifiedPosts = JacksMapper.readValue[Map[String, Map[String, Map[String, String]]]](
@@ -65,7 +68,7 @@ object Main {
 
 	def runDemandFeatureExtraction(): Unit = {
 		val features = FeatureBuilder()
-			.needWords(demandCounts)
+			.needWords(genericCounter)
 			.questionNumber()
 			.needNGrams()
 			.containsEMail()
@@ -191,15 +194,19 @@ object Main {
 		genericCounter.classCounts(brochures.documentClass) += 1
 	}
 
-  // TODO: delete one of them!
-	private def countDemandWords(post: Document): Unit = {
-		post.textTokens.distinct.foreach { word =>
-      genericCounter.wordCounts(word)(post.documentClass) += 1
+  // TODO: delete one of them?!
+  private def countDemandWords(doc: Document): Unit = {
+		doc.textTokens.distinct.foreach { word =>
+      if(!genericCounter.wordCounts.contains(word))
+        genericCounter.wordCounts(word) = new mutable.HashMap[String, Int]().withDefaultValue(0)
+      genericCounter.wordCounts(word)(doc.documentClass) += 1
 		}
 	}
-	private def countProductWords(brochure: Document): Unit = {
-		brochure.sentences.flatten.filter { word => !blacklist.exists(word.pos.startsWith) }.map(_.text).distinct.foreach { word =>
-      genericCounter.wordCounts(word)(brochure.documentClass) += 1
+	private def countProductWords(doc: Document): Unit = {
+		doc.sentences.flatten.filter { word => !blacklist.exists(word.pos.startsWith) }.map(_.text).distinct.foreach { word =>
+      if(!genericCounter.wordCounts.contains(word))
+        genericCounter.wordCounts(word) = new mutable.HashMap[String, Int]().withDefaultValue(0)
+      genericCounter.wordCounts(word)(doc.documentClass) += 1
 		}
 	}
 }

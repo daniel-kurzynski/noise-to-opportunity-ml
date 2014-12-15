@@ -1,10 +1,10 @@
 package de.hpi.smm.feature_extraction
 
-import de.hpi.smm.domain.{DemandCountsCounter, Case, Switch, Document}
+import de.hpi.smm.domain._
 
 import scala.collection.mutable
 
-class NeedWordFeature(demandCounts: DemandCountsCounter) extends Feature {
+class NeedWordFeature(counts: GenericCountsCounter) extends Feature {
 	def name = determineRelevantWords()
 
 //	val relevantNeedWords = Array(
@@ -16,8 +16,10 @@ class NeedWordFeature(demandCounts: DemandCountsCounter) extends Feature {
 //		"you").reverse
 
 	private def determineRelevantWords(): Array[String] = {
-		(demandCounts.takeTopOccurrence(5.00).map(_._1) ++
-			demandCounts.takeTopNotOccurrence(2.00).map(_._1)).toArray
+//		(demandCounts.takeTopOccurrence(5.00).map(_._1) ++
+//			demandCounts.takeTopNotOccurrence(2.00).map(_._1)).toArray
+
+    Array()
 	}
 
 	override def extract(): Switch = {

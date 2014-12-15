@@ -1,6 +1,6 @@
 package de.hpi.smm.feature_extraction
 
-import de.hpi.smm.domain.{DemandCountsCounter, Case, Document}
+import de.hpi.smm.domain.{GenericCountsCounter, DemandCountsCounter, Case, Document}
 
 class FeatureBuilder {
 
@@ -58,8 +58,8 @@ class FeatureBuilder {
 	/**
 	 * Captures common need words like "required", "need" etc.
 	 */
-	def needWords(demandCounts: DemandCountsCounter): FeatureBuilder = {
-		addFeature(new NeedWordFeature(demandCounts))
+	def needWords(counts: GenericCountsCounter): FeatureBuilder = {
+		addFeature(new NeedWordFeature(counts))
 		this
 	}
 	/**
