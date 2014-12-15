@@ -44,7 +44,7 @@ object Main {
 
 	def runBrochureFeatureExtraction(): Unit = {
 		extractBrochuresLinewise { brochure =>
-			countProductTypes(brochure)
+			countTypes(brochure)
 			countProductWords(brochure)
 		}()
 
@@ -78,7 +78,7 @@ object Main {
 
 		extractPostsLinewise { post =>
 			features.touch(post)
-			countDemandTypes(post)
+			countTypes(post)
 			countDemandWords(post)
 		}()
 		val writer = new CSVWriter(new FileWriter(new File("../n2o_data/features.csv")),
@@ -186,15 +186,11 @@ object Main {
 	}
 
 
-  // TODO: delete one of them!
-	private def countDemandTypes(post: Document): Unit = {
-		genericCounter.classCounts(post.documentClass) += 1
-	}
-	private def countProductTypes(brochures: Document): Unit = {
-		genericCounter.classCounts(brochures.documentClass) += 1
+	private def countTypes(doc: Document): Unit = {
+		genericCounter.classCounts(doc.documentClass) += 1
 	}
 
-  // TODO: delete one of them?!
+  // TODO: delete one of them?! is blacklist for demand important too?
   private def countDemandWords(doc: Document): Unit = {
 		doc.textTokens.distinct.foreach { word =>
       if(!genericCounter.wordCounts.contains(word))
