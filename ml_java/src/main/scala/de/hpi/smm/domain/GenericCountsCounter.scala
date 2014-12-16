@@ -15,7 +15,7 @@ class GenericCountsCounter {
     wordCounts.toList.map { case (word, currentCounts) =>
       var classProb = 0.0
 
-      if(smoothing)
+      if (smoothing)
         classProb = (currentCounts(class_name).toDouble + 1) / (classCounts(class_name) + 1)
       else
         classProb = currentCounts(class_name).toDouble / classCounts(class_name)

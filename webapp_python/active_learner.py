@@ -7,8 +7,11 @@ import numpy as np
 import collections
 from collections import Counter
 
-class active_learner(object):
+import sys
+sys.path.append("../scikit_python")
+import evaluation
 
+class active_learner(object):
 	def __init__(self):
 		self.classification = collections.OrderedDict()
 		self.posts = []
@@ -16,6 +19,7 @@ class active_learner(object):
 		self.load_classification()
 
 	def load_posts(self):
+		"""Called once in the initialization to load all posts."""
 		with open(join(abspath("../n2o_data"), "linked_in_posts.csv")) as f:
 			for line in f:
 				id, title, text, _, _, _, _, _, category, _, _ = line.replace("\\,", "<komma>").replace("\"", "").replace("\\", "").split(",")
@@ -23,34 +27,35 @@ class active_learner(object):
 				text = text.replace("<komma>", ",")
 				self.posts.append(Post(id, title, text))
 
-	def load_other_classification_files(self):
-		pass
-
 	def load_classification(self):
+		"""Called once in the initialization to load the already existing classification file."""
 		with open('data/classification.json') as infile:
 			self.classification = json.JSONDecoder(object_pairs_hook=collections.OrderedDict).decode(infile.read())
 
 	def save_classification(self):
+		"""Writes the classification back to disk."""
 		with open('data/classification.json', 'w') as outfile:
 			json.dump(self.classification, outfile, indent = 2)
 
 	def tag_post(self, tagger, post_id, key, value):
+		"""Tag a post with respect some key (e.g. 'demand' or 'category')."""
 		if not post_id in self.classification:
 			self.classification[post_id] = {}
 		if not key in self.classification[post_id]:
 			self.classification[post_id][key] = {}
 
 		self.classification[post_id][key][tagger] = value
-
 		self.save_classification()
 
 	def not_enough_posts_tagged(self):
+		"""Checks whether there exists at least one example of each class."""
 		numberOfDemandPosts = sum([1 if self.determine_class_from_conflicting_votes(post_id, "demand") == "demand" else 0 for post_id in self.classification])
 		numberOfNoDemandPosts = len(self.classification) - numberOfDemandPosts
 		return not (numberOfDemandPosts > 0 and numberOfNoDemandPosts > 0)
 
 	def determine_class_from_conflicting_votes(self, post_id, key):
-		votes = self.classification.get(post_id,{}).get(key,{});
+		"""For a given post and key, this determines whether a class can be determined or whether there is a conflict (None)."""
+		votes = self.classification.get(post_id,{}).get(key,{})
 		freqs = Counter(votes.values()).most_common(2)
 		if (len(freqs) == 0) or (len(freqs) > 1 and freqs[0][1] == freqs[1][1]):
 			# First two votes have the same count --> conflict --> do not predict anything
@@ -59,24 +64,20 @@ class active_learner(object):
 			return freqs[0][0]
 
 	def post(self, post_id):
+		"""Returns one post."""
 		posts = [post for post in self.posts if post.id == post_id]
-		return posts;
+		return posts
 
-	def build_classifier(self, unlabeled_posts = None, use_no_idea = True):
+	def build_classifier(self):
 		labeled_posts  =  [post
 			for post in self.posts
 				if post.id in self.classification \
-					and self.determine_class_from_conflicting_votes(post.id, "demand") is not None]
-
-		if not use_no_idea:
-			labeled_posts = [post
-				for post in labeled_posts
-					if self.determine_class_from_conflicting_votes(post.id, 'demand') is not None \
+					and self.determine_class_from_conflicting_votes(post.id, "demand") is not None
 					and self.determine_class_from_conflicting_votes(post.id, 'demand') != "no-idea"]
 
-		unlabeled_posts = unlabeled_posts or [post
+		unlabeled_posts = [post
 			for post in self.posts
-				if not (post.id in self.classification \
+				if not (post.id in self.classification
 					and self.classification[post.id]['demand'])]
 
 		# Build vectorizer
@@ -88,7 +89,7 @@ class active_learner(object):
 		# Train the classifier
 		classifier = Perceptron(n_iter = 50)
 		classifier.fit(X_train, Y_train)
-		return classifier, X_train, Y_train, X_predict, unlabeled_posts
+		return classifier, X_predict, unlabeled_posts
 
 
 	def predicted_posts(self, type):
@@ -98,7 +99,7 @@ class active_learner(object):
 
 		print "Choosing uncertain posts"
 
-		classifier, _, _, X_predict, unlabeled_posts = self.build_classifier()
+		classifier, X_predict, unlabeled_posts = self.build_classifier()
 		predictions = self.calculate_predictions(classifier, X_predict)
 
 		confidence_predictions = sorted(predictions, key = lambda prediction: prediction.confidence)
@@ -109,15 +110,6 @@ class active_learner(object):
 			confidence_predictions = confidence_predictions[-25:]
 
 		return [Post.fromPost(unlabeled_posts[prediction.index],prediction=prediction) for prediction in confidence_predictions]
-
-	def determin_certain_posts(self):
-		classifier, _, _, X_predict, unlabeled_posts = self.build_classifier()
-		predictions = self.calculate_predictions(classifier, X_predict)
-
-		low_confidence_predictions = sorted(predictions, key = lambda prediction: prediction.confidence)
-		low_confidence_predictions = low_confidence_predictions[:10]
-
-		return [Post.fromPost(unlabeled_posts[prediction.index],prediction=prediction) for prediction in low_confidence_predictions]
 
 	def determine_tagged_posts(self, tagger = None):
 		tagged_posts = [
