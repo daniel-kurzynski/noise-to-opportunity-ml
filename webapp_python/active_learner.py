@@ -100,16 +100,21 @@ class active_learner(object):
 		print "Choosing uncertain posts"
 
 		classifier, X_predict, unlabeled_posts = self.build_classifier()
-		predictions = self.calculate_predictions(classifier, X_predict)
+		# Old predictions, where we have a confidence
+		# predictions = self.calculate_predictions(classifier, X_predict)
+		# As we are using BernoulliNB basically, we do not have prediction confidences anymore
+		predictions = self.calculate_predictions_nb(classifier, X_predict)
 
 		confidence_predictions = sorted(predictions, key = lambda prediction: prediction.confidence)
 
 		if type == "uncertain":
-				confidence_predictions = confidence_predictions[:10]
-		else:
+			confidence_predictions = confidence_predictions[:10]
+		elif type == "certain":
 			confidence_predictions = confidence_predictions[-25:]
+		else:
+			raise Exception("Unknown type requested, must be either 'certain' or 'uncertain'.")
 
-		return [Post.fromPost(unlabeled_posts[prediction.index],prediction=prediction) for prediction in confidence_predictions]
+		return [Post.fromPost(unlabeled_posts[prediction.index], prediction=prediction) for prediction in confidence_predictions]
 
 	def determine_tagged_posts(self, tagger = None):
 		tagged_posts = [
@@ -155,6 +160,10 @@ class active_learner(object):
 		# The index for the highest confidence is in the last position.
 		# We then build Prediction objects for these.
 		predictions = [Prediction(classifier.classes_[confOrders[-1]], confidences[index][confOrders[-1]], index) for index, confOrders in enumerate(np.argsort(confidences))]
+		return predictions
+
+	def calculate_predictions_nb(self, classifier, X_predict):
+		predictions = [Prediction(predictedClass, 0.5, index) for index, predictedClass in enumerate(classifier.predict(X_predict))]
 		return predictions
 
 

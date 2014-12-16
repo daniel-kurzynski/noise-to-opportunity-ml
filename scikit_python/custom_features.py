@@ -25,7 +25,7 @@ def build_demand_data():
 	return __build_data("n2o_data/features.csv")
 
 
-def build_product_data():
+def build_product_data(product_class):
 	print "=== Custom Feature Extractor ==="
-	return __build_data("n2o_data/features_crm.csv")
+	return __build_data("n2o_data/features_%s.csv"%(product_class))
 
