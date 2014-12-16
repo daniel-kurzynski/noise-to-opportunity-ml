@@ -91,7 +91,8 @@ class FeatureBuilder {
 	 */
 	def touch(post: Document): Unit = {
 		posts ::= post
-		features.foreach { feature => feature.touch(post) }
+		if (post.isClassified)
+			features.foreach { feature => feature.touch(post) }
 	}
 	def buildFeatureVector(vectorHandler: (Document, Array[Double]) => Unit): Unit = {
 //		val allCases = features.map { feature => feature.extract().cases }

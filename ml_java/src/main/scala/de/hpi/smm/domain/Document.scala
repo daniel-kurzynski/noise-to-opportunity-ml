@@ -49,4 +49,8 @@ case class Document(
 		sentences.flatMap { sentence => sentence }
 	}
 
+	def isClassified: Boolean = {
+		documentClass != null
+	}
+
 }

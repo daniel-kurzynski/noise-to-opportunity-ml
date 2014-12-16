@@ -18,6 +18,8 @@ import scala.collection.mutable
 
 object Main {
 
+	val FOR_ALL_POSTS = true
+
 	val classifiedPosts = JacksMapper.readValue[Map[String, Map[String, Map[String, String]]]](
 		new FileReader("../webapp_python/data/classification.json"))
 	val postsFile = new File("../n2o_data/linked_in_posts.csv")
@@ -44,52 +46,6 @@ object Main {
 //		runBrochureFeatureExtraction()
 	}
 
-	def runBrochureFeatureExtraction(): Unit = {
-
-    List(
-      ("CRM", 2.0, 4.0),
-      ("ECOM", 1.3, 3.7),
-      ("HCM", 2.3, 5.5),
-      ("LVM", 3.0, 5.5)
-    ).foreach { case (clsName, thresh1, thresh2) =>
-
-      genericCounter = new GenericCountsCounter()
-      genericCounter.smoothing = true
-
-      val features = FeatureBuilder()
-        .needWords(genericCounter, clsName, (thresh1, thresh2))
-        .questionNumber()
-        .needNGrams()
-        .containsEMail()
-        .addressTheReader()
-        .questionWords()
-        .imperativeWords()
-
-      extractBrochuresLinewise { brochure =>
-        features.touch(brochure)
-        countTypes(brochure)
-        countWords(brochure)
-      }()
-
-      val writer = new CSVWriter(new FileWriter(new File(s"../n2o_data/features_${clsName.toLowerCase}.csv")),
-        CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER)
-
-      writer.writeNext(features.names)
-      features.buildFeatureVector { (post, instance) =>
-        val outputLine = buildLine(post, instance, clsName)
-        writer.writeNext(outputLine)
-      }
-      writer.close()
-
-
-      println(s"=== $clsName ===")
-      genericCounter.takeTopOccurrence(clsName, thresh1).foreach(println)
-      println("======")
-      genericCounter.takeTopNotOccurrence(clsName, thresh2).foreach(println)
-    }
-
-	}
-
 	def runDemandFeatureExtraction(): Unit = {
 		genericCounter.smoothing = false
 
@@ -104,8 +60,10 @@ object Main {
 
 		extractPostsLinewise { post =>
 			features.touch(post)
-			countTypes(post)
-			countWords(post)
+			if (post.isClassified) {
+				countTypes(post)
+				countWords(post)
+			}
 		}()
 
 		genericCounter.classCounts.remove("no-idea")
@@ -123,6 +81,77 @@ object Main {
 		genericCounter.takeTopOccurrence("demand").take(10).foreach(println)
 		println("----------------")
 		genericCounter.takeTopNotOccurrence("demand").take(10).foreach(println)
+	}
+
+	def runBrochureFeatureExtraction(): Unit = {
+
+		List(
+			("CRM", 2.0, 4.0),
+			("ECOM", 1.3, 3.7),
+			("HCM", 2.3, 5.5),
+			("LVM", 3.0, 5.5)
+		).foreach { case (clsName, thresh1, thresh2) =>
+
+			genericCounter = new GenericCountsCounter()
+			genericCounter.smoothing = true
+
+			val features = FeatureBuilder()
+				.needWords(genericCounter, clsName, (thresh1, thresh2))
+				.questionNumber()
+				.needNGrams()
+				.containsEMail()
+				.addressTheReader()
+				.questionWords()
+				.imperativeWords()
+
+			extractBrochuresLinewise { brochure =>
+				features.touch(brochure)
+				countTypes(brochure)
+				countWords(brochure)
+			}()
+
+			val writer = new CSVWriter(new FileWriter(new File(s"../n2o_data/features_${clsName.toLowerCase}.csv")),
+				CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER)
+
+			writer.writeNext(features.names)
+			features.buildFeatureVector { (post, instance) =>
+				val outputLine = buildLine(post, instance, clsName)
+				writer.writeNext(outputLine)
+			}
+			writer.close()
+
+
+			println(s"=== $clsName ===")
+			genericCounter.takeTopOccurrence(clsName, thresh1).foreach(println)
+			println("======")
+			genericCounter.takeTopNotOccurrence(clsName, thresh2).foreach(println)
+		}
+
+	}
+
+	def extractPostsLinewise(extractor: Document => Unit)(count: Int = Int.MaxValue): Unit = {
+		val reader = new CSVReader(new FileReader(postsFile))
+
+		var postCount: Int = 1
+		var line: Array[String] = reader.readNext()
+		while (line != null && postCount <= count) {
+			val id = line(0)
+			val title = line(1)
+			val text = line(2)
+
+			val rawPost   = RawDocument(id, title, text, classifiedPosts.get(id).orNull)
+
+			val isClassifiedPost = classifiedPosts.contains(id)
+			if (FOR_ALL_POSTS || isClassifiedPost) {
+				val sentences = detectSentences(rawPost)
+				val post      = Document(id, title, text, sentences, rawPost.extractDemand())
+
+				postCount += 1
+				extractor(post)
+			}
+			line = reader.readNext()
+		}
+		reader.close()
 	}
 
 	def extractBrochuresLinewise(extractor: Document => Unit)(count: Int = Int.MaxValue): Unit = {
@@ -146,32 +175,9 @@ object Main {
 		reader.close()
 	}
 
-	def extractPostsLinewise(extractor: Document => Unit)(count: Int = Int.MaxValue): Unit = {
-		val reader = new CSVReader(new FileReader(postsFile))
-
-		var postCount: Int = 1
-		var line: Array[String] = reader.readNext()
-		while (line != null && postCount <= count) {
-			val id = line(0)
-			val title = line(1)
-			val text = line(2)
-
-			val rawPost   = RawDocument(id, title, text, classifiedPosts.get(id).orNull)
-			val sentences = detectSentences(rawPost)
-			val post      = Document(id, title, text, sentences, rawPost.extractDemand())
-
-			if (classifiedPosts.contains(id)) {
-				postCount += 1
-				extractor(post)
-			}
-			line = reader.readNext()
-		}
-		reader.close()
-	}
-
 	def detectSentences(rawPost: RawDocument): Seq[Seq[Word]] = {
 		val props = new util.Properties()
-		//		props.put("annotators", "tokenize,ssplit,pos,lemma,ner")
+//		props.put("annotators", "tokenize,ssplit,pos,lemma,ner")
 		props.put("annotators", "tokenize,ssplit,pos")
 		if (rawPost.lang == "de") {
 			//			println("Using german")
@@ -210,7 +216,7 @@ object Main {
 	private def buildLine(post: Document, instance: Array[Double], currentClass: String): Array[String] = {
 		val line = new Array[String](instance.size + 2)
 		line(0) = post.id
-		line(line.size - 1) = if (post.documentClass == currentClass) post.documentClass else "no-" + currentClass
+		line(line.size - 1) = if (List(currentClass, "no-idea", null).contains(post.documentClass)) post.documentClass else "no-" + currentClass
 		System.arraycopy(instance.map(_.toString), 0, line, 1, instance.size)
 		line
 	}
