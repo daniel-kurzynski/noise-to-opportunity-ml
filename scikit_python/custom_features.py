@@ -1,13 +1,12 @@
 from os.path import dirname, join
 import numpy as np
 
-def build_demand_data():
-	print "=== Custom Feature Extractor ==="
+
+def __build_data(fname):
 	ids, features, target = [], [], []
-	with open(join(dirname(dirname(__file__)), "n2o_data/features.csv")) as f:
+	with open(join(dirname(dirname(__file__)), fname)) as f:
 		first = True
 		for line in f:
-			line = line.replace("<br />", "")
 			if first: first = False; continue
 			content = line.strip().split(",")
 			cls = content[-1]
@@ -21,6 +20,12 @@ def build_demand_data():
 	return np.array(ids), np.array(features), np.array(target), None, None
 
 
+def build_demand_data():
+	print "=== Custom Feature Extractor ==="
+	return __build_data("n2o_data/features.csv")
+
+
 def build_product_data():
-	return None, None, None, None
+	print "=== Custom Feature Extractor ==="
+	return __build_data("n2o_data/features_crm.csv")
 

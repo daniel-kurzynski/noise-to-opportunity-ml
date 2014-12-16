@@ -25,7 +25,7 @@ object Main {
 
 	//	val demandCounts = new DemandCountsCounter()
 	//	var brochureCounts = new BrochuresCountsCounter()
-	val genericCounter = new GenericCountsCounter()
+	var genericCounter = new GenericCountsCounter()
 
 	val blacklist = Array(
 		".", ",", ":", "-RRB-", "-LRB-", "$",
@@ -37,42 +37,61 @@ object Main {
 	)
 
 	def main(args: Array[String]): Unit = {
-		runDemandFeatureExtraction()
+		// runDemandFeatureExtraction()
 
-		//		runBrochureFeatureExtraction()
+		runBrochureFeatureExtraction()
 	}
 
 	def runBrochureFeatureExtraction(): Unit = {
-		genericCounter.smoothing = true
 
-		extractBrochuresLinewise { brochure =>
-			countTypes(brochure)
-			countProductWords(brochure)
-		}()
+    List(
+      ("CRM", 2.0, 4.0),
+      ("ECOM", 2.0, 4.0),
+      ("HCM", 2.0, 4.0),
+      ("LVM", 2.0, 4.0)
+    ).foreach { case (clsName, thresh1, thresh2) =>
 
-		println("=== CRM ===")
-		genericCounter.takeTopOccurrence("CRM").take(10).foreach(println)
-		println("======")
-		genericCounter.takeTopNotOccurrence("CRM").take(10).foreach(println)
-		println("=== ECOM ===")
-		genericCounter.takeTopOccurrence("ECOM").take(10).foreach(println)
-		println("======")
-		genericCounter.takeTopNotOccurrence("ECOM").take(10).foreach(println)
-		println("=== HCM ===")
-		genericCounter.takeTopOccurrence("HCM").take(10).foreach(println)
-		println("======")
-		genericCounter.takeTopNotOccurrence("HCM").take(10).foreach(println)
-		println("=== LVM ===")
-		genericCounter.takeTopOccurrence("LVM").take(10).foreach(println)
-		println("======")
-		genericCounter.takeTopNotOccurrence("LVM").take(10).foreach(println)
+      genericCounter = new GenericCountsCounter()
+      genericCounter.smoothing = true
+
+      val features = FeatureBuilder()
+        .needWords(genericCounter, clsName, (thresh1, thresh2))
+        .questionNumber()
+        .needNGrams()
+        .containsEMail()
+        .addressTheReader()
+        .questionWords()
+        .imperativeWords()
+
+      extractBrochuresLinewise { brochure =>
+        features.touch(brochure)
+        countTypes(brochure)
+        countProductWords(brochure)
+      }()
+
+      val writer = new CSVWriter(new FileWriter(new File(s"../n2o_data/features_${clsName.toLowerCase}.csv")),
+        CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER)
+
+      writer.writeNext(features.names)
+      features.buildFeatureVector { (post, instance) =>
+        val outputLine = buildLine(post, instance, clsName)
+        writer.writeNext(outputLine)
+      }
+      writer.close()
+
+      println(s"=== $clsName ===")
+      genericCounter.takeTopOccurrence(clsName, thresh1).foreach(println)
+      println("======")
+      genericCounter.takeTopNotOccurrence(clsName, thresh2).foreach(println)
+    }
+
 	}
 
 	def runDemandFeatureExtraction(): Unit = {
 		genericCounter.smoothing = false
 
 		val features = FeatureBuilder()
-			.needWords(genericCounter)
+			.needWords(genericCounter, "demand", (5.0, 2.0))
 			.questionNumber()
 			.needNGrams()
 			.containsEMail()
@@ -93,7 +112,7 @@ object Main {
 
 		writer.writeNext(features.names)
 		features.buildFeatureVector { (post, instance) =>
-			val outputLine = buildLine(post, instance)
+			val outputLine = buildLine(post, instance, "demand")
 			writer.writeNext(outputLine)
 		}
 		writer.close()
@@ -184,10 +203,10 @@ object Main {
 		sentences
 	}
 
-	private def buildLine(post: Document, instance: Array[Double]): Array[String] = {
+	private def buildLine(post: Document, instance: Array[Double], currentClass: String): Array[String] = {
 		val line = new Array[String](instance.size + 2)
 		line(0) = post.id
-		line(line.size - 1) = post.documentClass
+		line(line.size - 1) = if (post.documentClass == currentClass) post.documentClass else "no-" + currentClass
 		System.arraycopy(instance.map(_.toString), 0, line, 1, instance.size)
 		line
 	}
