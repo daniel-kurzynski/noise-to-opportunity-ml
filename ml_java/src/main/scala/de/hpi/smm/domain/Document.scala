@@ -16,6 +16,8 @@ case class RawDocument(id: String,
 	}
 
 	def extract(classKey: String): String = {
+		if (rawClassification == null)
+			return null
 		val groups = rawClassification(classKey).values.groupBy { word => word }.map { case (word, words) => (word, words.size)}
 		val sortedCategories = groups.toList.sortBy(-_._2)
 		if (sortedCategories.size > 1 && sortedCategories(0)._2 == sortedCategories(1)._2)
@@ -45,6 +47,10 @@ case class Document(
 
 	def tokens: Seq[Word] = {
 		sentences.flatMap { sentence => sentence }
+	}
+
+	def isClassified: Boolean = {
+		documentClass != null
 	}
 
 }
