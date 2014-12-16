@@ -68,21 +68,16 @@ class active_learner(object):
 		posts = [post for post in self.posts if post.id == post_id]
 		return posts
 
-	def build_classifier(self, unlabeled_posts = None, use_no_idea = True):
+	def build_classifier(self):
 		labeled_posts  =  [post
 			for post in self.posts
 				if post.id in self.classification \
-					and self.determine_class_from_conflicting_votes(post.id, "demand") is not None]
-
-		if not use_no_idea:
-			labeled_posts = [post
-				for post in labeled_posts
-					if self.determine_class_from_conflicting_votes(post.id, 'demand') is not None \
+					and self.determine_class_from_conflicting_votes(post.id, "demand") is not None
 					and self.determine_class_from_conflicting_votes(post.id, 'demand') != "no-idea"]
 
-		unlabeled_posts = unlabeled_posts or [post
+		unlabeled_posts = [post
 			for post in self.posts
-				if not (post.id in self.classification \
+				if not (post.id in self.classification
 					and self.classification[post.id]['demand'])]
 
 		# Build vectorizer
@@ -115,15 +110,6 @@ class active_learner(object):
 			confidence_predictions = confidence_predictions[-25:]
 
 		return [Post.fromPost(unlabeled_posts[prediction.index],prediction=prediction) for prediction in confidence_predictions]
-
-	def determin_certain_posts(self):
-		classifier, X_predict, unlabeled_posts = self.build_classifier()
-		predictions = self.calculate_predictions(classifier, X_predict)
-
-		low_confidence_predictions = sorted(predictions, key = lambda prediction: prediction.confidence)
-		low_confidence_predictions = low_confidence_predictions[:10]
-
-		return [Post.fromPost(unlabeled_posts[prediction.index],prediction=prediction) for prediction in low_confidence_predictions]
 
 	def determine_tagged_posts(self, tagger = None):
 		tagged_posts = [
