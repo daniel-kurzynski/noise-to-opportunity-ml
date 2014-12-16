@@ -47,7 +47,7 @@ object Main {
 
 		extractBrochuresLinewise { brochure =>
 			countTypes(brochure)
-			countProductWords(brochure)
+			countWords(brochure)
 		}()
 
 		println("=== CRM ===")
@@ -83,7 +83,7 @@ object Main {
 		extractPostsLinewise { post =>
 			features.touch(post)
 			countTypes(post)
-			countDemandWords(post)
+			countWords(post)
 		}()
 
 		genericCounter.classCounts.remove("no-idea")
@@ -197,20 +197,12 @@ object Main {
 		genericCounter.classCounts(doc.documentClass) += 1
 	}
 
-	// TODO: delete one of them?! is blacklist for demand important too?
-	private def countDemandWords(doc: Document): Unit = {
-		doc.textTokens.distinct.foreach { word =>
+	private def countWords(doc: Document): Unit = {
+		doc.sentences.flatten.filter { word => !blacklist.exists(word.pos.startsWith) }.map(_.text).distinct.foreach { word =>
 			if (!genericCounter.wordCounts.contains(word))
 				genericCounter.wordCounts(word) = new mutable.HashMap[String, Int]().withDefaultValue(0)
 			genericCounter.wordCounts(word)(doc.documentClass) += 1
 		}
 	}
 
-	private def countProductWords(doc: Document): Unit = {
-		doc.sentences.flatten.filter { word => !blacklist.exists(word.pos.startsWith)}.map(_.text).distinct.foreach { word =>
-			if (!genericCounter.wordCounts.contains(word))
-				genericCounter.wordCounts(word) = new mutable.HashMap[String, Int]().withDefaultValue(0)
-			genericCounter.wordCounts(word)(doc.documentClass) += 1
-		}
-	}
 }
