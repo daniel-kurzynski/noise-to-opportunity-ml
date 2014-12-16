@@ -37,9 +37,11 @@ object Main {
 	)
 
 	def main(args: Array[String]): Unit = {
-		// runDemandFeatureExtraction()
+		println("Demand Feature Extraction")
+		runDemandFeatureExtraction()
 
-		runBrochureFeatureExtraction()
+//		println("Brochure Feature Extraction")
+//		runBrochureFeatureExtraction()
 	}
 
 	def runBrochureFeatureExtraction(): Unit = {
@@ -154,12 +156,13 @@ object Main {
 			val title = line(1)
 			val text = line(2)
 
-			val rawPost = RawDocument(id, title, text, classifiedPosts.get(id).orNull)
+			val rawPost   = RawDocument(id, title, text, classifiedPosts.get(id).orNull)
+			val sentences = detectSentences(rawPost)
+			val post      = Document(id, title, text, sentences, rawPost.extractDemand())
 
 			if (classifiedPosts.contains(id)) {
 				postCount += 1
-				val sentences = detectSentences(rawPost)
-				extractor(Document(id, title, text, sentences, rawPost.extractDemand()))
+				extractor(post)
 			}
 			line = reader.readNext()
 		}

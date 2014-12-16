@@ -94,12 +94,11 @@ class FeatureBuilder {
 		features.foreach { feature => feature.touch(post) }
 	}
 	def buildFeatureVector(vectorHandler: (Document, Array[Double]) => Unit): Unit = {
-		val allCases = features.map { feature => feature.extract().cases }
-
-		val allCombinations = allCases.foldLeft(Seq(Seq[Case]())) { (feature, cases) =>
-			cross(feature.toList, cases.toList)
-		}
-
+//		val allCases = features.map { feature => feature.extract().cases }
+//
+//		val allCombinations = allCases.foldLeft(Seq(Seq[Case]())) { (feature, cases) =>
+//			cross(feature.toList, cases.toList)
+//		}
 		posts.foreach { post =>
 			vectorHandler(post, features.map { feature => feature.extract().default(post) }.toArray.flatten)
 		}
