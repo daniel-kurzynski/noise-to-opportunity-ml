@@ -40,7 +40,7 @@ class AmazonCrawler {
 		val params = mutable.Map(
 			"Service" -> "AWSECommerceService",
 			"AssociateTag" -> "PutYourAssociateTagHere",
-			"Version" -> "2011-08-01",
+			"Version" -> "2013-08-01",
 			"Operation" -> "ItemSearch",
 			"Keywords" -> keywords,
 			"SearchIndex" -> searchIndex,
@@ -48,12 +48,11 @@ class AmazonCrawler {
 		)
 		val document = request(params);
 
-		val idNodes = document.getElementsByTagName("ASIN")
+		val urlNodes = document.getElementsByTagName("DetailPageURL")
 
-		for(i<-0 to idNodes.getLength-1){
-			val id = idNodes.item(i).getTextContent
-			println(id)
-			//description(id)
+		for(i<-0 to urlNodes.getLength-1){
+			val url = urlNodes.item(i).getTextContent
+			println(description(url))
 		}
 
 		val descriptions = List()
@@ -61,18 +60,8 @@ class AmazonCrawler {
 		return descriptions
 	}
 
-	private def description(id: String): String ={
-		val params = mutable.Map(
-			"Service" -> "AWSECommerceService",
-			"AssociateTag" -> "PutYourAssociateTagHere",
-			"Version" -> "2011-08-01",
-			"Operation" -> "ItemLookup",
-			"ItemId" -> id,
-			"ResponseGroup" -> "EditorialReview"
-		)
-		val document = request(params);
-
-		return new String()
+	private def description(url: String): String ={
+		return url
 	}
 }
 
