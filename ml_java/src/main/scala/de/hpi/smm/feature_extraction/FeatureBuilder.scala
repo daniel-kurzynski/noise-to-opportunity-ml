@@ -58,8 +58,8 @@ class FeatureBuilder {
 	/**
 	 * Captures common need words like "required", "need" etc.
 	 */
-	def needWords(counts: GenericCountsCounter): FeatureBuilder = {
-		addFeature(new NeedWordFeature(counts))
+	def needWords(counts: GenericCountsCounter, clsName: String, thresholds: (Double, Double)): FeatureBuilder = {
+		addFeature(new NeedWordFeature(counts, clsName, thresholds))
 		this
 	}
 	/**

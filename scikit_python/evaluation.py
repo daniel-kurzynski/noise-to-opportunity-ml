@@ -19,14 +19,6 @@ import matplotlib.pyplot as plt
 import sys
 from os.path import join, abspath
 
-args = sys.argv
-
-if len(args) == 1:
-	print "Possible args: vis, fps, most"
-	print "Possible datasets: bow, custom"
-	print "Possible classifications: all, demand, product"
-	sys.exit(0)
-
 from preprocessing import CSVReader
 
 csv_reader = CSVReader()
@@ -49,7 +41,7 @@ def validate(base_classifier, X_train, y_train, X_test, y_true):
 		"Precision:", "  ".join(prec))
 	print conf_matrix
 
-def cross_validate(ids, base_classifier, X, y):
+def cross_validate(ids, base_classifier, X, y, class_name):
 	splitter = ShuffleSplit(X.shape[0], n_iter = 5, test_size = 0.2, random_state = 17)
 
 	precision_scores = []
@@ -84,27 +76,26 @@ def cross_validate(ids, base_classifier, X, y):
 
 	# print "Precision-Demand: ", sum(precision_scores) / float(len(precision_scores)),     " (macro)"
 	# print "Recall-Demand:    ", sum(recall_scores)    / float(len(recall_scores)),        " (macro)"
-
 	overall_tp = overall_confusion[0][0]
 	overall_fp = overall_confusion[1][0]
 	overall_fn = overall_confusion[0][1]
 	overall_tn = overall_confusion[1][1]
-	micro_precision_demand = overall_tp / float(overall_tp + overall_fp)
-	micro_recall_demand    = overall_tp / float(overall_tp + overall_fn)
-	micro_f1_demand        = 2 * micro_precision_demand * micro_recall_demand / (micro_recall_demand + micro_precision_demand)
+	micro_precision_class = overall_tp / float(overall_tp + overall_fp)
+	micro_recall_class    = overall_tp / float(overall_tp + overall_fn)
+	micro_f1_class        = 2 * micro_precision_class * micro_recall_class / (micro_recall_class + micro_precision_class)
 
-	micro_precision_no_demand = overall_tn / float(overall_tn + overall_fn)
-	micro_recall_no_demand    = overall_tn / float(overall_tn + overall_fp)
-	micro_f1_no_demand        = 2 * micro_precision_no_demand * micro_recall_no_demand / (micro_recall_no_demand + micro_precision_no_demand)
-	print "Precision-Demand:   ", micro_precision_demand,    " (micro)"
-	print "Recall-Demand:      ", micro_recall_demand,       " (micro)"
-	print "F1-Demand:          ", micro_f1_demand,           " (micro)"
+	micro_precision_no_class = overall_tn / float(overall_tn + overall_fn)
+	micro_recall_no_class    = overall_tn / float(overall_tn + overall_fp)
+	micro_f1_no_class        = 2 * micro_precision_no_class * micro_recall_no_class / (micro_recall_no_class + micro_precision_no_class)
+	print "Precision-%s:   "%(class_name), micro_precision_class,    " (micro)"
+	print "Recall-%s:      "%(class_name), micro_recall_class,       " (micro)"
+	print "F1-%s:          "%(class_name), micro_f1_class,           " (micro)"
 
 	overall_precision = (overall_tp + overall_tn) / float(overall_tp + overall_tn + overall_fp + overall_fn)
 	print "Overall Precision   ", overall_precision
-	# print "Precision-NoDemand: ", micro_precision_no_demand, " (micro)"
-	# print "Recall-NoDemand:    ", micro_recall_no_demand,    " (micro)"
-	# print "F1-NoDemand:        ", micro_f1_no_demand,        " (micro)"
+	# print "Precision-No%s: "%(class_name), micro_precision_no_class, " (micro)"
+	# print "Recall-No%s:    "%(class_name), micro_recall_no_class,    " (micro)"
+	# print "F1-No%s:        "%(class_name), micro_f1_no_demand,        " (micro)"
 	print overall_confusion
 
 def print_mosth_weighted_features(indices, vocabulary, coef):
@@ -193,7 +184,7 @@ def run_demand(classifier):
 			most_weighted_features(classifier, X, y, vectorizer)
 		X = X.todense() if issparse(X) else X
 		X_unlabeled = X_unlabeled.todense() if issparse(X_unlabeled) else X_unlabeled
-		cross_validate(ids, classifier, X, y)
+		cross_validate(ids, classifier, X, y, "Demand")
 		if "vis" in args:
 			visualize_posts(X,y , X_unlabeled)
 	print "=" * len(t)
@@ -201,8 +192,30 @@ def run_demand(classifier):
 def run_product(classifier):
 	t = "===== Product Evalutation of %s =====" %classifier.__class__.__name__
 	print t
-	from bag_of_words    import build_product_data as bow
+	# from bag_of_words    import build_product_data as bow
 	from custom_features import build_product_data as custom_features
+
+	build_datas = []
+	# if "bow" in args:
+	# 	build_datas.append(bow)
+	if "custom" in args:
+		build_datas.append(custom_features)
+	for build_data in build_datas:
+		ids, X, y, vectorizer, X_unlabeled = build_data()
+		if vectorizer and "most" in args:
+			most_weighted_features(classifier, X, y, vectorizer)
+		X = X.todense() if issparse(X) else X
+		X_unlabeled = X_unlabeled.todense() if issparse(X_unlabeled) else X_unlabeled
+		cross_validate(ids, classifier, X, y, "CRM")
+		if "vis" in args:
+			visualize_posts(X,y , X_unlabeled)
+	print "=" * len(t)
+
+	return
+
+
+
+
 
 	X_train, y_train, X_test, y_true, categories = bow()
 	X_train = X_train.todense() if issparse(X_train) else X_train
@@ -252,6 +265,13 @@ class VotingClassifier(BaseEstimator):
 		return y_predict
 
 if __name__ == "__main__":
+	args = sys.argv
+	if len(args) == 1:
+		print "Possible args: vis, fps, most"
+		print "Possible datasets: bow, custom"
+		print "Possible classifications: all, demand, product"
+		sys.exit(0)
+
 	classifiers = [
 		LogisticRegression(),
 		Perceptron(n_iter = 50),
@@ -260,7 +280,7 @@ if __name__ == "__main__":
 		SGDClassifier(),
 		RidgeClassifier(),
 		LinearSVC(),
-		BernoulliNB(class_prior=[0.5, 0.5])]
+		BernoulliNB()]
 
 	LOG_REGRESSION, \
 	PERCEPTRON, \

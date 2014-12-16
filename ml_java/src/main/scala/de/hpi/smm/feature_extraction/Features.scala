@@ -4,7 +4,7 @@ import de.hpi.smm.domain._
 
 import scala.collection.mutable
 
-class NeedWordFeature(counts: GenericCountsCounter) extends Feature {
+class NeedWordFeature(counts: GenericCountsCounter, clsName: String, thresholds: (Double, Double)) extends Feature {
 	def name = determineRelevantWords()
 
 //	val relevantNeedWords = Array(
@@ -16,8 +16,8 @@ class NeedWordFeature(counts: GenericCountsCounter) extends Feature {
 //		"you").reverse
 
 	private def determineRelevantWords(): Array[String] = {
-		(counts.takeTopOccurrence("demand", 5.0).map(_._1) ++
-			counts.takeTopNotOccurrence("demand", 2.0).map(_._1)).toArray
+      (counts.takeTopOccurrence(clsName, thresholds._1).map(_._1) ++
+        counts.takeTopNotOccurrence(clsName, thresholds._2).map(_._1)).toArray
 	}
 
 	override def extract(): Switch = {

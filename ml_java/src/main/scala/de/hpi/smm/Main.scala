@@ -20,59 +20,78 @@ object Main {
 
 	val classifiedPosts = JacksMapper.readValue[Map[String, Map[String, Map[String, String]]]](
 		new FileReader("../webapp_python/data/classification.json"))
-	val postsFile     = new File("../n2o_data/linked_in_posts.csv")
+	val postsFile = new File("../n2o_data/linked_in_posts.csv")
 	val brochuresFile = new File("../n2o_data/brochures.csv")
 
-//	val demandCounts = new DemandCountsCounter()
-//	var brochureCounts = new BrochuresCountsCounter()
-  val genericCounter = new GenericCountsCounter()
+	//	val demandCounts = new DemandCountsCounter()
+	//	var brochureCounts = new BrochuresCountsCounter()
+	var genericCounter = new GenericCountsCounter()
 
-  val blacklist = Array(
-    ".", ",", ":", "-RRB-", "-LRB-", "$",
-    // english
-    "IN", "DT", "TO", "CC", "VBZ",
-    // german
-    "APP","ART","KO","KO","PP",
-    "PR","PT","TRUNC","VA","VM","VV"
-  )
+	val blacklist = Array(
+		".", ",", ":", "-RRB-", "-LRB-", "$",
+		// english
+		"IN", "DT", "TO", "CC", "VBZ",
+		// german
+		"APP", "ART", "KO", "KO", "PP",
+		"PR", "PT", "TRUNC", "VA", "VM", "VV"
+	)
 
 	def main(args: Array[String]): Unit = {
-		runDemandFeatureExtraction()
+		// runDemandFeatureExtraction()
 
-//		runBrochureFeatureExtraction()
+		runBrochureFeatureExtraction()
 	}
 
 	def runBrochureFeatureExtraction(): Unit = {
-    genericCounter.smoothing = true
 
-		extractBrochuresLinewise { brochure =>
-			countTypes(brochure)
-			countProductWords(brochure)
-		}()
+    List(
+      ("CRM", 2.0, 4.0),
+      ("ECOM", 2.0, 4.0),
+      ("HCM", 2.0, 4.0),
+      ("LVM", 2.0, 4.0)
+    ).foreach { case (clsName, thresh1, thresh2) =>
 
-    println("=== CRM ===")
-    genericCounter.takeTopOccurrence("CRM").take(10).foreach(println)
-    println("======")
-    genericCounter.takeTopNotOccurrence("CRM").take(10).foreach(println)
-    println("=== ECOM ===")
-    genericCounter.takeTopOccurrence("ECOM").take(10).foreach(println)
-    println("======")
-    genericCounter.takeTopNotOccurrence("ECOM").take(10).foreach(println)
-    println("=== HCM ===")
-    genericCounter.takeTopOccurrence("HCM").take(10).foreach(println)
-    println("======")
-    genericCounter.takeTopNotOccurrence("HCM").take(10).foreach(println)
-    println("=== LVM ===")
-    genericCounter.takeTopOccurrence("LVM").take(10).foreach(println)
-    println("======")
-    genericCounter.takeTopNotOccurrence("LVM").take(10).foreach(println)
+      genericCounter = new GenericCountsCounter()
+      genericCounter.smoothing = true
+
+      val features = FeatureBuilder()
+        .needWords(genericCounter, clsName, (thresh1, thresh2))
+        .questionNumber()
+        .needNGrams()
+        .containsEMail()
+        .addressTheReader()
+        .questionWords()
+        .imperativeWords()
+
+      extractBrochuresLinewise { brochure =>
+        features.touch(brochure)
+        countTypes(brochure)
+        countWords(brochure)
+      }()
+
+      val writer = new CSVWriter(new FileWriter(new File(s"../n2o_data/features_${clsName.toLowerCase}.csv")),
+        CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER)
+
+      writer.writeNext(features.names)
+      features.buildFeatureVector { (post, instance) =>
+        val outputLine = buildLine(post, instance, clsName)
+        writer.writeNext(outputLine)
+      }
+      writer.close()
+
+      println(s"=== $clsName ===")
+      genericCounter.takeTopOccurrence(clsName, thresh1).foreach(println)
+      println("======")
+      genericCounter.takeTopNotOccurrence(clsName, thresh2).foreach(println)
+    }
+
 	}
 
 	def runDemandFeatureExtraction(): Unit = {
-    genericCounter.smoothing = false
+		genericCounter.smoothing = false
 
 		val features = FeatureBuilder()
-			.needWords(genericCounter)
+			.needWords(genericCounter, "demand", (5.0, 2.0))
 			.questionNumber()
 			.needNGrams()
 			.containsEMail()
@@ -83,17 +102,17 @@ object Main {
 		extractPostsLinewise { post =>
 			features.touch(post)
 			countTypes(post)
-			countDemandWords(post)
+			countWords(post)
 		}()
 
-    genericCounter.classCounts.remove("no-idea")
+		genericCounter.classCounts.remove("no-idea")
 
 		val writer = new CSVWriter(new FileWriter(new File("../n2o_data/features.csv")),
 			CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER)
 
 		writer.writeNext(features.names)
 		features.buildFeatureVector { (post, instance) =>
-			val outputLine = buildLine(post, instance)
+			val outputLine = buildLine(post, instance, "demand")
 			writer.writeNext(outputLine)
 		}
 		writer.close()
@@ -109,8 +128,8 @@ object Main {
 		var brochuresCount: Int = 1
 		var line: Array[String] = reader.readNext()
 		while (line != null && brochuresCount <= count) {
-			val id    = line(0)
-			val text  = line(1)
+			val id = line(0)
+			val text = line(1)
 			val classification = line(2)
 			val lang = line(4)
 
@@ -130,9 +149,9 @@ object Main {
 		var postCount: Int = 1
 		var line: Array[String] = reader.readNext()
 		while (line != null && postCount <= count) {
-			val id    = line(0)
+			val id = line(0)
 			val title = line(1)
-			val text  = line(2)
+			val text = line(2)
 
 			val rawPost = RawDocument(id, title, text, classifiedPosts.get(id).orNull)
 
@@ -148,16 +167,16 @@ object Main {
 
 	def detectSentences(rawPost: RawDocument): Seq[Seq[Word]] = {
 		val props = new util.Properties()
-//		props.put("annotators", "tokenize,ssplit,pos,lemma,ner")
+		//		props.put("annotators", "tokenize,ssplit,pos,lemma,ner")
 		props.put("annotators", "tokenize,ssplit,pos")
 		if (rawPost.lang == "de") {
-//			println("Using german")
+			//			println("Using german")
 			props.put("pos.model", "../n2o_data/german-fast.tagger")
 		}
 		else if (rawPost.lang == "en" || rawPost.lang == null) Unit
 		else throw new RuntimeException("Unknown language.")
 
-//		props.put("annotators", "tokenize,ssplit")
+		//		props.put("annotators", "tokenize,ssplit")
 
 		// shut down logging, initialize, start logging
 		RedwoodConfiguration.empty().capture(System.err).apply()
@@ -184,10 +203,10 @@ object Main {
 		sentences
 	}
 
-	private def buildLine(post: Document, instance: Array[Double]): Array[String] = {
+	private def buildLine(post: Document, instance: Array[Double], currentClass: String): Array[String] = {
 		val line = new Array[String](instance.size + 2)
 		line(0) = post.id
-		line(line.size - 1) = post.documentClass
+		line(line.size - 1) = if (post.documentClass == currentClass) post.documentClass else "no-" + currentClass
 		System.arraycopy(instance.map(_.toString), 0, line, 1, instance.size)
 		line
 	}
@@ -197,19 +216,12 @@ object Main {
 		genericCounter.classCounts(doc.documentClass) += 1
 	}
 
-  // TODO: delete one of them?! is blacklist for demand important too?
-  private def countDemandWords(doc: Document): Unit = {
-		doc.textTokens.distinct.foreach { word =>
-      if(!genericCounter.wordCounts.contains(word))
-        genericCounter.wordCounts(word) = new mutable.HashMap[String, Int]().withDefaultValue(0)
-      genericCounter.wordCounts(word)(doc.documentClass) += 1
-		}
-	}
-	private def countProductWords(doc: Document): Unit = {
+	private def countWords(doc: Document): Unit = {
 		doc.sentences.flatten.filter { word => !blacklist.exists(word.pos.startsWith) }.map(_.text).distinct.foreach { word =>
-      if(!genericCounter.wordCounts.contains(word))
-        genericCounter.wordCounts(word) = new mutable.HashMap[String, Int]().withDefaultValue(0)
-      genericCounter.wordCounts(word)(doc.documentClass) += 1
+			if (!genericCounter.wordCounts.contains(word))
+				genericCounter.wordCounts(word) = new mutable.HashMap[String, Int]().withDefaultValue(0)
+			genericCounter.wordCounts(word)(doc.documentClass) += 1
 		}
 	}
+
 }

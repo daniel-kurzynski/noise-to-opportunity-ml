@@ -41,6 +41,7 @@ def build_demand_data():
 
 def build_product_data():
 	print "=== Bag of Words Extractor ==="
+	raise RuntimeError("Do not use me!")
 	csv_reader = CSVReader()
 	csv_reader.read("../n2o_data/brochures.csv", CSVReader.brochure_extractor)
 
