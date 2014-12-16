@@ -19,14 +19,6 @@ import matplotlib.pyplot as plt
 import sys
 from os.path import join, abspath
 
-args = sys.argv
-
-if len(args) == 1:
-	print "Possible args: vis, fps, most"
-	print "Possible datasets: bow, custom"
-	print "Possible classifications: all, demand, product"
-	sys.exit(0)
-
 from preprocessing import CSVReader
 
 csv_reader = CSVReader()
@@ -252,6 +244,13 @@ class VotingClassifier(BaseEstimator):
 		return y_predict
 
 if __name__ == "__main__":
+	args = sys.argv
+	if len(args) == 1:
+		print "Possible args: vis, fps, most"
+		print "Possible datasets: bow, custom"
+		print "Possible classifications: all, demand, product"
+		sys.exit(0)
+
 	classifiers = [
 		LogisticRegression(),
 		Perceptron(n_iter = 50),
