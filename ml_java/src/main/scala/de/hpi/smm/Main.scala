@@ -20,56 +20,56 @@ object Main {
 
 	val classifiedPosts = JacksMapper.readValue[Map[String, Map[String, Map[String, String]]]](
 		new FileReader("../webapp_python/data/classification.json"))
-	val postsFile     = new File("../n2o_data/linked_in_posts.csv")
+	val postsFile = new File("../n2o_data/linked_in_posts.csv")
 	val brochuresFile = new File("../n2o_data/brochures.csv")
 
-//	val demandCounts = new DemandCountsCounter()
-//	var brochureCounts = new BrochuresCountsCounter()
-  val genericCounter = new GenericCountsCounter()
+	//	val demandCounts = new DemandCountsCounter()
+	//	var brochureCounts = new BrochuresCountsCounter()
+	val genericCounter = new GenericCountsCounter()
 
-  val blacklist = Array(
-    ".", ",", ":", "-RRB-", "-LRB-", "$",
-    // english
-    "IN", "DT", "TO", "CC", "VBZ",
-    // german
-    "APP","ART","KO","KO","PP",
-    "PR","PT","TRUNC","VA","VM","VV"
-  )
+	val blacklist = Array(
+		".", ",", ":", "-RRB-", "-LRB-", "$",
+		// english
+		"IN", "DT", "TO", "CC", "VBZ",
+		// german
+		"APP", "ART", "KO", "KO", "PP",
+		"PR", "PT", "TRUNC", "VA", "VM", "VV"
+	)
 
 	def main(args: Array[String]): Unit = {
 		runDemandFeatureExtraction()
 
-//		runBrochureFeatureExtraction()
+		//		runBrochureFeatureExtraction()
 	}
 
 	def runBrochureFeatureExtraction(): Unit = {
-    genericCounter.smoothing = true
+		genericCounter.smoothing = true
 
 		extractBrochuresLinewise { brochure =>
 			countTypes(brochure)
 			countProductWords(brochure)
 		}()
 
-    println("=== CRM ===")
-    genericCounter.takeTopOccurrence("CRM").take(10).foreach(println)
-    println("======")
-    genericCounter.takeTopNotOccurrence("CRM").take(10).foreach(println)
-    println("=== ECOM ===")
-    genericCounter.takeTopOccurrence("ECOM").take(10).foreach(println)
-    println("======")
-    genericCounter.takeTopNotOccurrence("ECOM").take(10).foreach(println)
-    println("=== HCM ===")
-    genericCounter.takeTopOccurrence("HCM").take(10).foreach(println)
-    println("======")
-    genericCounter.takeTopNotOccurrence("HCM").take(10).foreach(println)
-    println("=== LVM ===")
-    genericCounter.takeTopOccurrence("LVM").take(10).foreach(println)
-    println("======")
-    genericCounter.takeTopNotOccurrence("LVM").take(10).foreach(println)
+		println("=== CRM ===")
+		genericCounter.takeTopOccurrence("CRM").take(10).foreach(println)
+		println("======")
+		genericCounter.takeTopNotOccurrence("CRM").take(10).foreach(println)
+		println("=== ECOM ===")
+		genericCounter.takeTopOccurrence("ECOM").take(10).foreach(println)
+		println("======")
+		genericCounter.takeTopNotOccurrence("ECOM").take(10).foreach(println)
+		println("=== HCM ===")
+		genericCounter.takeTopOccurrence("HCM").take(10).foreach(println)
+		println("======")
+		genericCounter.takeTopNotOccurrence("HCM").take(10).foreach(println)
+		println("=== LVM ===")
+		genericCounter.takeTopOccurrence("LVM").take(10).foreach(println)
+		println("======")
+		genericCounter.takeTopNotOccurrence("LVM").take(10).foreach(println)
 	}
 
 	def runDemandFeatureExtraction(): Unit = {
-    genericCounter.smoothing = false
+		genericCounter.smoothing = false
 
 		val features = FeatureBuilder()
 			.needWords(genericCounter)
@@ -86,7 +86,7 @@ object Main {
 			countDemandWords(post)
 		}()
 
-    genericCounter.classCounts.remove("no-idea")
+		genericCounter.classCounts.remove("no-idea")
 
 		val writer = new CSVWriter(new FileWriter(new File("../n2o_data/features.csv")),
 			CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER)
@@ -109,8 +109,8 @@ object Main {
 		var brochuresCount: Int = 1
 		var line: Array[String] = reader.readNext()
 		while (line != null && brochuresCount <= count) {
-			val id    = line(0)
-			val text  = line(1)
+			val id = line(0)
+			val text = line(1)
 			val classification = line(2)
 			val lang = line(4)
 
@@ -130,9 +130,9 @@ object Main {
 		var postCount: Int = 1
 		var line: Array[String] = reader.readNext()
 		while (line != null && postCount <= count) {
-			val id    = line(0)
+			val id = line(0)
 			val title = line(1)
-			val text  = line(2)
+			val text = line(2)
 
 			val rawPost = RawDocument(id, title, text, classifiedPosts.get(id).orNull)
 
@@ -148,16 +148,16 @@ object Main {
 
 	def detectSentences(rawPost: RawDocument): Seq[Seq[Word]] = {
 		val props = new util.Properties()
-//		props.put("annotators", "tokenize,ssplit,pos,lemma,ner")
+		//		props.put("annotators", "tokenize,ssplit,pos,lemma,ner")
 		props.put("annotators", "tokenize,ssplit,pos")
 		if (rawPost.lang == "de") {
-//			println("Using german")
+			//			println("Using german")
 			props.put("pos.model", "../n2o_data/german-fast.tagger")
 		}
 		else if (rawPost.lang == "en" || rawPost.lang == null) Unit
 		else throw new RuntimeException("Unknown language.")
 
-//		props.put("annotators", "tokenize,ssplit")
+		//		props.put("annotators", "tokenize,ssplit")
 
 		// shut down logging, initialize, start logging
 		RedwoodConfiguration.empty().capture(System.err).apply()
@@ -197,19 +197,20 @@ object Main {
 		genericCounter.classCounts(doc.documentClass) += 1
 	}
 
-  // TODO: delete one of them?! is blacklist for demand important too?
-  private def countDemandWords(doc: Document): Unit = {
+	// TODO: delete one of them?! is blacklist for demand important too?
+	private def countDemandWords(doc: Document): Unit = {
 		doc.textTokens.distinct.foreach { word =>
-      if(!genericCounter.wordCounts.contains(word))
-        genericCounter.wordCounts(word) = new mutable.HashMap[String, Int]().withDefaultValue(0)
-      genericCounter.wordCounts(word)(doc.documentClass) += 1
+			if (!genericCounter.wordCounts.contains(word))
+				genericCounter.wordCounts(word) = new mutable.HashMap[String, Int]().withDefaultValue(0)
+			genericCounter.wordCounts(word)(doc.documentClass) += 1
 		}
 	}
+
 	private def countProductWords(doc: Document): Unit = {
-		doc.sentences.flatten.filter { word => !blacklist.exists(word.pos.startsWith) }.map(_.text).distinct.foreach { word =>
-      if(!genericCounter.wordCounts.contains(word))
-        genericCounter.wordCounts(word) = new mutable.HashMap[String, Int]().withDefaultValue(0)
-      genericCounter.wordCounts(word)(doc.documentClass) += 1
+		doc.sentences.flatten.filter { word => !blacklist.exists(word.pos.startsWith)}.map(_.text).distinct.foreach { word =>
+			if (!genericCounter.wordCounts.contains(word))
+				genericCounter.wordCounts(word) = new mutable.HashMap[String, Int]().withDefaultValue(0)
+			genericCounter.wordCounts(word)(doc.documentClass) += 1
 		}
 	}
 }
