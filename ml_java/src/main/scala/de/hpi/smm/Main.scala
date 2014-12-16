@@ -46,9 +46,9 @@ object Main {
 
     List(
       ("CRM", 2.0, 4.0),
-      ("ECOM", 2.0, 4.0),
-      ("HCM", 2.0, 4.0),
-      ("LVM", 2.0, 4.0)
+      ("ECOM", 1.3, 3.7),
+      ("HCM", 2.3, 5.5),
+      ("LVM", 3.0, 5.5)
     ).foreach { case (clsName, thresh1, thresh2) =>
 
       genericCounter = new GenericCountsCounter()
@@ -78,6 +78,7 @@ object Main {
         writer.writeNext(outputLine)
       }
       writer.close()
+
 
       println(s"=== $clsName ===")
       genericCounter.takeTopOccurrence(clsName, thresh1).foreach(println)

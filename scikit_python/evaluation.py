@@ -195,21 +195,28 @@ def run_product(classifier):
 	# from bag_of_words    import build_product_data as bow
 	from custom_features import build_product_data as custom_features
 
-	build_datas = []
-	# if "bow" in args:
-	# 	build_datas.append(bow)
-	if "custom" in args:
-		build_datas.append(custom_features)
-	for build_data in build_datas:
-		ids, X, y, vectorizer, X_unlabeled = build_data()
-		if vectorizer and "most" in args:
-			most_weighted_features(classifier, X, y, vectorizer)
-		X = X.todense() if issparse(X) else X
-		X_unlabeled = X_unlabeled.todense() if issparse(X_unlabeled) else X_unlabeled
-		cross_validate(ids, classifier, X, y, "CRM")
-		if "vis" in args:
-			visualize_posts(X,y , X_unlabeled)
-	print "=" * len(t)
+	product_classes = [
+		"CRM",
+		"ECOM",
+		"HCM",
+		"LVM",
+	]
+	for class_name in product_classes:
+		build_datas = []
+		# if "bow" in args:
+		# 	build_datas.append(bow)
+		if "custom" in args:
+			build_datas.append(custom_features)
+		for build_data in build_datas:
+			ids, X, y, vectorizer, X_unlabeled = build_data(class_name.lower())
+			if vectorizer and "most" in args:
+				most_weighted_features(classifier, X, y, vectorizer)
+			X = X.todense() if issparse(X) else X
+			X_unlabeled = X_unlabeled.todense() if issparse(X_unlabeled) else X_unlabeled
+			cross_validate(ids, classifier, X, y, class_name)
+			if "vis" in args:
+				visualize_posts(X, y, X_unlabeled)
+		print "=" * len(t)
 
 	return
 
@@ -280,7 +287,7 @@ if __name__ == "__main__":
 		SGDClassifier(),
 		RidgeClassifier(),
 		LinearSVC(),
-		BernoulliNB()]
+		BernoulliNB(class_prior = [0.5, 0.5])]
 
 	LOG_REGRESSION, \
 	PERCEPTRON, \
@@ -295,6 +302,7 @@ if __name__ == "__main__":
 	classifiers.append(average_classifier)
 
 	classifier = classifiers[BERNOULLI_NB]
+
 
 	if "all" in args:
 		for cl in classifiers:
