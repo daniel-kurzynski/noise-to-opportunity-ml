@@ -17,7 +17,9 @@ import org.w3c.dom.Document
  * Created by Daniel on 16.12.2014.
  */
 
-class AmazonDescriptionSearch(var keywordsList: List[String], var searchIndex: String, var productName: String) {
+class Result(var description: String, var title: String)
+
+class AmazonDescriptionSearch(var searches: List[(String, Int)], var searchIndex: String, var productName: String, var filterWords: List[String]) {
 
 	private val ENDPOINT = "ecs.amazonaws.com"
 	private val KEY_FILE = "src/main/resources/keys.conf"
@@ -40,17 +42,22 @@ class AmazonDescriptionSearch(var keywordsList: List[String], var searchIndex: S
 		return document
 	}
 
-	def descriptions(): List[String] = {
-		var descriptionStrings = List[String]()
+	def search(): List[Result] = {
+		var results = List[Result]()
 
-		keywordsList.foreach((keywords: String) => {
-			descriptionStrings = descriptionStrings ::: descriptions(keywords)
+		println("Descriptions for product " + productName)
+
+		searches.foreach((search: (String, Int)) => {
+			val keywords = search._1
+			val numberOfPages = search._2
+
+			results = results ::: searchForProducts(keywords, numberOfPages)
 		})
 
-		return descriptionStrings
+		return results
 	}
 
-	private def descriptions(keywords: String): List[String] ={
+	private def searchForProducts(keywords: String, numberOfPages: Int): List[Result] ={
 		val params = mutable.Map(
 			"Service" -> "AWSECommerceService",
 			"AssociateTag" -> "PutYourAssociateTagHere",
@@ -61,9 +68,9 @@ class AmazonDescriptionSearch(var keywordsList: List[String], var searchIndex: S
 			"ResponseGroup" -> "Small"
 		)
 
-		var descriptionStrings = List[String]()
+		var results = List[Result]()
 
-		for(itemPage<-1 to 5){
+		for(itemPage<-1 to numberOfPages){
 			params.put("ItemPage", itemPage.toString);
 
 			val document = request(params);
@@ -73,9 +80,9 @@ class AmazonDescriptionSearch(var keywordsList: List[String], var searchIndex: S
 			for(i<-0 to urlNodes.getLength-1){
 				try{
 					val url = urlNodes.item(i).getTextContent
-					val descriptionString = description(url)
-					if(descriptionString.length>100)
-						descriptionStrings = descriptionString :: descriptionStrings
+					val result = parse(url)
+					if(result.description.length>100)
+						results = result :: results
 					println("Success: " + url)
 				}
 				catch{
@@ -89,15 +96,24 @@ class AmazonDescriptionSearch(var keywordsList: List[String], var searchIndex: S
 			}
 		}
 
-		return descriptionStrings
+		return results
 	}
 
-	private def description(url: String): String ={
-		Thread sleep 10
+	def containsFilterWord(result: Result): Boolean ={
+		filterWords.foreach((word: String) => {
+			if(result.description.toLowerCase.contains(word.toLowerCase()))
+				return true;
+			if(result.title.toLowerCase.contains(word.toLowerCase()))
+				return true;
+		})
+		return false;
+	}
+
+	private def parse(url: String): Result ={
 		val document = Jsoup.connect(url).userAgent(userAgent).get()
 		val description = document.select("noscript")
 
-		return description.text()
+		return new Result(description.text(), document.title)
 	}
 }
 
