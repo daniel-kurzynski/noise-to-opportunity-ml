@@ -18,7 +18,7 @@ import scala.collection.mutable
 
 object Main {
 
-	val FOR_ALL_POSTS = true
+	val FOR_ALL_POSTS = false
 
 	val classifiedPosts = JacksMapper.readValue[Map[String, Map[String, Map[String, String]]]](
 		new FileReader("../webapp_python/data/classification.json"))

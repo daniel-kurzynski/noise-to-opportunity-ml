@@ -179,7 +179,7 @@ def run_demand(classifier):
 	if "custom" in args:
 		build_datas.append(custom_features)
 	for build_data in build_datas:
-		ids, X_train, y_train, vectorizer, X_predict = build_data()
+		ids, X_train, y_train, vectorizer, _, X_predict = build_data()
 		if vectorizer and "most" in args:
 			most_weighted_features(classifier, X_train, y_train, vectorizer)
 		X_train = X_train.todense() if issparse(X_train) else X_train

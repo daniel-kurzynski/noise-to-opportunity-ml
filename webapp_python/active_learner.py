@@ -1,8 +1,6 @@
 from os.path import join, abspath
 from post import Post, Prediction
 import simplejson as json
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.linear_model import Perceptron
 import numpy as np
 import collections
 from collections import Counter
@@ -98,6 +96,7 @@ class active_learner(object):
 
 		# Train the classifier
 		classifier = Classifiers.CLASSIFIERS[Classifiers.BERNOULLI_NB]
+		print classifier.__class__.__name__
 		classifier.fit(X_train, y_train)
 		return classifier, X_predict, unlabeled_posts
 
