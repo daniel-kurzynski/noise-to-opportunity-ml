@@ -1,6 +1,6 @@
 package de.hpi.smm.feature_extraction
 
-import de.hpi.smm.domain.{GenericCountsCounter, DemandCountsCounter, Case, Document}
+import de.hpi.smm.domain.{GenericCountsCounter, Document}
 
 class FeatureBuilder {
 
