@@ -8,10 +8,12 @@ import collections
 from collections import Counter
 from math import exp
 
+import time
 import sys
 sys.path.append("../scikit_python")
 from evaluation import Classifiers
 from custom_features import build_demand_data
+ids, X_train, y_train, _, predict_ids, X_predict = build_demand_data(False)
 
 class active_learner(object):
 	def __init__(self):
@@ -71,18 +73,28 @@ class active_learner(object):
 		return posts
 
 	def build_classifier(self):
-		labeled_posts  =  [post
-			for post in self.posts
-				if post.id in self.classification \
-					and self.determine_class_from_conflicting_votes(post.id, "demand") is not None
-					and self.determine_class_from_conflicting_votes(post.id, 'demand') != "no-idea"]
-
+		global X_predict, predict_ids
+		# TODO: Unlabeled posts is reavaluated on each access, while X_predict is only calculated once at
+		# startup for performance reasons. They should be kept in sync by removing the irrelevant entries
+		# from X_predict
 		unlabeled_posts = [post
 			for post in self.posts
 				if not (post.id in self.classification
 					and self.classification[post.id]['demand'])]
 
-		_, X_train, y_train, _, X_predict = build_demand_data(False)
+		relevant_ids = set(map(lambda x: x.id, unlabeled_posts))
+
+		# start = time.time()
+		new_X_predict = []
+		new_predict_ids = []
+		for index, x in enumerate(X_predict):
+			if predict_ids[index] in relevant_ids:
+				new_X_predict.append(x)
+				new_predict_ids.append(predict_ids[index])
+		X_predict = new_X_predict
+		predict_ids = new_predict_ids
+		# end = time.time()
+		# print end - start, " seconds"
 
 		# Train the classifier
 		classifier = Classifiers.CLASSIFIERS[Classifiers.BERNOULLI_NB]
@@ -98,6 +110,8 @@ class active_learner(object):
 		print "Choosing " + type + " posts"
 
 		classifier, X_predict, unlabeled_posts = self.build_classifier()
+
+		assert(len(X_predict) == len(unlabeled_posts))
 		# Old predictions, where we have a confidence
 		# predictions = self.calculate_predictions(classifier, X_predict)
 		# As we are using BernoulliNB basically, we do not have prediction confidences anymore
@@ -172,10 +186,10 @@ class active_learner(object):
 		for index, x in enumerate(X_predict):
 			predictedClass = classifier.predict(x)
 			class_probs = map(lambda x: exp(x), classifier.predict_log_proba(x)[0])
-			if index == 4:
-				print class_probs
-				print max(class_probs)
-				print sum(class_probs)
+			# if index == 4: # print some example values
+			# 	print class_probs
+			# 	print max(class_probs)
+			# 	print sum(class_probs)
 			prob = max(class_probs) / sum(class_probs)
 			predictions.append(Prediction(predictedClass, prob, index))
 		return predictions

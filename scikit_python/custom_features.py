@@ -2,7 +2,7 @@ from os.path import dirname, join
 import numpy as np
 
 def __build_data(fname):
-	ids, X_train, y_train, X_predict = [], [], [], []
+	ids, X_train, y_train, predict_ids, X_predict = [], [], [], [], []
 	with open(join(dirname(dirname(__file__)), fname)) as f:
 		first = True
 		for line in f:
@@ -12,6 +12,7 @@ def __build_data(fname):
 			if not content or cls == "no-idea":
 				continue
 			if cls == "":
+				predict_ids.append(content[0])
 				X_predict.append([float(val) for val in content[3:-1]])
 				continue
 
@@ -19,7 +20,7 @@ def __build_data(fname):
 			X_train.append([float(val) for val in content[3:-1]])
 			y_train.append(cls)
 
-	return np.array(ids), np.array(X_train), np.array(y_train), None, X_predict
+	return np.array(ids), np.array(X_train), np.array(y_train), None, predict_ids, X_predict
 
 
 def build_demand_data(printFoo = True):

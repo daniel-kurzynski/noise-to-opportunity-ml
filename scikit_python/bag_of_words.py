@@ -32,11 +32,11 @@ def build_demand_data():
 	unlabeled_posts = get_unlabeled_posts("demand")
 	# Build vectorizer
 	vectorizer = TfidfVectorizer(sublinear_tf = True, max_df = 0.5, stop_words = 'english')
-	X   = vectorizer.fit_transform([post.data for post in labeled_posts])
-	y = np.array([post.get_class("demand") for post in labeled_posts])
-	X_unlabeled = vectorizer.transform([post.data for post in unlabeled_posts])
+	X_train   = vectorizer.fit_transform([post.data for post in labeled_posts])
+	y_train = np.array([post.get_class("demand") for post in labeled_posts])
+	X_predict = vectorizer.transform([post.data for post in unlabeled_posts])
 
-	return [], X, y, vectorizer, X_unlabeled
+	return [], X_train, y_train, vectorizer, None, X_predict
 
 
 def build_product_data():
