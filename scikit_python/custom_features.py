@@ -1,9 +1,8 @@
 from os.path import dirname, join
 import numpy as np
 
-
 def __build_data(fname):
-	ids, features, target = [], [], []
+	ids, X_train, y_train, X_predict = [], [], [], []
 	with open(join(dirname(dirname(__file__)), fname)) as f:
 		first = True
 		for line in f:
@@ -12,16 +11,20 @@ def __build_data(fname):
 			cls = content[-1]
 			if not content or cls == "no-idea":
 				continue
+			if cls == "":
+				X_predict.append([float(val) for val in content[3:-1]])
+				continue
 
 			ids.append(content[0])
-			features.append([float(val) for val in content[3:-1]])
-			target.append(cls)
+			X_train.append([float(val) for val in content[3:-1]])
+			y_train.append(cls)
 
-	return np.array(ids), np.array(features), np.array(target), None, None
+	return np.array(ids), np.array(X_train), np.array(y_train), None, X_predict
 
 
-def build_demand_data():
-	print "=== Custom Feature Extractor ==="
+def build_demand_data(printFoo = True):
+	if printFoo:
+		print "=== Custom Feature Extractor ==="
 	return __build_data("n2o_data/features.csv")
 
 

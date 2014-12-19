@@ -179,14 +179,14 @@ def run_demand(classifier):
 	if "custom" in args:
 		build_datas.append(custom_features)
 	for build_data in build_datas:
-		ids, X, y, vectorizer, X_unlabeled = build_data()
+		ids, X_train, y_train, vectorizer, X_predict = build_data()
 		if vectorizer and "most" in args:
-			most_weighted_features(classifier, X, y, vectorizer)
-		X = X.todense() if issparse(X) else X
-		X_unlabeled = X_unlabeled.todense() if issparse(X_unlabeled) else X_unlabeled
-		cross_validate(ids, classifier, X, y, "Demand")
+			most_weighted_features(classifier, X_train, y_train, vectorizer)
+		X_train = X_train.todense() if issparse(X_train) else X_train
+		X_predict = X_predict.todense() if issparse(X_predict) else X_predict
+		cross_validate(ids, classifier, X_train, y_train, "Demand")
 		if "vis" in args:
-			visualize_posts(X,y , X_unlabeled)
+			visualize_posts(X_train,y_train , X_predict)
 	print "=" * len(t)
 
 def run_product(classifier):

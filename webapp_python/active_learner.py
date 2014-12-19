@@ -6,10 +6,12 @@ from sklearn.linear_model import Perceptron
 import numpy as np
 import collections
 from collections import Counter
+from math import exp
 
 import sys
 sys.path.append("../scikit_python")
-import evaluation
+from evaluation import Classifiers
+from custom_features import build_demand_data
 
 class active_learner(object):
 	def __init__(self):
@@ -80,15 +82,11 @@ class active_learner(object):
 				if not (post.id in self.classification
 					and self.classification[post.id]['demand'])]
 
-		# Build vectorizer
-		vectorizer = TfidfVectorizer(sublinear_tf = True, max_df = 0.5, stop_words = 'english')
-		X_train   = vectorizer.fit_transform([post.data for post in labeled_posts])
-		X_predict = vectorizer.transform([post.data for post in unlabeled_posts])
-		Y_train = np.array([self.determine_class_from_conflicting_votes(post.id, 'demand') for post in labeled_posts])
+		_, X_train, y_train, _, X_predict = build_demand_data(False)
 
 		# Train the classifier
-		classifier = Perceptron(n_iter = 50)
-		classifier.fit(X_train, Y_train)
+		classifier = Classifiers.CLASSIFIERS[Classifiers.BERNOULLI_NB]
+		classifier.fit(X_train, y_train)
 		return classifier, X_predict, unlabeled_posts
 
 
@@ -97,7 +95,7 @@ class active_learner(object):
 			print "Choosing random posts"
 			return [Post.fromPost(post) for post in np.random.choice(self.posts, 5, False)]
 
-		print "Choosing uncertain posts"
+		print "Choosing " + type + " posts"
 
 		classifier, X_predict, unlabeled_posts = self.build_classifier()
 		# Old predictions, where we have a confidence
@@ -114,7 +112,14 @@ class active_learner(object):
 		else:
 			raise Exception("Unknown type requested, must be either 'certain' or 'uncertain'.")
 
-		return [Post.fromPost(unlabeled_posts[prediction.index], prediction=prediction) for prediction in confidence_predictions]
+		# print len(unlabeled_posts)
+
+		predicted_posts	 = []
+		for prediction in confidence_predictions:
+			# print prediction.index
+			predicted_posts.append(Post.fromPost(unlabeled_posts[prediction.index], prediction=prediction))
+
+		return predicted_posts
 
 	def determine_tagged_posts(self, tagger = None):
 		tagged_posts = [
@@ -163,7 +168,16 @@ class active_learner(object):
 		return predictions
 
 	def calculate_predictions_nb(self, classifier, X_predict):
-		predictions = [Prediction(predictedClass, 0.5, index) for index, predictedClass in enumerate(classifier.predict(X_predict))]
+		predictions = []
+		for index, x in enumerate(X_predict):
+			predictedClass = classifier.predict(x)
+			class_probs = map(lambda x: exp(x), classifier.predict_log_proba(x)[0])
+			if index == 4:
+				print class_probs
+				print max(class_probs)
+				print sum(class_probs)
+			prob = max(class_probs) / sum(class_probs)
+			predictions.append(Prediction(predictedClass, prob, index))
 		return predictions
 
 
