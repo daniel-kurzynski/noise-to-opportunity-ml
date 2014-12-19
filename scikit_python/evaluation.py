@@ -168,7 +168,7 @@ def visualize_posts(X,y,X_unlabeled):
 		plt.show()
 
 def run_demand(classifier):
-	t = "===== Demand Evalutation of %s =====" %classifier.__class__.__name__
+	t = "===== Demand Evaluation of %s =====" %classifier.__class__.__name__
 	print t
 	from bag_of_words    import build_demand_data as bow
 	from custom_features import build_demand_data as custom_features
@@ -190,7 +190,7 @@ def run_demand(classifier):
 	print "=" * len(t)
 
 def run_product(classifier):
-	t = "===== Product Evalutation of %s =====" %classifier.__class__.__name__
+	t = "===== Product Evaluation of %s =====" %classifier.__class__.__name__
 	print t
 	# from bag_of_words    import build_product_data as bow
 	from custom_features import build_product_data as custom_features
@@ -271,14 +271,7 @@ class VotingClassifier(BaseEstimator):
 
 		return y_predict
 
-if __name__ == "__main__":
-	args = sys.argv
-	if len(args) == 1:
-		print "Possible args: vis, fps, most"
-		print "Possible datasets: bow, custom"
-		print "Possible classifications: all, demand, product"
-		sys.exit(0)
-
+def get_classifiers():
 	classifiers = [
 		LogisticRegression(),
 		Perceptron(n_iter = 50),
@@ -289,6 +282,24 @@ if __name__ == "__main__":
 		LinearSVC(),
 		BernoulliNB(class_prior = [0.5, 0.5])]
 
+	average_classifier = VotingClassifier(classifiers[:])
+	classifiers.append(average_classifier)
+	return classifiers
+
+
+class Classifiers(object):
+	CLASSIFIERS = [
+		LogisticRegression(),
+		Perceptron(n_iter = 50),
+		MultinomialNB(),
+		DecisionTreeClassifier(),
+		SGDClassifier(),
+		RidgeClassifier(),
+		LinearSVC(),
+		BernoulliNB(class_prior = [0.5, 0.5])]
+	average_classifier = VotingClassifier(CLASSIFIERS[:])
+	CLASSIFIERS.append(average_classifier)
+
 	LOG_REGRESSION, \
 	PERCEPTRON, \
 	MULTI_NB, \
@@ -296,16 +307,21 @@ if __name__ == "__main__":
 	SGD, \
 	RIDGE, \
 	LIN_SVC, \
-	BERNOULLI_NB = range(len(classifiers))
+	BERNOULLI_NB, \
+	VOTING = range(len(CLASSIFIERS))
 
-	average_classifier = VotingClassifier(classifiers[:])
-	classifiers.append(average_classifier)
+if __name__ == "__main__":
+	args = sys.argv
+	if len(args) == 1:
+		print "Possible args: vis, fps, most"
+		print "Possible datasets: bow, custom"
+		print "Possible classifications: all, demand, product"
+		sys.exit(0)
 
-	classifier = classifiers[BERNOULLI_NB]
-
+	classifier = Classifiers.CLASSIFIERS[Classifiers.BERNOULLI_NB]
 
 	if "all" in args:
-		for cl in classifiers:
+		for cl in Classifiers.CLASSIFIERS:
 			if "demand" in args:
 				run_demand(cl)
 			if "product" in args:
