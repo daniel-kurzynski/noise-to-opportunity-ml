@@ -33,8 +33,8 @@ def build_demand_data(printFoo = True):
 
 def build_product_data(product_class):
 	print "=== Custom Feature Extractor ==="
-	_, X_train, y_train, _, _, _ = __build_data("n2o_data/features_%s.csv"%(product_class))
-	_, X_test, y_true, _, _, _ = __build_data("n2o_data/features_test_%s.csv"%(product_class))
+	_, X_train, y_train, _, _, _ = __build_data("n2o_data/features_%s.csv"%(product_class.lower()))
+	_, X_test, y_true, _, _, _ = __build_data("n2o_data/features_test_%s.csv"%(product_class.lower()))
 
 	return X_train, y_train, X_test, y_true
 

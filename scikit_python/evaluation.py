@@ -192,7 +192,7 @@ def run_demand(classifier):
 def run_product(classifier):
 	t = "===== Product Evaluation of %s =====" %classifier.__class__.__name__
 	print t
-	# from bag_of_words import build_product_data as bow
+	from bag_of_words import build_product_data as bow
 	from custom_features import build_product_data as custom_features
 
 	product_classes = [
@@ -203,12 +203,12 @@ def run_product(classifier):
 	]
 	for class_name in product_classes:
 		build_datas = []
-		# if "bow" in args:
-		# 	build_datas.append(bow)
+		if "bow" in args:
+			build_datas.append(bow)
 		if "custom" in args:
 			build_datas.append(custom_features)
 		for build_data in build_datas:
-			X_train, y_train, X_test, y_true = build_data(class_name.lower())
+			X_train, y_train, X_test, y_true = build_data(class_name)
 			validate(classifier, X_train, y_train, X_test, y_true, class_name)
 			# if "vis" in args:
 			# 	visualize_posts(X, y, X_unlabeled)
