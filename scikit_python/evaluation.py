@@ -209,7 +209,6 @@ def run_product(classifier):
 			build_datas.append(custom_features)
 		for build_data in build_datas:
 			X_train, y_train, X_test, y_true = build_data(class_name.lower())
-			X = X.todense() if issparse(X) else X
 			validate(classifier, X_train, y_train, X_test, y_true, class_name)
 			# if "vis" in args:
 			# 	visualize_posts(X, y, X_unlabeled)
