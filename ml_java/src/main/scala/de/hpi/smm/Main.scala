@@ -39,11 +39,11 @@ object Main {
 	)
 
 	def main(args: Array[String]): Unit = {
-		println("Demand Feature Extraction")
-		runDemandFeatureExtraction()
+		//println("Demand Feature Extraction")
+		//runDemandFeatureExtraction()
 
-//		println("Brochure Feature Extraction")
-//		runBrochureFeatureExtraction()
+    println("Brochure Feature Extraction")
+    runBrochureFeatureExtraction()
 	}
 
 	def runDemandFeatureExtraction(): Unit = {
@@ -95,7 +95,7 @@ object Main {
 			genericCounter = new GenericCountsCounter()
 			genericCounter.smoothing = true
 
-			val features = FeatureBuilder()
+			val trainFeatures = FeatureBuilder()
 				.needWords(genericCounter, clsName, (thresh1, thresh2))
 				.questionNumber()
 				.needNGrams()
@@ -104,8 +104,10 @@ object Main {
 				.questionWords()
 				.imperativeWords()
 
+
+      // extract train features
 			extractBrochuresLinewise { brochure =>
-				features.touch(brochure)
+				trainFeatures.touch(brochure)
 				countTypes(brochure)
 				countWords(brochure)
 			}()
@@ -113,13 +115,38 @@ object Main {
 			val writer = new CSVWriter(new FileWriter(new File(s"../n2o_data/features_${clsName.toLowerCase}.csv")),
 				CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER)
 
-			writer.writeNext(features.names)
-			features.buildFeatureVector { (post, instance) =>
+			writer.writeNext(trainFeatures.names)
+			trainFeatures.buildFeatureVector { (post, instance) =>
 				val outputLine = buildLine(post, instance, clsName)
 				writer.writeNext(outputLine)
 			}
 			writer.close()
 
+
+      // extract test features
+      val testFeatures = FeatureBuilder()
+        .needWords((genericCounter.takeTopOccurrence(clsName, thresh1).map(_._1) ++ genericCounter.takeTopNotOccurrence(clsName, thresh2).map(_._1)).toArray.distinct)
+        .questionNumber()
+        .needNGrams()
+        .containsEMail()
+        .addressTheReader()
+        .questionWords()
+        .imperativeWords()
+
+      extractPostsLinewise{ post =>
+        testFeatures.touch(post)
+      }("category")
+
+
+      val testWriter = new CSVWriter(new FileWriter(new File(s"../n2o_data/features_test_${clsName.toLowerCase}.csv")),
+        CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER)
+
+      testWriter.writeNext(testFeatures.names)
+      testFeatures.buildFeatureVector { (post, instance) =>
+        val outputLine = buildLine(post, instance, clsName)
+        testWriter.writeNext(outputLine)
+      }
+      testWriter.close()
 
 			println(s"=== $clsName ===")
 			genericCounter.takeTopOccurrence(clsName, thresh1).foreach(println)
@@ -129,7 +156,7 @@ object Main {
 
 	}
 
-	def extractPostsLinewise(extractor: Document => Unit)(count: Int = Int.MaxValue): Unit = {
+	def extractPostsLinewise(extractor: Document => Unit)(className: String = "demand", count: Int = Int.MaxValue): Unit = {
 		val reader = new CSVReader(new FileReader(postsFile))
 
 		var postCount: Int = 1
@@ -144,7 +171,7 @@ object Main {
 			val isClassifiedPost = classifiedPosts.contains(id)
 			if (FOR_ALL_POSTS || isClassifiedPost) {
 				val sentences = detectSentences(rawPost)
-				val post      = Document(id, title, text, sentences, rawPost.extractDemand())
+				val post      = Document(id, title, text, sentences, rawPost.extract(className))
 
 				postCount += 1
 				extractor(post)

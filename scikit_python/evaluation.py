@@ -28,7 +28,7 @@ all_posts = csv_reader.data
 def score(y_true, y_pred, score_function, label_index):
 	return score_function(y_true, y_pred, average=None)[label_index]
 
-def validate(base_classifier, X_train, y_train, X_test, y_true):
+def validate(base_classifier, X_train, y_train, X_test, y_true, class_name):
 	base_classifier.fit(X_train, y_train)
 	y_pred = base_classifier.predict(X_test)
 	labes = ["{:^7s}".format(s) for s in unique_labels(y_true, y_pred)]
@@ -192,7 +192,7 @@ def run_demand(classifier):
 def run_product(classifier):
 	t = "===== Product Evaluation of %s =====" %classifier.__class__.__name__
 	print t
-	# from bag_of_words    import build_product_data as bow
+	# from bag_of_words import build_product_data as bow
 	from custom_features import build_product_data as custom_features
 
 	product_classes = [
@@ -208,14 +208,11 @@ def run_product(classifier):
 		if "custom" in args:
 			build_datas.append(custom_features)
 		for build_data in build_datas:
-			ids, X, y, vectorizer, X_unlabeled = build_data(class_name.lower())
-			if vectorizer and "most" in args:
-				most_weighted_features(classifier, X, y, vectorizer)
+			X_train, y_train, X_test, y_true = build_data(class_name.lower())
 			X = X.todense() if issparse(X) else X
-			X_unlabeled = X_unlabeled.todense() if issparse(X_unlabeled) else X_unlabeled
-			cross_validate(ids, classifier, X, y, class_name)
-			if "vis" in args:
-				visualize_posts(X, y, X_unlabeled)
+			validate(classifier, X_train, y_train, X_test, y_true, class_name)
+			# if "vis" in args:
+			# 	visualize_posts(X, y, X_unlabeled)
 		print "=" * len(t)
 
 	return

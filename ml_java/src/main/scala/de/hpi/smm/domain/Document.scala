@@ -8,6 +8,8 @@ case class RawDocument(id: String,
 	def wholeText: String = s"$title $text"
 
 
+
+
 	def extractDemand(): String = {
 		extract("demand")
 	}

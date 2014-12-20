@@ -62,6 +62,11 @@ class FeatureBuilder {
 		addFeature(new NeedWordFeature(counts, clsName, thresholds))
 		this
 	}
+
+  def needWords(words: Array[String]): FeatureBuilder = {
+    addFeature(new NeedWordFeature(words))
+    this
+  }
 	/**
 	 * Captures common thank you notes at the end of a demand post
 	 */
