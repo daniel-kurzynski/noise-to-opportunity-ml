@@ -18,13 +18,15 @@ import org.w3c.dom.Document
 
 class AmazonCrawler {
 
-	def saveDescriptionsInFile(searches : List[AmazonDescriptionSearch]):Unit = {
-		val writer = new CSVWriter(new FileWriter(new File("../n2o_data/amazon/descriptions.csv")),
+	def saveDescriptionsInFile(searches : List[AmazonDescriptionSearch], startInndex: Int):Unit = {
+		val writer = new CSVWriter(new FileWriter(new File("../n2o_data/amazon/descriptions_original.csv")),
 			CSVWriter.DEFAULT_SEPARATOR, CSVWriter.DEFAULT_ESCAPE_CHARACTER)
 
+		var index = startInndex
 		searches.foreach((search: AmazonDescriptionSearch)=>{
 			search.search().foreach((result: Result)=>{
-				writer.writeNext(Array(result.title, result.description, search.productName))
+				writer.writeNext(Array( index.toString(), result.title, result.description, search.productName, 0.toString(), search.language))
+				index += 1
 			})
 		})
 
@@ -37,13 +39,13 @@ object AmazonCrawler{
 	def main(args: Array[String]): Unit = {
 		val amazonCrawler = new AmazonCrawler
 		val searches = List(
-			new AmazonDescriptionSearch(List(("sap hcm",2)),"Books","HCM", List("crm", "ecom", "lvm")),
-			new AmazonDescriptionSearch(List(("sap crm",2)),"Books","CRM", List("hcm", "ecom", "lvm")),
-			new AmazonDescriptionSearch(List(("ecommerce",2)),"Books","ECOM", List("hcm", "crm", "lvm")),
-			new AmazonDescriptionSearch(List(("landscape virtualization management",1)),"Books","LVM", List("hcm", "crm", "ecom"))
+			new AmazonDescriptionSearch(List(("sap hcm",2)),"Books","HCM", List("crm", "ecom", "lvm"), "en"),
+			new AmazonDescriptionSearch(List(("sap crm",2)),"Books","CRM", List("hcm", "ecom", "lvm"), "en"),
+			new AmazonDescriptionSearch(List(("ecommerce",2)),"Books","ECOM", List("hcm", "crm", "lvm"), "en"),
+			new AmazonDescriptionSearch(List(("landscape virtualization management",1)),"Books","LVM", List("hcm", "crm", "ecom"), "en")
 		)
 
-		amazonCrawler.saveDescriptionsInFile(searches);
+		amazonCrawler.saveDescriptionsInFile(searches, 100);
 
 	}
 }

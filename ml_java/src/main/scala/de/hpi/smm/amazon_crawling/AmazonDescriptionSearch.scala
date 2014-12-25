@@ -19,9 +19,18 @@ import org.w3c.dom.Document
 
 class Result(var description: String, var title: String)
 
-class AmazonDescriptionSearch(var searches: List[(String, Int)], var searchIndex: String, var productName: String, var filterWords: List[String]) {
+class AmazonDescriptionSearch(
+		var searches: List[(String, Int)],
+		var searchIndex: String,
+		var productName: String,
+		var filterWords: List[String],
+		var language: String) {
 
-	private val ENDPOINT = "ecs.amazonaws.com"
+	private var ENDPOINTS = Map(
+		"en"-> "ecs.amazonaws.com",
+		"de" -> "ecs.amazonaws.de"
+	)
+
 	private val KEY_FILE = "src/main/resources/keys.conf"
 
 	private val userAgent = "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36"
@@ -32,7 +41,7 @@ class AmazonDescriptionSearch(var searches: List[(String, Int)], var searchIndex
 	private val AWS_ACCESS_KEY_ID = p.getProperty("AWS_ACCESS_KEY_ID", "NO_KEY_THERE")
 
 	private def request(params: mutable.Map[String, String]): Document={
-		val requestHelper = SignedRequestsHelper.getInstance(ENDPOINT, AWS_ACCESS_KEY_ID, AWS_SECRET_KEY)
+		val requestHelper = SignedRequestsHelper.getInstance(ENDPOINTS(language), AWS_ACCESS_KEY_ID, AWS_SECRET_KEY)
 		val requestUrl = requestHelper.sign(params.asJava)
 		println(requestUrl)
 
