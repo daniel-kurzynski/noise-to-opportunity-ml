@@ -39,11 +39,11 @@ object Main {
 	)
 
 	def main(args: Array[String]): Unit = {
-		println("Demand Feature Extraction")
-		runDemandFeatureExtraction()
+//		println("Demand Feature Extraction")
+//		runDemandFeatureExtraction()
 
-//		println("Brochure Feature Extraction")
-//		runBrochureFeatureExtraction()
+		println("Brochure Feature Extraction")
+		runBrochureFeatureExtraction()
 	}
 
 	def runDemandFeatureExtraction(): Unit = {
@@ -138,7 +138,7 @@ object Main {
 			val id = line(0)
 			val title = line(1)
 			val text = line(2)
-
+			
 			val rawPost   = RawDocument(id, title, text, classifiedPosts.get(id).orNull)
 
 			val isClassifiedPost = classifiedPosts.contains(id)
@@ -154,7 +154,7 @@ object Main {
 		reader.close()
 	}
 
-	def extractBrochuresLinewise(extractor: Document => Unit)(count: Int = Int.MaxValue): Unit = {
+	def extractBrochuresLinewise(extractor: Document => Unit, onlyLanguage: String)(count: Int = Int.MaxValue): Unit = {
 		val reader = new CSVReader(new FileReader(brochuresFile))
 
 		var brochuresCount: Int = 1
@@ -163,13 +163,15 @@ object Main {
 			val id = line(0)
 			val text = line(1)
 			val classification = line(2)
-			val lang = line(4)
+			val language = line(4)
 
-			val rawPost = RawDocument(id, "", text, null, lang)
+			if(language.equals(onlyLanguage)){
+				val rawPost = RawDocument(id, "", text, null, language)
 
-			brochuresCount += 1
-			val sentences = detectSentences(rawPost)
-			extractor(Document(id, "", text, sentences, classification))
+				brochuresCount += 1
+				val sentences = detectSentences(rawPost)
+				extractor(Document(id, "", text, sentences, classification))
+			}
 			line = reader.readNext()
 		}
 		reader.close()
