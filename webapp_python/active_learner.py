@@ -1,15 +1,17 @@
 from os.path import join, abspath
 from post import Post, Prediction
 import simplejson as json
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.linear_model import Perceptron
 import numpy as np
 import collections
 from collections import Counter
+from math import exp
 
+import time
 import sys
 sys.path.append("../scikit_python")
-import evaluation
+from evaluation import Classifiers
+from custom_features import build_demand_data
+ids, X_train, y_train, _, predict_ids, X_predict = build_demand_data(False)
 
 class active_learner(object):
 	def __init__(self):
@@ -69,26 +71,33 @@ class active_learner(object):
 		return posts
 
 	def build_classifier(self):
-		labeled_posts  =  [post
-			for post in self.posts
-				if post.id in self.classification \
-					and self.determine_class_from_conflicting_votes(post.id, "demand") is not None
-					and self.determine_class_from_conflicting_votes(post.id, 'demand') != "no-idea"]
-
+		global X_predict, predict_ids
+		# TODO: Unlabeled posts is reavaluated on each access, while X_predict is only calculated once at
+		# startup for performance reasons. They should be kept in sync by removing the irrelevant entries
+		# from X_predict
 		unlabeled_posts = [post
 			for post in self.posts
 				if not (post.id in self.classification
 					and self.classification[post.id]['demand'])]
 
-		# Build vectorizer
-		vectorizer = TfidfVectorizer(sublinear_tf = True, max_df = 0.5, stop_words = 'english')
-		X_train   = vectorizer.fit_transform([post.data for post in labeled_posts])
-		X_predict = vectorizer.transform([post.data for post in unlabeled_posts])
-		Y_train = np.array([self.determine_class_from_conflicting_votes(post.id, 'demand') for post in labeled_posts])
+		relevant_ids = set(map(lambda x: x.id, unlabeled_posts))
+
+		# start = time.time()
+		new_X_predict = []
+		new_predict_ids = []
+		for index, x in enumerate(X_predict):
+			if predict_ids[index] in relevant_ids:
+				new_X_predict.append(x)
+				new_predict_ids.append(predict_ids[index])
+		X_predict = new_X_predict
+		predict_ids = new_predict_ids
+		# end = time.time()
+		# print end - start, " seconds"
 
 		# Train the classifier
-		classifier = Perceptron(n_iter = 50)
-		classifier.fit(X_train, Y_train)
+		classifier = Classifiers.CLASSIFIERS[Classifiers.BERNOULLI_NB]
+		print classifier.__class__.__name__
+		classifier.fit(X_train, y_train)
 		return classifier, X_predict, unlabeled_posts
 
 
@@ -97,9 +106,11 @@ class active_learner(object):
 			print "Choosing random posts"
 			return [Post.fromPost(post) for post in np.random.choice(self.posts, 5, False)]
 
-		print "Choosing uncertain posts"
+		print "Choosing " + type + " posts"
 
 		classifier, X_predict, unlabeled_posts = self.build_classifier()
+
+		assert(len(X_predict) == len(unlabeled_posts))
 		# Old predictions, where we have a confidence
 		# predictions = self.calculate_predictions(classifier, X_predict)
 		# As we are using BernoulliNB basically, we do not have prediction confidences anymore
@@ -114,7 +125,14 @@ class active_learner(object):
 		else:
 			raise Exception("Unknown type requested, must be either 'certain' or 'uncertain'.")
 
-		return [Post.fromPost(unlabeled_posts[prediction.index], prediction=prediction) for prediction in confidence_predictions]
+		# print len(unlabeled_posts)
+
+		predicted_posts	 = []
+		for prediction in confidence_predictions:
+			# print prediction.index
+			predicted_posts.append(Post.fromPost(unlabeled_posts[prediction.index], prediction=prediction))
+
+		return predicted_posts
 
 	def determine_tagged_posts(self, tagger = None):
 		tagged_posts = [
@@ -163,7 +181,16 @@ class active_learner(object):
 		return predictions
 
 	def calculate_predictions_nb(self, classifier, X_predict):
-		predictions = [Prediction(predictedClass, 0.5, index) for index, predictedClass in enumerate(classifier.predict(X_predict))]
+		predictions = []
+		for index, x in enumerate(X_predict):
+			predictedClass = classifier.predict(x)
+			class_probs = map(lambda x: exp(x), classifier.predict_log_proba(x)[0])
+			# if index == 4: # print some example values
+			# 	print class_probs
+			# 	print max(class_probs)
+			# 	print sum(class_probs)
+			prob = max(class_probs) / sum(class_probs)
+			predictions.append(Prediction(predictedClass, prob, index))
 		return predictions
 
 

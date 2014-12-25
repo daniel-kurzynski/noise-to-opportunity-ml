@@ -4,8 +4,24 @@ import de.hpi.smm.domain._
 
 import scala.collection.mutable
 
-class NeedWordFeature(counts: GenericCountsCounter, clsName: String, thresholds: (Double, Double)) extends Feature {
-	def name = determineRelevantWords()
+class NeedWordFeature(counts: GenericCountsCounter, clsName: String, thresholds: (Double, Double), words: Array[String]) extends Feature {
+  var standard = true
+
+  def name(): Array[String] = {
+    if(standard)
+      determineRelevantWords()
+    else
+      words
+  }
+
+  def this(words: Array[String]) = {
+    this(null, null, null, words)
+    standard = false
+  }
+
+  def this(counts: GenericCountsCounter, clsName: String, thresholds: (Double, Double)) = {
+    this(counts, clsName, thresholds, null)
+  }
 
 //	val relevantNeedWords = Array(
 //		"advice", "anyone", "appreciate", "appreciated", "contact", "curious", "expertise",
@@ -16,21 +32,33 @@ class NeedWordFeature(counts: GenericCountsCounter, clsName: String, thresholds:
 //		"you").reverse
 
 	private def determineRelevantWords(): Array[String] = {
+    if(standard)
       (counts.takeTopOccurrence(clsName, thresholds._1).map(_._1) ++
-        counts.takeTopNotOccurrence(clsName, thresholds._2).map(_._1)).toArray
+        counts.takeTopNotOccurrence(clsName, thresholds._2).map(_._1)).toArray.distinct
+    else
+      words
 	}
 
 	override def extract(): Switch = {
-		val relevantNeedWords = determineRelevantWords()
-
-		Switch(
-			Case(post => relevantNeedWords.map { word => post.textTokens.count(_.toLowerCase == word).toDouble },
-				"need-word-with-lowercase")
-			,
-			Case(post => relevantNeedWords.map { word => post.textTokens.count(_ == word).toDouble },
-				"need-word-without-lowercase")
-	)
-	}
+    if (standard){
+      val relevantNeedWords = determineRelevantWords()
+      Switch(
+        Case(post => relevantNeedWords.map { word => post.textTokens.count(_.toLowerCase == word).toDouble },
+          "need-word-with-lowercase")
+        ,
+        Case(post => relevantNeedWords.map { word => post.textTokens.count(_ == word).toDouble },
+          "need-word-without-lowercase")
+      )
+    } else {
+      Switch(
+        Case(post => words.map { word => if(post.wholeText.contains(word)) 1.0 else 0.0},
+          "need-word-with-lowercase")
+        ,
+        Case(post => words.map { word => if(post.wholeText.contains(word)) 1.0 else 0.0 },
+          "need-word-without-lowercase")
+      )
+    }
+  }
 }
 
 class NeedNGramsFeature() extends Feature {

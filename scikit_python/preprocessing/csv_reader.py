@@ -1,5 +1,12 @@
 import collections
 
+
+def _binarize_class(value, current_class):
+	if current_class in [None, value]:
+		return value
+	else:
+		return "no-%s" %current_class
+
 class Data(object):
 	def __init__(self, idx, title = "", text = "", classification = None):
 		self.id = idx
@@ -11,8 +18,9 @@ class Data(object):
 	def is_labeled(self):
 		return self.classification is not None
 
-	def get_class(self, key):
-		if isinstance(self.classification, str): return self.classification
+	def get_class(self, key, product_class = None):
+		if isinstance(self.classification, str):
+			return _binarize_class(self.classification, product_class)
 		votes = self.classification[key]
 		freqs = collections.Counter(votes.values()).most_common(2)
 		if len(freqs) > 1 and freqs[0][1] == freqs[1][1]:
@@ -20,7 +28,7 @@ class Data(object):
 			raise Exception("we have a conflict at doc %s: %s!" %(self.id, str(self.classification)))
 			return None
 		else:
-			return freqs[0][0]
+			return _binarize_class(freqs[0][0], product_class)
 
 
 class CSVReader(object):
@@ -51,7 +59,7 @@ class CSVReader(object):
 			lambda l, replacements: l.replace(replacements[0], replacements[1]),
 			CSVReader.replacements,
 			line)
-		idx, data, category, _ = line.split(",")
+		idx, data, category, _, lang = line.split(",")
 		return Data(idx, text = data.replace("<komma>", ","), classification = category)
 
 

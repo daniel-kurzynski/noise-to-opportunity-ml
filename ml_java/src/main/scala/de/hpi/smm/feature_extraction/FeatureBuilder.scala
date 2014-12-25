@@ -1,6 +1,6 @@
 package de.hpi.smm.feature_extraction
 
-import de.hpi.smm.domain.{GenericCountsCounter, DemandCountsCounter, Case, Document}
+import de.hpi.smm.domain.{GenericCountsCounter, Document}
 
 class FeatureBuilder {
 
@@ -62,6 +62,11 @@ class FeatureBuilder {
 		addFeature(new NeedWordFeature(counts, clsName, thresholds))
 		this
 	}
+
+  def needWords(words: Array[String]): FeatureBuilder = {
+    addFeature(new NeedWordFeature(words))
+    this
+  }
 	/**
 	 * Captures common thank you notes at the end of a demand post
 	 */

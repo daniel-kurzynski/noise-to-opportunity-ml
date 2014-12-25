@@ -32,29 +32,27 @@ def build_demand_data():
 	unlabeled_posts = get_unlabeled_posts("demand")
 	# Build vectorizer
 	vectorizer = TfidfVectorizer(sublinear_tf = True, max_df = 0.5, stop_words = 'english')
-	X   = vectorizer.fit_transform([post.data for post in labeled_posts])
-	y = np.array([post.get_class("demand") for post in labeled_posts])
-	X_unlabeled = vectorizer.transform([post.data for post in unlabeled_posts])
+	X_train   = vectorizer.fit_transform([post.data for post in labeled_posts])
+	y_train = np.array([post.get_class("demand") for post in labeled_posts])
+	X_predict = vectorizer.transform([post.data for post in unlabeled_posts])
 
-	return [], X, y, vectorizer, X_unlabeled
+	return [], X_train, y_train, vectorizer, None, X_predict
 
 
-def build_product_data():
+def build_product_data(product_class):
 	print "=== Bag of Words Extractor ==="
-	raise RuntimeError("Do not use me!")
 	csv_reader = CSVReader()
 	csv_reader.read("../n2o_data/brochures.csv", CSVReader.brochure_extractor)
 
 	vectorizer = TfidfVectorizer(sublinear_tf = True, max_df = 0.5, stop_words = 'english')
 	X_train   = vectorizer.fit_transform([brochure.data for brochure in csv_reader.data])
-	y_train = np.array([brochure.get_class("category") for brochure in csv_reader.data])
-
+	y_train = np.array([brochure.get_class("category", product_class) for brochure in csv_reader.data])
 	with open('../webapp_python/data/classification.json') as infile:
 		classification = json.JSONDecoder(object_pairs_hook=collections.OrderedDict).decode(infile.read())
 
-	labeled_posts = get_labeled_posts("category", "None")
+	labeled_posts = get_labeled_posts("category", "")
 
 	X_test   = vectorizer.transform([post.data for post in labeled_posts])
-	y_true = np.array([post.get_class("category") for post in labeled_posts])
-	categories = np.unique(y_train)
-	return X_train, y_train, X_test, y_true, categories
+	y_true = np.array([post.get_class("category", product_class) for post in labeled_posts])
+	# categories = np.unique(y_train)
+	return X_train, y_train, X_test, y_true

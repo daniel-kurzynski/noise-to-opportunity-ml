@@ -42,24 +42,24 @@ class GenericCountsCounter {
     }
   }
 
-  def takeTopOccurrence(class_name: String) : List[(String, mutable.Map[String, Int], Double, Double)] = {
+  def takeTopOccurrence(className: String): List[(String, mutable.Map[String, Int], Double, Double)] = {
 
-    calculateRatios(class_name).sortBy(-_._3)
+    calculateRatios(className).sortBy(-_._3)
   }
 
-  def takeTopOccurrence(class_name: String, threshold: Double) : List[(String, mutable.Map[String, Int], Double, Double)] = {
+  def takeTopOccurrence(className: String, threshold: Double): List[(String, mutable.Map[String, Int], Double, Double)] = {
 
-    takeTopOccurrence(class_name).takeWhile { t => t._3 > threshold }
+    takeTopOccurrence(className).takeWhile { t => t._3 > threshold }
   }
 
-  def takeTopNotOccurrence(class_name: String) : List[(String, mutable.Map[String, Int], Double, Double)] = {
+  def takeTopNotOccurrence(className: String): List[(String, mutable.Map[String, Int], Double, Double)] = {
 
-    calculateRatios(class_name).sortBy(-_._4)
+    calculateRatios(className).sortBy(-_._4)
   }
 
-  def takeTopNotOccurrence(class_name: String, threshold: Double) : List[(String, mutable.Map[String, Int], Double, Double)] = {
+  def takeTopNotOccurrence(className: String, threshold: Double): List[(String, mutable.Map[String, Int], Double, Double)] = {
 
-    takeTopNotOccurrence(class_name).takeWhile { t => t._4 > threshold }
+    takeTopNotOccurrence(className).takeWhile { t => t._4 > threshold }
   }
 
 }
