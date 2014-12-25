@@ -3,8 +3,9 @@ define(['jquery',
 	'backbone',
 	'views/demand_classification_view',
 	'views/overview_view',
-	'views/tagger_view'	
-	], function($, _, Backbone, DemandClassificationView, DemandView, TaggerView) {
+	'views/tagger_view'	,
+	'views/analyze_post_view'	
+	], function($, _, Backbone, DemandClassificationView, DemandView, TaggerView, AnalyzePostView) {
 
 
 	return Backbone.Router.extend({
@@ -22,7 +23,8 @@ define(['jquery',
 			"conflicted_posts(/)": "classifyConflictedPost",
 			"conflicted_posts/:id(/)": "classifyConflictedPost",
 			"demand": "displayDemandView",
-			"tagger": "displayTaggerView"
+			"tagger": "displayTaggerView",
+			"analyze_post(/)": "displayAnalyzePostView"
 		},
 
 		initialize: function(options){
@@ -82,6 +84,11 @@ define(['jquery',
 		displayDemandView: function(){
 			var demandView = new DemandView();
 			this.changeContentView(demandView);
+		},
+
+		displayAnalyzePostView: function(){
+			var analyzePostView = new AnalyzePostView();
+			this.changeContentView(analyzePostView);
 		},
 
 		changeContentView: function(view){
