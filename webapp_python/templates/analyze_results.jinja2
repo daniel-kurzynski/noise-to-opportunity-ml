@@ -1,0 +1,10 @@
+{
+	"results":[
+		{% for result in results %}
+				"{{ result }}"
+			{% if not loop.last %}
+				,
+			{% endif %}
+		{% endfor %}
+	]
+}

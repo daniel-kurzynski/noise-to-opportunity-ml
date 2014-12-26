@@ -58,6 +58,12 @@ def post(post_id):
 	posts = learner.post(post_id)
 	return render_template("posts.jinja2", posts = posts, json=json)
 
+@app.route("/analyze_post")
+def analyze_post():
+	post = request.args.get('post', None)
+	if post == None:
+		return render_template("analyze_results.jinja2", results = [])
+	return render_template("analyze_results.jinja2", results = [post])
 
 @app.route('/classify_post/<post_id>', methods=['POST'])
 def tag_post(post_id):

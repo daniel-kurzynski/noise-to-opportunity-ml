@@ -19,6 +19,7 @@ define([
 
 			initialize: function(options) {
 				this.render();
+				_.bindAll(this, "postChanged")
 				
 			},
 
@@ -27,12 +28,16 @@ define([
 			},
 
 			postChanged: function(event){
-				if(!event.currentTarget.value || event.currentTarget.value==""){
+				var self = this;
+				var post = this.$el.find("#post-text").val();
+				if(!post|| post==""){
 					this.$el.find("#results").html("");
 					return;
 				}
-				var results = [event.currentTarget.value]
-				this.$el.find("#results").html(this.resultTemplate({results:results}));
+				$.get("/analyze_post",{post:post}, function(data) {
+					results = JSON.parse(data).results;
+					self.$el.find("#results").html(self.resultTemplate({results:results}));
+				});
 			}
 
 	});
