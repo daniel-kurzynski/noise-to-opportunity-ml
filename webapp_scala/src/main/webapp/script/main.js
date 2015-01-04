@@ -1,6 +1,6 @@
 jQuery(function() {
 	var predictionTimer = function() {
-		jQuery.getJSON("/predictions", { text: "ABC" }, function(data) {
+		jQuery.getJSON("/predictions", { text: $("#blog-post").val() }, function(data) {
 			var $results = $("#results")
 			$results.empty();
 			console.log(data);

@@ -24,6 +24,6 @@ class N20Servlet extends N20DemoStack  with JacksonJsonSupport {
 	val r = new Random
 	get("/predictions") {
 		contentType = formats("json")
-		r.shuffle(DUMMIES)
+		Prediction(100, params("text")) :: r.shuffle(DUMMIES)
 	}
 }
