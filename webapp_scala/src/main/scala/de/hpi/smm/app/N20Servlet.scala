@@ -5,6 +5,8 @@ import scalate.ScalateSupport
 import org.json4s.{DefaultFormats, Formats}
 import org.scalatra.json._
 
+import scala.util.Random
+
 case class Prediction(percentage: Int, text: String)
 
 class N20Servlet extends N20DemoStack  with JacksonJsonSupport {
@@ -19,8 +21,9 @@ class N20Servlet extends N20DemoStack  with JacksonJsonSupport {
 		jade("template")
 	}
 
+	val r = new Random
 	get("/predictions") {
 		contentType = formats("json")
-		DUMMIES
+		r.shuffle(DUMMIES)
 	}
 }
