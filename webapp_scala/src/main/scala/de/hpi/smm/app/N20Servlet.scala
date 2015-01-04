@@ -6,6 +6,6 @@ import scalate.ScalateSupport
 class N20Servlet extends N20DemoStack {
 	get("/") {
 		contentType = "text/html"
-		jade("hello-scalate")
+		jade("template")
 	}
 }
