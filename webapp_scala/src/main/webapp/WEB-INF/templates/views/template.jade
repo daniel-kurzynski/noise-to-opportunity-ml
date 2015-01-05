@@ -1,0 +1,48 @@
+- attributes("title") = "N20"
+
+.page-header
+.container
+  .jumbotron
+    h1 Noise-To-Opportunity
+    h2 Upload a blog post, and let us recommend products!
+    form
+      textarea#blog-post.form-control(rows=6 placeholder="Enter blog post ..")
+    -#
+      p
+        a.btn.btn-primary.btn-lg(href="#" role="button")
+          | Learn more
+
+    div.alert.alert-dismissable.alert-success
+      button.close(type="button" data-dismiss="alert")
+        | ×
+      strong
+        | Good text!
+      | We could succesfully identify a demand and a product to recommend. Please look below.
+      -#
+        a.alert-link(href="#")
+          | this important alert message.
+    table#results.table.table-striped.large
+      tr
+        td
+          .result-percentage.label-primary 90 %
+        td
+          | Problems with your taxes? [TaxographyXYZ] might be the right thing for you!
+      tr
+        td
+          .result-percentage.label-primary 65 %
+        td
+          | Online Banking einfach selber machen mit [BankingXYZ].
+      tr
+        td
+          .result-percentage.label-primary 45 %
+        td
+          | Kostenlose  Kreditkarten mit [KreditKartXYZ]
+    -#
+      div.alert.alert-dismissable.alert-danger
+        button.close(type="button" data-dismiss="alert")
+          | ×
+        strong
+          | Oh snap!
+        a.alert-link(href="#")
+          | Change a few things up
+        | and try submitting again.

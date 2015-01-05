@@ -1,0 +1,16 @@
+textarea#blog-post {
+	/*width: 80%;*/
+	margin: 30px auto;
+	font-size: 1.5em;
+}
+
+table#results {
+	font-size: 1.6em;
+}
+
+div.result-percentage {
+	color: white;
+	height: 100%;
+	width: 100%;
+	text-align: center;
+}
