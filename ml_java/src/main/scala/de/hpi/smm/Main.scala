@@ -10,7 +10,7 @@ import de.hpi.smm.feature_extraction.FeatureExtractor
 
 object Main {
 
-	val FOR_ALL_POSTS = false
+	val FOR_ALL_POSTS = true
 
 	val classifiedPosts = JacksMapper.readValue[Map[String, Map[String, Map[String, String]]]](
 		new FileReader("../webapp_python/data/classification.json"))
@@ -23,8 +23,8 @@ object Main {
 		println("Demand Feature Extraction")
 		runDemandFeatureExtraction()
 
-		//println("Brochure Feature Extraction")
-		//runBrochureFeatureExtraction()
+//		println("Brochure Feature Extraction")
+//		runBrochureFeatureExtraction()
 	}
 
 	def runDemandFeatureExtraction(): Unit = {
@@ -43,6 +43,7 @@ object Main {
 		dataReader.readPostsLinewise { post =>
 			features.touch(post)
 		}()
+		features.finishTraining()
 
 		features.removeClassCounts("no-idea")
 
@@ -74,12 +75,7 @@ object Main {
 
 			val features = new FeatureExtractor(smoothing)
 				.needWords(clsName, (thresh1, thresh2))
-				.questionNumber()
 				.needNGrams()
-				.containsEMail()
-				.addressTheReader()
-				.questionWords()
-				.imperativeWords()
 
 
 			// extract train features
@@ -117,9 +113,9 @@ object Main {
 			testWriter.close()
 
 			println(s"=== $clsName ===")
-			features.takeTopOccurrence(clsName, thresh1).foreach(println)
+			features.takeTopOccurrence(clsName, thresh1).take(3).foreach(println)
 			println("======")
-			features.takeTopNotOccurrence(clsName, thresh2).foreach(println)
+			features.takeTopNotOccurrence(clsName, thresh2).take(3).foreach(println)
 		}
 
 	}

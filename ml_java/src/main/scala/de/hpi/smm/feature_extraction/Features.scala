@@ -19,14 +19,6 @@ class NeedWordFeature(counts: GenericCountsCounter, clsName: String, thresholds:
 		relevantNeedWordsStore = determineRelevantWords()
 	}
 
-	//	val relevantNeedWords = Array(
-	//		"advice", "anyone", "appreciate", "appreciated", "contact", "curious", "expertise",
-	//		"have", "informative", "interested",
-	//		"looking", "must", "need", "offer", "offering",
-	//		"perspective", "please", "require", "required",
-	//		"share", "sharing", "thank", "thanks", "urgent", "urgently",
-	//		"you").reverse
-
 	private def determineRelevantWords(): Array[String] = {
 		val result = (counts.takeTopOccurrence(clsName, thresholds._1).map(_._1) ++
 				counts.takeTopNotOccurrence(clsName, thresholds._2).map(_._1)).toArray.distinct
@@ -41,7 +33,7 @@ class NeedWordFeature(counts: GenericCountsCounter, clsName: String, thresholds:
 			"need-word-with-lowercase")
 			,
 			Case(post => relevantNeedWordsStore.map { word => post.textTokens.count(_ == word).toDouble},
-				"need-word-without-lowercase")
+			"need-word-without-lowercase")
 		)
 	}
 }

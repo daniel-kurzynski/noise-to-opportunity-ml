@@ -292,7 +292,7 @@ class Classifiers(object):
 		SGDClassifier(),
 		RidgeClassifier(),
 		LinearSVC(),
-		BernoulliNB(class_prior = [0.5, 0.5])]
+		BernoulliNB(class_prior = [0.1, 0.5])]
 	average_classifier = VotingClassifier(CLASSIFIERS[:])
 	CLASSIFIERS.append(average_classifier)
 
