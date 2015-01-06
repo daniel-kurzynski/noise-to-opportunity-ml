@@ -1,14 +1,9 @@
 package de.hpi.smm.app
 
-import java.io.{File, FileReader}
+import scala.util.Random
 
-import com.lambdaworks.jacks.JacksMapper
-import org.scalatra._
-import scalate.ScalateSupport
 import org.json4s.{DefaultFormats, Formats}
 import org.scalatra.json._
-
-import scala.util.Random
 
 case class Prediction(percentage: Int, text: String)
 
