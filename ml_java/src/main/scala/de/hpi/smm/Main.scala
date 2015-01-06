@@ -42,8 +42,8 @@ object Main {
 		//println("Demand Feature Extraction")
 		//runDemandFeatureExtraction()
 
-    println("Brochure Feature Extraction")
-    runBrochureFeatureExtraction()
+		println("Brochure Feature Extraction")
+		runBrochureFeatureExtraction()
 	}
 
 	def runDemandFeatureExtraction(): Unit = {
@@ -105,7 +105,7 @@ object Main {
 				.imperativeWords()
 
 
-      // extract train features
+			// extract train features
 			extractBrochuresLinewise { brochure =>
 				trainFeatures.touch(brochure)
 				countTypes(brochure)
@@ -123,30 +123,30 @@ object Main {
 			writer.close()
 
 
-      // extract test features
-      val testFeatures = FeatureBuilder()
-        .needWords((genericCounter.takeTopOccurrence(clsName, thresh1).map(_._1) ++ genericCounter.takeTopNotOccurrence(clsName, thresh2).map(_._1)).toArray.distinct)
-        .questionNumber()
-        .needNGrams()
-        .containsEMail()
-        .addressTheReader()
-        .questionWords()
-        .imperativeWords()
+			// extract test features
+			val testFeatures = FeatureBuilder()
+				.needWords((genericCounter.takeTopOccurrence(clsName, thresh1).map(_._1) ++ genericCounter.takeTopNotOccurrence(clsName, thresh2).map(_._1)).toArray.distinct)
+				.questionNumber()
+				.needNGrams()
+				.containsEMail()
+				.addressTheReader()
+				.questionWords()
+				.imperativeWords()
 
-      extractPostsLinewise{ post =>
-        testFeatures.touch(post)
-      }("category")
+			extractPostsLinewise { post =>
+				testFeatures.touch(post)
+			}("category")
 
 
-      val testWriter = new CSVWriter(new FileWriter(new File(s"../n2o_data/features_test_${clsName.toLowerCase}.csv")),
-        CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER)
+			val testWriter = new CSVWriter(new FileWriter(new File(s"../n2o_data/features_test_${clsName.toLowerCase}.csv")),
+				CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER)
 
-      testWriter.writeNext(testFeatures.names)
-      testFeatures.buildFeatureVector { (post, instance) =>
-        val outputLine = buildLine(post, instance, clsName)
-        testWriter.writeNext(outputLine)
-      }
-      testWriter.close()
+			testWriter.writeNext(testFeatures.names)
+			testFeatures.buildFeatureVector { (post, instance) =>
+				val outputLine = buildLine(post, instance, clsName)
+				testWriter.writeNext(outputLine)
+			}
+			testWriter.close()
 
 			println(s"=== $clsName ===")
 			genericCounter.takeTopOccurrence(clsName, thresh1).foreach(println)
@@ -165,13 +165,13 @@ object Main {
 			val id = line(0)
 			val title = line(1)
 			val text = line(2)
-			
-			val rawPost   = RawDocument(id, title, text, classifiedPosts.get(id).orNull)
+
+			val rawPost = RawDocument(id, title, text, classifiedPosts.get(id).orNull)
 
 			val isClassifiedPost = classifiedPosts.contains(id)
 			if (FOR_ALL_POSTS || isClassifiedPost) {
 				val sentences = detectSentences(rawPost)
-				val post      = Document(id, title, text, sentences, rawPost.extract(className))
+				val post = Document(id, title, text, sentences, rawPost.extract(className))
 
 				postCount += 1
 				extractor(post)
@@ -181,7 +181,7 @@ object Main {
 		reader.close()
 	}
 
-	def extractBrochuresLinewise(extractor: Document => Unit, onlyLanguage: String)(count: Int = Int.MaxValue): Unit = {
+	def extractBrochuresLinewise(extractor: Document => Unit, languages: List[String] = List("de", "en"))(count: Int = Int.MaxValue): Unit = {
 		val reader = new CSVReader(new FileReader(brochuresFile))
 
 		var brochuresCount: Int = 1
@@ -192,7 +192,7 @@ object Main {
 			val classification = line(2)
 			val language = line(4)
 
-			if(language.equals(onlyLanguage)){
+			if (languages.contains(language)) {
 				val rawPost = RawDocument(id, "", text, null, language)
 
 				brochuresCount += 1
@@ -206,7 +206,7 @@ object Main {
 
 	def detectSentences(rawPost: RawDocument): Seq[Seq[Word]] = {
 		val props = new util.Properties()
-//		props.put("annotators", "tokenize,ssplit,pos,lemma,ner")
+		//		props.put("annotators", "tokenize,ssplit,pos,lemma,ner")
 		props.put("annotators", "tokenize,ssplit,pos")
 		if (rawPost.lang == "de") {
 			//			println("Using german")
@@ -256,7 +256,7 @@ object Main {
 	}
 
 	private def countWords(doc: Document): Unit = {
-		doc.sentences.flatten.filter { word => !blacklist.exists(word.pos.startsWith) }.map(_.text).distinct.foreach { word =>
+		doc.sentences.flatten.filter { word => !blacklist.exists(word.pos.startsWith)}.map(_.text).distinct.foreach { word =>
 			if (!genericCounter.wordCounts.contains(word))
 				genericCounter.wordCounts(word) = new mutable.HashMap[String, Int]().withDefaultValue(0)
 			genericCounter.wordCounts(word)(doc.documentClass) += 1

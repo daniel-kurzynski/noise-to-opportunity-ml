@@ -15,12 +15,12 @@ class NeedWordFeature(counts: GenericCountsCounter, clsName: String, thresholds:
   }
 
   def this(words: Array[String]) = {
-    this(null, null, null, words)
-    standard = false
+	  this(null, null, null, words)
+	  standard = false
   }
 
   def this(counts: GenericCountsCounter, clsName: String, thresholds: (Double, Double)) = {
-    this(counts, clsName, thresholds, null)
+	  this(counts, clsName, thresholds, null)
   }
 
 //	val relevantNeedWords = Array(
@@ -32,11 +32,11 @@ class NeedWordFeature(counts: GenericCountsCounter, clsName: String, thresholds:
 //		"you").reverse
 
 	private def determineRelevantWords(): Array[String] = {
-    if(standard)
-      (counts.takeTopOccurrence(clsName, thresholds._1).map(_._1) ++
-        counts.takeTopNotOccurrence(clsName, thresholds._2).map(_._1)).toArray.distinct
-    else
-      words
+		if (standard)
+			(counts.takeTopOccurrence(clsName, thresholds._1).map(_._1) ++
+				counts.takeTopNotOccurrence(clsName, thresholds._2).map(_._1)).toArray.distinct
+		else
+			words
 	}
 
 	override def extract(): Switch = {
@@ -62,8 +62,9 @@ class NeedWordFeature(counts: GenericCountsCounter, clsName: String, thresholds:
 }
 
 class NeedNGramsFeature() extends Feature {
-//	override def name: Array[String] = relevantNGrams.map(_.mkString(" "))
+	//	override def name: Array[String] = relevantNGrams.map(_.mkString(" "))
 	override def name: Array[String] = Array("bigrams")
+
 	val relevantNGrams = Array(
 		Array("looking", "for"),
 		Array("you", "could"),
@@ -76,7 +77,7 @@ class NeedNGramsFeature() extends Feature {
 
 	override def extract(): Switch = {
 		Switch(
-      Case(post => {
+			Case(post => {
 				val min = relevantNGrams.map(_.size).min
 				val max = relevantNGrams.map(_.size).max
 
@@ -90,25 +91,25 @@ class NeedNGramsFeature() extends Feature {
 				}.sum)
 			}, "ngrams-one-feature"),
 			Case(post => {
-			val min = relevantNGrams.map(_.size).min
-			val max = relevantNGrams.map(_.size).max
+				val min = relevantNGrams.map(_.size).min
+				val max = relevantNGrams.map(_.size).max
 
-			(min to max).flatMap { windowSize =>
-				val currentNGrams = relevantNGrams.filter(_.size == windowSize)
-				val currentCounts = mutable.ListMap[Array[String], Double]()
-				currentNGrams.foreach { ngram =>
-					currentCounts(ngram) = 0
-				}
-				post.textTokens.sliding(windowSize).foreach { t =>
+				(min to max).flatMap { windowSize =>
+					val currentNGrams = relevantNGrams.filter(_.size == windowSize)
+					val currentCounts = mutable.ListMap[Array[String], Double]()
 					currentNGrams.foreach { ngram =>
-						if (t.seq.toArray.deep == ngram.deep)
-							currentCounts(ngram) += 1
+						currentCounts(ngram) = 0
 					}
-				}
-				val results = currentCounts.values.toArray
-				results
-			}.toArray
-		}, "ngrams-different-features")
+					post.textTokens.sliding(windowSize).foreach { t =>
+						currentNGrams.foreach { ngram =>
+							if (t.seq.toArray.deep == ngram.deep)
+								currentCounts(ngram) += 1
+						}
+					}
+					val results = currentCounts.values.toArray
+					results
+				}.toArray
+			}, "ngrams-different-features")
 		)
 	}
 
@@ -170,7 +171,8 @@ class ContainsEMailFeature extends Feature {
 
 	override def extract(): Switch = {
 		Switch(post => {
-			Array(post.text.count { character => character == '@' }.toDouble)
+			Array(post.text.count { character => character == '@'}.toDouble)
 		})
 	}
+
 }
