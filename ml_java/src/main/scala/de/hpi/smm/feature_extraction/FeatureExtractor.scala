@@ -2,7 +2,21 @@ package de.hpi.smm.feature_extraction
 
 import de.hpi.smm.domain.{GenericCountsCounter, Document}
 
-class FeatureBuilder {
+import scala.collection.mutable
+
+class FeatureExtractor(smooting: Boolean) {
+
+	val genericCounter = new GenericCountsCounter()
+	genericCounter.smoothing = smooting;
+
+	val blacklist = Array(
+		".", ",", ":", "-RRB-", "-LRB-", "$",
+		// english
+		"IN", "DT", "TO", "CC", "VBZ",
+		// german
+		"APP", "ART", "KO", "KO", "PP",
+		"PR", "PT", "TRUNC", "VA", "VM", "VV"
+	)
 
 	def names: Array[String] = {
 		val values = features.flatMap(_.name).toArray
@@ -13,36 +27,34 @@ class FeatureBuilder {
 		names
 	}
 
-
 	var posts = List[Document]()
 	var features: List[Feature] = List()
-
 
 	/**
 	 * Demand posts often contain more questions than normal posts,
 	 * especially many questions in a row sometimes
 	 */
-	def questionNumber(): FeatureBuilder = {
+	def questionNumber(): FeatureExtractor = {
 		addFeature(new QuestionNumberFeature())
 		this
 	}
 
-	def questionWords(): FeatureBuilder = {
+	def questionWords(): FeatureExtractor = {
 		addFeature(new QuestionWordsFeature())
 		this
 	}
 
-	def addressTheReader(): FeatureBuilder = {
+	def addressTheReader(): FeatureExtractor = {
 		addFeature(new AddressReaderFeature())
 		this
 	}
 
-	def needNGrams(): FeatureBuilder = {
+	def needNGrams(): FeatureExtractor = {
 		addFeature(new NeedNGramsFeature())
 		this
 	}
 
-	def containsEMail(): FeatureBuilder = {
+	def containsEMail(): FeatureExtractor = {
 		addFeature(new ContainsEMailFeature())
 		this
 	}
@@ -50,7 +62,7 @@ class FeatureBuilder {
 	/**
 	 * Demand posts often contain imperative clauses like "help me", "share your information"
 	 */
-	def imperativeWords(): FeatureBuilder = {
+	def imperativeWords(): FeatureExtractor = {
 		addFeature(new ImperativeNumberFeature())
 		this
 	}
@@ -58,19 +70,19 @@ class FeatureBuilder {
 	/**
 	 * Captures common need words like "required", "need" etc.
 	 */
-	def needWords(counts: GenericCountsCounter, clsName: String, thresholds: (Double, Double)): FeatureBuilder = {
+	def needWords(counts: GenericCountsCounter, clsName: String, thresholds: (Double, Double)): FeatureExtractor = {
 		addFeature(new NeedWordFeature(counts, clsName, thresholds))
 		this
 	}
 
-  def needWords(words: Array[String]): FeatureBuilder = {
+  def needWords(words: Array[String]): FeatureExtractor = {
     addFeature(new NeedWordFeature(words))
     this
   }
 	/**
 	 * Captures common thank you notes at the end of a demand post
 	 */
-	def thankYou(): FeatureBuilder = {
+	def thankYou(): FeatureExtractor = {
 		// TODO IMPLEMENT
 		this
 	}
@@ -78,7 +90,7 @@ class FeatureBuilder {
 	/**
 	 * Captures common endings like "share your experiences", "please share your results"
 	 */
-	def share(): FeatureBuilder = {
+	def share(): FeatureExtractor = {
 		// TODO IMPLEMENT
 		this
 	}
@@ -86,7 +98,7 @@ class FeatureBuilder {
 	/**
 	 * Captures the most common demand words from a BOW model
 	 */
-	def mostCommonWordsFromBOW(): FeatureBuilder = {
+	def mostCommonWordsFromBOW(): FeatureExtractor = {
 		// TODO IMPLEMENT
 		this
 	}
@@ -122,8 +134,20 @@ class FeatureBuilder {
 	def cross[X](x: Seq[Seq[X]], y: Seq[X]): Seq[Seq[X]] = {
 		for (xi <- x; yi <- y) yield xi :+ yi
 	}
+
+	private def countTypes(doc: Document): Unit = {
+		genericCounter.classCounts(doc.documentClass) += 1
+	}
+
+	private def countWords(doc: Document): Unit = {
+		doc.sentences.flatten.filter { word => !blacklist.exists(word.pos.startsWith)}.map(_.text).distinct.foreach { word =>
+			if (!genericCounter.wordCounts.contains(word))
+				genericCounter.wordCounts(word) = new mutable.HashMap[String, Int]().withDefaultValue(0)
+			genericCounter.wordCounts(word)(doc.documentClass) += 1
+		}
+	}
 }
 
-object FeatureBuilder {
-	def apply(): FeatureBuilder = new FeatureBuilder
+object FeatureExtractor(S) {
+	def apply(): FeatureExtractor = new FeatureExtractor
 }

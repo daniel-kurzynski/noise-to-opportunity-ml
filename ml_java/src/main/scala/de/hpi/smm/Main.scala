@@ -7,7 +7,7 @@ import au.com.bytecode.opencsv.{CSVWriter, CSVReader}
 import com.lambdaworks.jacks.JacksMapper
 import de.hpi.smm.data_reader.DataReader
 import de.hpi.smm.domain._
-import de.hpi.smm.feature_extraction.FeatureBuilder
+import de.hpi.smm.feature_extraction.FeatureExtractor
 import edu.stanford.nlp.ling.CoreAnnotations._
 import edu.stanford.nlp.pipeline.{Annotation, StanfordCoreNLP}
 import edu.stanford.nlp.util.CoreMap
@@ -28,19 +28,6 @@ object Main {
 
 	val dataReader = new DataReader(classifiedPosts, postsFile, brochuresFile, FOR_ALL_POSTS);
 
-	//	val demandCounts = new DemandCountsCounter()
-	//	var brochureCounts = new BrochuresCountsCounter()
-	var genericCounter = new GenericCountsCounter()
-
-	val blacklist = Array(
-		".", ",", ":", "-RRB-", "-LRB-", "$",
-		// english
-		"IN", "DT", "TO", "CC", "VBZ",
-		// german
-		"APP", "ART", "KO", "KO", "PP",
-		"PR", "PT", "TRUNC", "VA", "VM", "VV"
-	)
-
 	def main(args: Array[String]): Unit = {
 		//println("Demand Feature Extraction")
 		//runDemandFeatureExtraction()
@@ -52,7 +39,7 @@ object Main {
 	def runDemandFeatureExtraction(): Unit = {
 		genericCounter.smoothing = false
 
-		val features = FeatureBuilder()
+		val features = FeatureExtractor()
 			.needWords(genericCounter, "demand", (5.0, 2.0))
 			.questionNumber()
 			.needNGrams()
@@ -61,7 +48,7 @@ object Main {
 			.questionWords()
 			.imperativeWords()
 
-		dataReader.extractPostsLinewise { post =>
+		dataReader.readPostsLinewise { post =>
 			features.touch(post)
 			if (post.isClassified) {
 				countTypes(post)
@@ -98,7 +85,7 @@ object Main {
 			genericCounter = new GenericCountsCounter()
 			genericCounter.smoothing = true
 
-			val trainFeatures = FeatureBuilder()
+			val trainFeatures = FeatureExtractor()
 				.needWords(genericCounter, clsName, (thresh1, thresh2))
 				.questionNumber()
 				.needNGrams()
@@ -109,7 +96,7 @@ object Main {
 
 
 			// extract train features
-			dataReader.extractBrochuresLinewise { brochure =>
+			dataReader.readBrochuresLinewise { brochure =>
 				trainFeatures.touch(brochure)
 				countTypes(brochure)
 				countWords(brochure)
@@ -127,7 +114,7 @@ object Main {
 
 
 			// extract test features
-			val testFeatures = FeatureBuilder()
+			val testFeatures = FeatureExtractor()
 				.needWords((genericCounter.takeTopOccurrence(clsName, thresh1).map(_._1) ++ genericCounter.takeTopNotOccurrence(clsName, thresh2).map(_._1)).toArray.distinct)
 				.questionNumber()
 				.needNGrams()
@@ -136,7 +123,7 @@ object Main {
 				.questionWords()
 				.imperativeWords()
 
-			dataReader.extractPostsLinewise { post =>
+			dataReader.readPostsLinewise { post =>
 				testFeatures.touch(post)
 			}("category")
 
@@ -165,19 +152,6 @@ object Main {
 		line(line.size - 1) = if (List(currentClass, "no-idea", null).contains(post.documentClass)) post.documentClass else "no-" + currentClass
 		System.arraycopy(instance.map(_.toString), 0, line, 1, instance.size)
 		line
-	}
-
-
-	private def countTypes(doc: Document): Unit = {
-		genericCounter.classCounts(doc.documentClass) += 1
-	}
-
-	private def countWords(doc: Document): Unit = {
-		doc.sentences.flatten.filter { word => !blacklist.exists(word.pos.startsWith)}.map(_.text).distinct.foreach { word =>
-			if (!genericCounter.wordCounts.contains(word))
-				genericCounter.wordCounts(word) = new mutable.HashMap[String, Int]().withDefaultValue(0)
-			genericCounter.wordCounts(word)(doc.documentClass) += 1
-		}
 	}
 
 }

@@ -20,7 +20,7 @@ class DataReader(val classifiedPosts :Map[String, Map[String, Map[String, String
 									val brochuresFile :File,
 									val FOR_ALL_POSTS :Boolean) {
 
-	def extractBrochuresLinewise(extractor: Document => Unit, languages: List[String] = List("de", "en"))(count: Int = Int.MaxValue): Unit = {
+	def readBrochuresLinewise(extractor: Document => Unit, languages: List[String] = List("de", "en"))(count: Int = Int.MaxValue): Unit = {
 		val reader = new CSVReader(new FileReader(brochuresFile))
 
 		var brochuresCount: Int = 1
@@ -47,7 +47,7 @@ class DataReader(val classifiedPosts :Map[String, Map[String, Map[String, String
 		reader.close()
 	}
 
-	def extractPostsLinewise(extractor: Document => Unit)(className: String = "demand", count: Int = Int.MaxValue): Unit = {
+	def readPostsLinewise(extractor: Document => Unit)(className: String = "demand", count: Int = Int.MaxValue): Unit = {
 		val reader = new CSVReader(new FileReader(postsFile))
 
 		var postCount: Int = 1
