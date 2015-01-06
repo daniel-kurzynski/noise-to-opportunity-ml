@@ -19,7 +19,7 @@ import scala.collection.mutable
 
 object Main {
 
-	val FOR_ALL_POSTS = false
+	val FOR_ALL_POSTS = true
 
 	val classifiedPosts = JacksMapper.readValue[Map[String, Map[String, Map[String, String]]]](
 		new FileReader("../webapp_python/data/classification.json"))
@@ -42,11 +42,11 @@ object Main {
 	)
 
 	def main(args: Array[String]): Unit = {
-		//println("Demand Feature Extraction")
-		//runDemandFeatureExtraction()
+		println("Demand Feature Extraction")
+		runDemandFeatureExtraction()
 
-		println("Brochure Feature Extraction")
-		runBrochureFeatureExtraction()
+//		println("Brochure Feature Extraction")
+//		runBrochureFeatureExtraction()
 	}
 
 	def runDemandFeatureExtraction(): Unit = {
@@ -68,6 +68,8 @@ object Main {
 				countWords(post)
 			}
 		}()
+		features.finishTraining()
+
 
 		genericCounter.classCounts.remove("no-idea")
 
@@ -100,12 +102,7 @@ object Main {
 
 			val features = FeatureBuilder()
 				.needWords(genericCounter, clsName, (thresh1, thresh2))
-				.questionNumber()
 				.needNGrams()
-				.containsEMail()
-				.addressTheReader()
-				.questionWords()
-				.imperativeWords()
 
 
 			// extract train features
@@ -145,9 +142,9 @@ object Main {
 			testWriter.close()
 
 			println(s"=== $clsName ===")
-			genericCounter.takeTopOccurrence(clsName, thresh1).foreach(println)
+			genericCounter.takeTopOccurrence(clsName, thresh1).take(3).foreach(println)
 			println("======")
-			genericCounter.takeTopNotOccurrence(clsName, thresh2).foreach(println)
+			genericCounter.takeTopNotOccurrence(clsName, thresh2).take(3).foreach(println)
 		}
 
 	}

@@ -63,10 +63,6 @@ class FeatureBuilder {
 		this
 	}
 
-  def needWords(words: Array[String]): FeatureBuilder = {
-    addFeature(new NeedWordFeature(words))
-    this
-  }
 	/**
 	 * Captures common thank you notes at the end of a demand post
 	 */
@@ -97,19 +93,21 @@ class FeatureBuilder {
 	def touch(post: Document): Unit = {
 		posts ::= post
 		if (post.isClassified)
-			features.foreach { feature => feature.touch(post) }
+			features.foreach { feature => feature.touch(post)}
 	}
+
 	def finishTraining(): Unit = {
 		features.foreach(_.finishTraining())
 	}
+
 	def buildFeatureVector(vectorHandler: (Document, Array[Double]) => Unit): Unit = {
-//		val allCases = features.map { feature => feature.extract().cases }
-//
-//		val allCombinations = allCases.foldLeft(Seq(Seq[Case]())) { (feature, cases) =>
-//			cross(feature.toList, cases.toList)
-//		}
+		//		val allCases = features.map { feature => feature.extract().cases }
+		//
+		//		val allCombinations = allCases.foldLeft(Seq(Seq[Case]())) { (feature, cases) =>
+		//			cross(feature.toList, cases.toList)
+		//		}
 		posts.foreach { post =>
-			vectorHandler(post, features.map { feature => feature.extract().default(post) }.toArray.flatten)
+			vectorHandler(post, features.map { feature => feature.extract().default(post)}.toArray.flatten)
 		}
 	}
 
@@ -118,9 +116,9 @@ class FeatureBuilder {
 	}
 
 
-//	def cross[X](x: Seq[X], y: Seq[X]): Seq[Seq[X]] = {
-//		for (xi <- x; yi <- y) yield Vector(xi, yi)
-//	}
+	//	def cross[X](x: Seq[X], y: Seq[X]): Seq[Seq[X]] = {
+	//		for (xi <- x; yi <- y) yield Vector(xi, yi)
+	//	}
 
 	def cross[X](x: Seq[Seq[X]], y: Seq[X]): Seq[Seq[X]] = {
 		for (xi <- x; yi <- y) yield xi :+ yi
