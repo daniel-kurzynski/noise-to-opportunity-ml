@@ -25,8 +25,12 @@ class DataReader(val classifiedPosts :Map[String, Map[String, Map[String, String
 
 		var brochuresCount: Int = 1
 		var line: Array[String] = reader.readNext()
+		var lastID = "-1";
 		while (line != null && brochuresCount <= count) {
+			if(line.length<4)
+				println("!"+line(0)+", lastID: "+lastID)
 			val id = line(0)
+			lastID = id;
 			val text = line(1)
 			val classification = line(2)
 			val language = line(4)
