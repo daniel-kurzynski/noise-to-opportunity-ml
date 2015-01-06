@@ -76,30 +76,6 @@ class FeatureExtractor(smooting: Boolean) {
 	}
 
 	/**
-	 * Captures common thank you notes at the end of a demand post
-	 */
-	def thankYou(): FeatureExtractor = {
-		// TODO IMPLEMENT
-		this
-	}
-
-	/**
-	 * Captures common endings like "share your experiences", "please share your results"
-	 */
-	def share(): FeatureExtractor = {
-		// TODO IMPLEMENT
-		this
-	}
-
-	/**
-	 * Captures the most common demand words from a BOW model
-	 */
-	def mostCommonWordsFromBOW(): FeatureExtractor = {
-		// TODO IMPLEMENT
-		this
-	}
-
-	/**
 	 * Add a new posts to this feature builder, and store it for internal use.
 	 */
 	def touch(document: Document): Unit = {
