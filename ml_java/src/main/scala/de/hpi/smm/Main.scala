@@ -5,6 +5,7 @@ import java.util
 
 import au.com.bytecode.opencsv.{CSVWriter, CSVReader}
 import com.lambdaworks.jacks.JacksMapper
+import de.hpi.smm.data_reader.DataReader
 import de.hpi.smm.domain._
 import de.hpi.smm.feature_extraction.FeatureBuilder
 import edu.stanford.nlp.ling.CoreAnnotations._
@@ -24,6 +25,8 @@ object Main {
 		new FileReader("../webapp_python/data/classification.json"))
 	val postsFile = new File("../n2o_data/linked_in_posts.csv")
 	val brochuresFile = new File("../n2o_data/brochures.csv")
+
+	val dataReader = new DataReader(classifiedPosts, postsFile, brochuresFile, FOR_ALL_POSTS);
 
 	//	val demandCounts = new DemandCountsCounter()
 	//	var brochureCounts = new BrochuresCountsCounter()
@@ -58,7 +61,7 @@ object Main {
 			.questionWords()
 			.imperativeWords()
 
-		extractPostsLinewise { post =>
+		dataReader.extractPostsLinewise { post =>
 			features.touch(post)
 			if (post.isClassified) {
 				countTypes(post)
@@ -106,7 +109,7 @@ object Main {
 
 
 			// extract train features
-			extractBrochuresLinewise { brochure =>
+			dataReader.extractBrochuresLinewise { brochure =>
 				trainFeatures.touch(brochure)
 				countTypes(brochure)
 				countWords(brochure)
@@ -133,7 +136,7 @@ object Main {
 				.questionWords()
 				.imperativeWords()
 
-			extractPostsLinewise { post =>
+			dataReader.extractPostsLinewise { post =>
 				testFeatures.touch(post)
 			}("category")
 
@@ -154,92 +157,6 @@ object Main {
 			genericCounter.takeTopNotOccurrence(clsName, thresh2).foreach(println)
 		}
 
-	}
-
-	def extractPostsLinewise(extractor: Document => Unit)(className: String = "demand", count: Int = Int.MaxValue): Unit = {
-		val reader = new CSVReader(new FileReader(postsFile))
-
-		var postCount: Int = 1
-		var line: Array[String] = reader.readNext()
-		while (line != null && postCount <= count) {
-			val id = line(0)
-			val title = line(1)
-			val text = line(2)
-
-			val rawPost = RawDocument(id, title, text, classifiedPosts.get(id).orNull)
-
-			val isClassifiedPost = classifiedPosts.contains(id)
-			if (FOR_ALL_POSTS || isClassifiedPost) {
-				val sentences = detectSentences(rawPost)
-				val post = Document(id, title, text, sentences, rawPost.extract(className))
-
-				postCount += 1
-				extractor(post)
-			}
-			line = reader.readNext()
-		}
-		reader.close()
-	}
-
-	def extractBrochuresLinewise(extractor: Document => Unit, languages: List[String] = List("de", "en"))(count: Int = Int.MaxValue): Unit = {
-		val reader = new CSVReader(new FileReader(brochuresFile))
-
-		var brochuresCount: Int = 1
-		var line: Array[String] = reader.readNext()
-		while (line != null && brochuresCount <= count) {
-			val id = line(0)
-			val text = line(1)
-			val classification = line(2)
-			val language = line(4)
-
-			if (languages.contains(language)) {
-				val rawPost = RawDocument(id, "", text, null, language)
-
-				brochuresCount += 1
-				val sentences = detectSentences(rawPost)
-				extractor(Document(id, "", text, sentences, classification))
-			}
-			line = reader.readNext()
-		}
-		reader.close()
-	}
-
-	def detectSentences(rawPost: RawDocument): Seq[Seq[Word]] = {
-		val props = new util.Properties()
-		//		props.put("annotators", "tokenize,ssplit,pos,lemma,ner")
-		props.put("annotators", "tokenize,ssplit,pos")
-		if (rawPost.lang == "de") {
-			//			println("Using german")
-			props.put("pos.model", "../n2o_data/german-fast.tagger")
-		}
-		else if (rawPost.lang == "en" || rawPost.lang == null) Unit
-		else throw new RuntimeException("Unknown language.")
-
-		//		props.put("annotators", "tokenize,ssplit")
-
-		// shut down logging, initialize, start logging
-		RedwoodConfiguration.empty().capture(System.err).apply()
-		val pipeline = new StanfordCoreNLP(props)
-		RedwoodConfiguration.current().clear().apply()
-
-		val document = new Annotation(rawPost.wholeText)
-		pipeline.annotate(document)
-		val annotatedSentences: util.List[CoreMap] = document.get(classOf[SentencesAnnotation])
-
-		var sentences = Vector[Vector[Word]]()
-
-		annotatedSentences.asScala.foreach { sentence =>
-			var currentSentence = Vector[Word]()
-			sentence.get(classOf[TokensAnnotation]).asScala.foreach { token =>
-				val word = token.get(classOf[TextAnnotation])
-				val pos = token.get(classOf[PartOfSpeechAnnotation])
-				val ner = token.get(classOf[NamedEntityTagAnnotation])
-				currentSentence :+= Word(word, pos, ner)
-			}
-			sentences :+= currentSentence
-		}
-
-		sentences
 	}
 
 	private def buildLine(post: Document, instance: Array[Double], currentClass: String): Array[String] = {
