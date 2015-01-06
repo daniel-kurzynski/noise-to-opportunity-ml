@@ -1,21 +1,12 @@
 package de.hpi.smm
 
-import java.io.{FileWriter, FileReader, File}
-import java.util
+import java.io.{File, FileReader, FileWriter}
 
-import au.com.bytecode.opencsv.{CSVWriter, CSVReader}
+import au.com.bytecode.opencsv.CSVWriter
 import com.lambdaworks.jacks.JacksMapper
 import de.hpi.smm.data_reader.DataReader
 import de.hpi.smm.domain._
 import de.hpi.smm.feature_extraction.FeatureExtractor
-import edu.stanford.nlp.ling.CoreAnnotations._
-import edu.stanford.nlp.pipeline.{Annotation, StanfordCoreNLP}
-import edu.stanford.nlp.util.CoreMap
-import edu.stanford.nlp.util.logging.RedwoodConfiguration
-import scala.collection.JavaConverters._
-
-import scala.collection.mutable
-
 
 object Main {
 
@@ -29,18 +20,19 @@ object Main {
 	val dataReader = new DataReader(classifiedPosts, postsFile, brochuresFile, FOR_ALL_POSTS);
 
 	def main(args: Array[String]): Unit = {
-		//println("Demand Feature Extraction")
-		//runDemandFeatureExtraction()
+		println("Demand Feature Extraction")
+		runDemandFeatureExtraction()
 
-		println("Brochure Feature Extraction")
-		runBrochureFeatureExtraction()
+		//println("Brochure Feature Extraction")
+		//runBrochureFeatureExtraction()
 	}
 
 	def runDemandFeatureExtraction(): Unit = {
-		genericCounter.smoothing = false
 
-		val features = FeatureExtractor()
-			.needWords(genericCounter, "demand", (5.0, 2.0))
+		val smoothing = false;
+
+		val features = new FeatureExtractor(smoothing)
+			.needWords("demand", (5.0, 2.0))
 			.questionNumber()
 			.needNGrams()
 			.containsEMail()
@@ -50,13 +42,9 @@ object Main {
 
 		dataReader.readPostsLinewise { post =>
 			features.touch(post)
-			if (post.isClassified) {
-				countTypes(post)
-				countWords(post)
-			}
 		}()
 
-		genericCounter.classCounts.remove("no-idea")
+		features.removeClassCounts("no-idea")
 
 		val writer = new CSVWriter(new FileWriter(new File("../n2o_data/features.csv")),
 			CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER)
@@ -68,9 +56,9 @@ object Main {
 		}
 		writer.close()
 
-		genericCounter.takeTopOccurrence("demand").take(10).foreach(println)
+		features.takeTopOccurrence("demand").take(10).foreach(println)
 		println("----------------")
-		genericCounter.takeTopNotOccurrence("demand").take(10).foreach(println)
+		features.takeTopNotOccurrence("demand").take(10).foreach(println)
 	}
 
 	def runBrochureFeatureExtraction(): Unit = {
@@ -82,11 +70,10 @@ object Main {
 			("LVM", 3.0, 5.5)
 		).foreach { case (clsName, thresh1, thresh2) =>
 
-			genericCounter = new GenericCountsCounter()
-			genericCounter.smoothing = true
+			val smoothing = true;
 
-			val features = FeatureExtractor()
-				.needWords(genericCounter, clsName, (thresh1, thresh2))
+			val features = new FeatureExtractor(smoothing)
+				.needWords(clsName, (thresh1, thresh2))
 				.questionNumber()
 				.needNGrams()
 				.containsEMail()
@@ -98,8 +85,6 @@ object Main {
 			// extract train features
 			dataReader.readBrochuresLinewise { brochure =>
 				features.touch(brochure)
-				countTypes(brochure)
-				countWords(brochure)
 			}()
 
 			features.finishTraining()
@@ -114,7 +99,7 @@ object Main {
 			}
 			writer.close()
 
-			features.posts = List()
+			features.documents = List()
 
 			dataReader.readPostsLinewise { post =>
 				features.touch(post)
@@ -132,9 +117,9 @@ object Main {
 			testWriter.close()
 
 			println(s"=== $clsName ===")
-			genericCounter.takeTopOccurrence(clsName, thresh1).foreach(println)
+			features.takeTopOccurrence(clsName, thresh1).foreach(println)
 			println("======")
-			genericCounter.takeTopNotOccurrence(clsName, thresh2).foreach(println)
+			features.takeTopNotOccurrence(clsName, thresh2).foreach(println)
 		}
 
 	}

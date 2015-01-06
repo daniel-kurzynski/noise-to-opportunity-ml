@@ -70,11 +70,11 @@ class FeatureExtractor(smooting: Boolean) {
 	/**
 	 * Captures common need words like "required", "need" etc.
 	 */
-	def needWords(counts: GenericCountsCounter, clsName: String, thresholds: (Double, Double)): FeatureExtractor = {
-		addFeature(new NeedWordFeature(counts, clsName, thresholds))
+	def needWords(clsName: String, thresholds: (Double, Double)): FeatureExtractor = {
+		addFeature(new NeedWordFeature(genericCounter, clsName, thresholds))
 		this
 	}
-	
+
 	/**
 	 * Captures common thank you notes at the end of a demand post
 	 */
@@ -104,10 +104,11 @@ class FeatureExtractor(smooting: Boolean) {
 	 */
 	def touch(document: Document): Unit = {
 		documents ::= document
-		if (document.isClassified)
-			features.foreach { feature => feature.touch(document) }
-		countTypes(document)
-		countWords(document)
+		if (document.isClassified) {
+			features.foreach { feature => feature.touch(document)}
+			countTypes(document)
+			countWords(document)
+		}
 	}
 	def finishTraining(): Unit = {
 		features.foreach(_.finishTraining())
@@ -146,5 +147,25 @@ class FeatureExtractor(smooting: Boolean) {
 				genericCounter.wordCounts(word) = new mutable.HashMap[String, Int]().withDefaultValue(0)
 			genericCounter.wordCounts(word)(doc.documentClass) += 1
 		}
+	}
+
+	def removeClassCounts(className: String):Unit={
+		genericCounter.classCounts.remove(className)
+	}
+
+	def takeTopOccurrence(className: String): List[(String, mutable.Map[String, Int], Double, Double)] = {
+		genericCounter.takeTopOccurrence(className)
+	}
+
+	def takeTopOccurrence(className: String, threshold: Double): List[(String, mutable.Map[String, Int], Double, Double)] = {
+		genericCounter.takeTopOccurrence(className, threshold)
+	}
+
+	def takeTopNotOccurrence(className: String): List[(String, mutable.Map[String, Int], Double, Double)] = {
+		genericCounter.takeTopNotOccurrence(className)
+	}
+
+	def takeTopNotOccurrence(className: String, threshold: Double): List[(String, mutable.Map[String, Int], Double, Double)] = {
+		genericCounter.takeTopNotOccurrence(className, threshold)
 	}
 }
