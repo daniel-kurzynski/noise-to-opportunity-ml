@@ -85,7 +85,7 @@ object Main {
 			genericCounter = new GenericCountsCounter()
 			genericCounter.smoothing = true
 
-			val trainFeatures = FeatureExtractor()
+			val features = FeatureExtractor()
 				.needWords(genericCounter, clsName, (thresh1, thresh2))
 				.questionNumber()
 				.needNGrams()
@@ -97,42 +97,35 @@ object Main {
 
 			// extract train features
 			dataReader.readBrochuresLinewise { brochure =>
-				trainFeatures.touch(brochure)
+				features.touch(brochure)
 				countTypes(brochure)
 				countWords(brochure)
 			}()
 
+			features.finishTraining()
+
 			val writer = new CSVWriter(new FileWriter(new File(s"../n2o_data/features_${clsName.toLowerCase}.csv")),
 				CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER)
 
-			writer.writeNext(trainFeatures.names)
-			trainFeatures.buildFeatureVector { (post, instance) =>
+			writer.writeNext(features.names)
+			features.buildFeatureVector { (post, instance) =>
 				val outputLine = buildLine(post, instance, clsName)
 				writer.writeNext(outputLine)
 			}
 			writer.close()
 
-
-			// extract test features
-			val testFeatures = FeatureExtractor()
-				.needWords((genericCounter.takeTopOccurrence(clsName, thresh1).map(_._1) ++ genericCounter.takeTopNotOccurrence(clsName, thresh2).map(_._1)).toArray.distinct)
-				.questionNumber()
-				.needNGrams()
-				.containsEMail()
-				.addressTheReader()
-				.questionWords()
-				.imperativeWords()
+			features.posts = List()
 
 			dataReader.readPostsLinewise { post =>
-				testFeatures.touch(post)
+				features.touch(post)
 			}("category")
 
 
 			val testWriter = new CSVWriter(new FileWriter(new File(s"../n2o_data/features_test_${clsName.toLowerCase}.csv")),
 				CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER)
 
-			testWriter.writeNext(testFeatures.names)
-			testFeatures.buildFeatureVector { (post, instance) =>
+			testWriter.writeNext(features.names)
+			features.buildFeatureVector { (post, instance) =>
 				val outputLine = buildLine(post, instance, clsName)
 				testWriter.writeNext(outputLine)
 			}

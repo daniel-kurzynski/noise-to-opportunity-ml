@@ -22,4 +22,6 @@ abstract class Feature {
 	 * with that post.
 	 */
 	def touch(post: Document): Unit = {}
+
+	def finishTraining(): Unit = { }
 }

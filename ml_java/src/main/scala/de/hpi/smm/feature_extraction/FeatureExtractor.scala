@@ -27,7 +27,7 @@ class FeatureExtractor(smooting: Boolean) {
 		names
 	}
 
-	var posts = List[Document]()
+	var documents = List[Document]()
 	var features: List[Feature] = List()
 
 	/**
@@ -74,11 +74,7 @@ class FeatureExtractor(smooting: Boolean) {
 		addFeature(new NeedWordFeature(counts, clsName, thresholds))
 		this
 	}
-
-  def needWords(words: Array[String]): FeatureExtractor = {
-    addFeature(new NeedWordFeature(words))
-    this
-  }
+	
 	/**
 	 * Captures common thank you notes at the end of a demand post
 	 */
@@ -106,10 +102,15 @@ class FeatureExtractor(smooting: Boolean) {
 	/**
 	 * Add a new posts to this feature builder, and store it for internal use.
 	 */
-	def touch(post: Document): Unit = {
-		posts ::= post
-		if (post.isClassified)
-			features.foreach { feature => feature.touch(post) }
+	def touch(document: Document): Unit = {
+		documents ::= document
+		if (document.isClassified)
+			features.foreach { feature => feature.touch(document) }
+		countTypes(document)
+		countWords(document)
+	}
+	def finishTraining(): Unit = {
+		features.foreach(_.finishTraining())
 	}
 	def buildFeatureVector(vectorHandler: (Document, Array[Double]) => Unit): Unit = {
 //		val allCases = features.map { feature => feature.extract().cases }
@@ -117,7 +118,7 @@ class FeatureExtractor(smooting: Boolean) {
 //		val allCombinations = allCases.foldLeft(Seq(Seq[Case]())) { (feature, cases) =>
 //			cross(feature.toList, cases.toList)
 //		}
-		posts.foreach { post =>
+		documents.foreach { post =>
 			vectorHandler(post, features.map { feature => feature.extract().default(post) }.toArray.flatten)
 		}
 	}
@@ -146,8 +147,4 @@ class FeatureExtractor(smooting: Boolean) {
 			genericCounter.wordCounts(word)(doc.documentClass) += 1
 		}
 	}
-}
-
-object FeatureExtractor(S) {
-	def apply(): FeatureExtractor = new FeatureExtractor
 }
