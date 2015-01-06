@@ -12,15 +12,21 @@
         a.btn.btn-primary.btn-lg(href="#" role="button")
           | Learn more
 
-    div.alert.alert-dismissable.alert-success
-      button.close(type="button" data-dismiss="alert")
-        | ×
-      strong
-        | Good text!
-      | We could succesfully identify a demand and a product to recommend. Please look below.
-      -#
-        a.alert-link(href="#")
-          | this important alert message.
+    .row
+      div.col-xs-1
+      div#demand-classification.classification-box.col-xs-4
+        | DEMAND
+      div.col-xs-2
+      div#product-classification.classification-box.col-xs-4
+        | CRM
+      div.col-xs-1
+    -#
+      div.alert.alert-dismissable.alert-success
+        button.close(type="button" data-dismiss="alert")
+          | ×
+        strong
+          | Good text!
+        | We could succesfully identify a demand and a product to recommend. Please look below.
     table#results.table.table-striped.large
       tr
         td
