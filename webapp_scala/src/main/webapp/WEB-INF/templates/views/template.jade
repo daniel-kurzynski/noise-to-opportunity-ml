@@ -27,28 +27,34 @@
         strong
           | Good text!
         | We could succesfully identify a demand and a product to recommend. Please look below.
-    table#results.table.table-striped.large
-      tr
-        td
-          .result-percentage.label-primary 90 %
-        td
-          | Problems with your taxes? [TaxographyXYZ] might be the right thing for you!
-      tr
-        td
-          .result-percentage.label-primary 65 %
-        td
-          | Online Banking einfach selber machen mit [BankingXYZ].
-      tr
-        td
-          .result-percentage.label-primary 45 %
-        td
-          | Kostenlose  Kreditkarten mit [KreditKartXYZ]
-    -#
-      div.alert.alert-dismissable.alert-danger
-        button.close(type="button" data-dismiss="alert")
-          | ×
-        strong
-          | Oh snap!
-        a.alert-link(href="#")
-          | Change a few things up
-        | and try submitting again.
+
+    hr
+    a(data-toggle="collapse" href="#detailed-view" aria-expanded="false" aria-controls="collapseExample")
+      | See detailed numbers
+    div#detailed-view.collapse
+      .well
+        table#results.table.table-striped.large
+          tr
+            td
+              .result-percentage.label-primary 90 %
+            td
+              | Problems with your taxes? [TaxographyXYZ] might be the right thing for you!
+          tr
+            td
+              .result-percentage.label-primary 65 %
+            td
+              | Online Banking einfach selber machen mit [BankingXYZ].
+          tr
+            td
+              .result-percentage.label-primary 45 %
+            td
+              | Kostenlose  Kreditkarten mit [KreditKartXYZ]
+        -#
+          div.alert.alert-dismissable.alert-danger
+            button.close(type="button" data-dismiss="alert")
+              | ×
+            strong
+              | Oh snap!
+            a.alert-link(href="#")
+              | Change a few things up
+            | and try submitting again.
