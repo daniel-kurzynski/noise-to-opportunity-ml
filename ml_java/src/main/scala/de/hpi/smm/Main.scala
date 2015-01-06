@@ -10,7 +10,7 @@ import de.hpi.smm.feature_extraction.FeatureExtractor
 
 object Main {
 
-	val FOR_ALL_POSTS = true
+	val FOR_ALL_POSTS = false
 
 	val classifiedPosts = JacksMapper.readValue[Map[String, Map[String, Map[String, String]]]](
 		new FileReader("../webapp_python/data/classification.json"))
@@ -18,6 +18,8 @@ object Main {
 	val brochuresFile = new File("../n2o_data/brochures.csv")
 
 	val dataReader = new DataReader(classifiedPosts, postsFile, brochuresFile, FOR_ALL_POSTS);
+
+	val featureExtractorBuilder = new FeatureExtractorBuilder(dataReader)
 
 	def main(args: Array[String]): Unit = {
 		println("Demand Feature Extraction")
@@ -29,23 +31,7 @@ object Main {
 
 	def runDemandFeatureExtraction(): Unit = {
 
-		val smoothing = false;
-
-		val features = new FeatureExtractor(smoothing)
-			.needWords("demand", (5.0, 2.0))
-			.questionNumber()
-			.needNGrams()
-			.containsEMail()
-			.addressTheReader()
-			.questionWords()
-			.imperativeWords()
-
-		dataReader.readPostsLinewise { post =>
-			features.touch(post)
-		}()
-		features.finishTraining()
-
-		features.removeClassCounts("no-idea")
+		val features = featureExtractorBuilder.buildDemandFeautureExtractor()
 
 		val writer = new CSVWriter(new FileWriter(new File("../n2o_data/features.csv")),
 			CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER)
@@ -71,19 +57,7 @@ object Main {
 			("LVM", 3.0, 5.5)
 		).foreach { case (clsName, thresh1, thresh2) =>
 
-			val smoothing = true;
-
-			val features = new FeatureExtractor(smoothing)
-				.needWords(clsName, (thresh1, thresh2))
-				.needNGrams()
-
-
-			// extract train features
-			dataReader.readBrochuresLinewise { brochure =>
-				features.touch(brochure)
-			}()
-
-			features.finishTraining()
+			val features = featureExtractorBuilder.buildBroshuresFeatureExtractor(clsName, thresh1, thresh2)
 
 			val writer = new CSVWriter(new FileWriter(new File(s"../n2o_data/features_${clsName.toLowerCase}.csv")),
 				CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER)

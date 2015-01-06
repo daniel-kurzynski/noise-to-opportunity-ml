@@ -1,5 +1,8 @@
 package de.hpi.smm.app
 
+import java.io.{File, FileReader}
+
+import com.lambdaworks.jacks.JacksMapper
 import org.scalatra._
 import scalate.ScalateSupport
 import org.json4s.{DefaultFormats, Formats}
@@ -16,6 +19,7 @@ class N20Servlet extends N20DemoStack  with JacksonJsonSupport {
 		Prediction(65, "Online Banking einfach selber machen mit [BankingXYZ]."),
 		Prediction(45, "Kostenlose Kreditkarten mit [KreditKartXYZ]")
 	)
+
 	get("/") {
 		contentType = "text/html"
 		jade("template")
@@ -24,6 +28,7 @@ class N20Servlet extends N20DemoStack  with JacksonJsonSupport {
 	val r = new Random
 	get("/predictions") {
 		contentType = formats("json")
+
 		Prediction(100, params("text")) :: r.shuffle(DUMMIES)
 	}
 }
