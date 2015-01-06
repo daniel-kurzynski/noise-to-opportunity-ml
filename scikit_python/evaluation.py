@@ -17,7 +17,7 @@ from sklearn.base         import BaseEstimator
 from sklearn.linear_model import LogisticRegression, Perceptron
 import matplotlib.pyplot as plt
 import sys
-from os.path import join, abspath
+from os.path import join, abspath, dirname
 
 from preprocessing import CSVReader
 
@@ -167,6 +167,14 @@ def visualize_posts(X,y,X_unlabeled):
 
 		plt.show()
 
+def write_out_demand_posts(ids):
+	out_file_name = "demand_linked_in_posts.csv"
+	with open(join(dirname(dirname(__file__)), "n2o_data", "linked_in_posts.csv")) as fp:
+		with open(join(dirname(dirname(__file__)), "n2o_data", "demand_linked_in_posts.csv"), "w") as out:
+			for line in fp:
+				if line.split(",")[0][1:-1] in ids:
+					out.write(line)
+
 def run_demand(classifier):
 	t = "===== Demand Evaluation of %s =====" %classifier.__class__.__name__
 	print t
@@ -179,12 +187,17 @@ def run_demand(classifier):
 	if "custom" in args:
 		build_datas.append(custom_features)
 	for build_data in build_datas:
-		ids, X_train, y_train, vectorizer, _, X_predict = build_data()
+		ids, X_train, y_train, vectorizer, predict_ids, X_predict = build_data()
 		if vectorizer and "most" in args:
 			most_weighted_features(classifier, X_train, y_train, vectorizer)
 		X_train = X_train.todense() if issparse(X_train) else X_train
 		X_predict = X_predict.todense() if issparse(X_predict) else X_predict
-		cross_validate(ids, classifier, X_train, y_train, "Demand")
+		if "nocross" in args:
+			classifier.fit(X_train, y_train)
+			y_predict = classifier.predict(X_predict)
+			write_out_demand_posts(set([predict_ids[i] for i, cls in enumerate(y_predict) if cls == "demand"]))
+		else:
+			cross_validate(ids, classifier, X_train, y_train, "Demand")
 		if "vis" in args:
 			visualize_posts(X_train,y_train , X_predict)
 	print "=" * len(t)
@@ -267,22 +280,6 @@ class VotingClassifier(BaseEstimator):
 
 		return y_predict
 
-def get_classifiers():
-	classifiers = [
-		LogisticRegression(),
-		Perceptron(n_iter = 50),
-		MultinomialNB(),
-		DecisionTreeClassifier(),
-		SGDClassifier(),
-		RidgeClassifier(),
-		LinearSVC(),
-		BernoulliNB(class_prior = [0.5, 0.5])]
-
-	average_classifier = VotingClassifier(classifiers[:])
-	classifiers.append(average_classifier)
-	return classifiers
-
-
 class Classifiers(object):
 	CLASSIFIERS = [
 		LogisticRegression(),
@@ -312,6 +309,7 @@ if __name__ == "__main__":
 		print "Possible args: vis, fps, most"
 		print "Possible datasets: bow, custom"
 		print "Possible classifications: all, demand, product"
+		print "Disable cross validation for demand classifier: nocross"
 		sys.exit(0)
 
 	classifier = Classifiers.CLASSIFIERS[Classifiers.BERNOULLI_NB]
