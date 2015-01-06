@@ -14,3 +14,9 @@ div.result-percentage {
 	width: 100%;
 	text-align: center;
 }
+
+div.classification-box {
+	height: 48px;
+	line-height: 48px;
+	text-align: center;
+}
