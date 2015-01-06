@@ -2,7 +2,6 @@ package de.hpi.smm.app
 
 import java.io.{File, FileReader}
 
-import com.lambdaworks.jacks.JacksMapper
 import org.scalatra._
 import scalate.ScalateSupport
 import org.json4s.{DefaultFormats, Formats}
