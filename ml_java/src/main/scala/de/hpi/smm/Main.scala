@@ -32,15 +32,18 @@ object Main {
 	def runDemandFeatureExtraction(): Unit = {
 
 		val features = featureExtractorBuilder.buildDemandFeautureExtractor()
+		val posts = featureExtractorBuilder.posts
 
 		val writer = new CSVWriter(new FileWriter(new File("../n2o_data/features.csv")),
 			CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER)
 
 		writer.writeNext(features.names)
-		features.buildFeatureVector { (post, instance) =>
+
+		features.buildFeatureVectors(posts, { (post, instance) =>
 			val outputLine = buildLine(post, instance, "demand")
 			writer.writeNext(outputLine)
-		}
+		})
+
 		writer.close()
 
 		features.takeTopOccurrence("demand").take(10).foreach(println)
@@ -58,32 +61,30 @@ object Main {
 		).foreach { case (clsName, thresh1, thresh2) =>
 
 			val features = featureExtractorBuilder.buildBroshuresFeatureExtractor(clsName, thresh1, thresh2)
+			val posts = featureExtractorBuilder.posts
+			val broshures = featureExtractorBuilder.broshures
+			val postForCategory = featureExtractorBuilder.postForCategory
 
 			val writer = new CSVWriter(new FileWriter(new File(s"../n2o_data/features_${clsName.toLowerCase}.csv")),
 				CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER)
 
 			writer.writeNext(features.names)
-			features.buildFeatureVector { (post, instance) =>
+			features.buildFeatureVectors(broshures, { (post, instance) =>
 				val outputLine = buildLine(post, instance, clsName)
 				writer.writeNext(outputLine)
-			}
+			})
 			writer.close()
-
-			features.documents = List()
-
-			dataReader.readPostsLinewise { post =>
-				features.touch(post)
-			}("category")
 
 
 			val testWriter = new CSVWriter(new FileWriter(new File(s"../n2o_data/features_test_${clsName.toLowerCase}.csv")),
 				CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER)
 
 			testWriter.writeNext(features.names)
-			features.buildFeatureVector { (post, instance) =>
+			features.buildFeatureVectors (postForCategory, { (post, instance) =>
 				val outputLine = buildLine(post, instance, clsName)
 				testWriter.writeNext(outputLine)
-			}
+			})
+
 			testWriter.close()
 
 			println(s"=== $clsName ===")

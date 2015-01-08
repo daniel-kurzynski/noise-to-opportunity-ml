@@ -1,12 +1,31 @@
 package de.hpi.smm
 
 import de.hpi.smm.data_reader.DataReader
+import de.hpi.smm.domain.Document
 import de.hpi.smm.feature_extraction.FeatureExtractor
 
 /**
  * Created by Daniel on 06.01.2015.
  */
 class FeatureExtractorBuilder(val dataReader: DataReader) {
+
+	var posts = List[Document]()
+	var postForCategory = List[Document]()
+	var broshures = List[Document]()
+
+	dataReader.readPostsLinewise { post =>
+		posts ::= post
+	}()
+
+	dataReader.readPostsLinewise { post =>
+		postForCategory ::= post
+	}("category")
+
+	dataReader.readBrochuresLinewise { broshure =>
+		broshures ::= broshure
+	}()
+
+
 
 	def buildDemandFeautureExtractor():FeatureExtractor={
 
@@ -21,9 +40,10 @@ class FeatureExtractorBuilder(val dataReader: DataReader) {
 			.questionWords()
 			.imperativeWords()
 
-		dataReader.readPostsLinewise { post =>
+		posts.foreach { post =>
 			features.touch(post)
-		}()
+		}
+
 		features.finishTraining()
 
 		features.removeClassCounts("no-idea")
@@ -38,11 +58,9 @@ class FeatureExtractorBuilder(val dataReader: DataReader) {
 			.needWords(clsName, (thresh1, thresh2))
 			.needNGrams()
 
-
-		// extract train features
-		dataReader.readBrochuresLinewise { brochure =>
+		broshures.foreach { brochure =>
 			features.touch(brochure)
-		}()
+		}
 
 		features.finishTraining()
 

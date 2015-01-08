@@ -6,8 +6,11 @@ import scala.collection.mutable
 
 class FeatureExtractor(smooting: Boolean) {
 
+	var finished = false
+	
 	val genericCounter = new GenericCountsCounter()
-	genericCounter.smoothing = smooting;
+	genericCounter.smoothing = smooting
+
 
 	val blacklist = Array(
 		".", ",", ":", "-RRB-", "-LRB-", "$",
@@ -27,7 +30,6 @@ class FeatureExtractor(smooting: Boolean) {
 		names
 	}
 
-	var documents = List[Document]()
 	var features: List[Feature] = List()
 
 	/**
@@ -79,7 +81,9 @@ class FeatureExtractor(smooting: Boolean) {
 	 * Add a new posts to this feature builder, and store it for internal use.
 	 */
 	def touch(document: Document): Unit = {
-		documents ::= document
+		if(finished)
+			throw new Exception("Touch not possible - Learning already finished")
+
 		if (document.isClassified) {
 			features.foreach { feature => feature.touch(document)}
 			countTypes(document)
@@ -87,17 +91,17 @@ class FeatureExtractor(smooting: Boolean) {
 		}
 	}
 	def finishTraining(): Unit = {
+		finished = true
 		features.foreach(_.finishTraining())
 	}
-	def buildFeatureVector(vectorHandler: (Document, Array[Double]) => Unit): Unit = {
-//		val allCases = features.map { feature => feature.extract().cases }
-//
-//		val allCombinations = allCases.foldLeft(Seq(Seq[Case]())) { (feature, cases) =>
-//			cross(feature.toList, cases.toList)
-//		}
-		documents.foreach { post =>
-			vectorHandler(post, features.map { feature => feature.extract().default(post) }.toArray.flatten)
+	def buildFeatureVectors(documents: List[Document], vectorHandler: (Document, Array[Double]) => Unit): Unit = {
+		documents.foreach { document =>
+			buildFeatureVector(document, vectorHandler)
 		}
+	}
+
+	def buildFeatureVector(document: Document, vectorHandler: (Document, Array[Double]) => Unit): Unit = {
+		vectorHandler(document, features.map { feature => feature.extract().default(document) }.toArray.flatten)
 	}
 
 	private def addFeature(feature: Feature): Unit = {
