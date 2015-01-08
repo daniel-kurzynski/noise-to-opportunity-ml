@@ -35,8 +35,9 @@ object Main {
 
 	def runClassifiyPost(){
 		val post = "This is a Test"
-		val postClassifier = new PostClassifier()
+		val postClassifier = new PostClassifier(featureExtractorBuilder)
 		postClassifier.classifyDemand(post)
+
 	}
 
 	def runDemandFeatureExtraction(): Unit = {
