@@ -4,6 +4,7 @@ import java.io.{File, FileReader, FileWriter}
 
 import au.com.bytecode.opencsv.CSVWriter
 import com.lambdaworks.jacks.JacksMapper
+import de.hpi.smm.classification.PostClassifier
 import de.hpi.smm.data_reader.DataReader
 import de.hpi.smm.domain._
 import de.hpi.smm.feature_extraction.FeatureExtractor
@@ -22,11 +23,20 @@ object Main {
 	val featureExtractorBuilder = new FeatureExtractorBuilder(dataReader)
 
 	def main(args: Array[String]): Unit = {
-		println("Demand Feature Extraction")
-		runDemandFeatureExtraction()
+//		println("Demand Feature Extraction")
+//		runDemandFeatureExtraction()
 
 //		println("Brochure Feature Extraction")
 //		runBrochureFeatureExtraction()
+
+		println("Classify Post")
+		runClassifiyPost()
+	}
+
+	def runClassifiyPost(){
+		val post = "This is a Test"
+		val postClassifier = new PostClassifier()
+		postClassifier.classifyDemand(post)
 	}
 
 	def runDemandFeatureExtraction(): Unit = {

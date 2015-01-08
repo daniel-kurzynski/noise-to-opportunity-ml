@@ -1,7 +1,9 @@
-package de.hpi.smm.app
+package de.hpi.smm.classification
 
-import java.io.{File, FileReader}
 import java.util
+import java.io.{File, FileReader}
+
+import scala.util.Random
 
 import com.lambdaworks.jacks.JacksMapper
 import de.hpi.smm.FeatureExtractorBuilder
@@ -9,9 +11,7 @@ import de.hpi.smm.data_reader.DataReader
 import de.hpi.smm.domain.Document
 import de.hpi.smm.feature_extraction.FeatureExtractor
 import weka.classifiers.bayes.NaiveBayes
-import weka.core.{FastVector, DenseInstance, Instances, Attribute}
-
-import scala.util.Random
+import weka.core.{Attribute, DenseInstance, Instances}
 
 case class Classification(cls: String, prob: Double)
 
@@ -35,23 +35,21 @@ class PostClassifier {
 
 	private def buildClassifier(className: String, documents: List[Document], featureExtractor: FeatureExtractor): NaiveBayes  = {
 
-		val attributes = new FastVector()
-		//val idAttribure = new Attribute("id", ids(documents))
+		val attributes = new util.ArrayList[Attribute]()
 
-		val classNamesVector = new FastVector()
-		classNamesVector.addElement(className)
-		classNamesVector.addElement("no-"+className)
+		val classNamesVector = new util.ArrayList[String]()
+		classNamesVector.add(className)
+		classNamesVector.add("no-"+className)
 
 		val classAttribute = new Attribute("@@class@@", classNamesVector)
 
-		//attributes.addElement(idAttribure)
 
 		for(feautureName<-featureExtractor.names) {
 			if(feautureName!="CLASS" && feautureName!="id"){
-				attributes.addElement(new Attribute(feautureName))
+				attributes.add(new Attribute(feautureName))
 			}
 		}
-		attributes.addElement(classAttribute)
+		attributes.add(classAttribute)
 
 		val instances = new Instances(className, attributes,0);
 		instances.setClassIndex(classAttribute.index());
@@ -72,7 +70,7 @@ class PostClassifier {
 			}
 			val instance = new DenseInstance(1.0,values)
 			instances.add(instance)
-			}
+		}
 		});
 
 		val classifier = new NaiveBayes()
@@ -80,24 +78,6 @@ class PostClassifier {
 
 		classifier
 	}
-
-	private def ids(documents: List[Document]):FastVector={
-
-		val idLists = documents.collect{ case document: Document =>
-			document.id
-		}
-
-		val idSet = idLists.toSet
-
-		val ids = new FastVector()
-
-		idSet.foreach { id =>
-			ids.addElement(id)
-		}
-		ids
-	}
-
-
 
 	val r = new Random
 	def classifyDemand(text: String): Classification = {
