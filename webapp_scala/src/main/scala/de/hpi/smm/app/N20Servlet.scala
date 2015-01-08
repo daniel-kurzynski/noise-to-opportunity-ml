@@ -22,8 +22,15 @@ class N20Servlet extends N20DemoStack  with JacksonJsonSupport {
 
 	val r = new Random
 	get("/predictions") {
+		val pc = new PostClassifier
+		val text = params("text")
+		val demandClassification  = pc.classifyDemand(text)
+		val productClassification = pc.classifyProduct(text)
 		contentType = formats("json")
-
-		Prediction(100, params("text")) :: r.shuffle(DUMMIES)
+//		val before = Prediction(100, ) :: r.shuffle(DUMMIES)
+		Map(
+			"demand" -> demandClassification,
+			"product" -> productClassification
+		)
 	}
 }

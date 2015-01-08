@@ -14,3 +14,18 @@ div.result-percentage {
 	width: 100%;
 	text-align: center;
 }
+
+div.classification-box {
+	height: 48px;
+	line-height: 48px;
+	text-align: center;
+	color: white;
+	font-size: 1.2em;
+	font-weight: bold;
+	border: 2px solid black;
+}
+
+.product-category-label {
+	width: 100px;
+
+}

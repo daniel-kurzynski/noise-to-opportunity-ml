@@ -109,7 +109,7 @@ class PostClassifier {
 	 */
 	def classifyProduct(text: String): List[Classification] = {
 		List(
-			Classification("HCM" , 0.8),
+			Classification("HCM" , r.nextDouble()),
 			Classification("ECOM", 0.6),
 			Classification("CRM" , 0.4),
 			Classification("LVM" , 0.2)

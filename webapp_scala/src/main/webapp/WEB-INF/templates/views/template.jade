@@ -12,37 +12,49 @@
         a.btn.btn-primary.btn-lg(href="#" role="button")
           | Learn more
 
-    div.alert.alert-dismissable.alert-success
-      button.close(type="button" data-dismiss="alert")
-        | ×
-      strong
-        | Good text!
-      | We could succesfully identify a demand and a product to recommend. Please look below.
-      -#
-        a.alert-link(href="#")
-          | this important alert message.
-    table#results.table.table-striped.large
-      tr
-        td
-          .result-percentage.label-primary 90 %
-        td
-          | Problems with your taxes? [TaxographyXYZ] might be the right thing for you!
-      tr
-        td
-          .result-percentage.label-primary 65 %
-        td
-          | Online Banking einfach selber machen mit [BankingXYZ].
-      tr
-        td
-          .result-percentage.label-primary 45 %
-        td
-          | Kostenlose  Kreditkarten mit [KreditKartXYZ]
+    .row
+      div.col-xs-1
+      div#demand-classification.classification-box.col-xs-4
+        | DEMAND
+      div.col-xs-2
+      div#product-classification.classification-box.col-xs-4
+        | CRM
+      div.col-xs-1
     -#
-      div.alert.alert-dismissable.alert-danger
+      div.alert.alert-dismissable.alert-success
         button.close(type="button" data-dismiss="alert")
           | ×
         strong
-          | Oh snap!
-        a.alert-link(href="#")
-          | Change a few things up
-        | and try submitting again.
+          | Good text!
+        | We could succesfully identify a demand and a product to recommend. Please look below.
+
+    hr
+    a(data-toggle="collapse" href="#detailed-view" aria-expanded="false" aria-controls="collapseExample")
+      | See detailed numbers
+    div#detailed-view.collapse
+      .well
+        table#results.table.table-striped.large
+          tr
+            td
+              .result-percentage.label-primary 90 %
+            td
+              | Problems with your taxes? [TaxographyXYZ] might be the right thing for you!
+          tr
+            td
+              .result-percentage.label-primary 65 %
+            td
+              | Online Banking einfach selber machen mit [BankingXYZ].
+          tr
+            td
+              .result-percentage.label-primary 45 %
+            td
+              | Kostenlose  Kreditkarten mit [KreditKartXYZ]
+        -#
+          div.alert.alert-dismissable.alert-danger
+            button.close(type="button" data-dismiss="alert")
+              | ×
+            strong
+              | Oh snap!
+            a.alert-link(href="#")
+              | Change a few things up
+            | and try submitting again.
