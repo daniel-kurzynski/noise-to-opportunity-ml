@@ -5,8 +5,11 @@ import java.util
 import de.hpi.smm.data_reader.DataReader
 import de.hpi.smm.domain.{RawDocument, Document}
 import de.hpi.smm.feature_extraction.FeatureExtractor
+import weka.classifiers.Evaluation
 import weka.classifiers.bayes.NaiveBayes
+import weka.classifiers.evaluation.output.prediction.PlainText
 import weka.core.{DenseInstance, Instances, Attribute}
+import java.util.Random
 
 /**
  * Created by Daniel on 08.01.2015.
@@ -78,5 +81,19 @@ class Classifier(val className: String, val documents: List[Document], val featu
 
 		dist(0) / (dist.sum)
 
+	}
+
+	def crossValidate(): Evaluation ={
+
+		val evaluation = new Evaluation(instances)
+		val buffer = new StringBuffer()
+		val plainText = new PlainText()
+		plainText.setBuffer(buffer)
+		plainText.setOutputDistribution(true)
+		evaluation.crossValidateModel(classifier, instances, 10, new Random(1),plainText)
+
+		println(plainText.getBuffer)
+
+		evaluation
 	}
 }

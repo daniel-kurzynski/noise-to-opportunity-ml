@@ -42,6 +42,10 @@ object Main {
 		val demandPost = "I need help"
 		val demandClassification = postClassifier.classifyDemand(demandPost)
 		println (demandPost + " is: " + demandClassification.cls + " with propability: " + demandClassification.prob )
+
+		val evaluation = postClassifier.demandClassifier.crossValidate()
+		println(evaluation.toSummaryString("\nResults\n======\n", false));
+		println(evaluation.toMatrixString());
 	}
 
 	def runDemandFeatureExtraction(): Unit = {
