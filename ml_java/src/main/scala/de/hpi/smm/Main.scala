@@ -37,7 +37,7 @@ object Main {
 
 		val postClassifier = new PostClassifier(featureExtractorBuilder)
 		val noDemandPost = "This is a Test"
-		val noDemandClassification = postClassifier.classifyDemand(demandPost)
+		val noDemandClassification = postClassifier.classifyDemand(noDemandPost)
 		println (noDemandPost + " is: " + noDemandClassification.cls + " with propability: " + noDemandClassification.prob )
 		val demandPost = "I need help"
 		val demandClassification = postClassifier.classifyDemand(demandPost)

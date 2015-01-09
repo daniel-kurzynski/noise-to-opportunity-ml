@@ -72,6 +72,8 @@ class Classifier(val className: String, val documents: List[Document], val featu
 
 		instance.setDataset(instances)
 
+		val classValue = classifier.classifyInstance(instance)
+		val classN = classAttribute.value(classValue.toInt)
 		val dist = classifier.distributionForInstance(instance)
 
 		dist(0) / (dist.sum)
