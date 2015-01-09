@@ -57,7 +57,7 @@ class Classifier(val className: String, val documents: List[Document], val featu
 		new DenseInstance(1.0,values)
 	}
 
-	def classify(text: String):String={
+	def classPropability(text: String):Double={
 		val id = ""
 		val title = ""
 
@@ -72,10 +72,9 @@ class Classifier(val className: String, val documents: List[Document], val featu
 
 		instance.setDataset(instances)
 
-
-		val classValue = classifier.classifyInstance(instance)
 		val dist = classifier.distributionForInstance(instance)
-		classAttribute.value(classValue.toInt)
+
+		dist(0) / (dist.sum)
 
 	}
 }
