@@ -11,37 +11,36 @@ import de.hpi.smm.feature_extraction.FeatureExtractor
 
 object Main {
 
-	val FOR_ALL_POSTS = false
+	val FOR_ALL_POSTS = true
 
 	val classifiedPosts = JacksMapper.readValue[Map[String, Map[String, Map[String, String]]]](
 		new FileReader("../webapp_python/data/classification.json"))
 	val postsFile = new File("../n2o_data/linked_in_posts.csv")
 	val brochuresFile = new File("../n2o_data/brochures.csv")
 
-	val dataReader = new DataReader(classifiedPosts, postsFile, brochuresFile, FOR_ALL_POSTS);
+	val dataReader = new DataReader(classifiedPosts, postsFile, brochuresFile, FOR_ALL_POSTS)
 
 	val featureExtractorBuilder = new FeatureExtractorBuilder(dataReader)
 
 	def main(args: Array[String]): Unit = {
-//		println("Demand Feature Extraction")
-//		runDemandFeatureExtraction()
+		println("Demand Feature Extraction")
+		runDemandFeatureExtraction()
 
 //  		println("Brochure Feature Extraction")
 //			runBrochureFeatureExtraction()
 
-		 println("Classify Post")
-		 runClassifiyPost()
+//		 println("Classify Post")
+//		 runClassifiyPost()
 	}
 
-	def runClassifiyPost(){
-
+	def runClassifiyPost() {
 		val postClassifier = new PostClassifier(featureExtractorBuilder)
 		val noDemandPost = "This is a Test"
 		val noDemandClassification = postClassifier.classifyDemand(noDemandPost)
-		println (noDemandPost + " is: " + noDemandClassification.cls + " with propability: " + noDemandClassification.prob )
+		println(s"$noDemandPost is: ${noDemandClassification.cls} with propability: ${noDemandClassification.prob}")
 		val demandPost = "I need help"
 		val demandClassification = postClassifier.classifyDemand(demandPost)
-		println (demandPost + " is: " + demandClassification.cls + " with propability: " + demandClassification.prob )
+		println(s"$demandPost is: ${demandClassification.cls} with propability: ${demandClassification.prob}")
 
 		val evaluation = postClassifier.demandClassifier.crossValidate()
 		println(evaluation.toSummaryString("\nResults\n======\n", false));
