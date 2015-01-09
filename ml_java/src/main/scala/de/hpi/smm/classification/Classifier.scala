@@ -69,9 +69,7 @@ class Classifier(val className: String, val documents: List[Document], val featu
 			buildInstance(document,vector)
 		})
 
-		val predictionDataset = new Instances("Prediction",attributes,1)
-		predictionDataset.add(instance)
-		instance.setDataset(predictionDataset)
+		instance.setDataset(instances)
 
 		val classValue = classifier.classifyInstance(instance)
 

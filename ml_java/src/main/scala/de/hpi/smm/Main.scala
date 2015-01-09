@@ -34,9 +34,12 @@ object Main {
 	}
 
 	def runClassifiyPost(){
-		val post = "This is a Test"
+
 		val postClassifier = new PostClassifier(featureExtractorBuilder)
-		postClassifier.classifyDemand(post)
+		val noDemandPost = "This is a Test"
+		println (noDemandPost + " is: " + postClassifier.classifyDemand(noDemandPost).cls)
+		val demandPost = "I need help"
+		println (demandPost + " is: " +postClassifier.classifyDemand(demandPost).cls)
 	}
 
 	def runDemandFeatureExtraction(): Unit = {
