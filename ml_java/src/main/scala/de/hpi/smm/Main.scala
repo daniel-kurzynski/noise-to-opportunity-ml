@@ -14,7 +14,7 @@ object Main {
 	val FOR_ALL_POSTS = true
 
 	val classifiedPosts = JacksMapper.readValue[Map[String, Map[String, Map[String, String]]]](
-		new FileReader("../webapp_python/data/classification.json"))
+		new FileReader("../n2o_data/classification_updates/latest.json"))
 	val postsFile = new File("../n2o_data/linked_in_posts.csv")
 	val brochuresFile = new File("../n2o_data/brochures.csv")
 

@@ -15,13 +15,13 @@ def __build_data(fname):
 			if cls == "":
 				predict_ids.append(content[0])
 				X_predict.append([float(val) for val in content[3:-1]])
-				continue
-
-			ids.append(content[0])
-			X.append([float(val) for val in content[3:-1]])
-			y.append(cls)
+			else:
+				ids.append(content[0])
+				X.append([float(val) for val in content[3:-1]])
+				y.append(cls)
 
 	X = np.array(X)
+	X_predict = np.array(X_predict)
 	return np.array(ids), X.todense() if issparse(X) else X, np.array(y), None, predict_ids, X_predict
 
 
@@ -36,5 +36,8 @@ def build_product_data(product_class):
 	_, X_train, y_train, _, _, _ = __build_data("n2o_data/features_%s.csv"%(product_class.lower()))
 	_, X_test, y_true, _, ids, X_predict = __build_data("n2o_data/features_test_%s.csv"%(product_class.lower()))
 
-	return X_train, y_train, X_test or X_predict, y_true, ids
+	if not len(X_test):
+		X_test = X_predict
+
+	return X_train, y_train, X_test, y_true, ids
 
