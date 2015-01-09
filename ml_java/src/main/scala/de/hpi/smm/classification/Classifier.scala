@@ -41,17 +41,17 @@ class Classifier(val className: String, val documents: List[Document], val featu
 
 	def buildInstance(document: Document, vector: Array[Double]): DenseInstance = {
 		var documentClassName = document.documentClass
-		if(documentClassName != className){
+		if(documentClassName != className) {
 			documentClassName = "no-" + className
 		}
 
 		val values = new Array[Double](attributes.size())
 		values(classAttribute.index()) = classAttribute.indexOfValue(documentClassName)
 
-		for ((value,index) <- vector.view.zipWithIndex) {
-			values(index) = if (value > 0) 1 else 0
+		for ((value, index) <- vector.view.zipWithIndex) {
+			values(index) = value
 		}
-		new DenseInstance(1.0, values)
+		new DenseInstance(1.0, values.map(_.signum.toDouble))
 	}
 
 	def classProbability(text: String): ClassificationOutput = {
@@ -63,9 +63,12 @@ class Classifier(val className: String, val documents: List[Document], val featu
 		val post = Document(id, title, text, sentences, rawPost.extract(className))
 
 		val instance = featureExtractor.buildFeatureVector(post, {(document, vector) =>
+//			println(s"Sum: ${vector.sum}")
 			buildInstance(document, vector)
 		})
-		val relevantFeatures = featureExtractor.names.drop(2).zip(instance.toDoubleArray.drop(1)).filter { case (_, prob) => prob > 0 }.map(_.productIterator.toArray)
+		val relevantFeatures = featureExtractor.names.drop(1).zip(instance.toDoubleArray).filter { case (feature, prob) =>
+			prob > 0 && feature != "CLASS"
+		}.map(_.productIterator.toArray)
 
 		instance.setDataset(instances)
 

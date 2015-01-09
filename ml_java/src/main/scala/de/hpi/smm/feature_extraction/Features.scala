@@ -28,7 +28,7 @@ class NeedWordFeature(counts: GenericCountsCounter, clsName: String, thresholds:
 	override def extract(): Switch = {
 		Switch(
 			Case({ post =>
-				relevantNeedWordsStore.map { word => post.textTokens.count(_.toLowerCase == word).toDouble}
+				relevantNeedWordsStore.map { word => post.textTokens.count(_.toLowerCase == word.toLowerCase).toDouble}
 			},
 			"need-word-with-lowercase")
 			,
