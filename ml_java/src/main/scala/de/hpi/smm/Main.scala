@@ -90,7 +90,7 @@ object Main {
 				CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER)
 
 			testWriter.writeNext(features.names)
-				features.buildFeatureVector(postForCategory.head, { (post, instance) =>
+				features.buildFeatureVectors(postForCategory, { (post, instance) =>
 				val outputLine = buildLine(post, instance, clsName, true)
 				testWriter.writeNext(outputLine)
 			})
