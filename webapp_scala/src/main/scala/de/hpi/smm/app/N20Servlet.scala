@@ -5,6 +5,7 @@ import java.io.{File, FileReader}
 import com.lambdaworks.jacks.JacksMapper
 import de.hpi.smm.FeatureExtractorBuilder
 import de.hpi.smm.data_reader.DataReader
+import org.scalatra.{Ok, BadRequest}
 
 import scala.util.Random
 import de.hpi.smm.classification.PostClassifier
@@ -28,7 +29,7 @@ class N20Servlet extends N20DemoStack  with JacksonJsonSupport {
 	val postsFile = new File("../n2o_data/linked_in_posts.csv")
 	val brochuresFile = new File("../n2o_data/brochures.csv")
 
-	val dataReader = new DataReader(classifiedPosts, postsFile, brochuresFile, FOR_ALL_POSTS);
+	val dataReader = new DataReader(classifiedPosts, postsFile, brochuresFile, FOR_ALL_POSTS)
 
 	val featureExtractorBuilder = new FeatureExtractorBuilder(dataReader)
 	val postClassifier = new PostClassifier(featureExtractorBuilder)
@@ -41,13 +42,18 @@ class N20Servlet extends N20DemoStack  with JacksonJsonSupport {
 	val r = new Random
 	get("/predictions") {
 		val text = params("text")
-		val demandClassification  = postClassifier.classifyDemand(text)
-		val productClassification = postClassifier.classifyProduct(text)
-		contentType = formats("json")
-//		val before = Prediction(100, ) :: r.shuffle(DUMMIES)
-		Map(
-			"demand" -> demandClassification,
-			"product" -> productClassification
-		)
+		try {
+			val demandClassification  = postClassifier.classifyDemand(text)
+			val productClassification = postClassifier.classifyProduct(text)
+			contentType = formats("json")
+			Ok(Map(
+				"demand" -> demandClassification,
+				"product" -> productClassification
+			))
+		}
+		catch {
+			case e: Throwable =>
+				BadRequest(e)
+		}
 	}
 }
