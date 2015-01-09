@@ -85,10 +85,9 @@ class Classifier(val className: String, val documents: List[Document], val featu
 		val plainText = new PlainText()
 		plainText.setBuffer(buffer)
 		plainText.setOutputDistribution(true)
-		evaluation.crossValidateModel(classifier, instances, 10, new Random(18),plainText)
+		evaluation.crossValidateModel(classifier, instances, 10, new Random(18), plainText)
 
 		println(plainText.getBuffer)
-
 		evaluation
 	}
 }

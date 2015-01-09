@@ -108,7 +108,6 @@ class FeatureExtractor(smooting: Boolean) {
 		features ::= feature
 	}
 
-
 //	def cross[X](x: Seq[X], y: Seq[X]): Seq[Seq[X]] = {
 //		for (xi <- x; yi <- y) yield Vector(xi, yi)
 //	}
@@ -123,9 +122,10 @@ class FeatureExtractor(smooting: Boolean) {
 
 	private def countWords(doc: Document): Unit = {
 		doc.sentences.flatten.filter { word => !blacklist.exists(word.pos.startsWith)}.map(_.text).distinct.foreach { word =>
-			if (!genericCounter.wordCounts.contains(word))
-				genericCounter.wordCounts(word) = new mutable.HashMap[String, Int]().withDefaultValue(0)
-			genericCounter.wordCounts(word)(doc.documentClass) += 1
+			val lowerWord = word.toLowerCase
+			if (!genericCounter.wordCounts.contains(lowerWord))
+				genericCounter.wordCounts(lowerWord) = new mutable.HashMap[String, Int]().withDefaultValue(0)
+			genericCounter.wordCounts(lowerWord)(doc.documentClass) += 1
 		}
 	}
 

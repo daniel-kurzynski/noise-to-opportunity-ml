@@ -15,9 +15,7 @@ object ClassificationPreparation {
 		new FileReader("../webapp_python/data/classification.json"))
 	val postsFile = new File("../n2o_data/linked_in_posts.csv")
 	val brochuresFile = new File("../n2o_data/brochures.csv")
-
 	val dataReader = new DataReader(classifiedPosts, postsFile, brochuresFile, false)
-
 	val featureExtractorBuilder = new FeatureExtractorBuilder(dataReader)
 	val postClassifier = new PostClassifier(featureExtractorBuilder)
 
