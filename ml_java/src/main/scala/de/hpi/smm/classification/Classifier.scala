@@ -32,26 +32,28 @@ class Classifier(val className: String, val documents: List[Document], val featu
 	instances.setClassIndex(classAttribute.index())
 
 	featureExtractor.buildFeatureVectors(documents, {(document,vector) =>
-		val instance = buildInstance(document,vector)
+		val (instance, _, _) = buildInstance(document,vector)
 		instances.add(instance)
 	})
 
 	val classifier = new NaiveBayes()
 	classifier.buildClassifier(instances)
 
-	def buildInstance(document: Document, vector: Array[Double]): DenseInstance = {
+	def buildInstance(document: Document, vector: Array[Double]): (DenseInstance, Array[Double], Array[Double]) = {
 		var documentClassName = document.documentClass
 		if(documentClassName != className) {
 			documentClassName = "no-" + className
 		}
 
 		val values = new Array[Double](attributes.size())
+		val occProbs = new Array[Double](attributes.size())
 		values(classAttribute.index()) = classAttribute.indexOfValue(documentClassName)
 
 		for ((value, index) <- vector.view.zipWithIndex) {
 			values(index) = value
+			occProbs(index) = 1.0
 		}
-		new DenseInstance(1.0, values.map(_.signum.toDouble))
+		(new DenseInstance(1.0, values.map(_.signum.toDouble)), occProbs, null)
 	}
 
 	def classProbability(text: String): ClassificationOutput = {
@@ -62,11 +64,15 @@ class Classifier(val className: String, val documents: List[Document], val featu
 		val sentences = dataReader.detectSentences(rawPost)
 		val post = Document(id, title, text, sentences, rawPost.extract(className))
 
-		val instance = featureExtractor.buildFeatureVector(post, {(document, vector) =>
+		val (instance, occProbs, _) = featureExtractor.buildFeatureVector(post, {(document, vector) =>
 //			println(s"Sum: ${vector.sum}")
 			buildInstance(document, vector)
 		})
-		val relevantFeatures = featureExtractor.names.drop(1).zip(instance.toDoubleArray).filter { case (feature, prob) =>
+
+		val l1 = featureExtractor.names.drop(1)
+		val l2 = instance.toDoubleArray
+		val l3 = occProbs
+		val relevantFeatures = l1.zip(l2).zip(l3).map { case ((t1, t2), t3) => (t1, t2, t3) }.filter { case (feature, prob, occProb) =>
 			prob > 0 && feature != "CLASS"
 		}.map(_.productIterator.toArray)
 

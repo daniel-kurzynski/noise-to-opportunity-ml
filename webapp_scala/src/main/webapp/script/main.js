@@ -26,7 +26,7 @@ jQuery(function() {
 				var $demandResults  = $("#demand-results");
 				$productResults.empty();
 				$demandResults.empty();
-				console.log(data.demand.classificationOutput);
+				console.log(new Date(), data.demand.classificationOutput);
 				var demandProb = data.demand.classificationOutput.prob;
 				if (demandProb > 0.5) {
 					setTextAndAnimate("demand", "DEMAND (" + roundValue(demandProb) + ")", "#43ac6a");
