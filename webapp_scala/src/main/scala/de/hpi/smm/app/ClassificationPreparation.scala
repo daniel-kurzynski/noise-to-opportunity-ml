@@ -8,11 +8,12 @@ import de.hpi.smm.data_reader.DataReader
 
 import de.hpi.smm.classification.PostClassifier
 import org.json4s.{DefaultFormats, Formats}
+import de.hpi.smm.Constants._
 
 object ClassificationPreparation {
 
 	val classifiedPosts = JacksMapper.readValue[Map[String, Map[String, Map[String, String]]]](
-		new FileReader("../webapp_python/data/classification.json"))
+		new FileReader(CLASSIFICATION_JSON))
 	val postsFile = new File("../n2o_data/linked_in_posts.csv")
 	val brochuresFile = new File("../n2o_data/brochures.csv")
 	val dataReader = new DataReader(classifiedPosts, postsFile, brochuresFile, false)

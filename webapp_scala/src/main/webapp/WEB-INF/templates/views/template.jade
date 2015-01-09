@@ -12,31 +12,25 @@
         a.btn.btn-primary.btn-lg(href="#" role="button")
           | Learn more
 
-    .row
-      div.col-xs-1
-      div#demand-classification.classification-box.col-xs-4
-        | DEMAND
-      div.col-xs-2
-      div#product-classification.classification-box.col-xs-4
-        | CRM
-      div.col-xs-1
-    -#
-      div.alert.alert-dismissable.alert-success
-        button.close(type="button" data-dismiss="alert")
-          | ×
-        strong
-          | Good text!
-        | We could succesfully identify a demand and a product to recommend. Please look below.
+  .row
+    div#demand-classification.classification-box.col-xs-offset-1.col-xs-4
+      | DEMAND
+    div#product-classification.classification-box.col-xs-offset-2.col-xs-4
+      | CRM
 
-    hr
-    a(data-toggle="collapse" href="#detailed-demand-view" aria-expanded="false" aria-controls="collapseExample")
-      | See detailed demand numbers
-    div#detailed-demand-view.collapse
-      .well
-        table#demand-results.table.table-striped.large
-    hr
-    a(data-toggle="collapse" href="#detailed-product-view" aria-expanded="false" aria-controls="collapseExample")
-      | See detailed product numbers
-    div#detailed-product-view.collapse
-      .well
-        table#product-results.table.table-striped.large
+  hr
+
+  .row
+    div.col-xs-offset-1.col-xs-4
+      a(data-toggle="collapse" href="#detailed-demand-view" aria-expanded="false" aria-controls="collapseExample")
+        | See detailed demand numbers
+      div#detailed-demand-view.collapse
+        .well
+          table#demand-results.table.table-striped.large
+    div.col-xs-offset-2.col-xs-4
+      a(data-toggle="collapse" href="#detailed-product-view" aria-expanded="false" aria-controls="collapseExample")
+        | See detailed product numbers
+        div#detailed-product-view.collapse
+          .well
+            table#product-results.table.table-striped.large
+

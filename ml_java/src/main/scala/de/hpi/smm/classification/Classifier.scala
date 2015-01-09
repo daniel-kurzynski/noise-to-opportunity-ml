@@ -8,7 +8,7 @@ import de.hpi.smm.feature_extraction.FeatureExtractor
 import weka.classifiers.Evaluation
 import weka.classifiers.bayes.NaiveBayes
 import weka.classifiers.evaluation.output.prediction.PlainText
-import weka.core.{DenseInstance, Instances, Attribute}
+import weka.core.{Utils, DenseInstance, Instances, Attribute}
 import java.util.Random
 
 class Classifier(val className: String, val documents: List[Document], val featureExtractor: FeatureExtractor, val dataReader: DataReader) {
@@ -81,8 +81,12 @@ class Classifier(val className: String, val documents: List[Document], val featu
 		val classValue = classifier.classifyInstance(instance)
 		val classN = classAttribute.value(classValue.toInt)
 		val dist = classifier.distributionForInstance(instance)
+		val counts = featureExtractor.genericCounter.classCounts
+		dist(0) /= counts(className)
+		dist(1) /= counts.values.sum - counts(className)
 
-		ClassificationOutput(dist(0) / dist.sum, relevantFeatures)
+		Utils.normalize(dist)
+		ClassificationOutput(dist(0), relevantFeatures)
 	}
 
 	def crossValidate(): Evaluation = {

@@ -2,8 +2,10 @@ jQuery(function() {
 	var predictionTimer = function() {
 		var COLOR_ANIMATION = 300;
 
-		var roundValue = function(d) {
-			return Math.round(d * 100);
+		var roundValue = function(d, places) {
+			if (!places) places = 0;
+			var power = Math.pow(10, places);
+			return Math.round(d * 100 * power) / power;
 		};
 		var setTextAndAnimate = function(type, text, color) {
 			$("#" + type + "-classification").css("visibility", "visible").text(text).animate({
@@ -44,7 +46,7 @@ jQuery(function() {
 				data.product.forEach(function (el) {
 					// Use templates, if this gets more complicated.
 					$productResults.append("<tr><td class='product-category-label'><div class='result-percentage label-primary'>" +
-						roundValue(el.classificationOutput.prob) + " %</div></td><td>" + el.cls + "</td></tr>")
+						roundValue(el.classificationOutput.prob, 6) + " %</div></td><td>" + el.cls + "</td></tr>")
 				});
 			},
 			error: function() {

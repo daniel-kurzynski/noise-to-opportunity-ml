@@ -7,14 +7,14 @@ import com.lambdaworks.jacks.JacksMapper
 import de.hpi.smm.classification.PostClassifier
 import de.hpi.smm.data_reader.DataReader
 import de.hpi.smm.domain._
-import de.hpi.smm.feature_extraction.FeatureExtractor
+import Constants._
 
 object Main {
 
-	val FOR_ALL_POSTS = true
+	val FOR_ALL_POSTS = false
 
 	val classifiedPosts = JacksMapper.readValue[Map[String, Map[String, Map[String, String]]]](
-		new FileReader("../n2o_data/classification_updates/latest.json"))
+		new FileReader(CLASSIFICATION_JSON))
 	val postsFile = new File("../n2o_data/linked_in_posts.csv")
 	val brochuresFile = new File("../n2o_data/brochures.csv")
 
@@ -26,8 +26,8 @@ object Main {
 		println("Demand Feature Extraction")
 		runDemandFeatureExtraction()
 
-//  		println("Brochure Feature Extraction")
-//			runBrochureFeatureExtraction()
+  	println("Brochure Feature Extraction")
+		runBrochureFeatureExtraction()
 
 //		 println("Classify Post")
 //		 runClassifiyPost()
