@@ -23,11 +23,11 @@ object Main {
 	val featureExtractorBuilder = new FeatureExtractorBuilder(dataReader)
 
 	def main(args: Array[String]): Unit = {
-//		println("Demand Feature Extraction")
-//		runDemandFeatureExtraction()
+		println("Demand Feature Extraction")
+		runDemandFeatureExtraction()
 
-		println("Brochure Feature Extraction")
-		runBrochureFeatureExtraction()
+//		println("Brochure Feature Extraction")
+//		runBrochureFeatureExtraction()
 
 //		 println("Classify Post")
 //		 runClassifiyPost()

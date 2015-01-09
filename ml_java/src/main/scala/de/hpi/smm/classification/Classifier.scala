@@ -8,9 +8,6 @@ import de.hpi.smm.feature_extraction.FeatureExtractor
 import weka.classifiers.bayes.NaiveBayes
 import weka.core.{DenseInstance, Instances, Attribute}
 
-/**
- * Created by Daniel on 08.01.2015.
- */
 class Classifier(val className: String, val documents: List[Document], val featureExtractor: FeatureExtractor, val dataReader: DataReader) {
 	val attributes = new util.ArrayList[Attribute]()
 
@@ -21,23 +18,20 @@ class Classifier(val className: String, val documents: List[Document], val featu
 	val classAttribute = new Attribute("@@class@@", classNamesVector)
 
 
-	for(feautureName<-featureExtractor.names) {
+	for (feautureName<-featureExtractor.names) {
 		if(feautureName!="CLASS" && feautureName!="id"){
 			attributes.add(new Attribute(feautureName))
 		}
 	}
 	attributes.add(classAttribute)
 
-	val instances = new Instances(className, attributes,0);
-	instances.setClassIndex(classAttribute.index());
+	val instances = new Instances(className, attributes,0)
+	instances.setClassIndex(classAttribute.index())
 
-	featureExtractor.buildFeatureVectors(documents, {(document,vector) => {
-
+	featureExtractor.buildFeatureVectors(documents, {(document,vector) =>
 		val instance = buildInstance(document,vector)
-
 		instances.add(instance)
-	}
-	});
+	})
 
 	val classifier = new NaiveBayes()
 	classifier.buildClassifier(instances)
