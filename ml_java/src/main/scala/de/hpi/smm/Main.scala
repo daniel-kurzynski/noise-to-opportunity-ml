@@ -11,7 +11,7 @@ import de.hpi.smm.feature_extraction.FeatureExtractor
 
 object Main {
 
-	val FOR_ALL_POSTS = true
+	val FOR_ALL_POSTS = false
 
 	val classifiedPosts = JacksMapper.readValue[Map[String, Map[String, Map[String, String]]]](
 		new FileReader("../webapp_python/data/classification.json"))
@@ -26,11 +26,11 @@ object Main {
 //		println("Demand Feature Extraction")
 //		runDemandFeatureExtraction()
 
-  		println("Brochure Feature Extraction")
-			runBrochureFeatureExtraction()
+//  		println("Brochure Feature Extraction")
+//			runBrochureFeatureExtraction()
 
-		// println("Classify Post")
-		// runClassifiyPost()
+		 println("Classify Post")
+		 runClassifiyPost()
 	}
 
 	def runClassifiyPost(){
