@@ -27,7 +27,7 @@ class PostClassifier(val featureExtractorBuilder: FeatureExtractorBuilder) {
 	val r = new Random
 	def classifyDemand(text: String): Classification = {
 
-		val prob = demandClassifier.classPropability(text)
+		val prob = demandClassifier.classProbability(text)
 		Classification("demand", prob)
 	}
 

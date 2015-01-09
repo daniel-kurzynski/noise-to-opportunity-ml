@@ -21,9 +21,9 @@ class Classifier(val className: String, val documents: List[Document], val featu
 	val classAttribute = new Attribute("@@class@@", classNamesVector)
 
 
-	for (feautureName<-featureExtractor.names) {
-		if(feautureName!="CLASS" && feautureName!="id"){
-			attributes.add(new Attribute(feautureName))
+	for (featureName<-featureExtractor.names) {
+		if (featureName != "CLASS" && featureName != "id"){
+			attributes.add(new Attribute(featureName))
 		}
 	}
 	attributes.add(classAttribute)
@@ -41,20 +41,20 @@ class Classifier(val className: String, val documents: List[Document], val featu
 
 	def buildInstance(document: Document, vector: Array[Double]):DenseInstance={
 		var documentClassName = document.documentClass
-		if(documentClassName!=className){
-			documentClassName = "no-"+className
+		if(documentClassName != className){
+			documentClassName = "no-" + className
 		}
 
 		val values = new Array[Double](attributes.size())
 		values(classAttribute.index()) = classAttribute.indexOfValue(documentClassName)
 
-		for((value,index)<-vector.view.zipWithIndex){
+		for ((value,index)<-vector.view.zipWithIndex) {
 			values(index) = if (value > 1) 1 else 0
 		}
 		new DenseInstance(1.0,values)
 	}
 
-	def classPropability(text: String):Double={
+	def classProbability(text: String): Double={
 		val id = ""
 		val title = ""
 
@@ -73,7 +73,7 @@ class Classifier(val className: String, val documents: List[Document], val featu
 		val classN = classAttribute.value(classValue.toInt)
 		val dist = classifier.distributionForInstance(instance)
 
-		dist(0) / (dist.sum)
+		dist(0) / dist.sum
 
 	}
 
