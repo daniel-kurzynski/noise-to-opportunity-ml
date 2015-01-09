@@ -66,13 +66,15 @@ class Classifier(val className: String, val documents: List[Document], val featu
 		val post = Document(id, title, text, sentences, rawPost.extract(className))
 
 		val instance = featureExtractor.buildFeatureVector(post, {(document, vector) =>
+			val sum = vector.sum
 			buildInstance(document,vector)
 		})
 
 		instance.setDataset(instances)
 
-		val classValue = classifier.classifyInstance(instance)
 
+		val classValue = classifier.classifyInstance(instance)
+		val dist = classifier.distributionForInstance(instance)
 		classAttribute.value(classValue.toInt)
 
 	}
