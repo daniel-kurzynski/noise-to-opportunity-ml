@@ -55,7 +55,7 @@ class Classifier(val className: String, val documents: List[Document], val featu
 		values(classAttribute.index()) = classAttribute.indexOfValue(documentClassName)
 
 		for((value,index)<-vector.view.zipWithIndex){
-			values(index) = value
+			values(index) = if (value > 1) 1 else 0
 		}
 		new DenseInstance(1.0,values)
 	}
@@ -69,7 +69,7 @@ class Classifier(val className: String, val documents: List[Document], val featu
 		val post = Document(id, title, text, sentences, rawPost.extract(className))
 
 		val instance = featureExtractor.buildFeatureVector(post, {(document, vector) =>
-			val sum = vector.sum
+			println(vector.sum)
 			buildInstance(document,vector)
 		})
 
@@ -90,7 +90,7 @@ class Classifier(val className: String, val documents: List[Document], val featu
 		val plainText = new PlainText()
 		plainText.setBuffer(buffer)
 		plainText.setOutputDistribution(true)
-		evaluation.crossValidateModel(classifier, instances, 10, new Random(1),plainText)
+		evaluation.crossValidateModel(classifier, instances, 10, new Random(18),plainText)
 
 		println(plainText.getBuffer)
 
