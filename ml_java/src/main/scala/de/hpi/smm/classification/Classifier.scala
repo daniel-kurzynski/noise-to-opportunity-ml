@@ -2,7 +2,8 @@ package de.hpi.smm.classification
 
 import java.util
 
-import de.hpi.smm.domain.Document
+import de.hpi.smm.data_reader.DataReader
+import de.hpi.smm.domain.{RawDocument, Document}
 import de.hpi.smm.feature_extraction.FeatureExtractor
 import weka.classifiers.bayes.NaiveBayes
 import weka.core.{DenseInstance, Instances, Attribute}
@@ -10,7 +11,7 @@ import weka.core.{DenseInstance, Instances, Attribute}
 /**
  * Created by Daniel on 08.01.2015.
  */
-class Classifier(val className: String, val documents: List[Document], val featureExtractor: FeatureExtractor) {
+class Classifier(val className: String, val documents: List[Document], val featureExtractor: FeatureExtractor, val dataReader: DataReader) {
 	val attributes = new util.ArrayList[Attribute]()
 
 	val classNamesVector = new util.ArrayList[String]()
@@ -57,14 +58,19 @@ class Classifier(val className: String, val documents: List[Document], val featu
 	}
 
 	def classify(text: String):String={
+		val id = ""
+		val title = ""
 
-		var instance = new DenseInstance(1,Array())
+		val rawPost = RawDocument(id, title, text, null)
+		val sentences = dataReader.detectSentences(rawPost)
+		val post = Document(id, title, text, sentences, rawPost.extract(className))
 
-//		featureExtractor.buildFeatureVectors(List(new Document(text)), {(document,vector) => {
-//
-//			instance = buildInstance(document,vector)
-//		}
-//		});
+		val instance = featureExtractor.buildFeatureVector(post, {(document, vector) =>
+			buildInstance(document,vector)
+		})
+
+		val dataSet = new Instances("Prediction",attributes,1)
+		dataSet.add(instance)
 
 		val classValue = classifier.classifyInstance(instance)
 

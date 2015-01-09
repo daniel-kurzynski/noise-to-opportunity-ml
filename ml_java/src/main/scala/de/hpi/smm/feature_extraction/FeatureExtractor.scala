@@ -100,7 +100,7 @@ class FeatureExtractor(smooting: Boolean) {
 		}
 	}
 
-	def buildFeatureVector(document: Document, vectorHandler: (Document, Array[Double]) => Unit): Unit = {
+	def buildFeatureVector[T](document: Document, vectorHandler: (Document, Array[Double]) => T): T = {
 		vectorHandler(document, features.map { feature => feature.extract().default(document) }.toArray.flatten)
 	}
 

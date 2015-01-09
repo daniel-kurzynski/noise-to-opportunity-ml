@@ -19,7 +19,7 @@ class PostClassifier(val featureExtractorBuilder: FeatureExtractorBuilder) {
 
 	val demandFeatureExtractor = featureExtractorBuilder.buildDemandFeautureExtractor()
 
-	val demandClassifier = new Classifier("demand", featureExtractorBuilder.posts, demandFeatureExtractor)
+	val demandClassifier = new Classifier("demand", featureExtractorBuilder.posts, demandFeatureExtractor, featureExtractorBuilder.dataReader)
 
 
 
@@ -27,7 +27,7 @@ class PostClassifier(val featureExtractorBuilder: FeatureExtractorBuilder) {
 	val r = new Random
 	def classifyDemand(text: String): Classification = {
 
-		//val className = demandClassifier.classify(text)
+		val className = demandClassifier.classify(text)
 		Classification("demand", r.nextDouble())
 	}
 
