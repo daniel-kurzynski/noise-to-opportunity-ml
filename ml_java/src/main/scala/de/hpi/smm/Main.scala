@@ -37,14 +37,14 @@ object Main {
 		val postClassifier = new PostClassifier(featureExtractorBuilder)
 		val noDemandPost = "This is a Test"
 		val noDemandClassification = postClassifier.classifyDemand(noDemandPost)
-		println(s"$noDemandPost is: ${noDemandClassification.cls} with propability: ${noDemandClassification.prob}")
+		println(s"$noDemandPost is: ${noDemandClassification.cls} with propability: ${noDemandClassification.classificationOutput.prob}")
 		val demandPost = "I need help"
 		val demandClassification = postClassifier.classifyDemand(demandPost)
-		println(s"$demandPost is: ${demandClassification.cls} with propability: ${demandClassification.prob}")
+		println(s"$demandPost is: ${demandClassification.cls} with propability: ${demandClassification.classificationOutput.prob}")
 
 		val evaluation = postClassifier.demandClassifier.crossValidate()
-		println(evaluation.toSummaryString("\nResults\n======\n", false));
-		println(evaluation.toMatrixString());
+		println(evaluation.toSummaryString("\nResults\n======\n", false))
+		println(evaluation.toMatrixString())
 	}
 
 	def runDemandFeatureExtraction(): Unit = {

@@ -24,21 +24,21 @@ jQuery(function() {
 			success: function (data) {
 				var $results = $("#results");
 				$results.empty();
-				console.log(data);
-				if (data.demand.prob > 0.5) {
+				console.log(data.demand.classificationOutput);
+				if (data.demand.classificationOutput.prob > 0.5) {
 					setTextAndAnimate("demand", "DEMAND", "#43ac6a");
 				} else {
 					setTextAndAnimate("demand", "NO-DEMAND", "#f04124");
 				}
-				if (data.product[0].prob > 0.5) {
-					setTextAndAnimate("product", data.product[0].cls, "#008cba");
+				if (data.product[0].classificationOutput.prob > 0.5) {
+					setTextAndAnimate("product", data.product[0].classificationOutput.cls, "#008cba");
 				} else {
 					setTextAndAnimate("product", "NONE", "#5bc0de");
 				}
 				data.product.forEach(function (el) {
 					// Use templates, if this gets more complicated.
 					$results.append("<tr><td class='product-category-label'><div class='result-percentage label-primary'>" +
-						roundValue(el.prob) + " %</div></td><td>" + el.cls + "</td></tr>")
+						roundValue(el.classificationOutput.prob) + " %</div></td><td>" + el.cls + "</td></tr>")
 				});
 			},
 			error: function() {

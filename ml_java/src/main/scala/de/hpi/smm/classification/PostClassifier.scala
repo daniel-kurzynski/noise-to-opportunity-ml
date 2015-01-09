@@ -13,22 +13,19 @@ import de.hpi.smm.feature_extraction.FeatureExtractor
 import weka.classifiers.bayes.NaiveBayes
 import weka.core.{Attribute, DenseInstance, Instances}
 
-case class Classification(cls: String, prob: Double)
+case class ClassificationOutput(prob: Double, relevantFeatures: Array[Array[Any]] = Array())
+case class Classification(cls: String, classificationOutput: ClassificationOutput)
 
 class PostClassifier(val featureExtractorBuilder: FeatureExtractorBuilder) {
 
-	val demandFeatureExtractor = featureExtractorBuilder.buildDemandFeautureExtractor()
+	val r = new Random
 
+	val demandFeatureExtractor = featureExtractorBuilder.buildDemandFeautureExtractor()
 	val demandClassifier = new Classifier("demand", featureExtractorBuilder.posts, demandFeatureExtractor, featureExtractorBuilder.dataReader)
 
-
-
-
-	val r = new Random
 	def classifyDemand(text: String): Classification = {
-
-		val prob = demandClassifier.classProbability(text)
-		Classification("demand", prob)
+		val classificationOutput = demandClassifier.classProbability(text)
+		Classification("demand", classificationOutput)
 	}
 
 	/**
@@ -36,10 +33,10 @@ class PostClassifier(val featureExtractorBuilder: FeatureExtractorBuilder) {
 	 */
 	def classifyProduct(text: String): List[Classification] = {
 		List(
-			Classification("HCM" , r.nextDouble()),
-			Classification("ECOM", 0.6),
-			Classification("CRM" , 0.4),
-			Classification("LVM" , 0.2)
+			Classification("HCM" , ClassificationOutput(r.nextDouble())),
+			Classification("ECOM", ClassificationOutput(0.6)),
+			Classification("CRM" , ClassificationOutput(0.4)),
+			Classification("LVM" , ClassificationOutput(0.2))
 		)
 	}
 }

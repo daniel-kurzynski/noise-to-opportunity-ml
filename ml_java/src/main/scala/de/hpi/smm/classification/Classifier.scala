@@ -21,7 +21,7 @@ class Classifier(val className: String, val documents: List[Document], val featu
 	val classAttribute = new Attribute("@@class@@", classNamesVector)
 
 
-	for (featureName<-featureExtractor.names) {
+	for (featureName <- featureExtractor.names) {
 		if (featureName != "CLASS" && featureName != "id"){
 			attributes.add(new Attribute(featureName))
 		}
@@ -39,7 +39,7 @@ class Classifier(val className: String, val documents: List[Document], val featu
 	val classifier = new NaiveBayes()
 	classifier.buildClassifier(instances)
 
-	def buildInstance(document: Document, vector: Array[Double]):DenseInstance={
+	def buildInstance(document: Document, vector: Array[Double]): DenseInstance = {
 		var documentClassName = document.documentClass
 		if(documentClassName != className){
 			documentClassName = "no-" + className
@@ -48,13 +48,13 @@ class Classifier(val className: String, val documents: List[Document], val featu
 		val values = new Array[Double](attributes.size())
 		values(classAttribute.index()) = classAttribute.indexOfValue(documentClassName)
 
-		for ((value,index)<-vector.view.zipWithIndex) {
-			values(index) = if (value > 1) 1 else 0
+		for ((value,index) <- vector.view.zipWithIndex) {
+			values(index) = if (value > 0) 1 else 0
 		}
-		new DenseInstance(1.0,values)
+		new DenseInstance(1.0, values)
 	}
 
-	def classProbability(text: String): Double={
+	def classProbability(text: String): ClassificationOutput = {
 		val id = ""
 		val title = ""
 
@@ -63,9 +63,9 @@ class Classifier(val className: String, val documents: List[Document], val featu
 		val post = Document(id, title, text, sentences, rawPost.extract(className))
 
 		val instance = featureExtractor.buildFeatureVector(post, {(document, vector) =>
-			println(vector.sum)
-			buildInstance(document,vector)
+			buildInstance(document, vector)
 		})
+		val relevantFeatures = featureExtractor.names.drop(2).zip(instance.toDoubleArray.drop(1)).filter { case (_, prob) => prob > 0 }.map(_.productIterator.toArray)
 
 		instance.setDataset(instances)
 
@@ -73,12 +73,10 @@ class Classifier(val className: String, val documents: List[Document], val featu
 		val classN = classAttribute.value(classValue.toInt)
 		val dist = classifier.distributionForInstance(instance)
 
-		dist(0) / dist.sum
-
+		ClassificationOutput(dist(0) / dist.sum, relevantFeatures)
 	}
 
-	def crossValidate(): Evaluation ={
-
+	def crossValidate(): Evaluation = {
 		val evaluation = new Evaluation(instances)
 		val buffer = new StringBuffer()
 		val plainText = new PlainText()
