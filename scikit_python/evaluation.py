@@ -167,10 +167,9 @@ def visualize_posts(X,y,X_unlabeled):
 
 		plt.show()
 
-def write_out_demand_posts(ids):
-	out_file_name = "demand_linked_in_posts.csv"
+def write_out_demand_posts(ids, fname):
 	with open(join(dirname(dirname(__file__)), "n2o_data", "linked_in_posts.csv")) as fp:
-		with open(join(dirname(dirname(__file__)), "n2o_data", "demand_linked_in_posts.csv"), "w") as out:
+		with open(join(dirname(dirname(__file__)), "n2o_data", fname), "w") as out:
 			for line in fp:
 				if line.split(",")[0][1:-1] in ids:
 					out.write(line)
@@ -192,10 +191,12 @@ def run_demand(classifier):
 			most_weighted_features(classifier, X_train, y_train, vectorizer)
 		X_train = X_train.todense() if issparse(X_train) else X_train
 		X_predict = X_predict.todense() if issparse(X_predict) else X_predict
-		if "nocross" in args:
+		if "writeout" in args:
 			classifier.fit(X_train, y_train)
 			y_predict = classifier.predict(X_predict)
-			write_out_demand_posts(set([predict_ids[i] for i, cls in enumerate(y_predict) if cls == "demand"]))
+			write_out_demand_posts(
+				set([predict_ids[i] for i, cls in enumerate(y_predict) if cls == "demand"]),
+				"demand_linked_in_posts.csv")
 		else:
 			cross_validate(ids, classifier, X_train, y_train, "Demand")
 		if "vis" in args:
@@ -221,10 +222,17 @@ def run_product(classifier):
 		if "custom" in args:
 			build_datas.append(custom_features)
 		for build_data in build_datas:
-			X_train, y_train, X_test, y_true = build_data(class_name)
-			validate(classifier, X_train, y_train, X_test, y_true, class_name)
-			# if "vis" in args:
-			# 	visualize_posts(X, y, X_unlabeled)
+			X_train, y_train, X_test_or_predict, y_true, predict_ids = build_data(class_name)
+			if "writeout" in args:
+				classifier.fit(X_train, y_train)
+				y_predict = classifier.predict(X_test_or_predict)
+				write_out_demand_posts(
+					set([predict_ids[i] for i, cls in enumerate(y_predict) if cls == class_name]),
+					"{}_linked_in_posts.csv".format(class_name))
+			else:
+				validate(classifier, X_train, y_train, X_test_or_predict, y_true, class_name)
+				# if "vis" in args:
+				# 	visualize_posts(X, y, X_unlabeled)
 		print "=" * len(t)
 
 	return
@@ -309,7 +317,7 @@ if __name__ == "__main__":
 		print "Possible args: vis, fps, most"
 		print "Possible datasets: bow, custom"
 		print "Possible classifications: all, demand, product"
-		print "Disable cross validation for demand classifier: nocross"
+		print "Writeout positive classified posts(demand and product): writeout"
 		sys.exit(0)
 
 	classifier = Classifiers.CLASSIFIERS[Classifiers.BERNOULLI_NB]

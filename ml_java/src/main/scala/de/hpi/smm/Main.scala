@@ -11,7 +11,7 @@ import de.hpi.smm.feature_extraction.FeatureExtractor
 
 object Main {
 
-	val FOR_ALL_POSTS = false
+	val FOR_ALL_POSTS = true
 
 	val classifiedPosts = JacksMapper.readValue[Map[String, Map[String, Map[String, String]]]](
 		new FileReader("../webapp_python/data/classification.json"))
@@ -26,18 +26,17 @@ object Main {
 //		println("Demand Feature Extraction")
 //		runDemandFeatureExtraction()
 
-//		println("Brochure Feature Extraction")
-//		runBrochureFeatureExtraction()
+  		println("Brochure Feature Extraction")
+			runBrochureFeatureExtraction()
 
-		println("Classify Post")
-		runClassifiyPost()
+		// println("Classify Post")
+		// runClassifiyPost()
 	}
 
 	def runClassifiyPost(){
 		val post = "This is a Test"
 		val postClassifier = new PostClassifier(featureExtractorBuilder)
 		postClassifier.classifyDemand(post)
-
 	}
 
 	def runDemandFeatureExtraction(): Unit = {
@@ -73,14 +72,14 @@ object Main {
 
 			val features = featureExtractorBuilder.buildBroshuresFeatureExtractor(clsName, thresh1, thresh2)
 			val posts = featureExtractorBuilder.posts
-			val broshures = featureExtractorBuilder.broshures
+			val brochures = featureExtractorBuilder.brochures
 			val postForCategory = featureExtractorBuilder.postForCategory
 
 			val writer = new CSVWriter(new FileWriter(new File(s"../n2o_data/features_${clsName.toLowerCase}.csv")),
 				CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER)
 
 			writer.writeNext(features.names)
-			features.buildFeatureVectors(broshures, { (post, instance) =>
+			features.buildFeatureVectors(brochures, { (post, instance) =>
 				val outputLine = buildLine(post, instance, clsName)
 				writer.writeNext(outputLine)
 			})
@@ -91,8 +90,8 @@ object Main {
 				CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER)
 
 			testWriter.writeNext(features.names)
-			features.buildFeatureVectors (postForCategory, { (post, instance) =>
-				val outputLine = buildLine(post, instance, clsName)
+				features.buildFeatureVectors(postForCategory, { (post, instance) =>
+				val outputLine = buildLine(post, instance, clsName, true)
 				testWriter.writeNext(outputLine)
 			})
 
@@ -106,10 +105,15 @@ object Main {
 
 	}
 
-	private def buildLine(post: Document, instance: Array[Double], currentClass: String): Array[String] = {
+	private def buildLine(post: Document, instance: Array[Double], currentClass: String, emptyClass: Boolean = false): Array[String] = {
 		val line = new Array[String](instance.size + 2)
 		line(0) = post.id
-		line(line.size - 1) = if (List(currentClass, "no-idea", null).contains(post.documentClass)) post.documentClass else "no-" + currentClass
+		if (emptyClass){
+			line(line.size - 1) = ""//if (List(currentClass, "no-idea", null).contains(post.documentClass)) post.documentClass else "no-" + currentClass
+		} else {
+			line(line.size - 1) = if (List(currentClass, "no-idea", null).contains(post.documentClass)) post.documentClass else "no-" + currentClass
+		}
+
 		System.arraycopy(instance.map(_.toString), 0, line, 1, instance.size)
 		line
 	}

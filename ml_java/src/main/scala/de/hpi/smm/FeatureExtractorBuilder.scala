@@ -11,7 +11,7 @@ class FeatureExtractorBuilder(val dataReader: DataReader) {
 
 	var posts = List[Document]()
 	var postForCategory = List[Document]()
-	var broshures = List[Document]()
+	var brochures = List[Document]()
 
 	dataReader.readPostsLinewise { post =>
 		posts ::= post
@@ -21,8 +21,8 @@ class FeatureExtractorBuilder(val dataReader: DataReader) {
 		postForCategory ::= post
 	}("category")
 
-	dataReader.readBrochuresLinewise { broshure =>
-		broshures ::= broshure
+	dataReader.readBrochuresLinewise { brochure =>
+		brochures ::= brochure
 	}()
 
 
@@ -58,7 +58,7 @@ class FeatureExtractorBuilder(val dataReader: DataReader) {
 			.needWords(clsName, (thresh1, thresh2))
 			.needNGrams()
 
-		broshures.foreach { brochure =>
+		brochures.foreach { brochure =>
 			features.touch(brochure)
 		}
 
