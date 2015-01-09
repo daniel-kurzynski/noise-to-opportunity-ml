@@ -30,9 +30,15 @@ object N20DemoBuild extends Build {
         "javax.servlet" % "javax.servlet-api" % "3.1.0",
         "org.scalatra" %% "scalatra-json" % "2.3.0",
         "org.json4s"   %% "json4s-jackson" % "3.2.9",
-				"nz.ac.waikato.cms.weka" % "weka-dev" % "3.7.6"
+        "com.lambdaworks" % "jacks_2.11" % "2.3.3",
+		"net.sf.opencsv" % "opencsv" % "2.3",
+		"edu.stanford.nlp" % "stanford-corenlp" % "3.4.1",
+		"edu.stanford.nlp" % "stanford-corenlp" % "3.4.1" classifier "models",
+		"org.apache.lucene" % "lucene-core" % "4.8.1",
+		"org.apache.lucene" % "lucene-analyzers-common" % "4.8.1",
+        "nz.ac.waikato.cms.weka" % "weka-dev" % "3.7.6"
       ),
-				scalateTemplateConfig in Compile <<= (sourceDirectory in Compile){ base =>
+      scalateTemplateConfig in Compile <<= (sourceDirectory in Compile){ base =>
         Seq(
           TemplateConfig(
             base / "webapp" / "WEB-INF" / "templates",

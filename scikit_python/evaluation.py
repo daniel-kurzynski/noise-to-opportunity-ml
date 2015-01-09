@@ -197,6 +197,11 @@ def run_demand(classifier):
 			write_out_demand_posts(
 				set([predict_ids[i] for i, cls in enumerate(y_predict) if cls == "demand"]),
 				"demand_linked_in_posts.csv")
+		elif "single" in args:
+			print len(X_predict)
+			classifier.fit(X_train, y_train)
+			y_predict = classifier.predict(X_predict)
+			print(y_predict)
 		else:
 			cross_validate(ids, classifier, X_train, y_train, "Demand")
 		if "vis" in args:
