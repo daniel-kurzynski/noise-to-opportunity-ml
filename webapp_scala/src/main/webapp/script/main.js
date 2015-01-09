@@ -39,7 +39,7 @@ jQuery(function() {
 					setTextAndAnimate("product", "NONE", "#5bc0de");
 				}
 				data.demand.classificationOutput.relevantFeatures.forEach(function(el) {
-					$demandResults.append("<tr><td>" + el[0] + "</td><td>" + el[1] + "</td></tr>");
+					$demandResults.append("<tr><td>" + el[0] + "</td></tr>");
 				});
 				data.product.forEach(function (el) {
 					// Use templates, if this gets more complicated.
