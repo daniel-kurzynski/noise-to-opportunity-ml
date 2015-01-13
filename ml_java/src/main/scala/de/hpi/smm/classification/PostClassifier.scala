@@ -18,14 +18,33 @@ case class Classification(cls: String, classificationOutput: ClassificationOutpu
 
 class PostClassifier(val featureExtractorBuilder: FeatureExtractorBuilder) {
 
-	val r = new Random
+	val demandClassifier = new Classifier( "demand",
+		featureExtractorBuilder.posts,
+		featureExtractorBuilder.buildDemandFeautureExtractor(),
+		featureExtractorBuilder.dataReader)
 
-	val demandFeatureExtractor = featureExtractorBuilder.buildDemandFeautureExtractor()
-	val demandClassifier = new Classifier("demand", featureExtractorBuilder.posts, demandFeatureExtractor, featureExtractorBuilder.dataReader)
+	val CRMClassifier = new Classifier( "CRM",
+		featureExtractorBuilder.posts,
+		featureExtractorBuilder.buildBroshuresFeatureExtractor("CRM", 2.0, 4.0),
+		featureExtractorBuilder.dataReader)
+
+	val ECOMClassifier = new Classifier( "ECOM",
+		featureExtractorBuilder.posts,
+		featureExtractorBuilder.buildBroshuresFeatureExtractor("ECOM", 1.3, 3.7),
+		featureExtractorBuilder.dataReader)
+
+	val HCMClassifier = new Classifier( "HCM",
+		featureExtractorBuilder.posts,
+		featureExtractorBuilder.buildBroshuresFeatureExtractor("HCM", 2.3, 5.5),
+		featureExtractorBuilder.dataReader)
+
+	val LVMClassifier = new Classifier( "LVM",
+		featureExtractorBuilder.posts,
+		featureExtractorBuilder.buildBroshuresFeatureExtractor("LVM", 3.0, 5.5),
+		featureExtractorBuilder.dataReader)
 
 	def classifyDemand(text: String): Classification = {
-		val classificationOutput = demandClassifier.classProbability(text)
-		Classification("demand", classificationOutput)
+		Classification("demand", demandClassifier.classProbability(text))
 	}
 
 	/**
@@ -33,10 +52,10 @@ class PostClassifier(val featureExtractorBuilder: FeatureExtractorBuilder) {
 	 */
 	def classifyProduct(text: String): List[Classification] = {
 		List(
-			Classification("HCM" , ClassificationOutput(r.nextDouble())),
-			Classification("ECOM", ClassificationOutput(0.6)),
-			Classification("CRM" , ClassificationOutput(0.4)),
-			Classification("LVM" , ClassificationOutput(0.2))
-		)
+			Classification("HCM" , HCMClassifier.classProbability(text)),
+			Classification("ECOM", ECOMClassifier.classProbability(text)),
+			Classification("CRM" ,  CRMClassifier.classProbability(text)),
+			Classification("LVM" ,  LVMClassifier.classProbability(text))
+		).sortBy(-_.classificationOutput.prob)
 	}
 }
