@@ -21,9 +21,9 @@ class FeatureExtractorBuilder(val dataReader: DataReader) {
 		postForCategory ::= post
 	}("category")
 
-	dataReader.readBrochuresLinewise { brochure =>
+	dataReader.readBrochuresLinewise(List("en")) { brochure =>
 		brochures ::= brochure
-	}()
+	}
 
 
 

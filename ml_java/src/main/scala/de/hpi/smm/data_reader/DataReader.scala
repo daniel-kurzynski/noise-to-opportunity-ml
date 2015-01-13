@@ -20,13 +20,13 @@ class DataReader(val classifiedPosts :Map[String, Map[String, Map[String, String
 									val brochuresFile :File,
 									val FOR_ALL_POSTS :Boolean) {
 
-	def readBrochuresLinewise(extractor: Document => Unit, languages: List[String] = List("de", "en"))(count: Int = Int.MaxValue): Unit = {
+	def readBrochuresLinewise(languages: List[String] = List("de", "en"))(extractor: Document => Unit): Unit = {
 		val reader = new CSVReader(new FileReader(brochuresFile))
 
 		var brochuresCount: Int = 1
 		var line: Array[String] = reader.readNext()
 		var lastID = "-1";
-		while (line != null && brochuresCount <= count) {
+		while (line != null && brochuresCount <= Int.MaxValue) {
 			if(line.length<4)
 				println("!"+line(0)+", lastID: "+lastID)
 			val id = line(0)
