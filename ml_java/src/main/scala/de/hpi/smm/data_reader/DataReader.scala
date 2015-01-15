@@ -74,23 +74,23 @@ class DataReader(val classifiedPosts :Map[String, Map[String, Map[String, String
 
 	def detectSentences(rawPost: RawDocument): Seq[Seq[Word]] = {
 		val props = new util.Properties()
-		//		props.put("annotators", "tokenize,ssplit,pos,lemma,ner")
-		props.put("annotators", "tokenize,ssplit,pos")
+//		props.put("annotators", "tokenize,ssplit,pos,lemma,ner")
+		props.put("annotators", "tokenize,ssplit,pos,lemma")
 		if (rawPost.lang == "de") {
-			//			println("Using german")
+//			println("Using german")
 			props.put("pos.model", "../n2o_data/german-fast.tagger")
 		}
 		else if (rawPost.lang == "en" || rawPost.lang == null) Unit
 		else throw new RuntimeException("Unknown language.")
 
-		//		props.put("annotators", "tokenize,ssplit")
+//		props.put("annotators", "tokenize,ssplit")
 
 		// shut down logging, initialize, start logging
 		RedwoodConfiguration.empty().capture(System.err).apply()
 		val pipeline = new StanfordCoreNLP(props)
 		RedwoodConfiguration.current().clear().apply()
 
-		val document = new Annotation(rawPost.wholeText)
+		val document = new Annotation(rawPost.wholeText.toLowerCase)
 		pipeline.annotate(document)
 		val annotatedSentences: util.List[CoreMap] = document.get(classOf[SentencesAnnotation])
 
