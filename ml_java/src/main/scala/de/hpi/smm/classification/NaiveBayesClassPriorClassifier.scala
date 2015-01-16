@@ -14,7 +14,6 @@ class NaiveBayesClassPriorClassifier(nbClassifier: NaiveBayes, classCounts: Arra
 		distribution(1) /= classCounts(1)
 		Utils.normalize(distribution)
 		distribution
-//		throw new RuntimeException("WHY ON EARTH SHOULD I IMPLEMENT THAT.")
 	}
 
 	override def getCapabilities: Capabilities = {
