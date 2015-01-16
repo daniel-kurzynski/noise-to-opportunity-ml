@@ -4,9 +4,6 @@ import de.hpi.smm.data_reader.DataReader
 import de.hpi.smm.domain.Document
 import de.hpi.smm.feature_extraction.FeatureExtractor
 
-/**
- * Created by Daniel on 06.01.2015.
- */
 class FeatureExtractorBuilder(val dataReader: DataReader) {
 
 	var posts = List[Document]()
@@ -27,8 +24,7 @@ class FeatureExtractorBuilder(val dataReader: DataReader) {
 
 
 
-	def buildDemandFeatureExtractor():FeatureExtractor={
-
+	def buildForDemand(): FeatureExtractor = {
 		val smoothing = false
 
 		val features = new FeatureExtractor(smoothing)
@@ -45,14 +41,12 @@ class FeatureExtractorBuilder(val dataReader: DataReader) {
 		}
 
 		features.finishTraining()
-
 		features.removeClassCounts("no-idea")
-
 		features
 	}
 
-	def buildBroshuresFeatureExtractor(clsName:String, thresh1:Double, thresh2:Double):FeatureExtractor={
-		val smoothing = true;
+	def buildForBrochures(clsName:String, thresh1:Double, thresh2:Double): FeatureExtractor = {
+		val smoothing = true
 
 		val features = new FeatureExtractor(smoothing)
 			.needWords(clsName, (thresh1, thresh2))

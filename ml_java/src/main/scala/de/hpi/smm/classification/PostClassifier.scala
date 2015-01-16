@@ -18,29 +18,29 @@ case class Classification(cls: String, classificationOutput: ClassificationOutpu
 
 class PostClassifier(val featureExtractorBuilder: FeatureExtractorBuilder) {
 
-	val demandClassifier = new Classifier( "demand",
+	val demandClassifier = new Classifier("demand",
 		featureExtractorBuilder.posts,
-		featureExtractorBuilder.buildDemandFeatureExtractor(),
+		featureExtractorBuilder.buildForDemand(),
 		featureExtractorBuilder.dataReader)
 
-	val CRMClassifier = new Classifier( "CRM",
+	val CRMClassifier = new Classifier("CRM",
 		featureExtractorBuilder.posts,
-		featureExtractorBuilder.buildBroshuresFeatureExtractor("CRM", 2.0, 5.0),
+		featureExtractorBuilder.buildForBrochures("CRM", 2.0, 5.0),
 		featureExtractorBuilder.dataReader)
 
-	val ECOMClassifier = new Classifier( "ECOM",
+	val ECOMClassifier = new Classifier("ECOM",
 		featureExtractorBuilder.posts,
-		featureExtractorBuilder.buildBroshuresFeatureExtractor("ECOM", 4.0, 100.0),
+		featureExtractorBuilder.buildForBrochures("ECOM", 4.0, 100.0),
 		featureExtractorBuilder.dataReader)
 
-	val HCMClassifier = new Classifier( "HCM",
+	val HCMClassifier = new Classifier("HCM",
 		featureExtractorBuilder.posts,
-		featureExtractorBuilder.buildBroshuresFeatureExtractor("HCM", 3.0, 13.0),
+		featureExtractorBuilder.buildForBrochures("HCM", 3.0, 13.0),
 		featureExtractorBuilder.dataReader)
 
-	val LVMClassifier = new Classifier( "LVM",
+	val LVMClassifier = new Classifier("LVM",
 		featureExtractorBuilder.posts,
-		featureExtractorBuilder.buildBroshuresFeatureExtractor("LVM", 7.0, 35.0),
+		featureExtractorBuilder.buildForBrochures("LVM", 7.0, 35.0),
 		featureExtractorBuilder.dataReader)
 
 	def classifyDemand(text: String): Classification = {

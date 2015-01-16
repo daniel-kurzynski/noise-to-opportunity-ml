@@ -20,7 +20,7 @@ object Main {
 
 	val dataReader = new DataReader(classifiedPosts, postsFile, brochuresFile, FOR_ALL_POSTS)
 
-	val featureExtractorBuilder = new FeatureExtractorBuilder(dataReader)
+	val featureBuilder = new FeatureExtractorBuilder(dataReader)
 
 	def main(args: Array[String]): Unit = {
 		println("Demand Feature Extraction")
@@ -34,7 +34,7 @@ object Main {
 	}
 
 	def runClassifyPost() {
-		val postClassifier = new PostClassifier(featureExtractorBuilder)
+		val postClassifier = new PostClassifier(featureBuilder)
 		val noDemandPost = "This is a Test"
 		val noDemandClassification = postClassifier.classifyDemand(noDemandPost)
 		println(s"$noDemandPost is: ${noDemandClassification.cls} with propability: ${noDemandClassification.classificationOutput.prob}")
@@ -44,12 +44,12 @@ object Main {
 
 		val evaluation = postClassifier.demandClassifier.crossValidate()
 		println(evaluation.toSummaryString("\nResults\n======\n", false))
-		println(evaluation.toMatrixString())
+		println(evaluation.toMatrixString)
 	}
 
 	def runDemandFeatureExtraction(): Unit = {
-		val features = featureExtractorBuilder.buildDemandFeatureExtractor()
-		val posts = featureExtractorBuilder.posts
+		val features = featureBuilder.buildForDemand()
+		val posts = featureBuilder.posts
 
 		val writer = new CSVWriter(new FileWriter(new File("../n2o_data/features.csv")),
 			CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER)
@@ -75,21 +75,19 @@ object Main {
 			("HCM", 3.0, 13.0),
 			("LVM", 7.0, 35.0)
 		).foreach { case (clsName, thresh1, thresh2) =>
+			val features = featureBuilder.buildForBrochures(clsName, thresh1, thresh2)
+			val brochures = featureBuilder.brochures
+			val postForCategory = featureBuilder.postForCategory
 
-			val features = featureExtractorBuilder.buildBroshuresFeatureExtractor(clsName, thresh1, thresh2)
-			val posts = featureExtractorBuilder.posts
-			val brochures = featureExtractorBuilder.brochures
-			val postForCategory = featureExtractorBuilder.postForCategory
-
-			val writer = new CSVWriter(new FileWriter(new File(s"../n2o_data/features_${clsName.toLowerCase}.csv")),
+			val clsFeatures = new CSVWriter(new FileWriter(new File(s"../n2o_data/features_${clsName.toLowerCase}.csv")),
 				CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER)
 
-			writer.writeNext(features.names)
+			clsFeatures.writeNext(features.names)
 			features.buildFeatureVectors(brochures, { (post, instance) =>
 				val outputLine = buildLine(post, instance, clsName)
-				writer.writeNext(outputLine)
+				clsFeatures.writeNext(outputLine)
 			})
-			writer.close()
+			clsFeatures.close()
 
 
 			val testWriter = new CSVWriter(new FileWriter(new File(s"../n2o_data/features_test_${clsName.toLowerCase}.csv")),
