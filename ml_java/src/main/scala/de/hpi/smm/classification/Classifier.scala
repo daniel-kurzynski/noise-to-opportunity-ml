@@ -16,13 +16,13 @@ class Classifier(val className: String, val documents: List[Document], val featu
 
 	val classNamesVector = new util.ArrayList[String]()
 	classNamesVector.add(className)
-	classNamesVector.add("no-"+className)
+	classNamesVector.add("no-" + className)
 
 	val classAttribute = new Attribute("@@class@@", classNamesVector)
 
 
 	for (featureName <- featureExtractor.names) {
-		if (featureName != "CLASS" && featureName != "id"){
+		if (featureName != "CLASS" && featureName != "id") {
 			attributes.add(new Attribute(featureName))
 		}
 	}
@@ -95,7 +95,8 @@ class Classifier(val className: String, val documents: List[Document], val featu
 		val plainText = new PlainText()
 		plainText.setBuffer(buffer)
 		plainText.setOutputDistribution(true)
-		evaluation.crossValidateModel(classifier, instances, 10, new Random(18), plainText)
+		val counts = featureExtractor.genericCounter.classCounts
+		evaluation.crossValidateModel(new NaiveBayesClassPriorClassifier(classifier, Array(counts(className), counts.values.sum - counts(className))), instances, 10, new Random(18), plainText)
 
 		println(plainText.getBuffer)
 		evaluation
