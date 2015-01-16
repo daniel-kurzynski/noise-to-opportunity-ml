@@ -26,14 +26,14 @@ object Main {
 		println("Demand Feature Extraction")
 		runDemandFeatureExtraction()
 
-  	println("Brochure Feature Extraction")
+		println("Brochure Feature Extraction")
 		runBrochureFeatureExtraction()
 
 		 //println("Classify Post")
 		 //runClassifiyPost()
 	}
 
-	def runClassifiyPost() {
+	def runClassifyPost() {
 		val postClassifier = new PostClassifier(featureExtractorBuilder)
 		val noDemandPost = "This is a Test"
 		val noDemandClassification = postClassifier.classifyDemand(noDemandPost)
@@ -48,7 +48,6 @@ object Main {
 	}
 
 	def runDemandFeatureExtraction(): Unit = {
-
 		val features = featureExtractorBuilder.buildDemandFeatureExtractor()
 		val posts = featureExtractorBuilder.posts
 
@@ -70,7 +69,6 @@ object Main {
 	}
 
 	def runBrochureFeatureExtraction(): Unit = {
-
 		List(
 			("CRM", 2.0, 5.0),
 			("ECOM", 4.0, 100.0),
