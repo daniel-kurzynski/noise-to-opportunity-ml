@@ -43,10 +43,6 @@ case class Document(
 	               sentences: Seq[Seq[Word]],
 	               documentClass: String) {
 
-	/*
-	 * Helper functions for quick access to necessary data structures
-	 */
-	def wholeText: String = s"$title $text"
 
 	def textTokens: Seq[String] = {
 		sentences.flatMap { sentence =>
