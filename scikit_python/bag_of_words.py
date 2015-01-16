@@ -3,7 +3,7 @@ import simplejson as json, numpy as np, collections
 
 from preprocessing import CSVReader
 
-def get_labeled_posts(key, exclude):
+def get_labeled_posts(key, exclude = ""):
 	with open('../webapp_python/data/classification.json') as infile:
 		classification = json.JSONDecoder(object_pairs_hook=collections.OrderedDict).decode(infile.read())
 
