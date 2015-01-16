@@ -27,9 +27,9 @@ class FeatureExtractorBuilder(val dataReader: DataReader) {
 
 
 
-	def buildDemandFeautureExtractor():FeatureExtractor={
+	def buildDemandFeatureExtractor():FeatureExtractor={
 
-		val smoothing = false;
+		val smoothing = false
 
 		val features = new FeatureExtractor(smoothing)
 			.needWords("demand", (5.0, 2.0))
