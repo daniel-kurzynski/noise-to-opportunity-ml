@@ -31,7 +31,7 @@ class active_learner(object):
 
 	def load_classification(self):
 		"""Called once in the initialization to load the already existing classification file."""
-		with open('data/classification.json') as infile:
+		with open('../n2o_data/classification_updates/latest.json') as infile:
 			self.classification = json.JSONDecoder(object_pairs_hook=collections.OrderedDict).decode(infile.read())
 
 	def save_classification(self):
