@@ -26,6 +26,9 @@ object Main {
 		//println("Demand Feature Extraction")
 		//runDemandFeatureExtraction()
 
+		//println("Brochure Feature Extraction")
+		//runBrochureFeatureExtraction()
+
 		 println("Classify Post")
 		 runClassifyPost()
 	}
@@ -40,6 +43,29 @@ object Main {
 		val evaluation = postClassifier.demandClassifier.crossValidate()
 		println(evaluation.toSummaryString(f"%nResults%n======%n", false))
 		println(evaluation.toMatrixString)
+
+//		val hcmEvaluation = postClassifier.HCMClassifier.validate()
+//		println(hcmEvaluation.toSummaryString(f"%nResults%n======%n", false))
+//		println(hcmEvaluation.toMatrixString)
+//
+//		val ecomEvaluation = postClassifier.ECOMClassifier.validate()
+//		println(ecomEvaluation.toSummaryString(f"%nResults%n======%n", false))
+//		println(ecomEvaluation.toMatrixString)
+//
+//		val lvmEvaluation = postClassifier.LVMClassifier.validate()
+//		println(lvmEvaluation.toSummaryString(f"%nResults%n======%n", false))
+//		println(lvmEvaluation.toMatrixString)
+//
+//		val crmEvaluation = postClassifier.CRMClassifier.validate()
+//		println(crmEvaluation.toSummaryString(f"%nResults%n======%n", false))
+//		println(crmEvaluation.toMatrixString)
+
+		val productEvaluation = postClassifier.productClassifier.validate()
+		println(productEvaluation.toSummaryString(f"%nResults%n======%n", false))
+		println(productEvaluation.toMatrixString)
+
+
+
 	}
 
 	def runDemandFeatureExtraction(): Unit = {

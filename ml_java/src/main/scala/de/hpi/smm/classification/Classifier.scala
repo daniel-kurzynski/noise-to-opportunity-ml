@@ -96,7 +96,7 @@ class Classifier(val className: String, val documents: List[Document], val featu
 		plainText.setBuffer(buffer)
 		plainText.setOutputDistribution(true)
 		val counts = featureExtractor.genericCounter.classCounts
-		evaluation.crossValidateModel(new NaiveBayesClassPriorClassifier(classifier, Array(counts(className), counts.values.sum - counts(className))), instances, 10, new Random(18), plainText)
+		evaluation.crossValidateModel(new PriorClassifier(classifier, Array(1.0 / counts(className), 100.0 / (counts.values.sum - counts(className)))), instances, 10, new Random(18), plainText)
 
 		println(plainText.getBuffer)
 		evaluation

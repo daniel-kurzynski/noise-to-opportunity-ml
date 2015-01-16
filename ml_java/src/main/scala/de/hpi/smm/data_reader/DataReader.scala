@@ -60,7 +60,7 @@ class DataReader(val classifiedPosts :Map[String, Map[String, Map[String, String
 			val rawPost = RawDocument(id, title, text, classifiedPosts.get(id).orNull)
 
 			val isClassifiedPost = classifiedPosts.contains(id)
-			if (rawPost.id == "our_post" || isClassifiedPost) {
+			if (isClassifiedPost) {
 				val sentences = detectSentences(rawPost)
 				val post = Document(id, title, text, sentences, rawPost.extract(className))
 

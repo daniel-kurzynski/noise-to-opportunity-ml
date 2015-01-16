@@ -13,25 +13,30 @@ class NTOAnalyzer(featureExtractorBuilder: FeatureExtractorBuilder) {
 		featureExtractorBuilder.buildForDemand(),
 		featureExtractorBuilder.dataReader)
 
-	val CRMClassifier = new Classifier("CRM",
+	val productClassifier = new MultiProductClassifier(
 		featureExtractorBuilder.brochures,
-		featureExtractorBuilder.buildForBrochures("CRM", 1.1, 6.0),
+		featureExtractorBuilder.postForCategory,
 		featureExtractorBuilder.dataReader)
 
-	val ECOMClassifier = new Classifier("ECOM",
-		featureExtractorBuilder.brochures,
-		featureExtractorBuilder.buildForBrochures("ECOM", 1.8, 100.0),
-		featureExtractorBuilder.dataReader)
-
-	val HCMClassifier = new Classifier("HCM",
-		featureExtractorBuilder.brochures,
-		featureExtractorBuilder.buildForBrochures("HCM", 2.0, 10.0),
-		featureExtractorBuilder.dataReader)
-
-	val LVMClassifier = new Classifier("LVM",
-		featureExtractorBuilder.brochures,
-		featureExtractorBuilder.buildForBrochures("LVM", 3.4, 10.0),
-		featureExtractorBuilder.dataReader)
+//	val CRMClassifier = new ProductClassifier("CRM",
+//		featureExtractorBuilder.brochures,
+//		featureExtractorBuilder.postForCategory,
+//		featureExtractorBuilder.dataReader)
+//
+//	val ECOMClassifier = new ProductClassifier("ECOM",
+//		featureExtractorBuilder.brochures,
+//		featureExtractorBuilder.postForCategory,
+//		featureExtractorBuilder.dataReader)
+//
+//	val HCMClassifier = new ProductClassifier("HCM",
+//		featureExtractorBuilder.brochures,
+//		featureExtractorBuilder.postForCategory,
+//		featureExtractorBuilder.dataReader)
+//
+//	val LVMClassifier = new ProductClassifier("LVM",
+//		featureExtractorBuilder.brochures,
+//		featureExtractorBuilder.postForCategory,
+//		featureExtractorBuilder.dataReader)
 
 	def classifyDemand(text: String): Classification = {
 		Classification("demand", demandClassifier.classProbability(text))
@@ -41,11 +46,11 @@ class NTOAnalyzer(featureExtractorBuilder: FeatureExtractorBuilder) {
 	 * Returns an ordered list of classifications.
 	 */
 	def classifyProduct(text: String): List[Classification] = {
-		List(
-			Classification("HCM" , HCMClassifier.classProbability(text)),
-			Classification("ECOM", ECOMClassifier.classProbability(text)),
-			Classification("CRM" , CRMClassifier.classProbability(text)),
-			Classification("LVM" , LVMClassifier.classProbability(text))
+		List[Classification](
+//			Classification("HCM" , HCMClassifier.classProbability(text)),
+//			Classification("ECOM", ECOMClassifier.classProbability(text)),
+//			Classification("CRM" , CRMClassifier.classProbability(text)),
+//			Classification("LVM" , LVMClassifier.classProbability(text))
 		).sortBy(-_.classificationOutput.prob)
 	}
 }
