@@ -174,11 +174,14 @@ def write_out_demand_posts(ids, fname):
 				if line.split(",")[0][1:-1] in ids:
 					out.write(line)
 
-def run_demand(classifier):
-	t = "===== Demand Evaluation of %s =====" %classifier.__class__.__name__
-	print t
+def run_demand(classifierDict):
 	from bag_of_words    import build_demand_data as bow
 	from custom_features import build_demand_data as custom_features
+
+	classifier = classifierDict.get("all",classifierDict.get("demand"))
+
+	t = "===== Demand Evaluation of %s =====" %classifier.__class__.__name__
+	print t
 
 	build_datas = []
 	if "bow" in args:
@@ -208,9 +211,7 @@ def run_demand(classifier):
 			visualize_posts(X_train,y_train , X_predict)
 	print "=" * len(t)
 
-def run_product(classifier):
-	t = "===== Product Evaluation of %s =====" %classifier.__class__.__name__
-	print t
+def run_product(classifierDict):
 	from bag_of_words import build_product_data as bow
 	from custom_features import build_product_data as custom_features
 
@@ -220,7 +221,15 @@ def run_product(classifier):
 		"HCM",
 		"LVM",
 	]
+
 	for class_name in product_classes:
+
+		classifier = classifierDict.get("all",classifierDict.get(class_name))
+	
+		t = "===== Product Evaluation of %s for %s =====" %(classifier.__class__.__name__,class_name)
+		print t
+
+
 		build_datas = []
 		if "bow" in args:
 			build_datas.append(bow)
@@ -295,16 +304,22 @@ class VotingClassifier(BaseEstimator):
 
 class Classifiers(object):
 	CLASSIFIERS = [
-		LogisticRegression(),
-		Perceptron(n_iter = 50),
-		MultinomialNB(),
-		DecisionTreeClassifier(),
-		SGDClassifier(),
-		RidgeClassifier(),
-		LinearSVC(),
-		BernoulliNB(class_prior = [0.1, 0.5])]
-	average_classifier = VotingClassifier(CLASSIFIERS[:])
-	CLASSIFIERS.append(average_classifier)
+		{"all": LogisticRegression()},
+		{"all": Perceptron(n_iter = 50)},
+		{"all": MultinomialNB()},
+		{"all": DecisionTreeClassifier()},
+		{"all": SGDClassifier()},
+		{"all": RidgeClassifier()},
+		{"all": LinearSVC()},
+		{
+			"demand": BernoulliNB(class_prior = [0.6, 0.4]),
+			"HCM": BernoulliNB(class_prior = [0.6, 0.4]),
+			"ECOM": BernoulliNB(class_prior = [0.6, 0.4]),
+			"LVM": BernoulliNB(class_prior = [0.6, 0.4]),
+			"CRM": BernoulliNB(class_prior = [0.6, 0.4])
+		}]
+	# average_classifier = VotingClassifier(CLASSIFIERS[:])
+	# CLASSIFIERS.append(average_classifier)
 
 	LOG_REGRESSION, \
 	PERCEPTRON, \
@@ -313,8 +328,7 @@ class Classifiers(object):
 	SGD, \
 	RIDGE, \
 	LIN_SVC, \
-	BERNOULLI_NB, \
-	VOTING = range(len(CLASSIFIERS))
+	BERNOULLI_NB = range(len(CLASSIFIERS))
 
 if __name__ == "__main__":
 	args = sys.argv
@@ -325,17 +339,17 @@ if __name__ == "__main__":
 		print "Writeout positive classified posts(demand and product): writeout"
 		sys.exit(0)
 
-	classifier = Classifiers.CLASSIFIERS[Classifiers.BERNOULLI_NB]
+	classifierDict = Classifiers.CLASSIFIERS[Classifiers.BERNOULLI_NB]
 
 	if "all" in args:
-		for cl in Classifiers.CLASSIFIERS:
+		for cld in Classifiers.CLASSIFIERS:
 			if "demand" in args:
-				run_demand(cl)
+				run_demand(cld)
 			if "product" in args:
-				run_product(cl)
+				run_product(cld)
 	else:
 		if "demand" in args:
-			run_demand(classifier)
+			run_demand(classifierDict)
 		if "product" in args:
-			run_product(classifier)
+			run_product(classifierDict)
 
