@@ -1,0 +1,33 @@
+===== Product Evaluation of KNeighborsClassifier =====
+=== Bag of Words Extractor ===
+83 345
+Labels:          CRM    no-CRM 
+Recall:        0.8333   0.6728 
+Precision:     0.1230   0.9865 
+[[ 15   3]
+ [107 220]]
+======================================================
+=== Bag of Words Extractor ===
+83 345
+Labels:         ECOM    no-ECOM
+Recall:        0.4286   0.9320 
+Precision:     0.1154   0.9875 
+[[  3   4]
+ [ 23 315]]
+======================================================
+=== Bag of Words Extractor ===
+83 345
+Labels:          HCM    no-HCM 
+Recall:        0.3333   0.9399 
+Precision:     0.1667   0.9751 
+[[  4   8]
+ [ 20 313]]
+======================================================
+=== Bag of Words Extractor ===
+83 345
+Labels:          LVM    no-LVM 
+Recall:        0.1290   0.8905 
+Precision:     0.2051   0.8235 
+[[  8  54]
+ [ 31 252]]
+======================================================

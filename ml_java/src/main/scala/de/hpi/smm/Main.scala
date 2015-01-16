@@ -4,7 +4,7 @@ import java.io.{File, FileReader, FileWriter}
 
 import au.com.bytecode.opencsv.CSVWriter
 import com.lambdaworks.jacks.JacksMapper
-import de.hpi.smm.classification.PostClassifier
+import de.hpi.smm.classification.NTOAnalyzer
 import de.hpi.smm.data_reader.DataReader
 import de.hpi.smm.domain._
 import Constants._
@@ -20,37 +20,31 @@ object Main {
 
 	val dataReader = new DataReader(classifiedPosts, postsFile, brochuresFile, FOR_ALL_POSTS)
 
-	val featureExtractorBuilder = new FeatureExtractorBuilder(dataReader)
+	val featureBuilder = new FeatureExtractorBuilder(dataReader)
 
 	def main(args: Array[String]): Unit = {
-		println("Demand Feature Extraction")
-		runDemandFeatureExtraction()
+		//println("Demand Feature Extraction")
+		//runDemandFeatureExtraction()
 
-  	println("Brochure Feature Extraction")
-		runBrochureFeatureExtraction()
-
-//		 println("Classify Post")
-//		 runClassifiyPost()
+		 println("Classify Post")
+		 runClassifyPost()
 	}
 
-	def runClassifiyPost() {
-		val postClassifier = new PostClassifier(featureExtractorBuilder)
-		val noDemandPost = "This is a Test"
-		val noDemandClassification = postClassifier.classifyDemand(noDemandPost)
-		println(s"$noDemandPost is: ${noDemandClassification.cls} with propability: ${noDemandClassification.classificationOutput.prob}")
-		val demandPost = "I need help"
+	def runClassifyPost() {
+		val postClassifier = new NTOAnalyzer(featureBuilder)
+
+		val demandPost = "I need help. I am looking for support. Thanks in advance."
 		val demandClassification = postClassifier.classifyDemand(demandPost)
 		println(s"$demandPost is: ${demandClassification.cls} with propability: ${demandClassification.classificationOutput.prob}")
 
 		val evaluation = postClassifier.demandClassifier.crossValidate()
-		println(evaluation.toSummaryString("\nResults\n======\n", false))
-		println(evaluation.toMatrixString())
+		println(evaluation.toSummaryString(f"%nResults%n======%n", false))
+		println(evaluation.toMatrixString)
 	}
 
 	def runDemandFeatureExtraction(): Unit = {
-
-		val features = featureExtractorBuilder.buildDemandFeatureExtractor()
-		val posts = featureExtractorBuilder.posts
+		val features = featureBuilder.buildForDemand()
+		val posts = featureBuilder.posts
 
 		val writer = new CSVWriter(new FileWriter(new File("../n2o_data/features.csv")),
 			CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER)
@@ -70,28 +64,25 @@ object Main {
 	}
 
 	def runBrochureFeatureExtraction(): Unit = {
-
 		List(
-			("CRM", 2.0, 4.0),
-			("ECOM", 1.3, 3.7),
-			("HCM", 2.3, 5.5),
-			("LVM", 3.0, 5.5)
+			("CRM", 1.1, 6.0),
+			("ECOM", 1.8, 100.0),
+			("HCM", 2.0, 10.0),
+			("LVM", 3.4, 10.0)
 		).foreach { case (clsName, thresh1, thresh2) =>
+			val features = featureBuilder.buildForBrochures(clsName, thresh1, thresh2)
+			val brochures = featureBuilder.brochures
+			val postForCategory = featureBuilder.postForCategory
 
-			val features = featureExtractorBuilder.buildBroshuresFeatureExtractor(clsName, thresh1, thresh2)
-			val posts = featureExtractorBuilder.posts
-			val brochures = featureExtractorBuilder.brochures
-			val postForCategory = featureExtractorBuilder.postForCategory
-
-			val writer = new CSVWriter(new FileWriter(new File(s"../n2o_data/features_${clsName.toLowerCase}.csv")),
+			val clsFeatures = new CSVWriter(new FileWriter(new File(s"../n2o_data/features_${clsName.toLowerCase}.csv")),
 				CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER)
 
-			writer.writeNext(features.names)
+			clsFeatures.writeNext(features.names)
 			features.buildFeatureVectors(brochures, { (post, instance) =>
 				val outputLine = buildLine(post, instance, clsName)
-				writer.writeNext(outputLine)
+				clsFeatures.writeNext(outputLine)
 			})
-			writer.close()
+			clsFeatures.close()
 
 
 			val testWriter = new CSVWriter(new FileWriter(new File(s"../n2o_data/features_test_${clsName.toLowerCase}.csv")),
@@ -99,16 +90,16 @@ object Main {
 
 			testWriter.writeNext(features.names)
 				features.buildFeatureVectors(postForCategory, { (post, instance) =>
-				val outputLine = buildLine(post, instance, clsName, true)
+				val outputLine = buildLine(post, instance, clsName, false)
 				testWriter.writeNext(outputLine)
 			})
 
 			testWriter.close()
 
 			println(s"=== $clsName ===")
-			features.takeTopOccurrence(clsName, thresh1).take(3).foreach(println)
+			features.takeTopOccurrence(clsName, thresh1).foreach(println)
 			println("======")
-			features.takeTopNotOccurrence(clsName, thresh2).take(3).foreach(println)
+			features.takeTopNotOccurrence(clsName, thresh2).foreach(println)
 		}
 
 	}

@@ -1,0 +1,4141 @@
+{
+  "g-163782-S-258258317": {
+    "category": {
+      "daniel": "None",
+      "dima": "None"
+    },
+    "demand": {
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-2722583-S-169721841": {
+    "category": {
+      "dima": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-4278743-S-244835634": {
+    "category": {
+      "daniel": "None",
+      "dima": "None"
+    },
+    "demand": {
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-45151-S-5925313602381697024": {
+    "category": {
+      "dima": "HCM",
+      "daniel": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "daniel": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-2795205-S-5914665860206710787": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand"
+    }
+  },
+  "g-4278743-S-5850479442673020932": {
+    "category": {
+      "stefan": "LVM",
+      "daniel": "HCM",
+      "dima": "HCM"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-7475927-S-5867322566900752389": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand"
+    }
+  },
+  "g-87137-S-231326175": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand"
+    }
+  },
+  "g-679377-S-117120260": {
+    "category": {
+      "stefan": "CRM",
+      "daniel": "None",
+      "dima": "CRM"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-2835233-S-5849172841685078017": {
+    "category": {
+      "stefan": "LVM",
+      "daniel": "None",
+      "dima": "LVM"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-130388-S-166371548": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand"
+    }
+  },
+  "g-130388-S-141154519": {
+    "category": {
+      "daniel": "None",
+      "dima": "None"
+    },
+    "demand": {
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-2835233-S-202945438": {
+    "category": {
+      "dima": "LVM",
+      "stefan": "LVM"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-2835233-S-5851768895077117956": {
+    "category": {
+      "stefan": "LVM",
+      "daniel": "None",
+      "dima": "LVM"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-3120872-S-135346850": {
+    "category": {
+      "stefan": "CRM",
+      "daniel": "None",
+      "dima": "CRM"
+    },
+    "demand": {
+      "stefan": "demand",
+      "daniel": "demand",
+      "dima": "demand"
+    }
+  },
+  "g-3823270-S-53756083": {
+    "category": {
+      "daniel": "LVM",
+      "dima": "LVM"
+    },
+    "demand": {
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-163782-S-274044440": {
+    "category": {
+      "daniel": "None",
+      "dima": "None"
+    },
+    "demand": {
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-36867-S-5923562334776745986": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None",
+      "dima": "None"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-138840-S-5894431512215986178": {
+    "category": {
+      "dima": "CRM",
+      "daniel": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "daniel": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-4278743-S-257505751": {
+    "category": {
+      "stefan": "HCM",
+      "daniel": "HCM",
+      "dima": "LVM"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-2795205-S-5920483351579340801": {
+    "category": {
+      "stefan": "LVM"
+    },
+    "demand": {
+      "stefan": "no-demand"
+    }
+  },
+  "g-2851559-S-5890512019227951108": {
+    "category": {
+      "daniel": "LVM",
+      "dima": "LVM"
+    },
+    "demand": {
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-130388-S-108825172": {
+    "category": {
+      "dima": "LVM",
+      "daniel": "LVM",
+      "stefan": "LVM"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "daniel": "demand",
+      "stefan": "demand"
+    }
+  },
+  "g-3712546-S-82047744": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand"
+    }
+  },
+  "g-2030051-S-182414868": {
+    "category": {
+      "stefan": "CRM",
+      "daniel": "CRM"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand"
+    }
+  },
+  "g-2856284-S-5808380462661406720": {
+    "category": {
+      "dima": "None",
+      "daniel": "LVM",
+      "stefan": "LVM"
+    },
+    "demand": {
+      "dima": "demand",
+      "daniel": "demand",
+      "stefan": "demand"
+    }
+  },
+  "g-4278743-S-5808558235589824513": {
+    "category": {
+      "daniel": "HCM",
+      "dima": "HCM"
+    },
+    "demand": {
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-163782-S-226109216": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand"
+    }
+  },
+  "g-2851559-S-215599226": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None",
+      "dima": "HCM"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-2328916-S-5879159199232987137": {
+    "category": {
+      "dima": "CRM",
+      "daniel": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "daniel": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-163782-S-266357752": {
+    "category": {
+      "daniel": "None",
+      "dima": "None"
+    },
+    "demand": {
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-2209101-S-43667645": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None"
+    },
+    "demand": {
+      "stefan": "demand",
+      "daniel": "demand"
+    }
+  },
+  "g-2722583-S-169721648": {
+    "category": {
+      "dima": "ECOM",
+      "daniel": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "daniel": "no-idea",
+      "stefan": "no-idea"
+    }
+  },
+  "g-679377-S-115135298": {
+    "category": {
+      "stefan": "CRM",
+      "daniel": "None",
+      "dima": "CRM"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-2855549-S-107245346": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand"
+    }
+  },
+  "g-3803500-S-5916546509469425666": {
+    "category": {
+      "stefan": "ECOM",
+      "daniel": "ECOM",
+      "dima": "HCM"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-2030051-S-110431792": {
+    "category": {
+      "stefan": "None",
+      "daniel": "LVM",
+      "dima": "None"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-37264-S-5930257289062682628": {
+    "category": {
+      "daniel": "None",
+      "dima": "None"
+    },
+    "demand": {
+      "daniel": "no-idea",
+      "dima": "no-idea"
+    }
+  },
+  "g-4278743-S-5849479181632552963": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand"
+    }
+  },
+  "g-4292855-S-5919792124106129410": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None",
+      "dima": "None"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "demand",
+      "dima": "demand"
+    }
+  },
+  "g-2056644-S-5914830774246334465": {
+    "category": {
+      "dima": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-2856284-S-277582399": {
+    "category": {
+      "dima": "ECOM",
+      "daniel": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "demand",
+      "daniel": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-37264-S-5859973428802519043": {
+    "category": {
+      "dima": "HCM",
+      "daniel": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "daniel": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-3095545-S-5855329573285150723": {
+    "category": {
+      "dima": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-2722583-S-119331894": {
+    "category": {
+      "dima": "None",
+      "daniel": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "daniel": "no-idea",
+      "stefan": "no-idea"
+    }
+  },
+  "g-3795605-S-5920228101941383170": {
+    "category": {
+      "dima": "LVM",
+      "daniel": "LVM",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "daniel": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-45151-S-5920251314855497732": {
+    "category": {
+      "dima": "LVM",
+      "daniel": "LVM",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "daniel": "no-demand",
+      "stefan": "demand"
+    }
+  },
+  "g-1161997-S-143938299": {
+    "category": {
+      "daniel": "None",
+      "dima": "None"
+    },
+    "demand": {
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-2328916-S-5905610200542384131": {
+    "category": {
+      "dima": "LVM",
+      "daniel": "LVM",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "daniel": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-2856284-S-5915826726436372483": {
+    "category": {
+      "dima": "None",
+      "daniel": "LVM",
+      "stefan": "LVM"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "daniel": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-679377-S-5858224724198322177": {
+    "category": {
+      "dima": "CRM",
+      "daniel": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "demand",
+      "daniel": "no-demand",
+      "stefan": "demand"
+    }
+  },
+  "g-3761-S-224691201": {
+    "category": {
+      "dima": "None",
+      "daniel": "None",
+      "stefan": "HCM"
+    },
+    "demand": {
+      "dima": "demand",
+      "daniel": "demand",
+      "stefan": "demand"
+    }
+  },
+  "g-38731-S-5902550728727089153": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand"
+    }
+  },
+  "g-2835233-S-5849113724358516737": {
+    "category": {
+      "daniel": "None",
+      "dima": "None"
+    },
+    "demand": {
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-163782-S-5794087390884675588": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None",
+      "dima": "None"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-114094-S-232514678": {
+    "category": {
+      "daniel": "LVM",
+      "dima": "LVM"
+    },
+    "demand": {
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-61513-S-246426546": {
+    "category": {
+      "stefan": "LVM",
+      "daniel": "LVM"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand"
+    }
+  },
+  "g-2196290-S-5871663074875842560": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand"
+    }
+  },
+  "g-7440947-S-5892252078927028224": {
+    "category": {
+      "stefan": "None",
+      "daniel": "LVM",
+      "dima": "None"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-2835233-S-5848729117846953988": {
+    "category": {
+      "stefan": "LVM",
+      "daniel": "LVM"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand"
+    }
+  },
+  "g-107453-S-5798112712781213698": {
+    "category": {
+      "stefan": "LVM"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-163782-S-5798172245226442755": {
+    "category": {
+      "daniel": "None",
+      "dima": "None"
+    },
+    "demand": {
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-80937-S-5824102326972997633": {
+    "category": {
+      "dima": "CRM",
+      "daniel": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "demand",
+      "daniel": "demand",
+      "stefan": "demand"
+    }
+  },
+  "g-2835233-S-5849175179795660801": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None",
+      "dima": "ECOM"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-138840-S-5879159858850197504": {
+    "category": {
+      "dima": "CRM",
+      "daniel": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "daniel": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-138840-S-5917672042445963265": {
+    "category": {
+      "daniel": "None"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand"
+    }
+  },
+  "g-2795205-S-5925039137190064129": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand"
+    }
+  },
+  "g-2835233-S-5847472535788085252": {
+    "category": {
+      "stefan": "ECOM",
+      "daniel": "None",
+      "dima": "ECOM"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-4292855-S-5920033017509728259": {
+    "category": {
+      "dima": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-2127179-S-5797981049828950016": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None"
+    },
+    "demand": {
+      "stefan": "demand",
+      "daniel": "demand"
+    }
+  },
+  "g-2196290-S-5874648807030943746": {
+    "category": {
+      "daniel": "None",
+      "dima": "None"
+    },
+    "demand": {
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-3861845-S-63689796": {
+    "category": {
+      "dima": "CRM",
+      "daniel": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "daniel": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-87137-S-193042889": {
+    "category": {
+      "daniel": "None",
+      "dima": "None"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-idea",
+      "dima": "no-idea"
+    }
+  },
+  "g-38731-S-232439313": {
+    "category": {
+      "daniel": "None",
+      "dima": "None"
+    },
+    "demand": {
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-2328916-S-5894430773653577731": {
+    "category": {
+      "dima": "CRM",
+      "daniel": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "daniel": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-3120872-S-144954747": {
+    "category": {
+      "stefan": "CRM",
+      "daniel": "None",
+      "dima": "CRM"
+    },
+    "demand": {
+      "stefan": "demand",
+      "daniel": "demand",
+      "dima": "demand"
+    }
+  },
+  "g-163782-S-221288572": {
+    "category": {
+      "daniel": "None",
+      "dima": "None"
+    },
+    "demand": {
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-4066593-S-5909838194706235395": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None"
+    },
+    "demand": {
+      "stefan": "demand",
+      "daniel": "demand"
+    }
+  },
+  "g-107453-S-92831092": {
+    "category": {
+      "dima": "None",
+      "daniel": "LVM",
+      "stefan": "LVM"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "daniel": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-107453-S-45788180": {
+    "category": {
+      "stefan": "None",
+      "daniel": "LVM",
+      "dima": "None"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-4278743-S-5819795185000787972": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand"
+    }
+  },
+  "g-3803500-S-5914831134402830340": {
+    "category": {
+      "daniel": "ECOM",
+      "dima": "ECOM"
+    },
+    "demand": {
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-2851559-S-5820892879291166722": {
+    "category": {
+      "dima": "LVM",
+      "daniel": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "daniel": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-150224-S-220643620": {
+    "category": {
+      "dima": "ECOM",
+      "daniel": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "daniel": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-4066593-S-5869660033557487616": {
+    "category": {
+      "daniel": "None",
+      "dima": "None"
+    },
+    "demand": {
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-3120872-S-138620840": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None"
+    },
+    "demand": {
+      "stefan": "demand",
+      "daniel": "demand"
+    }
+  },
+  "g-100358-S-5926382416045318148": {
+    "category": {
+      "stefan": "CRM",
+      "daniel": "CRM",
+      "dima": "CRM"
+    },
+    "demand": {
+      "stefan": "demand",
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-163782-S-5808928862096080899": {
+    "category": {
+      "daniel": "None",
+      "dima": "None"
+    },
+    "demand": {
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-36867-S-5929722246997250051": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None",
+      "dima": "CRM"
+    },
+    "demand": {
+      "stefan": "demand",
+      "daniel": "demand",
+      "dima": "demand"
+    }
+  },
+  "g-163782-S-271631412": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None",
+      "dima": "None"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-4058319-S-5882832636073775106": {
+    "category": {
+      "stefan": "LVM",
+      "daniel": "None",
+      "dima": "LVM"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-4066593-S-5888971464283021313": {
+    "category": {
+      "dima": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-679377-S-5926307634155106308": {
+    "category": {
+      "dima": "LVM",
+      "daniel": "LVM",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "daniel": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-3795605-S-5921706276135383041": {
+    "category": {
+      "stefan": "None",
+      "daniel": "LVM",
+      "dima": "None"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-2856284-S-145114310": {
+    "category": {
+      "stefan": "LVM",
+      "daniel": "None",
+      "dima": "LVM"
+    },
+    "demand": {
+      "stefan": "demand",
+      "daniel": "demand",
+      "dima": "demand"
+    }
+  },
+  "g-679377-S-115486978": {
+    "category": {
+      "stefan": "CRM",
+      "daniel": "None",
+      "dima": "CRM"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-2209101-S-236554485": {
+    "category": {
+      "dima": "LVM",
+      "stefan": "LVM"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-3120872-S-209465858": {
+    "category": {
+      "stefan": "CRM",
+      "daniel": "CRM",
+      "dima": "CRM"
+    },
+    "demand": {
+      "stefan": "demand",
+      "daniel": "no-demand",
+      "dima": "demand"
+    }
+  },
+  "g-2056644-S-5860254639546474497": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand"
+    }
+  },
+  "g-3239106-S-5901056034335645696": {
+    "category": {
+      "stefan": "LVM"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-130388-S-267594867": {
+    "category": {
+      "dima": "LVM",
+      "daniel": "LVM",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "daniel": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-98001-S-5916509267464069120": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None",
+      "dima": "HCM"
+    },
+    "demand": {
+      "stefan": "demand",
+      "daniel": "demand",
+      "dima": "demand"
+    }
+  },
+  "g-150224-S-5838504391992168452": {
+    "category": {
+      "stefan": "CRM",
+      "daniel": "CRM"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand"
+    }
+  },
+  "g-2447704-S-266915911": {
+    "category": {
+      "dima": "None",
+      "daniel": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "daniel": "no-idea",
+      "stefan": "no-idea"
+    }
+  },
+  "g-80937-S-269353433": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand"
+    }
+  },
+  "g-130388-S-267143782": {
+    "category": {
+      "dima": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-3697357-S-262008257": {
+    "category": {
+      "dima": "CRM",
+      "daniel": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "daniel": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-2855549-S-112613568": {
+    "category": {
+      "dima": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-38891-S-5922460369355288576": {
+    "category": {
+      "dima": "None",
+      "daniel": "None",
+      "stefan": "HCM"
+    },
+    "demand": {
+      "dima": "demand",
+      "daniel": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-73825-S-5910929240689225729": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand"
+    }
+  },
+  "g-3332980-S-227601049": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None"
+    },
+    "demand": {
+      "stefan": "no-idea",
+      "daniel": "no-idea"
+    }
+  },
+  "g-163782-S-269774318": {
+    "category": {
+      "daniel": "None",
+      "dima": "None"
+    },
+    "demand": {
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-130388-S-5886442187058610180": {
+    "category": {
+      "dima": "LVM",
+      "daniel": "LVM",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "daniel": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-2851559-S-5815940819022012420": {
+    "category": {
+      "dima": "None",
+      "daniel": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "demand",
+      "daniel": "demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-163782-S-276690126": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand"
+    }
+  },
+  "g-3754405-S-245489534": {
+    "category": {
+      "dima": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-4066593-S-5917693367944228865": {
+    "category": {
+      "dima": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-3823270-S-226135002": {
+    "category": {
+      "dima": "None",
+      "daniel": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "daniel": "no-demand",
+      "stefan": "demand"
+    }
+  },
+  "g-2795205-S-5847849258706833410": {
+    "category": {
+      "stefan": "HCM"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-80937-S-5848748221756645378": {
+    "category": {
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-38891-S-5927572806836432897": {
+    "category": {
+      "dima": "None",
+      "daniel": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "demand",
+      "daniel": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-2855549-S-105415978": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand"
+    }
+  },
+  "g-163782-S-278155249": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand"
+    }
+  },
+  "g-45151-S-5910807280168755202": {
+    "category": {
+      "daniel": "LVM",
+      "dima": "LVM"
+    },
+    "demand": {
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-73825-S-5851045162590941187": {
+    "category": {
+      "stefan": "",
+      "daniel": "None",
+      "dima": "None"
+    },
+    "demand": {
+      "stefan": "demand",
+      "daniel": "demand",
+      "dima": "demand"
+    }
+  },
+  "g-130388-S-186777557": {
+    "category": {
+      "dima": "LVM",
+      "daniel": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "daniel": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-2835233-S-5851727178084945924": {
+    "category": {
+      "daniel": "None",
+      "dima": "None"
+    },
+    "demand": {
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-150224-S-186441226": {
+    "category": {
+      "dima": "CRM",
+      "daniel": "CRM",
+      "stefan": "CRM"
+    },
+    "demand": {
+      "dima": "no-idea",
+      "daniel": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-37821-S-5890605068545183747": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand"
+    }
+  },
+  "g-163782-S-5826701423898824707": {
+    "category": {
+      "dima": "None",
+      "daniel": "None",
+      "stefan": "HCM"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "daniel": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-3795605-S-5916319534834278401": {
+    "category": {
+      "daniel": "LVM",
+      "dima": "LVM"
+    },
+    "demand": {
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-100358-S-5897016030621872129": {
+    "category": {
+      "daniel": "ECOM",
+      "dima": "ECOM"
+    },
+    "demand": {
+      "daniel": "demand",
+      "dima": "demand"
+    }
+  },
+  "g-37264-S-5833550767948066816": {
+    "category": {
+      "daniel": "None"
+    },
+    "demand": {
+      "daniel": "no-idea"
+    }
+  },
+  "g-80937-S-249075293": {
+    "category": {
+      "dima": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-3332980-S-264383637": {
+    "category": {
+      "dima": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-4330398-S-253931102": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand"
+    }
+  },
+  "g-163782-S-244367097": {
+    "category": {
+      "daniel": "None",
+      "dima": "None"
+    },
+    "demand": {
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-4330398-S-5917174782020837376": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand"
+    }
+  },
+  "g-2722583-S-144030685": {
+    "category": {
+      "dima": "None",
+      "daniel": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "daniel": "no-idea",
+      "stefan": "no-idea"
+    }
+  },
+  "g-3803500-S-5861898089681408001": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand"
+    }
+  },
+  "g-3795605-S-5909837690974535684": {
+    "category": {
+      "stefan": "LVM"
+    },
+    "demand": {
+      "stefan": "no-demand"
+    }
+  },
+  "g-98001-S-5916508693800710144": {
+    "category": {
+      "dima": "None",
+      "daniel": "None",
+      "stefan": "HCM"
+    },
+    "demand": {
+      "dima": "demand",
+      "daniel": "demand",
+      "stefan": "demand"
+    }
+  },
+  "g-2835233-S-5833956013337755650": {
+    "category": {
+      "stefan": "LVM",
+      "daniel": "None",
+      "dima": "LVM"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-163782-S-273354997": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand"
+    }
+  },
+  "g-138840-S-5905609608457654276": {
+    "category": {
+      "dima": "LVM",
+      "stefan": "LVM"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-45151-S-5910266590225514496": {
+    "category": {
+      "dima": "LVM",
+      "stefan": "LVM"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-163782-S-257524102": {
+    "category": {
+      "daniel": "None",
+      "dima": "None"
+    },
+    "demand": {
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-2196290-S-5914141713743511555": {
+    "category": {
+      "dima": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-4278743-S-277905406": {
+    "category": {
+      "stefan": "None",
+      "daniel": "HCM",
+      "dima": "None"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-2851559-S-5835117116876926979": {
+    "category": {
+      "dima": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-2855549-S-206801342": {
+    "category": {
+      "dima": "LVM",
+      "daniel": "LVM",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "daniel": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-2855549-S-97781261": {
+    "category": {
+      "dima": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-150224-S-5925534489513054209": {
+    "category": {
+      "dima": "CRM",
+      "stefan": "CRM"
+    },
+    "demand": {
+      "dima": "demand",
+      "stefan": "demand"
+    }
+  },
+  "g-36867-S-5903097385545908226": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand"
+    }
+  },
+  "g-679377-S-111536366": {
+    "category": {
+      "stefan": "CRM",
+      "daniel": "None",
+      "dima": "CRM"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-4058319-S-273176087": {
+    "category": {
+      "dima": "HCM",
+      "daniel": "None",
+      "stefan": "HCM"
+    },
+    "demand": {
+      "dima": "demand",
+      "daniel": "demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-2851559-S-5900533216737001473": {
+    "category": {
+      "dima": "HCM",
+      "daniel": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "daniel": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-2328916-S-5919745489636454402": {
+    "category": {
+      "dima": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-163782-S-5813679431901802498": {
+    "category": {
+      "daniel": "None",
+      "dima": "None"
+    },
+    "demand": {
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-3803500-S-5869456143713054723": {
+    "category": {
+      "dima": "HCM",
+      "daniel": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "demand",
+      "daniel": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-2209101-S-135492782": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None",
+      "dima": "ECOM"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-36867-S-5926010564856795137": {
+    "category": {
+      "daniel": "None"
+    },
+    "demand": {
+      "daniel": "no-demand"
+    }
+  },
+  "g-3332980-S-268024903": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand"
+    }
+  },
+  "g-2328916-S-253820189": {
+    "category": {
+      "dima": "None",
+      "daniel": "LVM",
+      "stefan": "LVM"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "daniel": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-37264-S-5925961131901362177": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None",
+      "dima": "None"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-4278743-S-270519982": {
+    "category": {
+      "dima": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "demand",
+      "stefan": "demand"
+    }
+  },
+  "g-38891-S-5846897777929367554": {
+    "category": {
+      "daniel": "None"
+    },
+    "demand": {
+      "daniel": "no-demand"
+    }
+  },
+  "g-2835233-S-5847178931744034817": {
+    "category": {
+      "daniel": "LVM",
+      "dima": "LVM"
+    },
+    "demand": {
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-61427-S-252395337": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None",
+      "dima": "None"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "demand",
+      "dima": "demand"
+    }
+  },
+  "g-679377-S-5907128691619545088": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand"
+    }
+  },
+  "g-2835233-S-5799572818081374209": {
+    "category": {
+      "daniel": "LVM",
+      "dima": "LVM"
+    },
+    "demand": {
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-3120872-S-202780574": {
+    "category": {
+      "dima": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-163782-S-5808605925996519425": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand"
+    }
+  },
+  "g-2196290-S-5868168056907251713": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand"
+    }
+  },
+  "g-45151-S-5912330563317944323": {
+    "category": {
+      "daniel": "LVM"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand"
+    }
+  },
+  "g-163782-S-5798765148378247169": {
+    "category": {
+      "daniel": "None",
+      "dima": "None"
+    },
+    "demand": {
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-3761-S-5933161810587840513": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand"
+    }
+  },
+  "g-4292855-S-5932897689455853572": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand"
+    }
+  },
+  "g-2722583-S-107936136": {
+    "category": {
+      "dima": "None",
+      "daniel": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "daniel": "no-idea",
+      "stefan": "no-idea"
+    }
+  },
+  "g-138840-S-5873097560381489152": {
+    "category": {
+      "daniel": "None",
+      "dima": "None"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-idea",
+      "dima": "no-idea"
+    }
+  },
+  "g-73825-S-5848813253072793604": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand"
+    }
+  },
+  "g-4278743-S-5921242872161521665": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand"
+    }
+  },
+  "g-679377-S-116184067": {
+    "category": {
+      "stefan": "CRM",
+      "daniel": "None",
+      "dima": "CRM"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-163782-S-277794638": {
+    "category": {
+      "daniel": "None",
+      "dima": "None"
+    },
+    "demand": {
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-37264-S-5833550807923978243": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None"
+    },
+    "demand": {
+      "stefan": "no-idea",
+      "daniel": "no-idea"
+    }
+  },
+  "g-163782-S-274046496": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None",
+      "dima": "None"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-2835233-S-221202149": {
+    "category": {
+      "stefan": "None",
+      "daniel": "LVM",
+      "dima": "None"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-98001-S-5918768430382608388": {
+    "category": {
+      "dima": "None",
+      "daniel": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "demand",
+      "daniel": "demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-36867-S-5926097280359751682": {
+    "category": {
+      "daniel": "None"
+    },
+    "demand": {
+      "daniel": "no-demand"
+    }
+  },
+  "g-39649-S-178731681": {
+    "category": {
+      "dima": "HCM",
+      "daniel": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "demand",
+      "daniel": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-163782-S-5813955747268030468": {
+    "category": {
+      "daniel": "None",
+      "dima": "None"
+    },
+    "demand": {
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-2209101-S-5933232907798724608": {
+    "category": {
+      "dima": "CRM",
+      "daniel": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "daniel": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-3095545-S-267057928": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None",
+      "dima": "LVM"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-163782-S-218441247": {
+    "category": {
+      "daniel": "None",
+      "dima": "None"
+    },
+    "demand": {
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-1961881-S-5799433946286542848": {
+    "category": {
+      "stefan": "LVM",
+      "daniel": "LVM",
+      "dima": "LVM"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-idea",
+      "dima": "no-demand"
+    }
+  },
+  "g-2795205-S-5852435521925578753": {
+    "category": {
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-2835233-S-5850662908433805314": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None",
+      "dima": "LVM"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-3332980-S-5799267574097141762": {
+    "category": {
+      "dima": "None",
+      "daniel": "None",
+      "stefan": "LVM"
+    },
+    "demand": {
+      "dima": "demand",
+      "daniel": "demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-4278743-S-5905439402598879237": {
+    "category": {
+      "stefan": "HCM",
+      "daniel": "HCM"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand"
+    }
+  },
+  "g-4089577-S-256997528": {
+    "category": {
+      "stefan": "HCM",
+      "daniel": "None",
+      "dima": "HCM"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-138840-S-5832259321559285764": {
+    "category": {
+      "stefan": "None",
+      "daniel": "LVM",
+      "dima": "LVM"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-163782-S-256318234": {
+    "category": {
+      "daniel": "None",
+      "dima": "None"
+    },
+    "demand": {
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-130388-S-207364465": {
+    "category": {
+      "daniel": "None"
+    },
+    "demand": {
+      "daniel": "no-idea"
+    }
+  },
+  "g-57385-S-71793410": {
+    "category": {
+      "dima": "HCM",
+      "daniel": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "demand",
+      "daniel": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-45151-S-5918743844047826947": {
+    "category": {
+      "dima": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-163782-S-5861824281578602499": {
+    "category": {
+      "dima": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-45151-S-5915012137943601156": {
+    "category": {
+      "dima": "LVM",
+      "daniel": "LVM",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "daniel": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-163782-S-5799508688926420995": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None",
+      "dima": "None"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-73825-S-5887355455646224386": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand"
+    }
+  },
+  "g-4278743-S-5915484198612779012": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand"
+    }
+  },
+  "g-130388-S-272598555": {
+    "category": {
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-163782-S-278433130": {
+    "category": {
+      "daniel": "None",
+      "dima": "None"
+    },
+    "demand": {
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-80937-S-5929506509963669505": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand"
+    }
+  },
+  "g-2328916-S-5834285305921830916": {
+    "category": {
+      "dima": "HCM",
+      "daniel": "HCM",
+      "stefan": "HCM"
+    },
+    "demand": {
+      "dima": "demand",
+      "daniel": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-3239106-S-5931060612074344450": {
+    "category": {
+      "dima": "LVM",
+      "stefan": "LVM"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-80937-S-5924988582451232771": {
+    "category": {
+      "stefan": "None",
+      "daniel": "HCM",
+      "dima": "None"
+    },
+    "demand": {
+      "stefan": "demand",
+      "daniel": "demand",
+      "dima": "demand"
+    }
+  },
+  "g-2328916-S-262106114": {
+    "category": {
+      "dima": "LVM",
+      "daniel": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "daniel": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-163782-S-262541850": {
+    "category": {
+      "daniel": "None",
+      "dima": "None"
+    },
+    "demand": {
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-37264-S-5913659768647491587": {
+    "category": {
+      "stefan": "None",
+      "daniel": "HCM",
+      "dima": "HCM"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-37264-S-5859287362894327811": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand"
+    }
+  },
+  "g-706967-S-5877029074852917248": {
+    "category": {
+      "daniel": "None",
+      "dima": "None"
+    },
+    "demand": {
+      "daniel": "no-idea",
+      "dima": "no-idea"
+    }
+  },
+  "g-3823270-S-264654428": {
+    "category": {
+      "dima": "HCM",
+      "daniel": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "daniel": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-679377-S-241477924": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None",
+      "dima": "CRM"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-4066593-S-5906173408873295872": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None"
+    },
+    "demand": {
+      "stefan": "demand",
+      "daniel": "demand"
+    }
+  },
+  "g-100358-S-5917910646237720580": {
+    "category": {
+      "dima": "ECOM",
+      "daniel": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "daniel": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-163782-S-267524624": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand"
+    }
+  },
+  "g-38731-S-5891211395696967681": {
+    "category": {
+      "dima": "ECOM",
+      "daniel": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "daniel": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-37264-S-278456594": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand"
+    }
+  },
+  "g-3823270-S-145829982": {
+    "category": {
+      "stefan": "LVM",
+      "daniel": "LVM"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand"
+    }
+  },
+  "g-3795605-S-5844561380526534660": {
+    "category": {
+      "daniel": "LVM",
+      "dima": "LVM"
+    },
+    "demand": {
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-61513-S-242548421": {
+    "category": {
+      "daniel": "LVM",
+      "dima": "LVM"
+    },
+    "demand": {
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-4278743-S-5796019965710581761": {
+    "category": {
+      "dima": "None"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-150224-S-221075767": {
+    "category": {
+      "dima": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-73825-S-5830333265784901632": {
+    "category": {
+      "stefan": "ECOM",
+      "daniel": "ECOM"
+    },
+    "demand": {
+      "stefan": "demand",
+      "daniel": "demand"
+    }
+  },
+  "g-163782-S-262302426": {
+    "category": {
+      "daniel": "None",
+      "dima": "None"
+    },
+    "demand": {
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-4278743-S-242302211": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand"
+    }
+  },
+  "g-4278743-S-247664179": {
+    "category": {
+      "stefan": "LVM",
+      "daniel": "None",
+      "dima": "None"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-3095545-S-202325383": {
+    "category": {
+      "dima": "LVM",
+      "daniel": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "daniel": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-130388-S-244270171": {
+    "category": {
+      "stefan": "LVM"
+    },
+    "demand": {
+      "stefan": "no-demand"
+    }
+  },
+  "g-163782-S-220892883": {
+    "category": {
+      "dima": "ECOM",
+      "daniel": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "daniel": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-138840-S-5932527989655887875": {
+    "category": {
+      "dima": "CRM",
+      "daniel": "CRM",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "daniel": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-45151-S-5908617925257867265": {
+    "category": {
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-1961881-S-5900040201161449475": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand"
+    }
+  },
+  "g-4292855-S-5915657182895955971": {
+    "category": {
+      "dima": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "demand",
+      "stefan": "demand"
+    }
+  },
+  "g-2328916-S-5896922110550372354": {
+    "category": {
+      "dima": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-138840-S-5896922635572383745": {
+    "category": {
+      "dima": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-4278743-S-5868339756454141954": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand"
+    }
+  },
+  "g-2835233-S-5796120279113543684": {
+    "category": {
+      "daniel": "None",
+      "dima": "None"
+    },
+    "demand": {
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-4066593-S-5900132086991306754": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None"
+    },
+    "demand": {
+      "stefan": "demand",
+      "daniel": "demand"
+    }
+  },
+  "g-3823270-S-5927497387508514818": {
+    "category": {
+      "daniel": "LVM",
+      "dima": "LVM"
+    },
+    "demand": {
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-150224-S-262968412": {
+    "category": {
+      "stefan": "None",
+      "daniel": "ECOM",
+      "dima": "ECOM"
+    },
+    "demand": {
+      "stefan": "demand",
+      "daniel": "demand",
+      "dima": "demand"
+    }
+  },
+  "g-73825-S-5846793281274400771": {
+    "category": {
+      "dima": "ECOM",
+      "stefan": "ECOM"
+    },
+    "demand": {
+      "dima": "demand",
+      "stefan": "demand"
+    }
+  },
+  "g-3795605-S-5873173509814919170": {
+    "category": {
+      "daniel": "None",
+      "dima": "None"
+    },
+    "demand": {
+      "daniel": "no-idea",
+      "dima": "no-idea"
+    }
+  },
+  "g-163782-S-5796326160023445506": {
+    "category": {
+      "daniel": "None",
+      "dima": "None"
+    },
+    "demand": {
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-3795605-S-5881783268205953026": {
+    "category": {
+      "dima": "LVM",
+      "stefan": "LVM"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-163782-S-262298790": {
+    "category": {
+      "daniel": "None",
+      "dima": "None"
+    },
+    "demand": {
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-61427-S-126928455": {
+    "category": {
+      "daniel": "None"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand"
+    }
+  },
+  "g-37264-S-5925961105162665984": {
+    "category": {
+      "daniel": "None",
+      "dima": "None"
+    },
+    "demand": {
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-3754405-S-5887445217178574851": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None",
+      "dima": "LVM"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-2328916-S-274790467": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None",
+      "dima": "ECOM"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-2835233-S-5847342868112384002": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand"
+    }
+  },
+  "g-2851559-S-5854250022765342720": {
+    "category": {
+      "dima": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-3754405-S-247589397": {
+    "category": {
+      "stefan": "LVM",
+      "daniel": "LVM"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand"
+    }
+  },
+  "g-2722583-S-188340215": {
+    "category": {
+      "dima": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-163782-S-272307600": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None",
+      "dima": "None"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-150224-S-226766988": {
+    "category": {
+      "dima": "CRM",
+      "daniel": "CRM",
+      "stefan": "LVM"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "daniel": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-679377-S-104286252": {
+    "category": {
+      "stefan": "LVM",
+      "daniel": "CRM",
+      "dima": "CRM"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-59408-S-172166379": {
+    "category": {
+      "stefan": "ECOM",
+      "daniel": "None",
+      "dima": "None"
+    },
+    "demand": {
+      "stefan": "demand",
+      "daniel": "demand",
+      "dima": "demand"
+    }
+  },
+  "g-4278743-S-5854584781131505665": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand"
+    }
+  },
+  "g-2835233-S-5837579367638646785": {
+    "category": {
+      "dima": "LVM",
+      "stefan": "LVM"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-2328916-S-5852445871697858562": {
+    "category": {
+      "dima": "CRM",
+      "daniel": "CRM",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "daniel": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-36867-S-5927882370333036544": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand"
+    }
+  },
+  "g-2328916-S-5929892873372737540": {
+    "category": {
+      "dima": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-4058319-S-195466190": {
+    "category": {
+      "dima": "HCM",
+      "daniel": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "demand",
+      "daniel": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-3754405-S-5857546961946689536": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand"
+    }
+  },
+  "g-2835233-S-5916348617756532737": {
+    "category": {
+      "dima": "LVM",
+      "daniel": "LVM",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "daniel": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-3239106-S-5925292423444979712": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None",
+      "dima": "ECOM"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-54673-S-5844572594329657347": {
+    "category": {
+      "dima": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-4330398-S-116341297": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand"
+    }
+  },
+  "g-1961881-S-267095654": {
+    "category": {
+      "daniel": "LVM",
+      "dima": "LVM"
+    },
+    "demand": {
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-3239106-S-5902068493741752324": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand"
+    }
+  },
+  "g-1961881-S-5804211764916666370": {
+    "category": {
+      "dima": "LVM",
+      "daniel": "LVM",
+      "stefan": "LVM"
+    },
+    "demand": {
+      "dima": "demand",
+      "daniel": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-2056644-S-5930386086101540865": {
+    "category": {
+      "dima": "LVM",
+      "daniel": "LVM",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "daniel": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-3823270-S-169867149": {
+    "category": {
+      "dima": "LVM",
+      "stefan": "LVM"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-38891-S-5821969201195147264": {
+    "category": {
+      "stefan": "None",
+      "daniel": "LVM",
+      "dima": "None"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-3795605-S-5867091503507070976": {
+    "category": {
+      "daniel": "LVM",
+      "dima": "LVM"
+    },
+    "demand": {
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-3754405-S-5855331005312815106": {
+    "category": {
+      "dima": "None",
+      "daniel": "LVM",
+      "stefan": "LVM"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "daniel": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-2835233-S-128236456": {
+    "category": {
+      "stefan": "LVM",
+      "daniel": "ECOM",
+      "dima": "LVM"
+    },
+    "demand": {
+      "stefan": "demand",
+      "daniel": "demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-38731-S-5895263160260116483": {
+    "category": {
+      "dima": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-57385-S-35171833": {
+    "category": {
+      "dima": "CRM",
+      "daniel": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "demand",
+      "daniel": "demand",
+      "stefan": "demand"
+    }
+  },
+  "g-138840-S-5920802946894831618": {
+    "category": {
+      "stefan": "LVM"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-163782-S-254153500": {
+    "category": {
+      "daniel": "None",
+      "dima": "None"
+    },
+    "demand": {
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-4278743-S-5795271660504371202": {
+    "category": {
+      "stefan": "HCM",
+      "daniel": "HCM"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand"
+    }
+  },
+  "g-2795205-S-5810942523551535107": {
+    "category": {
+      "stefan": "None"
+    },
+    "demand": {
+      "stefan": "no-demand"
+    }
+  },
+  "g-2795205-S-5872357245395693568": {
+    "category": {
+      "dima": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-1161997-S-83159586": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand"
+    }
+  },
+  "g-2030051-S-130105027": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand"
+    }
+  },
+  "g-36867-S-5922460166204186624": {
+    "category": {
+      "dima": "None",
+      "daniel": "None",
+      "stefan": "HCM"
+    },
+    "demand": {
+      "dima": "demand",
+      "daniel": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-1161997-S-5925424918987554819": {
+    "category": {
+      "dima": "ECOM",
+      "daniel": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "daniel": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-2855549-S-111093211": {
+    "category": {
+      "daniel": "None"
+    },
+    "demand": {
+      "stefan": "demand",
+      "daniel": "demand"
+    }
+  },
+  "g-4292855-S-5918027055743655939": {
+    "category": {
+      "dima": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "demand",
+      "stefan": "demand"
+    }
+  },
+  "g-4278743-S-5915578964889329666": {
+    "category": {
+      "dima": "None",
+      "daniel": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "demand",
+      "daniel": "demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-1961881-S-5830944800974598146": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand"
+    }
+  },
+  "g-163782-S-5813956018979246080": {
+    "category": {
+      "daniel": "None",
+      "dima": "None"
+    },
+    "demand": {
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-4330398-S-5806841062563528708": {
+    "category": {
+      "stefan": "HCM",
+      "daniel": "HCM"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand"
+    }
+  },
+  "g-57385-S-64560752": {
+    "category": {
+      "daniel": "None"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand"
+    }
+  },
+  "g-107453-S-31614379": {
+    "category": {
+      "daniel": "None",
+      "dima": "None"
+    },
+    "demand": {
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-6659404-S-5856344294993977349": {
+    "category": {
+      "dima": "None",
+      "daniel": "None",
+      "stefan": "HCM"
+    },
+    "demand": {
+      "dima": "demand",
+      "daniel": "demand",
+      "stefan": "demand"
+    }
+  },
+  "g-2328916-S-5920801579472035844": {
+    "category": {
+      "dima": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-3120872-S-210494762": {
+    "category": {
+      "daniel": "None"
+    },
+    "demand": {
+      "daniel": "demand"
+    }
+  },
+  "g-163782-S-218059592": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand"
+    }
+  },
+  "g-1900632-S-5821273223295168516": {
+    "category": {
+      "dima": "LVM",
+      "daniel": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "daniel": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-61513-S-258103102": {
+    "category": {
+      "daniel": "None",
+      "dima": "None"
+    },
+    "demand": {
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-2835233-S-134529588": {
+    "category": {
+      "dima": "None",
+      "daniel": "LVM",
+      "stefan": "LVM"
+    },
+    "demand": {
+      "dima": "demand",
+      "daniel": "demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-2851559-S-5813805499870629891": {
+    "category": {
+      "dima": "ECOM",
+      "daniel": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "daniel": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-57385-S-36065557": {
+    "category": {
+      "stefan": "HCM",
+      "daniel": "None",
+      "dima": "HCM"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-163782-S-271630099": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand"
+    }
+  },
+  "g-1961881-S-164775137": {
+    "category": {
+      "stefan": "LVM",
+      "daniel": "LVM"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand"
+    }
+  },
+  "g-80937-S-5816609852494987264": {
+    "category": {
+      "dima": "None",
+      "daniel": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "demand",
+      "daniel": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-4292855-S-5912166792452669441": {
+    "category": {
+      "dima": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "demand",
+      "stefan": "demand"
+    }
+  },
+  "g-37264-S-5930257502116552707": {
+    "category": {
+      "daniel": "None",
+      "dima": "None"
+    },
+    "demand": {
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-3823270-S-236601865": {
+    "category": {
+      "stefan": "LVM",
+      "daniel": "None",
+      "dima": "LVM"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-1961881-S-165922901": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None",
+      "dima": "ECOM"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-2856284-S-265015311": {
+    "category": {
+      "dima": "LVM",
+      "daniel": "LVM",
+      "stefan": "LVM"
+    },
+    "demand": {
+      "dima": "demand",
+      "daniel": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-80937-S-5884213894456573955": {
+    "category": {
+      "stefan": "LVM",
+      "daniel": "None",
+      "dima": "None"
+    },
+    "demand": {
+      "stefan": "demand",
+      "daniel": "no-idea",
+      "dima": "no-idea"
+    }
+  },
+  "g-3120872-S-171284931": {
+    "category": {
+      "dima": "None",
+      "daniel": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "demand",
+      "daniel": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-54673-S-246583334": {
+    "category": {
+      "dima": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-2851559-S-5825007372342415364": {
+    "category": {
+      "dima": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-73825-S-5916722823849586688": {
+    "category": {
+      "dima": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "demand",
+      "stefan": "demand"
+    }
+  },
+  "g-3332980-S-264979290": {
+    "category": {
+      "dima": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-2855549-S-112536543": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand"
+    }
+  },
+  "g-6659404-S-5859425387418787844": {
+    "category": {
+      "dima": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-87137-S-206062311": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None",
+      "dima": "None"
+    },
+    "demand": {
+      "stefan": "demand",
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-679377-S-129078732": {
+    "category": {
+      "stefan": "LVM",
+      "daniel": "None",
+      "dima": "LVM"
+    },
+    "demand": {
+      "stefan": "demand",
+      "daniel": "demand",
+      "dima": "demand"
+    }
+  },
+  "g-3823270-S-213925380": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand"
+    }
+  },
+  "g-679377-S-113612849": {
+    "category": {
+      "stefan": "CRM",
+      "daniel": "None",
+      "dima": "CRM"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-2030051-S-5864485360821616641": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand"
+    }
+  },
+  "g-2795205-S-5835012760659849216": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None"
+    },
+    "demand": {
+      "stefan": "no-idea",
+      "daniel": "no-idea"
+    }
+  },
+  "g-3823270-S-57449156": {
+    "category": {
+      "daniel": "None",
+      "dima": "None"
+    },
+    "demand": {
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-2795205-S-5809494476942491648": {
+    "category": {
+      "dima": "HCM",
+      "daniel": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "demand",
+      "daniel": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-3016725-S-244088235": {
+    "category": {
+      "stefan": "None",
+      "daniel": "None"
+    },
+    "demand": {
+      "stefan": "no-demand",
+      "daniel": "no-demand"
+    }
+  },
+  "g-73825-S-5925360164059230211": {
+    "category": {
+      "dima": "ECOM",
+      "daniel": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "daniel": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-4278743-S-5811472984119984130": {
+    "category": {
+      "dima": "LVM",
+      "daniel": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "demand",
+      "daniel": "demand",
+      "stefan": "demand"
+    }
+  },
+  "g-2851559-S-5834832965183512577": {
+    "category": {
+      "dima": "None",
+      "stefan": "None"
+    },
+    "demand": {
+      "dima": "no-demand",
+      "stefan": "no-demand"
+    }
+  },
+  "g-3823270-S-273002053": {
+    "category": {
+      "daniel": "LVM",
+      "dima": "LVM"
+    },
+    "demand": {
+      "daniel": "no-demand",
+      "dima": "no-demand"
+    }
+  },
+  "g-36867-S-5932846543437578243": {
+    "category": {
+      "Dima": "HCM"
+    },
+    "demand": {
+      "Dima": "no-demand"
+    }
+  },
+  "g-37821-S-5877887386838380544": {
+    "category": {
+      "Dima": "None"
+    },
+    "demand": {
+      "Dima": "demand"
+    }
+  },
+  "g-45151-S-5905630493839208449": {
+    "category": {
+      "Dima": "None"
+    },
+    "demand": {
+      "Dima": "demand"
+    }
+  },
+  "g-2030051-S-65888037": {
+    "category": {
+      "Dima": "CRM"
+    },
+    "demand": {
+      "Dima": "no-demand"
+    }
+  },
+  "g-45151-S-5910020841009086465": {
+    "category": {
+      "Dima": "None"
+    },
+    "demand": {
+      "Dima": "no-demand"
+    }
+  },
+  "g-3120872-S-68695591": {
+    "category": {
+      "Dima": "CRM"
+    },
+    "demand": {
+      "Dima": "no-demand"
+    }
+  },
+  "g-3761-S-5932929634994782212": {
+    "category": {
+      "Dima": "HCM"
+    },
+    "demand": {
+      "Dima": "no-demand"
+    }
+  },
+  "g-38731-S-276296946": {
+    "category": {
+      "Dima": "None"
+    },
+    "demand": {
+      "Dima": "no-demand"
+    }
+  },
+  "g-3120872-S-147367727": {
+    "category": {
+      "Dima": "CRM"
+    },
+    "demand": {
+      "Dima": "no-demand"
+    }
+  },
+  "g-73825-S-51162607": {
+    "category": {
+      "Dima": "None"
+    },
+    "demand": {
+      "Dima": "no-demand"
+    }
+  },
+  "g-73825-S-5822076249522073601": {
+    "category": {
+      "Dima": "ECOM"
+    },
+    "demand": {
+      "Dima": "no-demand"
+    }
+  },
+  "g-73825-S-5864819215470440449": {
+    "category": {
+      "Dima": "None"
+    },
+    "demand": {
+      "Dima": "no-demand"
+    }
+  },
+  "g-73825-S-269139158": {
+    "category": {
+      "Dima": "None"
+    },
+    "demand": {
+      "Dima": "no-demand"
+    }
+  },
+  "g-2856284-S-261782176": {
+    "category": {
+      "Dima": "HCM"
+    },
+    "demand": {
+      "Dima": "no-demand"
+    }
+  },
+  "g-3795605-S-5912143924545224708": {
+    "category": {
+      "Dima": "None"
+    },
+    "demand": {
+      "Dima": "no-demand"
+    }
+  },
+  "g-3795605-S-5898504074545893377": {
+    "category": {
+      "Dima": "None"
+    },
+    "demand": {
+      "Dima": "no-demand"
+    }
+  },
+  "g-61513-S-5925289538925666308": {
+    "category": {
+      "Dima": "None"
+    },
+    "demand": {
+      "Dima": "no-demand"
+    }
+  },
+  "g-679377-S-5904660231245299715": {
+    "category": {
+      "Dima": "None"
+    },
+    "demand": {
+      "Dima": "demand"
+    }
+  },
+  "g-61513-S-5927832995716177924": {
+    "category": {
+      "Dima": "None"
+    },
+    "demand": {
+      "Dima": "no-demand"
+    }
+  },
+  "g-61513-S-5856822688005267460": {
+    "category": {
+      "Dima": "None"
+    },
+    "demand": {
+      "Dima": "no-demand"
+    }
+  },
+  "g-43621-S-5860084852564467714": {
+    "category": {
+      "Dima": "CRM"
+    },
+    "demand": {
+      "Dima": "no-demand"
+    }
+  },
+  "g-138840-S-5870147818626260994": {
+    "category": {
+      "Dima": "CRM"
+    },
+    "demand": {
+      "Dima": "no-demand"
+    }
+  },
+  "g-107453-S-45848186": {
+    "category": {
+      "Dima": "None"
+    },
+    "demand": {
+      "Dima": "no-demand"
+    }
+  },
+  "g-61513-S-272956585": {
+    "category": {
+      "Dima": "None"
+    },
+    "demand": {
+      "Dima": "no-demand"
+    }
+  },
+  "g-3803500-S-5841063675338702851": {
+    "category": {
+      "Dima": "ECOM"
+    },
+    "demand": {
+      "Dima": "no-demand"
+    }
+  },
+  "g-45151-S-5838542814836707330": {
+    "category": {
+      "Dima": "None"
+    },
+    "demand": {
+      "Dima": "no-demand"
+    }
+  },
+  "g-3803500-S-5885679647814881284": {
+    "category": {
+      "Dima": "CRM"
+    },
+    "demand": {
+      "Dima": "no-demand"
+    }
+  },
+  "g-98001-S-5924868720408174593": {
+    "category": {
+      "Dima": "None"
+    },
+    "demand": {
+      "Dima": "no-demand"
+    }
+  },
+  "g-98001-S-5925284654176313346": {
+    "category": {
+      "Dima": "HCM"
+    },
+    "demand": {
+      "Dima": "no-demand"
+    }
+  },
+  "g-2856284-S-5827176035380133892": {
+    "category": {
+      "Dima": "LVM"
+    },
+    "demand": {
+      "Dima": "demand"
+    }
+  },
+  "g-2209101-S-20864173": {
+    "category": {
+      "Dima": "LVM"
+    },
+    "demand": {
+      "Dima": "no-demand"
+    }
+  },
+
+  "g-4153957-S-5806129529277677569": {
+    "category": {
+      "stefan": "None"
+    },
+    "demand": {
+      "stefan": "no-demand"
+    }
+  },
+  "g-61513-S-222190379": {
+    "category": {
+      "stefan": "None"
+    },
+    "demand": {
+      "stefan": "no-demand"
+    }
+  },
+  "g-3754405-S-41341249": {
+    "category": {
+      "stefan": "None"
+    },
+    "demand": {
+      "stefan": "no-demand"
+    }
+  },
+  "g-927677-S-22846283": {
+    "category": {
+      "stefan": "None"
+    },
+    "demand": {
+      "stefan": "no-demand"
+    }
+  },
+  "g-1961881-S-5899293117391077376": {
+    "category": {
+      "stefan": "None"
+    },
+    "demand": {
+      "stefan": "no-demand"
+    }
+  },
+  "g-61513-S-265313854": {
+    "category": {
+      "stefan": "None"
+    },
+    "demand": {
+      "stefan": "no-demand"
+    }
+  },
+  "g-1961881-S-5873884543081021444": {
+    "category": {
+      "stefan": "None"
+    },
+    "demand": {
+      "stefan": "no-demand"
+    }
+  },
+  "g-679377-S-116754068": {
+    "category": {
+      "stefan": "None"
+    },
+    "demand": {
+      "stefan": "no-demand"
+    }
+  },
+  "g-57385-S-81136842": {
+    "category": {
+      "stefan": "None"
+    },
+    "demand": {
+      "stefan": "no-demand"
+    }
+  },
+  "g-679377-S-59922027": {
+    "category": {
+      "stefan": "None"
+    },
+    "demand": {
+      "stefan": "no-demand"
+    }
+  },
+  "g-1961881-S-121306892": {
+    "category": {
+      "stefan": "None"
+    },
+    "demand": {
+      "stefan": "no-demand"
+    }
+  },
+  "g-1161997-S-95205020": {
+    "category": {
+      "stefan": "None"
+    },
+    "demand": {
+      "stefan": "demand"
+    }
+  },
+  "g-4278743-S-5917641358750793732": {
+    "category": {
+      "stefan": "HCM"
+    },
+    "demand": {
+      "stefan": "no-demand"
+    }
+  },
+  "g-3823270-S-5851202550191112192": {
+    "category": {
+      "stefan": "None"
+    },
+    "demand": {
+      "stefan": "no-demand"
+    }
+  },
+  "g-138840-S-5802067786930872320": {
+    "category": {
+      "stefan": "LVM"
+    },
+    "demand": {
+      "stefan": "no-demand"
+    }
+  },
+  "g-2328916-S-251952418": {
+    "category": {
+      "stefan": "None"
+    },
+    "demand": {
+      "stefan": "no-demand"
+    }
+  },
+  "g-3823270-S-5839431140326264834": {
+    "category": {
+      "stefan": "None"
+    },
+    "demand": {
+      "stefan": "no-demand"
+    }
+  },
+  "g-3823270-S-5835051779368173570": {
+    "category": {
+      "stefan": "None"
+    },
+    "demand": {
+      "stefan": "no-demand"
+    }
+  },
+  "g-7475927-S-5865761569824079873": {
+    "category": {
+      "stefan": "HCM"
+    },
+    "demand": {
+      "stefan": "no-demand"
+    }
+  },
+  "g-1961881-S-5792023399471525888": {
+    "category": {
+      "stefan": "None"
+    },
+    "demand": {
+      "stefan": "no-demand"
+    }
+  },
+  "g-4292855-S-5925352988662054915": {
+    "category": {
+      "stefan": "None"
+    },
+    "demand": {
+      "stefan": "demand"
+    }
+  },
+  "g-38891-S-5924156454478045184": {
+    "category": {
+      "stefan": "None"
+    },
+    "demand": {
+      "stefan": "demand"
+    }
+  },
+  "g-2056644-S-5847881680144068608": {
+    "category": {
+      "stefan": "None"
+    },
+    "demand": {
+      "stefan": "no-demand"
+    }
+  },
+  "g-38891-S-5884958228520935424": {
+    "category": {
+      "stefan": "None"
+    },
+    "demand": {
+      "stefan": "demand"
+    }
+  }
+}
