@@ -1,22 +1,12 @@
 package de.hpi.smm.classification
 
-import java.util
-import java.io.{File, FileReader}
 
-import scala.util.Random
-
-import com.lambdaworks.jacks.JacksMapper
 import de.hpi.smm.FeatureExtractorBuilder
-import de.hpi.smm.data_reader.DataReader
-import de.hpi.smm.domain.Document
-import de.hpi.smm.feature_extraction.FeatureExtractor
-import weka.classifiers.bayes.NaiveBayes
-import weka.core.{Attribute, DenseInstance, Instances}
 
 case class ClassificationOutput(prob: Double, relevantFeatures: Array[Array[Any]] = Array())
 case class Classification(cls: String, classificationOutput: ClassificationOutput)
 
-class PostClassifier(val featureExtractorBuilder: FeatureExtractorBuilder) {
+class NTOAnalyzer(val featureExtractorBuilder: FeatureExtractorBuilder) {
 
 	val demandClassifier = new Classifier("demand",
 		featureExtractorBuilder.posts,

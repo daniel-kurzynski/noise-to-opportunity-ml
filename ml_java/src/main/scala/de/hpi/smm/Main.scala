@@ -4,7 +4,7 @@ import java.io.{File, FileReader, FileWriter}
 
 import au.com.bytecode.opencsv.CSVWriter
 import com.lambdaworks.jacks.JacksMapper
-import de.hpi.smm.classification.PostClassifier
+import de.hpi.smm.classification.NTOAnalyzer
 import de.hpi.smm.data_reader.DataReader
 import de.hpi.smm.domain._
 import Constants._
@@ -23,27 +23,25 @@ object Main {
 	val featureBuilder = new FeatureExtractorBuilder(dataReader)
 
 	def main(args: Array[String]): Unit = {
-		println("Demand Feature Extraction")
-		runDemandFeatureExtraction()
+//		println("Demand Feature Extraction")
+//		runDemandFeatureExtraction()
+//
+//		println("Brochure Feature Extraction")
+//		runBrochureFeatureExtraction()
 
-		println("Brochure Feature Extraction")
-		runBrochureFeatureExtraction()
-
-		 //println("Classify Post")
-		 //runClassifiyPost()
+		 println("Classify Post")
+		 runClassifyPost()
 	}
 
 	def runClassifyPost() {
-		val postClassifier = new PostClassifier(featureBuilder)
-		val noDemandPost = "This is a Test"
-		val noDemandClassification = postClassifier.classifyDemand(noDemandPost)
-		println(s"$noDemandPost is: ${noDemandClassification.cls} with propability: ${noDemandClassification.classificationOutput.prob}")
-		val demandPost = "I need help"
+		val postClassifier = new NTOAnalyzer(featureBuilder)
+
+		val demandPost = "I need help. I am looking for support. Thanks in advance."
 		val demandClassification = postClassifier.classifyDemand(demandPost)
 		println(s"$demandPost is: ${demandClassification.cls} with propability: ${demandClassification.classificationOutput.prob}")
 
 		val evaluation = postClassifier.demandClassifier.crossValidate()
-		println(evaluation.toSummaryString("\nResults\n======\n", false))
+		println(evaluation.toSummaryString(f"%nResults%n======%n", false))
 		println(evaluation.toMatrixString)
 	}
 
