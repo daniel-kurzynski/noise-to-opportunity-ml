@@ -51,8 +51,11 @@ def build_product_data(product_class):
 		classification = json.JSONDecoder(object_pairs_hook=collections.OrderedDict).decode(infile.read())
 
 	labeled_posts = get_labeled_posts("category", "")
+	unlabeled_posts = get_unlabeled_posts("category")
+	print len(csv_reader.data), len(labeled_posts)
 
 	X_test   = vectorizer.transform([post.data for post in labeled_posts])
 	y_true = np.array([post.get_class("category", product_class) for post in labeled_posts])
-	# categories = np.unique(y_train)
-	return X_train, y_train, X_test, y_true
+	X_predict = vectorizer.transform([post.data for post in unlabeled_posts])
+
+	return X_train, y_train, X_test, y_true, X_predict

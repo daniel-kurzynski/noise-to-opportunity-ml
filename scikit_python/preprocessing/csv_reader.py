@@ -50,8 +50,11 @@ class CSVReader(object):
 	Reading CSV files in our fashion.
 	"""
 	def read(self, fpath, extractor):
+		self.data = []
 		with open(fpath) as f:
-			self.data = [extractor(line, self.classification) for line in f]
+			for line in f:
+				data_obj = extractor(line, self.classification)
+				if data_obj is not None: self.data.append(data_obj)
 
 	@staticmethod
 	def brochure_extractor(line, classification):
@@ -59,7 +62,8 @@ class CSVReader(object):
 			lambda l, replacements: l.replace(replacements[0], replacements[1]),
 			CSVReader.replacements,
 			line)
-		idx, data, category, _, lang = line.split(",")
+		idx, data, category, _, lang = line.strip().split(",")
+		if lang == "de": return None
 		return Data(idx, text = data.replace("<komma>", ","), classification = category)
 
 

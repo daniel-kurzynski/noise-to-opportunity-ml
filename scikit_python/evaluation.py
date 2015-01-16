@@ -2,6 +2,7 @@ from sklearn.metrics import recall_score, \
 	precision_score, confusion_matrix
 from sklearn.utils.multiclass import unique_labels
 from sklearn.cross_validation import ShuffleSplit
+from sklearn.neighbors import KNeighborsClassifier
 from sklearn.base import clone
 import numpy as np
 from sklearn.lda import LDA
@@ -228,6 +229,8 @@ def run_product(classifier):
 			build_datas.append(custom_features)
 		for build_data in build_datas:
 			X_train, y_train, X_test_or_predict, y_true, predict_ids = build_data(class_name)
+			X_train = X_train.todense() if issparse(X_train) else X_train
+			X_test_or_predict = X_test_or_predict.todense() if issparse(X_test_or_predict) else X_test_or_predict
 			if "writeout" in args:
 				classifier.fit(X_train, y_train)
 				y_predict = classifier.predict(X_test_or_predict)
@@ -296,6 +299,7 @@ class VotingClassifier(BaseEstimator):
 class Classifiers(object):
 	CLASSIFIERS = [
 		LogisticRegression(),
+		KNeighborsClassifier(),
 		Perceptron(n_iter = 50),
 		MultinomialNB(),
 		DecisionTreeClassifier(),
@@ -303,10 +307,11 @@ class Classifiers(object):
 		RidgeClassifier(),
 		LinearSVC(),
 		BernoulliNB(class_prior = [0.1, 0.5])]
-	average_classifier = VotingClassifier(CLASSIFIERS[:])
-	CLASSIFIERS.append(average_classifier)
+	# average_classifier = VotingClassifier(CLASSIFIERS[:])
+	# CLASSIFIERS.append(average_classifier)
 
 	LOG_REGRESSION, \
+	KNEIGHBORS, \
 	PERCEPTRON, \
 	MULTI_NB, \
 	DTC, \
@@ -314,7 +319,7 @@ class Classifiers(object):
 	RIDGE, \
 	LIN_SVC, \
 	BERNOULLI_NB, \
-	VOTING = range(len(CLASSIFIERS))
+	VOTING = range(len(CLASSIFIERS) + 1)
 
 if __name__ == "__main__":
 	args = sys.argv
@@ -325,7 +330,8 @@ if __name__ == "__main__":
 		print "Writeout positive classified posts(demand and product): writeout"
 		sys.exit(0)
 
-	classifier = Classifiers.CLASSIFIERS[Classifiers.BERNOULLI_NB]
+	# classifier = Classifiers.CLASSIFIERS[Classifiers.BERNOULLI_NB]
+	classifier = Classifiers.CLASSIFIERS[Classifiers.KNEIGHBORS]
 
 	if "all" in args:
 		for cl in Classifiers.CLASSIFIERS:
