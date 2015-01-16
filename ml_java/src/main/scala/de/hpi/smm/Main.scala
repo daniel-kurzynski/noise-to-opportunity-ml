@@ -1,6 +1,7 @@
 package de.hpi.smm
 
 import java.io.{File, FileReader, FileWriter}
+import java.util
 
 import au.com.bytecode.opencsv.CSVWriter
 import com.lambdaworks.jacks.JacksMapper
@@ -8,6 +9,7 @@ import de.hpi.smm.classification.NTOAnalyzer
 import de.hpi.smm.data_reader.DataReader
 import de.hpi.smm.domain._
 import Constants._
+import weka.core.{Attribute, Instances}
 
 object Main {
 
@@ -23,6 +25,8 @@ object Main {
 	val featureBuilder = new FeatureExtractorBuilder(dataReader)
 
 	def main(args: Array[String]): Unit = {
+		val attributes = new util.ArrayList[Attribute]()
+		val instances = new Instances("Learning", )
 		//println("Demand Feature Extraction")
 		//runDemandFeatureExtraction()
 
