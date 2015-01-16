@@ -23,8 +23,8 @@ object Main {
 	val featureExtractorBuilder = new FeatureExtractorBuilder(dataReader)
 
 	def main(args: Array[String]): Unit = {
-		println("Demand Feature Extraction")
-		runDemandFeatureExtraction()
+		//println("Demand Feature Extraction")
+		//runDemandFeatureExtraction()
 
   	println("Brochure Feature Extraction")
 		runBrochureFeatureExtraction()
@@ -72,10 +72,10 @@ object Main {
 	def runBrochureFeatureExtraction(): Unit = {
 
 		List(
-			("CRM", 2.0, 5.0),
-			("ECOM", 4.0, 100.0),
-			("HCM", 3.0, 13.0),
-			("LVM", 7.0, 35.0)
+			("CRM", 1.1, 6.0),
+			("ECOM", 1.8, 100.0),
+			("HCM", 2.0, 10.0),
+			("LVM", 3.4, 10.0)
 		).foreach { case (clsName, thresh1, thresh2) =>
 
 			val features = featureExtractorBuilder.buildBroshuresFeatureExtractor(clsName, thresh1, thresh2)
