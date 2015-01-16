@@ -6,7 +6,7 @@ import de.hpi.smm.FeatureExtractorBuilder
 case class ClassificationOutput(prob: Double, relevantFeatures: Array[Array[Any]] = Array())
 case class Classification(cls: String, classificationOutput: ClassificationOutput)
 
-class NTOAnalyzer(val featureExtractorBuilder: FeatureExtractorBuilder) {
+class NTOAnalyzer(featureExtractorBuilder: FeatureExtractorBuilder) {
 
 	val demandClassifier = new Classifier("demand",
 		featureExtractorBuilder.posts,
@@ -14,22 +14,22 @@ class NTOAnalyzer(val featureExtractorBuilder: FeatureExtractorBuilder) {
 		featureExtractorBuilder.dataReader)
 
 	val CRMClassifier = new Classifier("CRM",
-		featureExtractorBuilder.posts,
+		featureExtractorBuilder.brochures,
 		featureExtractorBuilder.buildForBrochures("CRM", 2.0, 5.0),
 		featureExtractorBuilder.dataReader)
 
 	val ECOMClassifier = new Classifier("ECOM",
-		featureExtractorBuilder.posts,
+		featureExtractorBuilder.brochures,
 		featureExtractorBuilder.buildForBrochures("ECOM", 4.0, 100.0),
 		featureExtractorBuilder.dataReader)
 
 	val HCMClassifier = new Classifier("HCM",
-		featureExtractorBuilder.posts,
+		featureExtractorBuilder.brochures,
 		featureExtractorBuilder.buildForBrochures("HCM", 3.0, 13.0),
 		featureExtractorBuilder.dataReader)
 
 	val LVMClassifier = new Classifier("LVM",
-		featureExtractorBuilder.posts,
+		featureExtractorBuilder.brochures,
 		featureExtractorBuilder.buildForBrochures("LVM", 7.0, 35.0),
 		featureExtractorBuilder.dataReader)
 
