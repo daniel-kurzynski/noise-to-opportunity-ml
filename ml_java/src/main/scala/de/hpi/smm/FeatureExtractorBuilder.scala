@@ -56,7 +56,6 @@ class FeatureExtractorBuilder(val dataReader: DataReader) {
 
 		val features = new FeatureExtractor(smoothing)
 			.needWords(clsName, (thresh1, thresh2))
-			.needNGrams()
 
 		brochures.foreach { brochure =>
 			features.touch(brochure)
