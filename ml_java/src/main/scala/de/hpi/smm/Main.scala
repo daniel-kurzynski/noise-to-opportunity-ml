@@ -49,7 +49,7 @@ object Main {
 
 	def runDemandFeatureExtraction(): Unit = {
 
-		val features = featureExtractorBuilder.buildDemandFeautureExtractor()
+		val features = featureExtractorBuilder.buildDemandFeatureExtractor()
 		val posts = featureExtractorBuilder.posts
 
 		val writer = new CSVWriter(new FileWriter(new File("../n2o_data/features.csv")),

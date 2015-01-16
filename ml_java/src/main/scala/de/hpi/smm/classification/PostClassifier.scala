@@ -20,7 +20,7 @@ class PostClassifier(val featureExtractorBuilder: FeatureExtractorBuilder) {
 
 	val demandClassifier = new Classifier( "demand",
 		featureExtractorBuilder.posts,
-		featureExtractorBuilder.buildDemandFeautureExtractor(),
+		featureExtractorBuilder.buildDemandFeatureExtractor(),
 		featureExtractorBuilder.dataReader)
 
 	val CRMClassifier = new Classifier( "CRM",
