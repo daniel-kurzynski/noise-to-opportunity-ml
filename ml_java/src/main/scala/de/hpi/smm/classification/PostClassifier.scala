@@ -25,22 +25,22 @@ class PostClassifier(val featureExtractorBuilder: FeatureExtractorBuilder) {
 
 	val CRMClassifier = new Classifier( "CRM",
 		featureExtractorBuilder.posts,
-		featureExtractorBuilder.buildBroshuresFeatureExtractor("CRM", 2.0, 4.0),
+		featureExtractorBuilder.buildBroshuresFeatureExtractor("CRM", 2.0, 5.0),
 		featureExtractorBuilder.dataReader)
 
 	val ECOMClassifier = new Classifier( "ECOM",
 		featureExtractorBuilder.posts,
-		featureExtractorBuilder.buildBroshuresFeatureExtractor("ECOM", 1.3, 3.7),
+		featureExtractorBuilder.buildBroshuresFeatureExtractor("ECOM", 4.0, 100.0),
 		featureExtractorBuilder.dataReader)
 
 	val HCMClassifier = new Classifier( "HCM",
 		featureExtractorBuilder.posts,
-		featureExtractorBuilder.buildBroshuresFeatureExtractor("HCM", 2.3, 5.5),
+		featureExtractorBuilder.buildBroshuresFeatureExtractor("HCM", 3.0, 13.0),
 		featureExtractorBuilder.dataReader)
 
 	val LVMClassifier = new Classifier( "LVM",
 		featureExtractorBuilder.posts,
-		featureExtractorBuilder.buildBroshuresFeatureExtractor("LVM", 3.0, 5.5),
+		featureExtractorBuilder.buildBroshuresFeatureExtractor("LVM", 7.0, 35.0),
 		featureExtractorBuilder.dataReader)
 
 	def classifyDemand(text: String): Classification = {

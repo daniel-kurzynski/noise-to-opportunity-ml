@@ -316,7 +316,7 @@ class Classifiers(object):
 			"HCM": BernoulliNB(class_prior = [0.6, 0.4]),
 			"ECOM": BernoulliNB(class_prior = [0.6, 0.4]),
 			"LVM": BernoulliNB(class_prior = [0.6, 0.4]),
-			"CRM": BernoulliNB(class_prior = [0.6, 0.4])
+			"CRM": BernoulliNB(class_prior = [0.1, 0.2])
 		}]
 	# average_classifier = VotingClassifier(CLASSIFIERS[:])
 	# CLASSIFIERS.append(average_classifier)

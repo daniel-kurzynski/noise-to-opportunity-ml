@@ -29,8 +29,8 @@ object Main {
   	println("Brochure Feature Extraction")
 		runBrochureFeatureExtraction()
 
-//		 println("Classify Post")
-//		 runClassifiyPost()
+		 //println("Classify Post")
+		 //runClassifiyPost()
 	}
 
 	def runClassifiyPost() {
@@ -72,10 +72,10 @@ object Main {
 	def runBrochureFeatureExtraction(): Unit = {
 
 		List(
-			("CRM", 2.0, 4.0),
-			("ECOM", 1.3, 3.7),
-			("HCM", 2.3, 5.5),
-			("LVM", 3.0, 5.5)
+			("CRM", 2.0, 5.0),
+			("ECOM", 4.0, 100.0),
+			("HCM", 3.0, 13.0),
+			("LVM", 7.0, 35.0)
 		).foreach { case (clsName, thresh1, thresh2) =>
 
 			val features = featureExtractorBuilder.buildBroshuresFeatureExtractor(clsName, thresh1, thresh2)
@@ -99,16 +99,16 @@ object Main {
 
 			testWriter.writeNext(features.names)
 				features.buildFeatureVectors(postForCategory, { (post, instance) =>
-				val outputLine = buildLine(post, instance, clsName, true)
+				val outputLine = buildLine(post, instance, clsName, false)
 				testWriter.writeNext(outputLine)
 			})
 
 			testWriter.close()
 
 			println(s"=== $clsName ===")
-			features.takeTopOccurrence(clsName, thresh1).take(3).foreach(println)
+			features.takeTopOccurrence(clsName, thresh1).foreach(println)
 			println("======")
-			features.takeTopNotOccurrence(clsName, thresh2).take(3).foreach(println)
+			features.takeTopNotOccurrence(clsName, thresh2).foreach(println)
 		}
 
 	}
