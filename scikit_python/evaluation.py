@@ -344,12 +344,8 @@ if __name__ == "__main__":
 		print "Writeout positive classified posts(demand and product): writeout"
 		sys.exit(0)
 
-<<<<<<< HEAD
 	# classifier = Classifiers.CLASSIFIERS[Classifiers.BERNOULLI_NB]
 	classifier = Classifiers.CLASSIFIERS[Classifiers.KNEIGHBORS]
-=======
-	classifierDict = Classifiers.CLASSIFIERS[Classifiers.BERNOULLI_NB]
->>>>>>> 8a12da026582ba17fd9a935500b3f1da0408f0aa
 
 	if "all" in args:
 		for cld in Classifiers.CLASSIFIERS:
