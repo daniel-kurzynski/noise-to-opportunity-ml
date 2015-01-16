@@ -18,7 +18,8 @@ import scala.collection.JavaConverters._
 
 class MultiProductClassifier(val brochures: List[Document], val posts: List[Document], val dataReader: DataReader) {
 
-	val classifier = new PriorClassifier(new IBk(10), Array(1.0, 1000.0, 10000.0, 10000.0, 10000.0))
+	val baseClassifier = new IBk(20)
+	val classifier = new PriorClassifier(baseClassifier, Array(1.0, 1000.0, 10000.0, 10000.0, 10000.0))
 
 	val attributes = new util.ArrayList[Attribute]()
 

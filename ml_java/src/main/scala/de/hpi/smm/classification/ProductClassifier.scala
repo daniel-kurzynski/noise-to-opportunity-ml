@@ -16,7 +16,7 @@ import weka.filters.unsupervised.attribute.StringToWordVector
  */
 class ProductClassifier(val className: String, val documents: List[Document], val posts: List[Document], val dataReader: DataReader) {
 
-	val classifier = new IBk()
+	val classifier = new IBk(10)
 
 	val attributes = new util.ArrayList[Attribute]()
 
@@ -38,6 +38,9 @@ class ProductClassifier(val className: String, val documents: List[Document], va
 	}
 
 	val tdfIdfFilter = new StringToWordVector()
+	tdfIdfFilter.setIDFTransform(true)
+	tdfIdfFilter.setTFTransform(true)
+	tdfIdfFilter.setWordsToKeep(10)
 	tdfIdfFilter.setInputFormat(instances)
 	val filteredInstances = Filter.useFilter(instances,tdfIdfFilter)
 
