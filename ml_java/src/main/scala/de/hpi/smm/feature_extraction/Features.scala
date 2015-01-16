@@ -44,6 +44,7 @@ class NeedNGramsFeature() extends Feature {
 
 	val relevantNGrams = Array(
 		Array("looking", "for"),
+		Array("searching", "for"),
 		Array("you", "could"),
 		Array("could", "you"),
 		Array("help", "me"),
