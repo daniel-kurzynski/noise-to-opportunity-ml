@@ -22,10 +22,11 @@ class MultiProductBackupClassifier(val brochures: List[Document], val posts: Lis
 
 	val classes = List("CRM", "ECOM", "HCM", "LVM", "None")
 	val tokenMap = Map(
-		"HCM"-> List("HCM"),
-		"LVM"-> List("LVM"),
-		"CRM"-> List("CRM", "customer", "contact"),
-		"ECOM"-> List("ECOM")
+		"HCM"-> List("HCM", "hr"),
+		"LVM"-> List("LVM", "virtual", "servers", "landscape"),
+		"CRM"-> List("CRM", "customer", "customers", "contact"),
+		"ECOM"-> List("ECOM", "e-commerce", "shopping", "entrepreneurs", "ecommerce"),
+		"None"-> List("NoneType")
 	)
 
 	def classProbability(text: String): List[Classification] = {
@@ -42,10 +43,12 @@ class MultiProductBackupClassifier(val brochures: List[Document], val posts: Lis
 				val classTokens = tokenMap(className)
 
 				val sumOfTokens = classTokens.map { token =>
-						if(post.textTokens.contains(token)) 1 else 0
+					val postTokens = post.textTokens
+						if(postTokens.contains(token.toLowerCase)) 1 else 0
 				}.sum
 
-				(1.0 * sumOfTokens/classTokens.size)
+				val distValue = (1.0 * sumOfTokens/classTokens.size)
+
 			}
 		}
 

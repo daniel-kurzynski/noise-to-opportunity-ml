@@ -28,8 +28,8 @@ object Main {
 		//println("Demand Feature Extraction")
 		//runDemandFeatureExtraction()
 
-		//println("Brochure Feature Extraction")
-		//runBrochureFeatureExtraction()
+		println("Brochure Feature Extraction")
+		runBrochureFeatureExtraction()
 
 		 println("Classify Post")
 		 runClassifyPost()
@@ -38,9 +38,11 @@ object Main {
 	def runClassifyPost() {
 		val postClassifier = new NTOAnalyzer(featureBuilder)
 
-		val demandPost = "I need help. I am looking for support. Thanks in advance."
-		val demandClassification = postClassifier.classifyDemand(demandPost)
-		println(s"$demandPost is: ${demandClassification.cls} with propability: ${demandClassification.classificationOutput.prob}")
+		val post = "I need help. I am looking for support. Thanks in advance. I am searching for a good crm software."
+		val demandClassification = postClassifier.classifyDemand(post)
+		println(s"$post is: ${demandClassification.cls} with propability: ${demandClassification.classificationOutput.prob}")
+		val productClassification = postClassifier.classifyProduct(post)
+		println(s"$post is: ${productClassification(0).cls} with propability: ${productClassification(0).classificationOutput.prob}")
 
 		val evaluation = postClassifier.demandClassifier.crossValidate()
 		println(evaluation.toSummaryString(f"%nResults%n======%n", false))

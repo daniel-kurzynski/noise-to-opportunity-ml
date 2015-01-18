@@ -6,7 +6,7 @@ import com.lambdaworks.jacks.JacksMapper
 import de.hpi.smm.FeatureExtractorBuilder
 import de.hpi.smm.data_reader.DataReader
 
-import de.hpi.smm.classification.PostClassifier
+import de.hpi.smm.classification.NTOAnalyzer
 import org.json4s.{DefaultFormats, Formats}
 import de.hpi.smm.Constants._
 
@@ -18,7 +18,7 @@ object ClassificationPreparation {
 	val brochuresFile = new File("../n2o_data/brochures.csv")
 	val dataReader = new DataReader(classifiedPosts, postsFile, brochuresFile, false)
 	val featureExtractorBuilder = new FeatureExtractorBuilder(dataReader)
-	val postClassifier = new PostClassifier(featureExtractorBuilder)
+	val postClassifier = new NTOAnalyzer(featureExtractorBuilder)
 
 	println("Finished preparing post prediction")
 
