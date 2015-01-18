@@ -25,8 +25,6 @@ object Main {
 	val featureBuilder = new FeatureExtractorBuilder(dataReader)
 
 	def main(args: Array[String]): Unit = {
-		val attributes = new util.ArrayList[Attribute]()
-		val instances = new Instances("Learning", )
 		//println("Demand Feature Extraction")
 		//runDemandFeatureExtraction()
 

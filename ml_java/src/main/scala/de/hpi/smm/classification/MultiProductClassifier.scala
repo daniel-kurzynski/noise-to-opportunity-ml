@@ -12,14 +12,14 @@ import weka.classifiers.trees.j48.C45PruneableClassifierTree
 
 import weka.core.{Attribute, DenseInstance, Instances}
 import weka.filters.Filter
-import weka.filters.unsupervised.attribute.StringToWordVector
+import weka.filters.unsupervised.attribute.{Normalize, StringToWordVector}
 import scala.collection.JavaConverters._
 
 
 class MultiProductClassifier(val brochures: List[Document], val posts: List[Document], val dataReader: DataReader) {
 
-	val baseClassifier = new IBk(20)
-	val classifier = new PriorClassifier(baseClassifier, Array(1.0, 1000.0, 10000.0, 10000.0, 10000.0))
+	val baseClassifier = new IBk(5)
+	val classifier = new PriorClassifier(baseClassifier, Array(1.0, 10.00, 10.0, 10.0, 10.0))
 
 	val attributes = new util.ArrayList[Attribute]()
 
@@ -31,7 +31,7 @@ class MultiProductClassifier(val brochures: List[Document], val posts: List[Docu
 
 	attributes.add(textAttribute)
 	attributes.add(classAttribute)
-
+	
 	val instances = new Instances("classifier", attributes,0)
 	instances.setClassIndex(classAttribute.index())
 
@@ -42,13 +42,20 @@ class MultiProductClassifier(val brochures: List[Document], val posts: List[Docu
 	val tdfIdfFilter = new StringToWordVector()
 	tdfIdfFilter.setIDFTransform(true)
 	tdfIdfFilter.setTFTransform(true)
-	tdfIdfFilter.setWordsToKeep(40)
+	tdfIdfFilter.setWordsToKeep(5)
 	tdfIdfFilter.setInputFormat(instances)
+	
 	val filteredInstances = Filter.useFilter(instances,tdfIdfFilter)
 
-	classifier.buildClassifier(filteredInstances)
+	val normelizeFilter = new Normalize()
+	normelizeFilter.setInputFormat(filteredInstances)
 
-	def classProbability(text: String): ClassificationOutput = {
+	val normilizedInstances = Filter.useFilter(filteredInstances,normelizeFilter)
+	
+	
+	classifier.buildClassifier(normilizedInstances)
+
+	def classProbability(text: String): List[Classification] = {
 		val id = ""
 		val title = ""
 
@@ -80,8 +87,11 @@ class MultiProductClassifier(val brochures: List[Document], val posts: List[Docu
 		}
 
 		val filteredTestInstances = Filter.useFilter(testInstances,tdfIdfFilter)
-		val evaluation = new Evaluation(filteredTestInstances)
-		evaluation.evaluateModel(classifier,filteredTestInstances)
+
+		val normilizedTestInstances = Filter.useFilter(filteredTestInstances,normelizeFilter)
+
+		val evaluation = new Evaluation(normilizedTestInstances)
+		evaluation.evaluateModel(classifier,normilizedTestInstances)
 
 		evaluation
 	}
