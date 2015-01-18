@@ -46,7 +46,7 @@ class ProductClassifier(val className: String, val documents: List[Document], va
 
 	classifier.buildClassifier(filteredInstances)
 
-	def classProbability(text: String): List[Classification] = {
+	def classProbability(text: String): ClassificationOutput = {
 		val id = ""
 		val title = ""
 
@@ -57,9 +57,7 @@ class ProductClassifier(val className: String, val documents: List[Document], va
 		val instance = buildInstance(post)
 		val dist = classifier.distributionForInstance(instance)
 
-		dist.toList.zipWithIndex.map { case (distValue, index) =>
-			Classification(classAttribute.value(index),ClassificationOutput(distValue,new Array[Array[Any]](0)))
-		}
+		ClassificationOutput(dist(0), new Array[Array[Any]](0))
 	}
 
 	def buildInstance(document: Document): DenseInstance = {

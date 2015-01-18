@@ -58,6 +58,6 @@ class MultiProductBackupClassifier(val brochures: List[Document], val posts: Lis
 	}
 
 	def validate(): Evaluation = {
-		throw RuntimeException("Not implemented yet!")
+		throw new RuntimeException("Not implemented yet!")
 	}
 }

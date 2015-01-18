@@ -66,7 +66,9 @@ class MultiProductClassifier(val brochures: List[Document], val posts: List[Docu
 		val instance = buildInstance(post)
 		val dist = classifier.distributionForInstance(instance)
 
-		ClassificationOutput(dist(0), new Array[Array[Any]](0))
+		dist.toList.zipWithIndex.map { case (distValue, index) =>
+			Classification(classAttribute.value(index),ClassificationOutput(distValue,new Array[Array[Any]](0)))
+		}
 	}
 
 	def buildInstance(document: Document): DenseInstance = {
