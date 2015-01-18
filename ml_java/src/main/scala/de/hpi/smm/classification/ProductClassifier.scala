@@ -55,7 +55,13 @@ class ProductClassifier(val className: String, val documents: List[Document], va
 		val post = Document(id, title, text, sentences, rawPost.extract(className))
 
 		val instance = buildInstance(post)
-		val dist = classifier.distributionForInstance(instance)
+
+		val classifyInstances = new Instances("toClassify", attributes,0)
+		classifyInstances.add(instance)
+
+		val filteredClassifyInstances = Filter.useFilter(classifyInstances,tdfIdfFilter)
+
+		val dist = classifier.distributionForInstance(filteredClassifyInstances.get(0))
 
 		ClassificationOutput(dist(0), new Array[Array[Any]](0))
 	}

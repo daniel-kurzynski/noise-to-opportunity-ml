@@ -64,7 +64,14 @@ class MultiProductClassifier(val brochures: List[Document], val posts: List[Docu
 		val post = Document(id, title, text, sentences, "None")
 
 		val instance = buildInstance(post)
-		val dist = classifier.distributionForInstance(instance)
+
+		val classifyInstances = new Instances("toClassify", attributes,0)
+		classifyInstances.add(instance)
+
+		val filteredClassifyInstances = Filter.useFilter(classifyInstances,tdfIdfFilter)
+		val normilizedClassifyInstances = Filter.useFilter(filteredClassifyInstances,normelizeFilter)
+
+		val dist = classifier.distributionForInstance(normilizedClassifyInstances.get(0))
 
 		dist.toList.zipWithIndex.map { case (distValue, index) =>
 			Classification(classAttribute.value(index),ClassificationOutput(distValue,new Array[Array[Any]](0)))
