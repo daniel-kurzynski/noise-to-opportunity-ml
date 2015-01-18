@@ -46,11 +46,14 @@ class NTOAnalyzer(featureExtractorBuilder: FeatureExtractorBuilder) {
 	 * Returns an ordered list of classifications.
 	 */
 	def classifyProduct(text: String): List[Classification] = {
-		List[Classification](
+
+		val classification = productClassifier.classProbability(text)
+//		val classification =  List[Classification](
 //			Classification("HCM" , HCMClassifier.classProbability(text)),
 //			Classification("ECOM", ECOMClassifier.classProbability(text)),
 //			Classification("CRM" , CRMClassifier.classProbability(text)),
 //			Classification("LVM" , LVMClassifier.classProbability(text))
-		).sortBy(-_.classificationOutput.prob)
+//		)
+			classification.sortBy(-_.classificationOutput.prob)
 	}
 }
