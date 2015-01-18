@@ -47,7 +47,7 @@ class MultiProductBackupClassifier(val brochures: List[Document], val posts: Lis
 						if(postTokens.contains(token.toLowerCase)) 1 else 0
 				}.sum
 
-				val distValue = (1.0 * sumOfTokens/classTokens.size)
+				(1.0 * sumOfTokens/classTokens.size)
 
 			}
 		}
