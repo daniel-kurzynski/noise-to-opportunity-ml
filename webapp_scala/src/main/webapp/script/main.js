@@ -57,7 +57,7 @@ jQuery(function() {
 	};
 	doPrediction();
 	$(document).keydown(function(event){
-		if(event.keyCode === 39){
+		if(event.keyCode === 17){
 			doPrediction();
 		}
 	});
