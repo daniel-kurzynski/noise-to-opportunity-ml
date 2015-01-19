@@ -1,5 +1,5 @@
 jQuery(function() {
-	var predictionTimer = function() {
+	var doPrediction = function() {
 		var COLOR_ANIMATION = 300;
 
 		var roundValue = function(d, places) {
@@ -20,9 +20,9 @@ jQuery(function() {
 			data: {
 				text: blogPost
 			},
-			complete: function() {
-				window.setTimeout(predictionTimer, 2500)
-			},
+			// complete: function() {
+			// 	window.setTimeout(doPrediction, 2500)
+			// },
 			success: function (data) {
 				var $productResults = $("#product-results");
 				var $demandResults  = $("#demand-results");
@@ -35,8 +35,9 @@ jQuery(function() {
 				} else {
 					setTextAndAnimate("demand", "NO-DEMAND (" + roundValue(1 - demandProb) + ")", "#f04124");
 				}
-				if (data.product[0].classificationOutput.prob > 0.5) {
-					setTextAndAnimate("product", data.product[0].classificationOutput.cls, "#008cba");
+				if (data.product[0].classificationOutput.prob >= 0.45) {
+					debugger;
+					setTextAndAnimate("product", data.product[0].cls, "#008cba");
 				} else {
 					setTextAndAnimate("product", "NONE", "#5bc0de");
 				}
@@ -55,5 +56,12 @@ jQuery(function() {
 			}
 		});
 	};
-	predictionTimer();
+	doPrediction();
+	$(document).keydown(function(event){
+		if(event.keyCode ===121){
+			doPrediction();
+		}
+	});
 });
+
+

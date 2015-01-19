@@ -16,7 +16,7 @@ import weka.filters.unsupervised.attribute.{Normalize, StringToWordVector}
 import scala.collection.JavaConverters._
 
 
-class MultiProductClassifier(val brochures: List[Document], val posts: List[Document], val dataReader: DataReader) {
+class MultiProductClassifier(val brochures: List[Document], val posts: List[Document], classNames: List[String], val dataReader: DataReader) {
 
 	val baseClassifier = new IBk(5)
 	val classifier = new PriorClassifier(baseClassifier, Array(1.0, 10.00, 10.0, 10.0, 10.0))

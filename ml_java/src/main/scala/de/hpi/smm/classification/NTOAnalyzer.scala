@@ -13,30 +13,39 @@ class NTOAnalyzer(featureExtractorBuilder: FeatureExtractorBuilder) {
 		featureExtractorBuilder.buildForDemand(),
 		featureExtractorBuilder.dataReader)
 
-	val productClassifier = new MultiProductClassifier(
+	val classNames = List("CRM", "ECOM", "HCM", "LVM", "None")
+
+	val productClassifier = new GroupedProductClassifier(
+		featureExtractorBuilder.brochures,
+		featureExtractorBuilder.postForCategory,
+		classNames,
+		featureExtractorBuilder.dataReader)
+
+//	val productClassifier = new MultiProductClassifier(
+//		featureExtractorBuilder.brochures,
+//		featureExtractorBuilder.postForCategory,
+//		classNames,
+//		featureExtractorBuilder.dataReader)
+
+	val CRMClassifier = new ProductClassifier("CRM",
 		featureExtractorBuilder.brochures,
 		featureExtractorBuilder.postForCategory,
 		featureExtractorBuilder.dataReader)
 
-//	val CRMClassifier = new ProductClassifier("CRM",
-//		featureExtractorBuilder.brochures,
-//		featureExtractorBuilder.postForCategory,
-//		featureExtractorBuilder.dataReader)
-//
-//	val ECOMClassifier = new ProductClassifier("ECOM",
-//		featureExtractorBuilder.brochures,
-//		featureExtractorBuilder.postForCategory,
-//		featureExtractorBuilder.dataReader)
-//
-//	val HCMClassifier = new ProductClassifier("HCM",
-//		featureExtractorBuilder.brochures,
-//		featureExtractorBuilder.postForCategory,
-//		featureExtractorBuilder.dataReader)
-//
-//	val LVMClassifier = new ProductClassifier("LVM",
-//		featureExtractorBuilder.brochures,
-//		featureExtractorBuilder.postForCategory,
-//		featureExtractorBuilder.dataReader)
+	val ECOMClassifier = new ProductClassifier("ECOM",
+		featureExtractorBuilder.brochures,
+		featureExtractorBuilder.postForCategory,
+		featureExtractorBuilder.dataReader)
+
+	val HCMClassifier = new ProductClassifier("HCM",
+		featureExtractorBuilder.brochures,
+		featureExtractorBuilder.postForCategory,
+		featureExtractorBuilder.dataReader)
+
+	val LVMClassifier = new ProductClassifier("LVM",
+		featureExtractorBuilder.brochures,
+		featureExtractorBuilder.postForCategory,
+		featureExtractorBuilder.dataReader)
 
 	def classifyDemand(text: String): Classification = {
 		Classification("demand", demandClassifier.classProbability(text))
@@ -47,13 +56,13 @@ class NTOAnalyzer(featureExtractorBuilder: FeatureExtractorBuilder) {
 	 */
 	def classifyProduct(text: String): List[Classification] = {
 
-		val classification = productClassifier.classProbability(text)
-//		val classification =  List[Classification](
-//			Classification("HCM" , HCMClassifier.classProbability(text)),
-//			Classification("ECOM", ECOMClassifier.classProbability(text)),
-//			Classification("CRM" , CRMClassifier.classProbability(text)),
-//			Classification("LVM" , LVMClassifier.classProbability(text))
-//		)
+//		val classification = productClassifier.classProbability(text)
+		val classification =  List[Classification](
+			Classification("HCM" , HCMClassifier.classProbability(text)),
+			Classification("ECOM", ECOMClassifier.classProbability(text)),
+			Classification("CRM" , CRMClassifier.classProbability(text)),
+			Classification("LVM" , LVMClassifier.classProbability(text))
+		)
 			classification.sortBy(-_.classificationOutput.prob)
 	}
 }

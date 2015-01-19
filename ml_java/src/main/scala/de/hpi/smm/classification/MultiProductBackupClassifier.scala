@@ -18,9 +18,8 @@ import scala.collection.JavaConverters._
 /**
  * Created by Daniel on 18.01.2015.
  */
-class MultiProductBackupClassifier(val brochures: List[Document], val posts: List[Document], val dataReader: DataReader) {
+class MultiProductBackupClassifier(val brochures: List[Document], val posts: List[Document], classNames: List[String], val dataReader: DataReader) {
 
-	val classes = List("CRM", "ECOM", "HCM", "LVM", "None")
 	val tokenMap = Map(
 		"HCM"-> List("HCM", "hr"),
 		"LVM"-> List("LVM", "virtual", "servers", "landscape"),
@@ -38,7 +37,7 @@ class MultiProductBackupClassifier(val brochures: List[Document], val posts: Lis
 		val sentences = dataReader.detectSentences(rawPost)
 		val post = Document(id, title, text, sentences, "None")
 
-		val dist = classes.map{ className =>
+		val dist = classNames.map{ className =>
 			{
 				val classTokens = tokenMap(className)
 
@@ -54,7 +53,7 @@ class MultiProductBackupClassifier(val brochures: List[Document], val posts: Lis
 
 		val normDist = dist.map(distValue => distValue/dist.sum)
 
-		classes.zipWithIndex.map { case(className, index) =>
+		classNames.zipWithIndex.map { case(className, index) =>
 			Classification(className, ClassificationOutput(dist(index),new Array[Array[Any]](0)))
 		}
 
