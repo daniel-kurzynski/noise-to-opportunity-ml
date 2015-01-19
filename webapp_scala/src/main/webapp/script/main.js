@@ -36,7 +36,6 @@ jQuery(function() {
 					setTextAndAnimate("demand", "NO-DEMAND (" + roundValue(1 - demandProb) + ")", "#f04124");
 				}
 				if (data.product[0].classificationOutput.prob >= 0.45) {
-					debugger;
 					setTextAndAnimate("product", data.product[0].cls, "#008cba");
 				} else {
 					setTextAndAnimate("product", "NONE", "#5bc0de");
@@ -58,7 +57,7 @@ jQuery(function() {
 	};
 	doPrediction();
 	$(document).keydown(function(event){
-		if(event.keyCode ===121){
+		if(event.keyCode === 39){
 			doPrediction();
 		}
 	});
