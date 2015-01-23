@@ -13,9 +13,7 @@ import edu.stanford.nlp.util.CoreMap
 import edu.stanford.nlp.util.logging.RedwoodConfiguration
 import scala.collection.JavaConverters._
 
-/**
- * Created by Daniel on 06.01.2015.
- */
+
 class DataReader(val classifiedPosts :Map[String, Map[String, Map[String, String]]],
 								 	val postsFile :File,
 									val brochuresFile :File,

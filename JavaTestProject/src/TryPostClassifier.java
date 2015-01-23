@@ -1,28 +1,27 @@
 import java.io.File;
 import java.util.List;
 
-import de.hpi.smm.classification.Classification;
-import de.hpi.smm.classification.NTOAnalyzer;
-import de.hpi.smm.classification.NTOAnalyzerBuilder;
+import com.blog_intelligence.nto.DocumentExtractor;
+import com.blog_intelligence.nto.Document;
+import com.blog_intelligence.nto.NTOClassifier;
 
 public class TryPostClassifier {
 
 	public static void main(String[] args) {
+
 		File classificationFile = new File("classification.json");
-		File postFile = new File("linked_in_posts.csv");
-		File brochuresFile = new File("brochures.csv");
+		List<Document> posts = new DocumentExtractor().readFromCSV(new File("linked_in_posts.csv"), classificationFile, "demand");
+		List<Document> brochures = new DocumentExtractor().readFromCSV(new File("brochures.csv"), classificationFile, "category");
+
+		NTOClassifier classifier = new NTOClassifier();
+
+		classifier.trainDemand(posts);
+		classifier.trainProduct(brochures);
+
 		String post = "Hi! I am the CTO of Startup Inc. Lately, I have problems organising my customers. Do you have any recommendations for a good crm system to handle them?";
 
-		NTOAnalyzer analyzer = NTOAnalyzerBuilder.build(
-				classificationFile,
-				brochuresFile,
-				postFile);
-		
-		Classification demandClassification = analyzer.classifyDemand(post);
-		System.out.println(demandClassification.cls() + " with prob: " + demandClassification.classificationOutput().prob());
-		
-		List<Classification> classificationList = analyzer.classifyProductAsJavaList(post);
-		System.out.println(classificationList.get(0).cls() + " with prob: " + classificationList.get(0).classificationOutput().prob());
+		double value = classifier.predictDemand(null);
 
+		System.out.println(value);
 	}
 }
