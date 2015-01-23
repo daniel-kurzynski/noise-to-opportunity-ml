@@ -38,6 +38,7 @@ object Main {
 
 	def runClassifyPost() {
 		val postClassifier = new NTOAnalyzer(featureBuilder)
+		postClassifier.trainDemand()
 
 		val post = "I need help. I am looking for support. Thanks in advance. I am searching for a good crm software."
 		val demandClassification = postClassifier.classifyDemand(post)
@@ -49,19 +50,19 @@ object Main {
 		println(evaluation.toSummaryString(f"%nResults%n======%n", false))
 		println(evaluation.toMatrixString)
 
-		val hcmEvaluation = postClassifier.HCMClassifier.validate()
+		val hcmEvaluation = postClassifier.HCMClassifier.validate(featureBuilder.postForCategory)
 		println(hcmEvaluation.toSummaryString(f"%nResults%n======%n", false))
 		println(hcmEvaluation.toMatrixString)
 
-		val ecomEvaluation = postClassifier.ECOMClassifier.validate()
+		val ecomEvaluation = postClassifier.ECOMClassifier.validate(featureBuilder.postForCategory)
 		println(ecomEvaluation.toSummaryString(f"%nResults%n======%n", false))
 		println(ecomEvaluation.toMatrixString)
 
-		val lvmEvaluation = postClassifier.LVMClassifier.validate()
+		val lvmEvaluation = postClassifier.LVMClassifier.validate(featureBuilder.postForCategory)
 		println(lvmEvaluation.toSummaryString(f"%nResults%n======%n", false))
 		println(lvmEvaluation.toMatrixString)
 
-		val crmEvaluation = postClassifier.CRMClassifier.validate()
+		val crmEvaluation = postClassifier.CRMClassifier.validate(featureBuilder.postForCategory)
 		println(crmEvaluation.toSummaryString(f"%nResults%n======%n", false))
 		println(crmEvaluation.toMatrixString)
 

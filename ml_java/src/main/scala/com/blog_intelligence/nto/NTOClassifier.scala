@@ -16,6 +16,8 @@ class NTOClassifier {
 	}
 
 	def trainProduct(trainingSamples: java.util.List[Document]): Unit = {
+		List("CRM")
+
 		println("I am doing nothing.")
 	}
 
