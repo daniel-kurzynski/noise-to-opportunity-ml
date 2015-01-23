@@ -1,4 +1,5 @@
 # data files
+lib/
 data
 *.csv
 tagger_name.conf
