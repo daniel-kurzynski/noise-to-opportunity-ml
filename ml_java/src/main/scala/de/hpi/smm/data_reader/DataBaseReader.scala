@@ -4,12 +4,6 @@ import java.sql.Connection
 
 import com.blog_intelligence.nto.{Document, ReadingResult, DataBaseConfiguration}
 
-/**
- * Created by Daniel on 23.01.2015.
- */
-
-
-
 class DataBaseReader(dataBaseConfiguration: DataBaseConfiguration) {
 
 	var connection:Connection = null

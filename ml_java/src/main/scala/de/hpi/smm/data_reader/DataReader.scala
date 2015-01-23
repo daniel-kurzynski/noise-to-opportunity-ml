@@ -4,7 +4,7 @@ import java.io.{File, FileReader}
 import java.util
 
 import au.com.bytecode.opencsv.CSVReader
-import com.blog_intelligence.nto.{RawDocument, Document}
+import com.blog_intelligence.nto.{ReadingResult, RawDocument, Document}
 import com.lambdaworks.jacks.JacksMapper
 import de.hpi.smm.domain.Word
 import de.hpi.smm.nlp.NLP
@@ -70,4 +70,21 @@ class DataReader(val classifiedPosts :Map[String, Map[String, Map[String, String
 		}
 		reader.close()
 	}
+
+	def getReadingResult: ReadingResult ={
+
+		val demandDocs = new java.util.ArrayList[Document]()
+		val productDocs = new java.util.ArrayList[Document]()
+
+		this.readPostsLinewise { post =>
+			demandDocs.add(post)
+		}()
+
+		this.readBrochuresLinewise(List("en")) { brochure =>
+			productDocs.add(brochure)
+		}
+
+		ReadingResult(demandDocs, productDocs)
+	}
+
 }

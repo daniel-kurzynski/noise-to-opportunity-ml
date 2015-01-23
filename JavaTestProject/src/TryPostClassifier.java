@@ -1,8 +1,6 @@
 import java.io.File;
 
-import com.blog_intelligence.nto.DocumentExtractor;
-import com.blog_intelligence.nto.NTOClassifier;
-import com.blog_intelligence.nto.ReadingResult;
+import com.blog_intelligence.nto.*;
 
 public class TryPostClassifier {
 
@@ -11,7 +9,7 @@ public class TryPostClassifier {
 		ReadingResult documents = new DocumentExtractor().readFromCSV(
 				new File("linked_in_posts.csv"),
 				new File("brochures.csv"),
-				new File("classification.json"));
+				new File("../n2o_data/latest.json"));
 
 		NTOClassifier classifier = new NTOClassifier();
 
@@ -19,8 +17,7 @@ public class TryPostClassifier {
 		classifier.trainProduct(documents.productDocuments());
 
 		String post = "Hi! I am the CTO of Startup Inc. Lately, I have problems organising my customers. Do you have any recommendations for a good crm system to handle them?";
-
-		double value = classifier.predictDemand(null);
+		double value = classifier.predictDemand(post);
 
 		System.out.println(value);
 	}

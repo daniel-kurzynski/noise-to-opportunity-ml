@@ -21,10 +21,10 @@ class NTOClassifier {
 		println("I am doing nothing.")
 	}
 
-	def predictDemand(doc: Document): Double = {
+	def predictDemand(text: String): Double = {
 		if (demandClassifier == null)
 			throw new Exception("Need to train the classifier first.")
-		demandClassifier.classProbability(doc.wholeText).prob
+		demandClassifier.classProbability(text).prob
 
 	}
 
