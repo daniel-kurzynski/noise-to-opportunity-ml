@@ -2,6 +2,7 @@ package de.hpi.smm.domain
 
 import java.util
 
+import com.blog_intelligence.nto.Document
 import weka.core.{DenseInstance, Attribute, Instances}
 import scala.collection.JavaConverters._
 /**

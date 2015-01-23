@@ -1,7 +1,7 @@
 package de.hpi.smm
 
+import com.blog_intelligence.nto.Document
 import de.hpi.smm.data_reader.DataReader
-import de.hpi.smm.domain.Document
 import de.hpi.smm.feature_extraction.FeatureExtractor
 
 class FeatureExtractorBuilder(val dataReader: DataReader) {

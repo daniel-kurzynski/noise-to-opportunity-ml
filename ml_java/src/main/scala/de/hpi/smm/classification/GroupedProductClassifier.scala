@@ -1,7 +1,7 @@
 package de.hpi.smm.classification
 
+import com.blog_intelligence.nto.Document
 import de.hpi.smm.data_reader.DataReader
-import de.hpi.smm.domain.Document
 import weka.classifiers.Evaluation
 
 class GroupedProductClassifier(val brochures: List[Document], val posts: List[Document], classNames: List[String], val dataReader: DataReader) {

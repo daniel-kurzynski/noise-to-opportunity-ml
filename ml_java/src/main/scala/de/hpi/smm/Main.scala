@@ -4,6 +4,7 @@ import java.io.{File, FileReader, FileWriter}
 import java.util
 
 import au.com.bytecode.opencsv.CSVWriter
+import com.blog_intelligence.nto.Document
 import com.lambdaworks.jacks.JacksMapper
 import de.hpi.smm.classification.NTOAnalyzer
 import de.hpi.smm.data_reader.DataReader

@@ -1,6 +1,7 @@
 package de.hpi.smm.feature_extraction
 
-import de.hpi.smm.domain.{GenericCountsCounter, Document}
+import com.blog_intelligence.nto.Document
+import de.hpi.smm.domain.GenericCountsCounter
 
 import scala.collection.mutable
 

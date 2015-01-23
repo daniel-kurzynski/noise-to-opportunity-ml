@@ -1,4 +1,6 @@
-package de.hpi.smm.domain
+package com.blog_intelligence.nto
+
+import de.hpi.smm.domain.Word
 
 case class RawDocument(id: String,
                    title: String,

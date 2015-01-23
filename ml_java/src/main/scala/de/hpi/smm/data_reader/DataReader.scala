@@ -4,8 +4,9 @@ import java.io.{File, FileReader}
 import java.util
 
 import au.com.bytecode.opencsv.CSVReader
+import com.blog_intelligence.nto.{RawDocument, Document}
 import com.lambdaworks.jacks.JacksMapper
-import de.hpi.smm.domain.{Word, RawDocument, Document}
+import de.hpi.smm.domain.Word
 import edu.stanford.nlp.ling.CoreAnnotations._
 import edu.stanford.nlp.pipeline.{Annotation, StanfordCoreNLP}
 import edu.stanford.nlp.util.CoreMap

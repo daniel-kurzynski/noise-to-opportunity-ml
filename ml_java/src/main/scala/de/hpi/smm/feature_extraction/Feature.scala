@@ -1,6 +1,7 @@
 package de.hpi.smm.feature_extraction
 
-import de.hpi.smm.domain.{Switch, Document}
+import com.blog_intelligence.nto.Document
+import de.hpi.smm.domain.Switch
 
 abstract class Feature {
 

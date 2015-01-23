@@ -2,8 +2,9 @@ package de.hpi.smm.classification
 
 import java.util
 
+import com.blog_intelligence.nto.{RawDocument, Document}
 import de.hpi.smm.data_reader.DataReader
-import de.hpi.smm.domain.{Document, RawDocument}
+import de.hpi.smm.domain.RawDocument
 import weka.classifiers.Evaluation
 import weka.classifiers.`lazy`.IBk
 import weka.classifiers.functions.SMO

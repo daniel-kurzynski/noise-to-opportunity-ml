@@ -1,5 +1,7 @@
 package de.hpi.smm.domain
 
+import com.blog_intelligence.nto.Document
+
 case class Switch(cases: Case*) {
 
 	def this(fun: (Document => Array[Double])) = this(Case(fun, "default"))
