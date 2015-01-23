@@ -13,11 +13,17 @@ public class JavaExample {
 	public static void main(String[] args) {
 		NTOClassifier classifier;
 		if (DEMAND_MODEL_FILE.exists() && PRODUCT_MODEL_FILE.exists()) {
-			System.out.println("reading from model file");
+			System.out.print("Reading from model file");
+			long l1 = System.currentTimeMillis();
 			classifier = readFromModel();
+			long l2 = System.currentTimeMillis();
+			System.out.println(" in " + (l2 - l1) + " ms.");
 		} else {
-			System.out.println("creating new model");
+			System.out.print("Creating new model");
+			long l1 = System.currentTimeMillis();
 			classifier = buildModelFromScratch();
+			long l2 = System.currentTimeMillis();
+			System.out.println(" in " + (l2 - l1) + " ms.");
 		}
 
 		/**

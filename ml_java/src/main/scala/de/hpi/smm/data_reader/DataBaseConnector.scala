@@ -2,8 +2,9 @@ package de.hpi.smm.data_reader
 
 import java.sql.{DriverManager, Connection}
 
-import com.blog_intelligence.nto.{RawDocument, Document, ReadingResult, DataBaseConfiguration}
+import com.blog_intelligence.nto.RawDocument
 import de.hpi.smm.nlp.NLP
+import com.blog_intelligence.nto.{Document, ReadingResult, DataBaseConfiguration}
 
 class DataBaseReader(dataBaseConfiguration: DataBaseConfiguration) {
 
@@ -21,7 +22,7 @@ class DataBaseReader(dataBaseConfiguration: DataBaseConfiguration) {
 			Class.forName(driver)
 			connection = DriverManager.getConnection(url, dataBaseConfiguration.username, dataBaseConfiguration.password)
 		} catch {
-			case e => e.printStackTrace
+			case e: Throwable => e.printStackTrace()
 		}
 	}
 
@@ -56,7 +57,7 @@ class DataBaseReader(dataBaseConfiguration: DataBaseConfiguration) {
 
 			}
 		} catch {
-			case e => e.printStackTrace
+			case e: Throwable => e.printStackTrace()
 		}
 		new ReadingResult(demandPosts, productPosts)
 	}
@@ -81,10 +82,5 @@ class DataBaseReader(dataBaseConfiguration: DataBaseConfiguration) {
 object DataBaseReader {
 	def main(args: Array[String]) {
 		val config = new DataBaseConfiguration("141.89.225.134","30315","SMA1415", "Popcorn54","SMA1415.CLASSIFIED_POSTS");
-
-
-
-
-
 	}
 }
