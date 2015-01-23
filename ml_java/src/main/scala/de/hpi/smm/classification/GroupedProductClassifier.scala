@@ -11,7 +11,7 @@ class GroupedProductClassifier(val brochures: List[Document], val posts: List[Do
 	val classValues = classNames.zipWithIndex.toMap
 
 	val classifiers = classNamesWithoutNone.map { className =>
-		(className -> new ProductClassifier(className, brochures, posts, dataReader))
+		className -> new ProductClassifier(className, brochures, posts)
 	}.toMap
 
 	def classProbability(text: String): List[Classification] = {

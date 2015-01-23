@@ -4,6 +4,7 @@ import java.util
 
 import com.blog_intelligence.nto.{RawDocument, Document}
 import de.hpi.smm.data_reader.DataReader
+import de.hpi.smm.nlp.NLP
 import weka.classifiers.Evaluation
 import weka.classifiers.`lazy`.IBk
 import weka.classifiers.functions.SMO
@@ -16,7 +17,7 @@ import weka.filters.unsupervised.attribute.{Normalize, StringToWordVector}
 import scala.collection.JavaConverters._
 
 
-class MultiProductClassifier(val brochures: List[Document], val posts: List[Document], classNames: List[String], val dataReader: DataReader) {
+class MultiProductClassifier(val brochures: List[Document], val posts: List[Document], classNames: List[String]) {
 
 	val baseClassifier = new IBk(5)
 	val classifier = new PriorClassifier(baseClassifier, Array(1.0, 10.00, 10.0, 10.0, 10.0))
@@ -60,7 +61,7 @@ class MultiProductClassifier(val brochures: List[Document], val posts: List[Docu
 		val title = ""
 
 		val rawPost = RawDocument(id, title, text, null)
-		val sentences = dataReader.detectSentences(rawPost)
+		val sentences = NLP.detectSentences(rawPost)
 		val post = Document(id, title, text, sentences, "None")
 
 		val instance = buildInstance(post)

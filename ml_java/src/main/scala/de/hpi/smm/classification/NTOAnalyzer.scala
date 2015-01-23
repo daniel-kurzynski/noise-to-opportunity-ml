@@ -9,10 +9,14 @@ case class Classification(cls: String, classificationOutput: ClassificationOutpu
 
 class NTOAnalyzer(featureExtractorBuilder: FeatureExtractorBuilder) {
 
-	val demandClassifier = new Classifier("demand",
-		featureExtractorBuilder.posts,
-		featureExtractorBuilder.buildForDemand(),
-		featureExtractorBuilder.dataReader)
+	var demandClassifier: Classifier = null
+
+	def trainDemand(): Unit = {
+		demandClassifier = new Classifier("demand",
+			featureExtractorBuilder.posts,
+			featureExtractorBuilder.buildForDemand(),
+			featureExtractorBuilder.dataReader)
+	}
 
 	val classNames = List("CRM", "ECOM", "HCM", "LVM", "None")
 
@@ -30,23 +34,19 @@ class NTOAnalyzer(featureExtractorBuilder: FeatureExtractorBuilder) {
 
 	val CRMClassifier = new ProductClassifier("CRM",
 		featureExtractorBuilder.brochures,
-		featureExtractorBuilder.postForCategory,
-		featureExtractorBuilder.dataReader)
+		featureExtractorBuilder.postForCategory)
 
 	val ECOMClassifier = new ProductClassifier("ECOM",
 		featureExtractorBuilder.brochures,
-		featureExtractorBuilder.postForCategory,
-		featureExtractorBuilder.dataReader)
+		featureExtractorBuilder.postForCategory)
 
 	val HCMClassifier = new ProductClassifier("HCM",
 		featureExtractorBuilder.brochures,
-		featureExtractorBuilder.postForCategory,
-		featureExtractorBuilder.dataReader)
+		featureExtractorBuilder.postForCategory)
 
 	val LVMClassifier = new ProductClassifier("LVM",
 		featureExtractorBuilder.brochures,
-		featureExtractorBuilder.postForCategory,
-		featureExtractorBuilder.dataReader)
+		featureExtractorBuilder.postForCategory)
 
 	def classifyDemand(text: String): Classification = {
 		Classification("demand", demandClassifier.classProbability(text))

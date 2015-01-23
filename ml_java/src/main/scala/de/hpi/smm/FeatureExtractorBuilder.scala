@@ -3,6 +3,7 @@ package de.hpi.smm
 import com.blog_intelligence.nto.Document
 import de.hpi.smm.data_reader.DataReader
 import de.hpi.smm.feature_extraction.FeatureExtractor
+import scala.collection.JavaConverters._
 
 class FeatureExtractorBuilder(val dataReader: DataReader) {
 
@@ -10,21 +11,22 @@ class FeatureExtractorBuilder(val dataReader: DataReader) {
 	var postForCategory = List[Document]()
 	var brochures = List[Document]()
 
-	dataReader.readPostsLinewise { post =>
-		posts ::= post
-	}()
+	if (dataReader != null) {
+		dataReader.readPostsLinewise { post =>
+			posts ::= post
+		}()
 
-	dataReader.readPostsLinewise { post =>
-		postForCategory ::= post
-	}("category")
+		dataReader.readPostsLinewise { post =>
+			postForCategory ::= post
+		}("category")
 
-	dataReader.readBrochuresLinewise(List("en")) { brochure =>
-		brochures ::= brochure
+		dataReader.readBrochuresLinewise(List("en")) { brochure =>
+			brochures ::= brochure
+		}
 	}
 
-
-
-	def buildForDemand(): FeatureExtractor = {
+	def buildForDemand(givenPosts: java.util.List[Document] = null): FeatureExtractor = {
+		val usedPosts = if (givenPosts != null) givenPosts.asScala else posts
 		val smoothing = false
 
 		val features = new FeatureExtractor(smoothing)
@@ -36,7 +38,7 @@ class FeatureExtractorBuilder(val dataReader: DataReader) {
 			.questionWords()
 			.imperativeWords()
 
-		posts.foreach { post =>
+		usedPosts.foreach { post =>
 			features.touch(post)
 		}
 

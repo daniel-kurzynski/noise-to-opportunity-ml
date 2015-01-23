@@ -4,13 +4,14 @@ import java.util
 
 import com.blog_intelligence.nto.{RawDocument, Document}
 import de.hpi.smm.data_reader.DataReader
+import de.hpi.smm.nlp.NLP
 import weka.classifiers.Evaluation
 import weka.classifiers.`lazy`.IBk
 import weka.core.{DenseInstance, Attribute, Instances}
 import weka.filters.Filter
 import weka.filters.unsupervised.attribute.StringToWordVector
 
-class ProductClassifier(val className: String, val documents: List[Document], val posts: List[Document], val dataReader: DataReader) {
+class ProductClassifier(val className: String, val documents: List[Document], val posts: List[Document]) {
 
 	val classifier = new IBk(10)
 
@@ -47,7 +48,7 @@ class ProductClassifier(val className: String, val documents: List[Document], va
 		val title = ""
 
 		val rawPost = RawDocument(id, title, text, null)
-		val sentences = dataReader.detectSentences(rawPost)
+		val sentences =  NLP.detectSentences(rawPost)
 		val post = Document(id, title, text, sentences, rawPost.extract(className))
 
 		val instance = buildInstance(post)
