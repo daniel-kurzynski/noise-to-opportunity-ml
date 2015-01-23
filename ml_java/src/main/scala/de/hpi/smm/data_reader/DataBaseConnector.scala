@@ -2,7 +2,8 @@ package de.hpi.smm.data_reader
 
 import java.sql.{DriverManager, Connection}
 
-import com.blog_intelligence.nto.{Document, ReadingResult, DataBaseConfiguration}
+import com.blog_intelligence.nto.{RawDocument, Document, ReadingResult, DataBaseConfiguration}
+import de.hpi.smm.nlp.NLP
 
 /**
  * Created by Daniel on 23.01.2015.
@@ -49,7 +50,13 @@ class DataBaseReader(dataBaseConfiguration: DataBaseConfiguration) {
 				val demandClass = resultSet.getString("DEMAND_CLASS")
 				val productClass = resultSet.getString("PRODUCT_CLASS")
 
-				println(id, title, text, demandClass, productClass)
+				val rawPost = RawDocument(id, title, text, null)
+				val sentences = NLP.detectSentences(rawPost)
+
+				demandPosts.add(Document(id, title, text, sentences, demandClass))
+				productPosts.add(Document(id, title, text, sentences, productClass))
+
+//				println(id, title, text, demandClass, productClass)
 
 			}
 		} catch {
