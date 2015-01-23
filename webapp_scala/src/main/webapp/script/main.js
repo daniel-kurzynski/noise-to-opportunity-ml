@@ -57,7 +57,7 @@ jQuery(function() {
 	};
 	doPrediction();
 	$(document).keydown(function(event){
-		if(event.keyCode === 225){
+		if(event.keyCode === 18){
 			doPrediction();
 		}
 	});
