@@ -7,9 +7,9 @@ public class TryPostClassifier {
 	public static void main(String[] args) {
 
 		ReadingResult documents = new DocumentExtractor().readFromCSV(
-				new File("linked_in_posts.csv"),
-				new File("brochures.csv"),
-				new File("../n2o_data/latest.json"));
+				new File("../n2o_data/linked_in_posts.csv"),
+				new File("../n2o_data/brochures.csv"),
+				new File("../n2o_data/classification_updates/latest.json"));
 
 		NTOClassifier classifier = new NTOClassifier();
 
