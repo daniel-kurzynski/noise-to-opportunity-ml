@@ -5,13 +5,9 @@ import java.sql.{DriverManager, Connection}
 import com.blog_intelligence.nto.{RawDocument, Document, ReadingResult, DataBaseConfiguration}
 import de.hpi.smm.nlp.NLP
 
-/**
- * Created by Daniel on 23.01.2015.
- */
-
 class DataBaseReader(dataBaseConfiguration: DataBaseConfiguration) {
 
-	private val driver = "com.mysql.jdbc.Driver"
+	private val driver = "com.sap.db.jdbc.Driver"
 	private val host = dataBaseConfiguration.host
 	private val port = dataBaseConfiguration.port
 	private val url = f"jdbc:sap://$host%s:$port%s"
