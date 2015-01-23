@@ -23,11 +23,5 @@ class DataBaseReader(dataBaseConfiguration: DataBaseConfiguration) {
 }
 
 object DataBaseReader {
-	def main(args: Array[String]) {
-		val conifg = new DataBaseConfiguration("141.89.225.134","30315","SMA1415", "Popcorn54","SMA1415.CLASSIFIED_POSTS");
-
-
-
-
-	}
+	val CONFIG = new DataBaseConfiguration("141.89.225.134","30315","SMA1415", "Popcorn54","SMA1415.CLASSIFIED_POSTS")
 }
