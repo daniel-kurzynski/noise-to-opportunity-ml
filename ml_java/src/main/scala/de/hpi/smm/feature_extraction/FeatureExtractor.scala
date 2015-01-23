@@ -95,7 +95,7 @@ class FeatureExtractor(smooting: Boolean) {
 		finished = true
 		features.foreach(_.finishTraining())
 	}
-	def buildFeatureVectors(documents: List[Document], vectorHandler: (Document, Array[Double]) => Unit): Unit = {
+	def buildFeatureVectors(documents: Seq[Document], vectorHandler: (Document, Array[Double]) => Unit): Unit = {
 		documents.foreach { document =>
 			buildFeatureVector(document, vectorHandler)
 		}
