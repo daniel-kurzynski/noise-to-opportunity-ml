@@ -11,7 +11,7 @@ import weka.core.{DenseInstance, Attribute, Instances}
 import weka.filters.Filter
 import weka.filters.unsupervised.attribute.StringToWordVector
 
-class ProductClassifier(val className: String, val documents: Seq[Document]) {
+class ProductClassifier(val className: String, val documents: Seq[Document]) extends Serializable {
 
 	val classifier = new IBk(10)
 

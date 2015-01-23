@@ -1,6 +1,6 @@
 package com.blog_intelligence.nto
 
-import java.io.{FileOutputStream, ObjectOutputStream}
+import java.io._
 
 import de.hpi.smm.FeatureExtractorBuilder
 import de.hpi.smm.classification.{ProductClassifier, Classifier}
@@ -11,17 +11,50 @@ class NTOClassifier {
 	var demandClassifier: Classifier = null
 	var productClassifiers: List[ProductClassifier] = null
 
+	def requireNonNull(o: Object) {
+		if (o == null)
+			throw new Exception("Need to train the classifier first.")
+	}
+
+	def persistDemand(modelFile: File): Unit  = {
+		persist(modelFile, demandClassifier)
+	}
+
+	def persistProducts(modelFile: File): Unit  = {
+		persist(modelFile, productClassifiers)
+	}
+
+	private def persist(modelFile: File, o: Object): Unit  = {
+		requireNonNull(o)
+
+		val objectStream = new ObjectOutputStream(new FileOutputStream(modelFile))
+		objectStream.writeObject(o)
+		objectStream.flush()
+		objectStream.close()
+
+	}
+
+	def loadDemand(modelFile: File): Unit = {
+		demandClassifier = loadModel(modelFile).asInstanceOf[Classifier]
+	}
+
+	def loadProduct(modelFile: File): Unit = {
+		productClassifiers = loadModel(modelFile).asInstanceOf[List[ProductClassifier]]
+	}
+
+
+	private def loadModel(modelFile: File): Object = {
+		val objectStream = new ObjectInputStream(new FileInputStream(modelFile))
+		val o = objectStream.readObject()
+		objectStream.close()
+		o
+	}
+
 	def trainDemand(trainingSamples: java.util.List[Document]): Unit = {
 		val featureExtraction = new FeatureExtractorBuilder(null).buildForDemand(trainingSamples)
 		demandClassifier = new Classifier("demand",
 			trainingSamples.asScala,
 			featureExtraction)
-		// serialize model
-		val oos = new ObjectOutputStream(
-			new FileOutputStream("demand-model"))
-		oos.writeObject(demandClassifier)
-		oos.flush()
-		oos.close()
 	}
 
 	def trainProduct(trainingSamples: java.util.List[Document]): Unit = {
@@ -33,14 +66,12 @@ class NTOClassifier {
 	}
 
 	def predictDemand(text: String): Double = {
-		if (demandClassifier == null)
-			throw new Exception("Need to train the classifier first.")
+		requireNonNull(demandClassifier)
 		demandClassifier.classProbability(text).prob
 	}
 
 	def predictProduct(text: String): java.util.List[Classification] = {
-		if (productClassifiers == null)
-			throw new Exception("Need to train the classifier first.")
+		requireNonNull(productClassifiers)
 		productClassifiers.map { classifier =>
 			val prob = classifier.classProbability(text).prob
 			Classification(classifier.className, prob)
