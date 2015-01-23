@@ -1,5 +1,7 @@
 package com.blog_intelligence.nto;
 
+import scala.tools.partest.ScaladocModelTest;
+
 import java.io.File;
 import java.util.List;
 
@@ -7,7 +9,23 @@ public class JavaExample {
 
 	static DataBaseConfiguration CONFIG = new DataBaseConfiguration("141.89.225.134","30315","SMA1415", "Popcorn54","SMA1415.CLASSIFIED_POSTS");
 
+	static File DEMAND_MODEL = new File("demand.model");
+	static File PRODUCT_MODEL = new File("product.model");
+
 	public static void main(String[] args) {
+		NTOClassifier classifier = null
+		if (DEMAND_MODEL.exists() && PRODUCT_MODEL.exists()) {
+			classifier = readFromModel();
+		} else {
+			classifier = buildModelFromScratch();
+		}
+	}
+
+	public static NTOClassifier readFromModel() {
+
+	}
+
+	public static NTOClassifier buildModelFromScratch() {
 		/**
 		 * Reading training data
 		 */
@@ -28,6 +46,12 @@ public class JavaExample {
 		classifier.trainDemand(documents.demandDocuments());
 		classifier.trainProduct(documents.productDocuments());
 
+		classifier.persist();
+
+		return classifier;
+	}
+
+	public static void runFromScratch(NTOClassifier classifier) {
 		/**
 		 * Predicting demand and product
 		 */
