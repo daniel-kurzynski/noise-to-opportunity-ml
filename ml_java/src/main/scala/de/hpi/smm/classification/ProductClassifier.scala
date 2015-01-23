@@ -4,17 +4,12 @@ import java.util
 
 import com.blog_intelligence.nto.{RawDocument, Document}
 import de.hpi.smm.data_reader.DataReader
-import de.hpi.smm.domain.RawDocument
-import de.hpi.smm.feature_extraction.FeatureExtractor
 import weka.classifiers.Evaluation
 import weka.classifiers.`lazy`.IBk
-import weka.core.{FastVector, DenseInstance, Attribute, Instances}
+import weka.core.{DenseInstance, Attribute, Instances}
 import weka.filters.Filter
 import weka.filters.unsupervised.attribute.StringToWordVector
 
-/**
- * Created by Daniel on 16.01.2015.
- */
 class ProductClassifier(val className: String, val documents: List[Document], val posts: List[Document], val dataReader: DataReader) {
 
 	val classifier = new IBk(10)

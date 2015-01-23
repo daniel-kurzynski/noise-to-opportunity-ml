@@ -4,7 +4,6 @@ import java.util
 
 import com.blog_intelligence.nto.{RawDocument, Document}
 import de.hpi.smm.data_reader.DataReader
-import de.hpi.smm.domain.RawDocument
 import de.hpi.smm.feature_extraction.FeatureExtractor
 import weka.classifiers.Evaluation
 import weka.classifiers.bayes.NaiveBayes
