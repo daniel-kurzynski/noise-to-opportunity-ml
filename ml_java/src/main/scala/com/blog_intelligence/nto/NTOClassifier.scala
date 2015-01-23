@@ -1,5 +1,7 @@
 package com.blog_intelligence.nto
 
+import java.io.{FileOutputStream, ObjectOutputStream}
+
 import de.hpi.smm.FeatureExtractorBuilder
 import de.hpi.smm.classification.{ProductClassifier, Classifier}
 import scala.collection.JavaConverters._
@@ -14,6 +16,12 @@ class NTOClassifier {
 		demandClassifier = new Classifier("demand",
 			trainingSamples.asScala,
 			featureExtraction)
+		// serialize model
+		val oos = new ObjectOutputStream(
+			new FileOutputStream("demand-model"))
+		oos.writeObject(demandClassifier)
+		oos.flush()
+		oos.close()
 	}
 
 	def trainProduct(trainingSamples: java.util.List[Document]): Unit = {
