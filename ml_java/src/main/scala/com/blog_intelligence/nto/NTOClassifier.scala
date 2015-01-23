@@ -1,5 +1,7 @@
 package com.blog_intelligence.nto
 
+import java.io.{FileOutputStream, ObjectOutputStream}
+
 import de.hpi.smm.FeatureExtractorBuilder
 import de.hpi.smm.classification.{ProductClassifier, Classifier}
 import scala.collection.JavaConverters._
@@ -7,22 +9,27 @@ import scala.collection.JavaConverters._
 class NTOClassifier {
 
 	var demandClassifier: Classifier = null
-	var productClassifiers: List[Classifier] = null
+	var productClassifiers: List[ProductClassifier] = null
 
 	def trainDemand(trainingSamples: java.util.List[Document]): Unit = {
 		val featureExtraction = new FeatureExtractorBuilder(null).buildForDemand(trainingSamples)
 		demandClassifier = new Classifier("demand",
 			trainingSamples.asScala,
 			featureExtraction)
+		// serialize model
+		val oos = new ObjectOutputStream(
+			new FileOutputStream("demand-model"))
+		oos.writeObject(demandClassifier)
+		oos.flush()
+		oos.close()
 	}
 
 	def trainProduct(trainingSamples: java.util.List[Document]): Unit = {
 		val productClasses = List("CRM", "HCM", "ECOM", "LVM")
-		productClasses.map { clazz =>
+		productClassifiers = productClasses.map { clazz =>
 			new ProductClassifier(clazz,
 				trainingSamples.asScala)
 		}
-		println("I am doing nothing.")
 	}
 
 	def predictDemand(text: String): Double = {
@@ -31,13 +38,13 @@ class NTOClassifier {
 		demandClassifier.classProbability(text).prob
 	}
 
-	def predictProduct(text: String): List[Classification] = {
+	def predictProduct(text: String): java.util.List[Classification] = {
 		if (productClassifiers == null)
 			throw new Exception("Need to train the classifier first.")
 		productClassifiers.map { classifier =>
 			val prob = classifier.classProbability(text).prob
 			Classification(classifier.className, prob)
-		}.sortBy(-_.prob)
+		}.sortBy(-_.prob).asJava
 	}
 
 	case class Classification(product: String, prob: Double)
