@@ -71,6 +71,4 @@ public class JavaExample {
 		return classifier;
 	}
 
-	public static void runFromScratch(NTOClassifier classifier) {
-	}
 }
