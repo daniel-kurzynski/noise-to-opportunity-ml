@@ -4,7 +4,7 @@ import com.blog_intelligence.nto.Document
 import de.hpi.smm.data_reader.DataReader
 import weka.classifiers.Evaluation
 
-class GroupedProductClassifier(val brochures: List[Document], val posts: List[Document], classNames: List[String], val dataReader: DataReader) {
+class GroupedProductClassifier(val brochures: List[Document], val posts: List[Document], classNames: List[String]) {
 
 	val classNamesWithoutNone = classNames.filter { className => className != "None"}
 

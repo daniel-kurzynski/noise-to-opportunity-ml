@@ -3,7 +3,6 @@ package de.hpi.smm.classification
 import java.util
 
 import com.blog_intelligence.nto.{RawDocument, Document}
-import de.hpi.smm.data_reader.DataReader
 import de.hpi.smm.feature_extraction.FeatureExtractor
 import de.hpi.smm.nlp.NLP
 import weka.classifiers.Evaluation
@@ -12,7 +11,7 @@ import weka.classifiers.evaluation.output.prediction.PlainText
 import weka.core.{Utils, DenseInstance, Instances, Attribute}
 import java.util.Random
 
-class Classifier(val className: String, val documents: List[Document], val featureExtractor: FeatureExtractor, val dataReader: DataReader) {
+class Classifier(val className: String, val documents: Seq[Document], val featureExtractor: FeatureExtractor) {
 	val attributes = new util.ArrayList[Attribute]()
 
 	val classNamesVector = new util.ArrayList[String]()

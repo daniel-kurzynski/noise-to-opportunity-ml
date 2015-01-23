@@ -14,8 +14,7 @@ class NTOAnalyzer(featureExtractorBuilder: FeatureExtractorBuilder) {
 	def trainDemand(): Unit = {
 		demandClassifier = new Classifier("demand",
 			featureExtractorBuilder.posts,
-			featureExtractorBuilder.buildForDemand(),
-			featureExtractorBuilder.dataReader)
+			featureExtractorBuilder.buildForDemand())
 	}
 
 	val classNames = List("CRM", "ECOM", "HCM", "LVM", "None")
@@ -23,8 +22,7 @@ class NTOAnalyzer(featureExtractorBuilder: FeatureExtractorBuilder) {
 	val productClassifier = new GroupedProductClassifier(
 		featureExtractorBuilder.brochures,
 		featureExtractorBuilder.postForCategory,
-		classNames,
-		featureExtractorBuilder.dataReader)
+		classNames)
 
 //	val productClassifier = new MultiProductClassifier(
 //		featureExtractorBuilder.brochures,
