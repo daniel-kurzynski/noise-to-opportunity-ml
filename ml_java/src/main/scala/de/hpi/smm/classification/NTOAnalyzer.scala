@@ -2,6 +2,7 @@ package de.hpi.smm.classification
 
 
 import de.hpi.smm.FeatureExtractorBuilder
+import scala.collection.JavaConverters._
 
 case class ClassificationOutput(prob: Double, relevantFeatures: Array[Array[Any]] = Array())
 case class Classification(cls: String, classificationOutput: ClassificationOutput)
@@ -64,5 +65,17 @@ class NTOAnalyzer(featureExtractorBuilder: FeatureExtractorBuilder) {
 			Classification("LVM" , LVMClassifier.classProbability(text))
 		)
 			classification.sortBy(-_.classificationOutput.prob)
+	}
+
+	def classifyProductAsJavaList(text: String): java.util.List[Classification] = {
+
+		//		val classification = productClassifier.classProbability(text)
+		val classification =  List[Classification](
+			Classification("HCM" , HCMClassifier.classProbability(text)),
+			Classification("ECOM", ECOMClassifier.classProbability(text)),
+			Classification("CRM" , CRMClassifier.classProbability(text)),
+			Classification("LVM" , LVMClassifier.classProbability(text))
+		)
+		classification.sortBy(-_.classificationOutput.prob).asJava
 	}
 }
