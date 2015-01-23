@@ -52,8 +52,6 @@ class DataBaseReader(dataBaseConfiguration: DataBaseConfiguration) {
 				demandPosts.add(Document(id, title, text, sentences, demandClass))
 				productPosts.add(Document(id, title, text, sentences, productClass))
 
-//				println(id, title, text, demandClass, productClass)
-
 			}
 		} catch {
 			case e => e.printStackTrace
@@ -69,11 +67,18 @@ class DataBaseReader(dataBaseConfiguration: DataBaseConfiguration) {
 	}
 
 	def insertDemandIntoDatabase(documents: List[Document]): Unit = {
-		
+		connect()
+
+		val query = f"INSERT INTO "
+
+		disconnect()
 	}
 
 	def insertProductIntoDatabase(documents: List[Document]): Unit = {
+		connect()
 
+
+		disconnect()
 	}
 
 }
@@ -83,8 +88,8 @@ object DataBaseReader {
 		val config = new DataBaseConfiguration("141.89.225.134","30315","SMA1415", "Popcorn54","SMA1415.CLASSIFIED_POSTS");
 
 
-
-
+		val reader = new DataBaseReader(config)
+		reader.readFromDB()
 
 	}
 }
