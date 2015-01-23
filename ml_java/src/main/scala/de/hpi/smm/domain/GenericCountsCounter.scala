@@ -2,12 +2,12 @@ package de.hpi.smm.domain
 
 import scala.collection.mutable
 
-class GenericCountsCounter {
+class GenericCountsCounter extends Serializable {
 	val classCounts = mutable.Map[String, Int]().withDefaultValue(0)
 	val wordCounts = mutable.Map[String, mutable.Map[String, Int]]()
 	var smoothing = true
 
-	private def non_infinity(value: Double): Double = {
+	private def nonInfinity(value: Double): Double = {
 		if (value.isInfinite) 0 else value
 	}
 
@@ -37,7 +37,7 @@ class GenericCountsCounter {
 				noClassMissingProb += 1 - curNoClassProb
 			}
 
-			(word, currentCounts, non_infinity(classProb / noClassProb), non_infinity(noClassMissingProb / classMissingProb))
+			(word, currentCounts, nonInfinity(classProb / noClassProb), nonInfinity(noClassMissingProb / classMissingProb))
 		}
 	}
 

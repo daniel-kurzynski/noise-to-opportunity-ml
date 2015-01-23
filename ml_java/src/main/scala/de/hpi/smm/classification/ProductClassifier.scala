@@ -11,7 +11,7 @@ import weka.core.{DenseInstance, Attribute, Instances}
 import weka.filters.Filter
 import weka.filters.unsupervised.attribute.StringToWordVector
 
-class ProductClassifier(val className: String, val documents: List[Document], val posts: List[Document]) {
+class ProductClassifier(val className: String, val documents: Seq[Document]) {
 
 	val classifier = new IBk(10)
 
@@ -78,7 +78,7 @@ class ProductClassifier(val className: String, val documents: List[Document], va
 		new DenseInstance(1, values)
 	}
 
-	def validate(): Evaluation = {
+	def validate(posts: List[Document]): Evaluation = {
 		val testInstances = new Instances("test"+className, attributes, 0)
 		testInstances.setClassIndex(classAttribute.index())
 		posts.foreach { post =>

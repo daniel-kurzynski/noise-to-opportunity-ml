@@ -31,20 +31,16 @@ class NTOAnalyzer(featureExtractorBuilder: FeatureExtractorBuilder) {
 //		featureExtractorBuilder.dataReader)
 
 	val CRMClassifier = new ProductClassifier("CRM",
-		featureExtractorBuilder.brochures,
-		featureExtractorBuilder.postForCategory)
+		featureExtractorBuilder.brochures)
 
 	val ECOMClassifier = new ProductClassifier("ECOM",
-		featureExtractorBuilder.brochures,
-		featureExtractorBuilder.postForCategory)
+		featureExtractorBuilder.brochures)
 
 	val HCMClassifier = new ProductClassifier("HCM",
-		featureExtractorBuilder.brochures,
-		featureExtractorBuilder.postForCategory)
+		featureExtractorBuilder.brochures)
 
 	val LVMClassifier = new ProductClassifier("LVM",
-		featureExtractorBuilder.brochures,
-		featureExtractorBuilder.postForCategory)
+		featureExtractorBuilder.brochures)
 
 	def classifyDemand(text: String): Classification = {
 		Classification("demand", demandClassifier.classProbability(text))

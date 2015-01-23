@@ -5,7 +5,7 @@ import de.hpi.smm.domain.GenericCountsCounter
 
 import scala.collection.mutable
 
-class FeatureExtractor(smooting: Boolean) {
+class FeatureExtractor(smooting: Boolean) extends Serializable {
 
 	var finished = false
 	

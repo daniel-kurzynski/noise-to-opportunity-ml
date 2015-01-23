@@ -3,7 +3,7 @@ package de.hpi.smm.feature_extraction
 import com.blog_intelligence.nto.Document
 import de.hpi.smm.domain.Switch
 
-abstract class Feature {
+abstract class Feature extends Serializable {
 
 	/**
 	 * Name of a feature, will be the header in the csv file.

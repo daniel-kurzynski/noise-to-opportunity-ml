@@ -1,8 +1,10 @@
 package com.blog_intelligence.nto
 
-import java.io.File
+import java.io.{FileReader, File}
 
-import de.hpi.smm.data_reader.DataBaseReader
+import com.lambdaworks.jacks.JacksMapper
+import de.hpi.smm.Constants._
+import de.hpi.smm.data_reader.{DataReader, DataBaseReader}
 
 case class DataBaseConfiguration(
 	host: String,
@@ -10,19 +12,19 @@ case class DataBaseConfiguration(
 	username: String,
 	password: String,
 	database: String
-);
+)
 
 case class ReadingResult(demandDocuments: java.util.List[Document], productDocuments: java.util.List[Document])
 
 class DocumentExtractor {
 
-	def readFromCSV(demand_file: File, product_file: File, classification_file: File): ReadingResult = {
-		println("I am doing nothing.")
-		ReadingResult(new java.util.ArrayList[Document](), new java.util.ArrayList[Document]())
+	def readFromCSV(demandFile: File, productFile: File, classificationFile: File): ReadingResult = {
+		val classifiedPosts = JacksMapper.readValue[Map[String, Map[String, Map[String, String]]]](
+			new FileReader(classificationFile.getAbsolutePath))
+		new DataReader(classifiedPosts, demandFile, productFile, false).getReadingResult
 	}
 
 	def readFromDB(config: DataBaseConfiguration): ReadingResult = {
-		println("I am doing nothing.")
 		new DataBaseReader(config).readFromDB()
 	}
 }
