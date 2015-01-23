@@ -16,9 +16,9 @@ case class ReadingResult(demandDocuments: java.util.List[Document], productDocum
 
 class DocumentExtractor {
 
-	def readFromCSV(data_file: File, classification_file: File, class_key: String): java.util.List[Document] = {
+	def readFromCSV(demand_file: File, product_file: File, classification_file: File): ReadingResult = {
 		println("I am doing nothing.")
-		new java.util.ArrayList[Document]()
+		ReadingResult(new java.util.ArrayList[Document](), new java.util.ArrayList[Document]())
 	}
 
 	def readFromDB(config: DataBaseConfiguration): ReadingResult = {

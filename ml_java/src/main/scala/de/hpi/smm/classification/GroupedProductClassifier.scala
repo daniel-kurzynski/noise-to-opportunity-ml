@@ -4,14 +4,14 @@ import com.blog_intelligence.nto.Document
 import de.hpi.smm.data_reader.DataReader
 import weka.classifiers.Evaluation
 
-class GroupedProductClassifier(val brochures: List[Document], val posts: List[Document], classNames: List[String], val dataReader: DataReader) {
+class GroupedProductClassifier(val brochures: List[Document], val posts: List[Document], classNames: List[String]) {
 
 	val classNamesWithoutNone = classNames.filter { className => className != "None"}
 
 	val classValues = classNames.zipWithIndex.toMap
 
 	val classifiers = classNamesWithoutNone.map { className =>
-		(className -> new ProductClassifier(className, brochures, posts, dataReader))
+		className -> new ProductClassifier(className, brochures, posts)
 	}.toMap
 
 	def classProbability(text: String): List[Classification] = {
