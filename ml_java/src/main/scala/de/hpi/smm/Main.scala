@@ -1,16 +1,16 @@
 package de.hpi.smm
 
 import java.io.{File, FileReader, FileWriter}
-import java.util
 
 import au.com.bytecode.opencsv.CSVWriter
 import com.blog_intelligence.nto.Document
 import com.lambdaworks.jacks.JacksMapper
 import de.hpi.smm.classification.NTOAnalyzer
 import de.hpi.smm.data_reader.DataReader
-import de.hpi.smm.domain._
 import Constants._
-import weka.core.{Attribute, Instances}
+import de.hpi.smm.nlp.TokenizerHelper
+import org.apache.lucene.analysis.Tokenizer
+import scala.collection.mutable
 
 object Main {
 
@@ -32,8 +32,8 @@ object Main {
 //		println("Brochure Feature Extraction")
 //		runBrochureFeatureExtraction()
 
-		 println("Classify Post")
-		 runClassifyPost()
+		println("Classify Post")
+		runClassifyPost()
 	}
 
 	def runClassifyPost() {
