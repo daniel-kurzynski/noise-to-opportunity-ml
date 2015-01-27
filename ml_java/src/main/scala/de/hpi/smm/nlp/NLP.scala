@@ -1,5 +1,7 @@
 package de.hpi.smm.nlp
 
+import java.io.File
+
 import com.blog_intelligence.nto.RawDocument
 import de.hpi.smm.domain.Word
 import java.util
@@ -10,20 +12,21 @@ import edu.stanford.nlp.pipeline.{Annotation, StanfordCoreNLP}
 import edu.stanford.nlp.util.CoreMap
 import edu.stanford.nlp.util.logging.RedwoodConfiguration
 
+import scala.io.Source
+
 object NLP {
+
+	val stopWords = Source.fromFile(new File("../n2o_data/stopwords.txt")).getLines().toSet
 
 	def detectSentences(rawPost: RawDocument): Seq[Seq[Word]] = {
 		val props = new util.Properties()
-		//		props.put("annotators", "tokenize,ssplit,pos,lemma,ner")
-		props.put("annotators", "tokenize,ssplit,pos,lemma")
+//		props.put("annotators", "tokenize,ssplit,pos,lemma,ner")
+		props.put("annotators", "tokenize,ssplit,pos")
 		if (rawPost.lang == "de") {
-			//			println("Using german")
 			props.put("pos.model", "../n2o_data/german-fast.tagger")
 		}
 		else if (rawPost.lang == "en" || rawPost.lang == null) Unit
 		else throw new RuntimeException("Unknown language.")
-
-		//		props.put("annotators", "tokenize,ssplit")
 
 		// shut down logging, initialize, start logging
 		RedwoodConfiguration.empty().capture(System.err).apply()
@@ -39,15 +42,18 @@ object NLP {
 		annotatedSentences.asScala.foreach { sentence =>
 			var currentSentence = Vector[Word]()
 			sentence.get(classOf[TokensAnnotation]).asScala.foreach { token =>
-				val word = token.get(classOf[TextAnnotation])
-				val pos = token.get(classOf[PartOfSpeechAnnotation])
-				val ner = token.get(classOf[NamedEntityTagAnnotation])
-				currentSentence :+= Word(word, pos, ner)
+				val tokenizedWord = TokenizerHelper.tokenize(token.get(classOf[TextAnnotation]), true)
+				if (tokenizedWord.nonEmpty) {
+					val word = tokenizedWord(0)
+					val pos = token.get(classOf[PartOfSpeechAnnotation])
+					val ner = token.get(classOf[NamedEntityTagAnnotation])
+					if (!stopWords.contains(word))
+						currentSentence :+= Word(word, pos, ner)
+				}
 			}
 			sentences :+= currentSentence
 		}
 
 		sentences
 	}
-
 }
