@@ -1,12 +1,8 @@
 package de.hpi.smm.classification
 
 
-import javax.rmi.CORBA.Util
-
 import de.hpi.smm.FeatureExtractorBuilder
-import de.hpi.smm.classification.old_classifier.{ProductClassifier, GroupedProductClassifier}
 import weka.classifiers.Evaluation
-import weka.filters.Filter
 import scala.collection.JavaConverters._
 
 case class ClassificationOutput(prob: Double, relevantFeatures: Array[Array[Any]] = Array())

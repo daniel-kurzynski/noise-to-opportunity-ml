@@ -1,7 +1,7 @@
 package de.hpi.smm.classification.old_classifier
 
 import com.blog_intelligence.nto.{Document, RawDocument}
-import de.hpi.smm.classification.Classification
+import de.hpi.smm.classification.{ClassificationOutput, Classification}
 import de.hpi.smm.nlp.NLP
 import weka.classifiers.Evaluation
 

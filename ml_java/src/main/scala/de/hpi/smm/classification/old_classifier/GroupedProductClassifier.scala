@@ -1,7 +1,7 @@
 package de.hpi.smm.classification.old_classifier
 
 import com.blog_intelligence.nto.Document
-import de.hpi.smm.classification.Classification
+import de.hpi.smm.classification.{ClassificationOutput, Classification}
 import weka.classifiers.Evaluation
 
 class GroupedProductClassifier(val brochures: List[Document], val posts: List[Document], classNames: List[String]) {
@@ -31,7 +31,7 @@ class GroupedProductClassifier(val brochures: List[Document], val posts: List[Do
 
 	def validate(): Evaluation = {
 
-		var confusionMatrix = Array.ofDim[Int](classNames.length,classNames.length)
+		val confusionMatrix = Array.ofDim[Int](classNames.length,classNames.length)
 		posts.foreach { post =>
 			val actualClassValue = classValues(post.documentClass)
 			val predicetedClass = classProbability(post.wholeText)(0).cls

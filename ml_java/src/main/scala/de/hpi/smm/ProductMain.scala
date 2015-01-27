@@ -1,10 +1,14 @@
 package de.hpi.smm
 
 import java.io.{File, FileReader}
+import java.util.Random
 
 import com.blog_intelligence.nto.Document
 import com.lambdaworks.jacks.JacksMapper
 import de.hpi.smm.data_reader.DataReader
+import weka.classifiers.Evaluation
+import weka.classifiers.bayes.NaiveBayes
+import weka.classifiers.evaluation.output.prediction.PlainText
 import weka.core.{DenseInstance, Attribute, Instances}
 import scala.collection.mutable
 import scala.collection.JavaConverters._
@@ -49,48 +53,73 @@ object ProductMain {
 			})
 		}
 
-		// todo: add class as last attribute
-		val featureAttributes = determineFeatures(wordCountWithTfIdf)
-		val classAttr = new Attribute("class", new java.util.ArrayList[String](classCount.keySet.asJava))
+		classCount("None") = 0
+
+
+		val featureWords = determineFeatures(wordCountWithTfIdf).zipWithIndex.toMap
+		val featureAttributes = new java.util.ArrayList[Attribute](featureWords.keys.map(new Attribute(_)).asJavaCollection)
+		val classAttr = new Attribute("@@class@@", new java.util.ArrayList[String](classCount.keySet.asJava))
 
 		featureAttributes.add(classAttr)
-		val featureWords = featureAttributes.asScala.map(_.name()).zipWithIndex.toMap
-		val instances = new Instances("", featureAttributes, featureAttributes.size())
+		//val featureWords = featureAttributes.asScala.map(_.name())
+		val trainInstances = new Instances("train", featureAttributes, featureAttributes.size())
+		val testInstances = new Instances("test", featureAttributes, featureAttributes.size())
+		trainInstances.setClassIndex(featureAttributes.size() - 1)
+		testInstances.setClassIndex(featureAttributes.size() - 1)
 
 		dataReader.readBrochuresLinewise(List("en")) { doc =>
-			instances.add(new DenseInstance(1.0, constructFeatureValues(featureWords, doc, classAttr)))
+			trainInstances.add(new DenseInstance(1.0, constructFeatureValues(featureWords, doc, classAttr)))
 		}
 
+		dataReader.readPostsLinewise { doc =>
+			testInstances.add(new DenseInstance(1.0, constructFeatureValues(featureWords, doc, classAttr)))
+		}("category")
 
+		val cross = false
 
+		val classifier = new NaiveBayes()
+		val evaluation = new Evaluation(trainInstances)
+		val buffer = new StringBuffer()
+		val plainText = new PlainText()
+		plainText.setBuffer(buffer)
+		plainText.setOutputDistribution(true)
 
+		if(cross){
+			evaluation.crossValidateModel(classifier, trainInstances, 10, new Random(18), plainText)
 
-		wordCountWithTfIdf.foreach { case (className, counts) =>
+//			println(plainText.getBuffer)
+		} else {
+			classifier.buildClassifier(trainInstances)
+			evaluation.evaluateModel(classifier, testInstances)
+		}
+		println(evaluation.toSummaryString(f"%nResults%n======%n", false))
+		println(evaluation.toMatrixString)
+
+/*		wordCountWithTfIdf.foreach { case (className, counts) =>
 			println(className)
 			counts.toList.sortBy(-_._2).take(10).foreach(println)
 		}
 		println(classCount)
-		println(N)
+		println(N)*/
 	}
 
 	def constructFeatureValues(featureAttributes: Map[String, Int], doc: Document, classAttr: Attribute): Array[Double] ={
-		val result = new Array[Double](featureAttributes.size)
+		val result = new Array[Double](featureAttributes.size + 1)
 		doc.textTokens.foreach { word =>
-			val idx = featureAttributes(word)
 			if(featureAttributes.contains(word))
-				result(idx) += 1.0
+				result(featureAttributes(word)) += 1.0
 		}
 		result(result.size - 1) = classAttr.indexOfValue(doc.documentClass)
 		result
 	}
 
-	def determineFeatures(wordCounts: mutable.Map[String, mutable.Map[String, Double]]): java.util.ArrayList[Attribute] = {
-		var result = mutable.Set[Attribute]()
+	def determineFeatures(wordCounts: mutable.Map[String, mutable.Map[String, Double]]): Array[String] = {
+		var result = mutable.Set[String]()
 		wordCounts.foreach { case (className, counts) =>
 			counts.toList.sortBy(-_._2).take(10).foreach { case (word, count) =>
-				result += new Attribute(word)
+				result += word
 			}
 		}
-		new java.util.ArrayList[Attribute](result.asJava)
+		result.toArray
 	}
 }
