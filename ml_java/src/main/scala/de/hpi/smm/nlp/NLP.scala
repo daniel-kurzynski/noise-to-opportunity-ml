@@ -42,13 +42,13 @@ object NLP {
 		annotatedSentences.asScala.foreach { sentence =>
 			var currentSentence = Vector[Word]()
 			sentence.get(classOf[TokensAnnotation]).asScala.foreach { token =>
-				val tokenizedWord = TokenizerHelper.tokenize(token.get(classOf[TextAnnotation]), true)
-				if (tokenizedWord.nonEmpty) {
+				val word = token.get(classOf[TextAnnotation])
+				val tokenizedWord = TokenizerHelper.tokenize(word, true)
+				if (tokenizedWord.nonEmpty && !stopWords.contains(word)) {
 					val word = tokenizedWord(0)
 					val pos = token.get(classOf[PartOfSpeechAnnotation])
 					val ner = token.get(classOf[NamedEntityTagAnnotation])
-					if (!stopWords.contains(word))
-						currentSentence :+= Word(word, pos, ner)
+					currentSentence :+= Word(word, pos, ner)
 				}
 			}
 			sentences :+= currentSentence

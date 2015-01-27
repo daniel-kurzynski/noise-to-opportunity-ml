@@ -23,7 +23,9 @@ object ProductMain {
 	def main(args: Array[String]): Unit = {
 		val classCount = mutable.Map[String, Int]().withDefaultValue(0)
 		val wordCount = mutable.Map[String, mutable.Map[String, Int]]()
-		var i = 0
+		val documentCount = mutable.Map[String, Int]().withDefaultValue(0)
+		var N = 0
+
 		dataReader.readBrochuresLinewise(List("en")) { doc =>
 			val docClass = doc.documentClass
 			classCount(docClass) += 1
@@ -32,15 +34,24 @@ object ProductMain {
 				wordCount(docClass) = mutable.Map[String, Int]().withDefaultValue(0)
 			doc.textTokens.foreach { word =>
 				wordCount(docClass)(word) += 1
-
 			}
-			i += 1
+			doc.textTokens.toSet[String].foreach { word =>
+				documentCount(word) += 1
+			}
+			N += 1
 		}
-		wordCount.foreach { case (className, counts) =>
+
+		val wordCountWithTfIdf = wordCount.map { case (className, counts) =>
+			(className, counts.map { case (word, count) =>
+				(word, count.toDouble * Math.log(N.toDouble / documentCount(word).toDouble))
+			})
+		}
+
+		wordCountWithTfIdf.foreach { case (className, counts) =>
 			println(className)
 			counts.toList.sortBy(-_._2).take(10).foreach(println)
 		}
 		println(classCount)
-		println(i)
+		println(N)
 	}
 }
