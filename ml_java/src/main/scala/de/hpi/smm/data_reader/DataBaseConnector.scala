@@ -67,10 +67,26 @@ class DataBaseReader(dataBaseConfiguration: DataBaseConfiguration) {
 		result
 	}
 
+	private def insertDocumentIntoDatabase(document: Document, classColumn: String, className: String): Unit = {
+		val id = document.id
+		val title = document.title
+		val text = document.text
+
+		val columns = f"POST_ID, POST_TITLE, POST_TEXT, $classColumn"
+		val values = f"'$id%s','$title%s','$text%s','$className%s'"
+
+		val query = f"INSERT INTO CLASSIFIED_POSTS ($columns%s) VALUES ($values%s) ON DUPLICATE KEY UPDATE ID = '$id%s'"
+
+		val statement = connection.createStatement()
+		statement.execute(query)
+	}
+
 	def insertDemandIntoDatabase(documents: List[Document]): Unit = {
 		connect()
 
-		val query = f"INSERT INTO "
+		documents.foreach { document =>
+			insertDocumentIntoDatabase(document, "DEMAND_CLASS", document.documentClass)
+		}
 
 		disconnect()
 	}
@@ -78,6 +94,9 @@ class DataBaseReader(dataBaseConfiguration: DataBaseConfiguration) {
 	def insertProductIntoDatabase(documents: List[Document]): Unit = {
 		connect()
 
+		documents.foreach { document =>
+			insertDocumentIntoDatabase(document, "PRODUCT_CLASS", document.documentClass)
+		}
 
 		disconnect()
 	}

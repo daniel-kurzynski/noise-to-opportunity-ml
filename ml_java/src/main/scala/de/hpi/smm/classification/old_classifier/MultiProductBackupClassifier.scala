@@ -1,20 +1,9 @@
-package de.hpi.smm.classification
+package de.hpi.smm.classification.old_classifier
 
-import java.util
-
-import com.blog_intelligence.nto.{RawDocument, Document}
-import de.hpi.smm.data_reader.DataReader
+import com.blog_intelligence.nto.{Document, RawDocument}
+import de.hpi.smm.classification.Classification
 import de.hpi.smm.nlp.NLP
 import weka.classifiers.Evaluation
-import weka.classifiers.`lazy`.IBk
-import weka.classifiers.functions.SMO
-import weka.classifiers.trees.J48
-import weka.classifiers.trees.j48.C45PruneableClassifierTree
-
-import weka.core.{Utils, Attribute, DenseInstance, Instances}
-import weka.filters.Filter
-import weka.filters.unsupervised.attribute.{Normalize, StringToWordVector}
-import scala.collection.JavaConverters._
 
 class MultiProductBackupClassifier(val brochures: List[Document], val posts: List[Document], classNames: List[String])  {
 

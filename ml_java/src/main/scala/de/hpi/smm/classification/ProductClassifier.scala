@@ -1,95 +1,67 @@
 package de.hpi.smm.classification
 
-import java.util
-
-import com.blog_intelligence.nto.{RawDocument, Document}
-import de.hpi.smm.data_reader.DataReader
-import de.hpi.smm.nlp.NLP
-import weka.classifiers.Evaluation
 import weka.classifiers.`lazy`.IBk
-import weka.core.{DenseInstance, Attribute, Instances}
+import weka.core.{Instances, Capabilities, Instance}
 import weka.filters.Filter
-import weka.filters.unsupervised.attribute.StringToWordVector
+import weka.filters.unsupervised.attribute.{Normalize, StringToWordVector}
 
-class ProductClassifier(val className: String, val documents: Seq[Document]) extends Serializable {
+class ProductClassifier extends weka.classifiers.Classifier {
 
-	val classifier = new IBk(10)
+	val baseClassifier = new IBk(5)
+	val classifier = new PriorClassifier(baseClassifier, Array(1.0, 10.00, 10.0, 10.0, 10.0))
 
-	val attributes = new util.ArrayList[Attribute]()
+	var tdfIdfFilter = null.asInstanceOf[StringToWordVector]
+	var normelizeFilter = null.asInstanceOf[Normalize]
+	var structure = null.asInstanceOf[Instances]
 
-	val classNamesVector = new util.ArrayList[String]()
-	classNamesVector.add(className)
-	classNamesVector.add("no-"+className)
 
-	val textAttribute = new Attribute("text", null.asInstanceOf[util.ArrayList[String]])
-	val classAttribute = new Attribute("@@class@@", classNamesVector)
+	private def initialFeautureCreation(data: Instances): Instances = {
+		structure = new Instances(data,0,0)
+		structure.clear()
+		tdfIdfFilter = new StringToWordVector()
+		tdfIdfFilter.setIDFTransform(true)
+		tdfIdfFilter.setTFTransform(true)
+		tdfIdfFilter.setWordsToKeep(5)
+		tdfIdfFilter.setInputFormat(data)
 
-	attributes.add(textAttribute)
-	attributes.add(classAttribute)
+		val filteredInstances = Filter.useFilter(data,tdfIdfFilter)
 
-	val instances = new Instances(className, attributes,0)
-	instances.setClassIndex(classAttribute.index())
+		normelizeFilter = new Normalize()
+		normelizeFilter.setInputFormat(filteredInstances)
 
-	documents.foreach { document =>
-		instances.add(buildInstance(document))
+		val normilizedInstances = Filter.useFilter(filteredInstances,normelizeFilter)
+
+		normilizedInstances
 	}
 
-	val tdfIdfFilter = new StringToWordVector()
-	tdfIdfFilter.setIDFTransform(true)
-	tdfIdfFilter.setTFTransform(true)
-	tdfIdfFilter.setWordsToKeep(10)
-	tdfIdfFilter.setInputFormat(instances)
-	val filteredInstances = Filter.useFilter(instances,tdfIdfFilter)
+	private def feautureCreation(instance: Instance): Instance = {
 
-	classifier.buildClassifier(filteredInstances)
+		val instances = new Instances(structure)
+		structure.add(instance)
 
-	def classProbability(text: String): ClassificationOutput = {
-		val id = ""
-		val title = ""
+		val filteredInstances = Filter.useFilter(structure,tdfIdfFilter)
+		val normilizedInstances = Filter.useFilter(filteredInstances,normelizeFilter)
 
-		val rawPost = RawDocument(id, title, text, null)
-		val sentences =  NLP.detectSentences(rawPost)
-		val post = Document(id, title, text, sentences, rawPost.extract(className))
-
-		val instance = buildInstance(post)
-
-		val classifyInstances = new Instances("toClassify", attributes,0)
-		classifyInstances.add(instance)
-
-		val filteredClassifyInstances = Filter.useFilter(classifyInstances,tdfIdfFilter)
-
-		val dist = classifier.distributionForInstance(filteredClassifyInstances.get(0))
-
-		ClassificationOutput(dist(0), new Array[Array[Any]](0))
+		normilizedInstances.firstInstance()
 	}
 
-	def buildInstance(document: Document): DenseInstance = {
-		val text = document.textTokens.mkString(" ")
 
-		var documentClassName = document.documentClass
-		if (documentClassName != className) {
-			documentClassName = "no-" + className
-		}
-
-		val values = new Array[Double](attributes.size())
-		values(classAttribute.index()) = classAttribute.indexOfValue(documentClassName)
-		values(textAttribute.index()) = textAttribute.addStringValue(text)
-
-		new DenseInstance(1, values)
+	override def buildClassifier(data: Instances): Unit = {
+		var trainingData = initialFeautureCreation(data)
+		classifier.buildClassifier(trainingData)
 	}
 
-	def validate(posts: List[Document]): Evaluation = {
-		val testInstances = new Instances("test"+className, attributes, 0)
-		testInstances.setClassIndex(classAttribute.index())
-		posts.foreach { post =>
-			testInstances.add(buildInstance(post))
-		}
+	override def distributionForInstance(instance: Instance): Array[Double] = {
+		val featuredInstance = feautureCreation(instance);
+		classifier.distributionForInstance(featuredInstance)
+	}
 
-		val filteredTestInstances = Filter.useFilter(testInstances,tdfIdfFilter)
+	override def getCapabilities: Capabilities = {
+		throw new RuntimeException("Not implemented yet")
+	}
 
-		val evaluation = new Evaluation(filteredTestInstances)
-		evaluation.evaluateModel(classifier,filteredTestInstances)
-
-		evaluation
+	override def classifyInstance(instance: Instance): Double = {
+		val featuredInstance = feautureCreation(instance);
+		classifier.classifyInstance(featuredInstance)
 	}
 }

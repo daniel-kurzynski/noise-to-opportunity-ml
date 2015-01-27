@@ -25,7 +25,9 @@ object ProductMain {
 	def main(args: Array[String]): Unit = {
 		val classCount = mutable.Map[String, Int]().withDefaultValue(0)
 		val wordCount = mutable.Map[String, mutable.Map[String, Int]]()
-		var i = 0
+		val documentCount = mutable.Map[String, Int]().withDefaultValue(0)
+		var N = 0
+
 		dataReader.readBrochuresLinewise(List("en")) { doc =>
 			val docClass = doc.documentClass
 			classCount(docClass) += 1
@@ -34,13 +36,21 @@ object ProductMain {
 				wordCount(docClass) = mutable.Map[String, Int]().withDefaultValue(0)
 			doc.textTokens.foreach { word =>
 				wordCount(docClass)(word) += 1
-
 			}
-			i += 1
+			doc.textTokens.toSet[String].foreach { word =>
+				documentCount(word) += 1
+			}
+			N += 1
+		}
+
+		val wordCountWithTfIdf = wordCount.map { case (className, counts) =>
+			(className, counts.map { case (word, count) =>
+				(word, count.toDouble * Math.log(N.toDouble / documentCount(word).toDouble))
+			})
 		}
 
 		// todo: add class as last attribute
-		val featureAttributes = determineFeatures(wordCount)
+		val featureAttributes = determineFeatures(wordCountWithTfIdf)
 		val classAttr = new Attribute("class", new java.util.ArrayList[String](classCount.keySet.asJava))
 
 		featureAttributes.add(classAttr)
@@ -48,8 +58,19 @@ object ProductMain {
 		val instances = new Instances("", featureAttributes, featureAttributes.size())
 
 		dataReader.readBrochuresLinewise(List("en")) { doc =>
-			instances.add(new DenseInstance(1.0, constructFeatureValues(featureWords, doc.textTokens)))
+			instances.add(new DenseInstance(1.0, constructFeatureValues(featureWords, doc, classAttr)))
 		}
+
+
+
+
+
+		wordCountWithTfIdf.foreach { case (className, counts) =>
+			println(className)
+			counts.toList.sortBy(-_._2).take(10).foreach(println)
+		}
+		println(classCount)
+		println(N)
 	}
 
 	def constructFeatureValues(featureAttributes: Map[String, Int], doc: Document, classAttr: Attribute): Array[Double] ={
@@ -63,7 +84,7 @@ object ProductMain {
 		result
 	}
 
-	def determineFeatures(wordCounts: mutable.Map[String, mutable.Map[String, Int]]): java.util.ArrayList[Attribute] = {
+	def determineFeatures(wordCounts: mutable.Map[String, mutable.Map[String, Double]]): java.util.ArrayList[Attribute] = {
 		var result = mutable.Set[Attribute]()
 		wordCounts.foreach { case (className, counts) =>
 			counts.toList.sortBy(-_._2).take(10).foreach { case (word, count) =>
