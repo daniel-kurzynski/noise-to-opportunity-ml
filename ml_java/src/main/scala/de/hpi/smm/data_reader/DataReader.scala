@@ -62,9 +62,10 @@ class DataReader(val classifiedPosts :Map[String, Map[String, Map[String, String
 			if (isClassifiedPost) {
 				val sentences = NLP.detectSentences(rawPost)
 				val post = Document(id, title, text, sentences, rawPost.extract(className))
-
-				postCount += 1
-				extractor(post)
+//				if(post.documentClass != "None"){
+					postCount += 1
+					extractor(post)
+//				}
 			}
 			line = reader.readNext()
 		}
