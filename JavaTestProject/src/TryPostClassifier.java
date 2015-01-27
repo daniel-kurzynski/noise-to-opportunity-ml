@@ -5,7 +5,13 @@ import com.blog_intelligence.nto.*;
 
 public class TryPostClassifier {
 
-	static DataBaseConfiguration CONFIG = new DataBaseConfiguration("141.89.225.134","30315","SMA1415", "Popcorn54","SMA1415.CLASSIFIED_POSTS");
+	static DataBaseConfiguration CONFIG = new DataBaseConfiguration(
+			"141.89.225.134", 				// ip
+			"30315",						// port
+			"SMA1415", 						// user
+			"Popcorn54",					// password
+			"SMA1415.CLASSIFIED_POSTS"		// database
+	);
 
 	static File DEMAND_MODEL_FILE = new File("demand.model");
 	static File PRODUCT_MODEL_FILE = new File("product.model");
@@ -23,7 +29,8 @@ public class TryPostClassifier {
 		/**
 		 * Predicting demand and product
 		 */
-		String post = "Hi! I am the CTO of Startup Inc. Lately, I have problems organising my customers. Do you have any recommendations for a good crm system to handle them?";
+		String post = "Hi! I am the CTO of Startup Inc. Lately, I have problems organising my customers. " +
+				"Do you have any recommendations for a good crm system to handle them?";
 
 		double probDemand = classifier.predictDemand(post);
 		System.out.println("Demand probability " + probDemand);
@@ -51,11 +58,11 @@ public class TryPostClassifier {
 		DocumentExtractor documentExtractor = new DocumentExtractor();
 
 		ReadingResult documents = documentExtractor.readFromCSV(
-				new File("../n2o_data/linked_in_posts.csv"),
-				new File("../n2o_data/brochures.csv"),
-				new File("../n2o_data/classification_updates/latest.json"));
+				new File("../JavaTestProject/linked_in_posts.csv"),
+				new File("../JavaTestProject/brochures.csv"),
+				new File("../JavaTestProject/classification.json"));
 
-		ReadingResult dbDocs = documentExtractor.readFromDB(CONFIG);
+		// ReadingResult dbDocs = documentExtractor.readFromDB(CONFIG);
 
 		/**
 		 * Building classifier
