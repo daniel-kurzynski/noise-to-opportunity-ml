@@ -3,12 +3,13 @@ package com.blog_intelligence.nto
 import java.io._
 
 import de.hpi.smm.FeatureExtractorBuilder
-import de.hpi.smm.classification.{ProductClassifier, Classifier}
+import de.hpi.smm.classification.DemandClassifier
+import de.hpi.smm.classification.old_classifier.ProductClassifier
 import scala.collection.JavaConverters._
 
 class NTOClassifier {
 
-	var demandClassifier: Classifier = null
+	var demandClassifier: DemandClassifier = null
 	var productClassifiers: List[ProductClassifier] = null
 
 	def requireNonNull(o: Object) {
@@ -35,7 +36,7 @@ class NTOClassifier {
 	}
 
 	def loadDemand(modelFile: File): Unit = {
-		demandClassifier = loadModel(modelFile).asInstanceOf[Classifier]
+		demandClassifier = loadModel(modelFile).asInstanceOf[DemandClassifier]
 	}
 
 	def loadProduct(modelFile: File): Unit = {
@@ -52,7 +53,7 @@ class NTOClassifier {
 
 	def trainDemand(trainingSamples: java.util.List[Document]): Unit = {
 		val featureExtraction = new FeatureExtractorBuilder(null).buildForDemand(trainingSamples)
-		demandClassifier = new Classifier("demand",
+		demandClassifier = new DemandClassifier("demand",
 			trainingSamples.asScala,
 			featureExtraction)
 	}

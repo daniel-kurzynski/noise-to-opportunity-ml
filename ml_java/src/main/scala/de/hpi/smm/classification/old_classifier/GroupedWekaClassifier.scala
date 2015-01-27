@@ -1,6 +1,6 @@
-package de.hpi.smm.classification
+package de.hpi.smm.classification.old_classifier
 
-import weka.core.{Instances, Capabilities, Instance}
+import weka.core.{Capabilities, Instance, Instances}
 
 /**
  * Created by Daniel on 19.01.2015.

@@ -11,7 +11,7 @@ import weka.classifiers.evaluation.output.prediction.PlainText
 import weka.core.{Utils, DenseInstance, Instances, Attribute}
 import java.util.Random
 
-class Classifier(val className: String, val documents: Seq[Document], val featureExtractor: FeatureExtractor) extends Serializable {
+class DemandClassifier(val className: String, val documents: Seq[Document], val featureExtractor: FeatureExtractor) extends Serializable {
 	val attributes = new util.ArrayList[Attribute]()
 
 	val classNamesVector = new util.ArrayList[String]()

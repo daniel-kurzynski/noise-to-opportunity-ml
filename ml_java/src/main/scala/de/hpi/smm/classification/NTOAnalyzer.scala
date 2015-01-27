@@ -1,7 +1,12 @@
 package de.hpi.smm.classification
 
 
+import javax.rmi.CORBA.Util
+
 import de.hpi.smm.FeatureExtractorBuilder
+import de.hpi.smm.classification.old_classifier.{ProductClassifier, GroupedProductClassifier}
+import weka.classifiers.Evaluation
+import weka.filters.Filter
 import scala.collection.JavaConverters._
 
 case class ClassificationOutput(prob: Double, relevantFeatures: Array[Array[Any]] = Array())
@@ -9,38 +14,22 @@ case class Classification(cls: String, classificationOutput: ClassificationOutpu
 
 class NTOAnalyzer(featureExtractorBuilder: FeatureExtractorBuilder) {
 
-	var demandClassifier: Classifier = null
+	var demandClassifier: DemandClassifier = null
+	var productClassifier: ProductClassifier = null
+	val productConverter = new WekaInstancesConverter()
 
 	def trainDemand(): Unit = {
-		demandClassifier = new Classifier("demand",
+		demandClassifier = new DemandClassifier("demand",
 			featureExtractorBuilder.posts,
 			featureExtractorBuilder.buildForDemand())
 	}
 
-	val classNames = List("CRM", "ECOM", "HCM", "LVM", "None")
-
-	val productClassifier = new GroupedProductClassifier(
-		featureExtractorBuilder.brochures,
-		featureExtractorBuilder.postForCategory,
-		classNames)
-
-//	val productClassifier = new MultiProductClassifier(
-//		featureExtractorBuilder.brochures,
-//		featureExtractorBuilder.postForCategory,
-//		classNames,
-//		featureExtractorBuilder.dataReader)
-
-	val CRMClassifier = new ProductClassifier("CRM",
-		featureExtractorBuilder.brochures)
-
-	val ECOMClassifier = new ProductClassifier("ECOM",
-		featureExtractorBuilder.brochures)
-
-	val HCMClassifier = new ProductClassifier("HCM",
-		featureExtractorBuilder.brochures)
-
-	val LVMClassifier = new ProductClassifier("LVM",
-		featureExtractorBuilder.brochures)
+	def trainProduct(classNames: List[String]): Unit = {
+		productClassifier = new ProductClassifier()
+		productConverter.fit(classNames)
+		val instances = productConverter.convert("train",featureExtractorBuilder.brochures)
+		productClassifier.buildClassifier(instances)
+	}
 
 	def classifyDemand(text: String): Classification = {
 		Classification("demand", demandClassifier.classProbability(text))
@@ -50,26 +39,32 @@ class NTOAnalyzer(featureExtractorBuilder: FeatureExtractorBuilder) {
 	 * Returns an ordered list of classifications.
 	 */
 	def classifyProduct(text: String): List[Classification] = {
+		val instance = productConverter.buildPostInstance(text, "None")
 
-//		val classification = productClassifier.classProbability(text)
-		val classification =  List[Classification](
-			Classification("HCM" , HCMClassifier.classProbability(text)),
-			Classification("ECOM", ECOMClassifier.classProbability(text)),
-			Classification("CRM" , CRMClassifier.classProbability(text)),
-			Classification("LVM" , LVMClassifier.classProbability(text))
-		)
-			classification.sortBy(-_.classificationOutput.prob)
+		val dist = productClassifier.distributionForInstance(instance)
+
+		dist.zipWithIndex.map { case (value, index) =>
+			val className = productConverter.classAttribute.value(index)
+			Classification(className, ClassificationOutput(value, new Array[Array[Any]](0)))
+		}.toList
 	}
 
 	def classifyProductAsJavaList(text: String): java.util.List[Classification] = {
+		classifyProduct(text).asJava
 
-		//		val classification = productClassifier.classProbability(text)
-		val classification =  List[Classification](
-			Classification("HCM" , HCMClassifier.classProbability(text)),
-			Classification("ECOM", ECOMClassifier.classProbability(text)),
-			Classification("CRM" , CRMClassifier.classProbability(text)),
-			Classification("LVM" , LVMClassifier.classProbability(text))
-		)
-		classification.sortBy(-_.classificationOutput.prob).asJava
+	}
+
+	def validate():Unit = {
+		val demandEvaluation = demandClassifier.crossValidate()
+		println(demandEvaluation.toSummaryString(f"%nResults%n======%n", false))
+		println(demandEvaluation.toMatrixString)
+
+
+		val posts = featureExtractorBuilder.postForCategory
+		val instances = productConverter.convert("posts", posts)
+
+		val productEvaluation = new Evaluation(instances)
+		println(demandEvaluation.toSummaryString(f"%nResults%n======%n", false))
+		println(demandEvaluation.toMatrixString)
 	}
 }

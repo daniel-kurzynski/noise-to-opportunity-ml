@@ -10,7 +10,9 @@ import de.hpi.smm.classification.NTOAnalyzer
 import de.hpi.smm.data_reader.DataReader
 import de.hpi.smm.domain._
 import Constants._
+import weka.classifiers.Evaluation
 import weka.core.{Attribute, Instances}
+import weka.filters.Filter
 
 object Main {
 
@@ -23,7 +25,7 @@ object Main {
 
 	val dataReader = new DataReader(classifiedPosts, postsFile, brochuresFile, FOR_ALL_POSTS)
 
-	val featureBuilder = new FeatureExtractorBuilder(dataReader)
+	val featureExtractorBuilder = new FeatureExtractorBuilder(dataReader)
 
 	def main(args: Array[String]): Unit = {
 		//println("Demand Feature Extraction")
@@ -37,46 +39,24 @@ object Main {
 	}
 
 	def runClassifyPost() {
-		val postClassifier = new NTOAnalyzer(featureBuilder)
-		postClassifier.trainDemand()
+		val ntoAnalyzer = new NTOAnalyzer(featureExtractorBuilder)
+		ntoAnalyzer.trainDemand()
+		val classNames = List("CRM", "ECOM", "HCM", "LVM", "None")
+		ntoAnalyzer.trainProduct(classNames)
 
 		val post = "I need help. I am looking for support. Thanks in advance. I am searching for a good crm software."
-		val demandClassification = postClassifier.classifyDemand(post)
+		val demandClassification = ntoAnalyzer.classifyDemand(post)
 		println(s"$post is: ${demandClassification.cls} with propability: ${demandClassification.classificationOutput.prob}")
-		val productClassification = postClassifier.classifyProduct(post)
+
+		val productClassification = ntoAnalyzer.classifyProduct(post)
 		println(s"$post is: ${productClassification(0).cls} with propability: ${productClassification(0).classificationOutput.prob}")
 
-		val evaluation = postClassifier.demandClassifier.crossValidate()
-		println(evaluation.toSummaryString(f"%nResults%n======%n", false))
-		println(evaluation.toMatrixString)
-
-		val hcmEvaluation = postClassifier.HCMClassifier.validate(featureBuilder.postForCategory)
-		println(hcmEvaluation.toSummaryString(f"%nResults%n======%n", false))
-		println(hcmEvaluation.toMatrixString)
-
-		val ecomEvaluation = postClassifier.ECOMClassifier.validate(featureBuilder.postForCategory)
-		println(ecomEvaluation.toSummaryString(f"%nResults%n======%n", false))
-		println(ecomEvaluation.toMatrixString)
-
-		val lvmEvaluation = postClassifier.LVMClassifier.validate(featureBuilder.postForCategory)
-		println(lvmEvaluation.toSummaryString(f"%nResults%n======%n", false))
-		println(lvmEvaluation.toMatrixString)
-
-		val crmEvaluation = postClassifier.CRMClassifier.validate(featureBuilder.postForCategory)
-		println(crmEvaluation.toSummaryString(f"%nResults%n======%n", false))
-		println(crmEvaluation.toMatrixString)
-
-		val productEvaluation = postClassifier.productClassifier.validate()
-		println(productEvaluation.toSummaryString(f"%nResults%n======%n", false))
-		println(productEvaluation.toMatrixString)
-
-
-
+		ntoAnalyzer.validate()
 	}
 
 	def runDemandFeatureExtraction(): Unit = {
-		val features = featureBuilder.buildForDemand()
-		val posts = featureBuilder.posts
+		val features = featureExtractorBuilder.buildForDemand()
+		val posts = featureExtractorBuilder.posts
 
 		val writer = new CSVWriter(new FileWriter(new File("../n2o_data/features.csv")),
 			CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER)
@@ -102,9 +82,9 @@ object Main {
 			("HCM", 2.0, 10.0),
 			("LVM", 3.4, 10.0)
 		).foreach { case (clsName, thresh1, thresh2) =>
-			val features = featureBuilder.buildForBrochures(clsName, thresh1, thresh2)
-			val brochures = featureBuilder.brochures
-			val postForCategory = featureBuilder.postForCategory
+			val features = featureExtractorBuilder.buildForBrochures(clsName, thresh1, thresh2)
+			val brochures = featureExtractorBuilder.brochures
+			val postForCategory = featureExtractorBuilder.postForCategory
 
 			val clsFeatures = new CSVWriter(new FileWriter(new File(s"../n2o_data/features_${clsName.toLowerCase}.csv")),
 				CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER)
