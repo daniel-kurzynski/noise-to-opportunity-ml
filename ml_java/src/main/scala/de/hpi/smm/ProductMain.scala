@@ -2,9 +2,12 @@ package de.hpi.smm
 
 import java.io.{File, FileReader}
 
+import com.blog_intelligence.nto.Document
 import com.lambdaworks.jacks.JacksMapper
 import de.hpi.smm.data_reader.DataReader
+import weka.core.{DenseInstance, Attribute, Instances}
 import scala.collection.mutable
+import scala.collection.JavaConverters._
 import Constants._
 
 object ProductMain {
@@ -18,7 +21,6 @@ object ProductMain {
 
 	val dataReader = new DataReader(classifiedPosts, postsFile, brochuresFile, FOR_ALL_POSTS)
 
-	val featureBuilder = new FeatureExtractorBuilder(dataReader)
 
 	def main(args: Array[String]): Unit = {
 		val classCount = mutable.Map[String, Int]().withDefaultValue(0)
@@ -36,11 +38,38 @@ object ProductMain {
 			}
 			i += 1
 		}
-		wordCount.foreach { case (className, counts) =>
-			println(className)
-			counts.toList.sortBy(-_._2).take(10).foreach(println)
+
+		// todo: add class as last attribute
+		val featureAttributes = determineFeatures(wordCount)
+		val classAttr = new Attribute("class", new java.util.ArrayList[String](classCount.keySet.asJava))
+
+		featureAttributes.add(classAttr)
+		val featureWords = featureAttributes.asScala.map(_.name()).zipWithIndex.toMap
+		val instances = new Instances("", featureAttributes, featureAttributes.size())
+
+		dataReader.readBrochuresLinewise(List("en")) { doc =>
+			instances.add(new DenseInstance(1.0, constructFeatureValues(featureWords, doc.textTokens)))
 		}
-		println(classCount)
-		println(i)
+	}
+
+	def constructFeatureValues(featureAttributes: Map[String, Int], doc: Document, classAttr: Attribute): Array[Double] ={
+		val result = new Array[Double](featureAttributes.size)
+		doc.textTokens.foreach { word =>
+			val idx = featureAttributes(word)
+			if(featureAttributes.contains(word))
+				result(idx) += 1.0
+		}
+		result(result.size - 1) = classAttr.indexOfValue(doc.documentClass)
+		result
+	}
+
+	def determineFeatures(wordCounts: mutable.Map[String, mutable.Map[String, Int]]): java.util.ArrayList[Attribute] = {
+		var result = mutable.Set[Attribute]()
+		wordCounts.foreach { case (className, counts) =>
+			counts.toList.sortBy(-_._2).take(10).foreach { case (word, count) =>
+				result += new Attribute(word)
+			}
+		}
+		new java.util.ArrayList[Attribute](result.asJava)
 	}
 }
