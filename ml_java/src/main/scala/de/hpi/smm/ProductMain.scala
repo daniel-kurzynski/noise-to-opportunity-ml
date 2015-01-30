@@ -67,6 +67,10 @@ class ProductAnalyzer() {
 		featureAttributes.add(classAttr)
 	}
 
+	def setClassifier(classifier: Classifier): Unit = {
+		this.classifier = classifier
+	}
+
 	private def determineFeatures(wordCounts: mutable.Map[String, mutable.Map[String, Double]]): Array[String] = {
 		var result = mutable.Set[String]()
 		wordCounts.foreach { case (className, counts) =>
@@ -88,13 +92,12 @@ class ProductAnalyzer() {
 	}
 
 
-	def train(classifier: Classifier) : Unit = {
+	def train() : Unit = {
 		trainInstances = new Instances("train", featureAttributes, featureAttributes.size())
 		trainInstances.setClassIndex(featureAttributes.size() - 1)
 		dataReader.readBrochuresLinewise(List("en")) { doc =>
 			trainInstances.add(new DenseInstance(1.0, constructFeatureValues(featureWords, doc, classAttr)))
 		}
-		this.classifier = classifier
 		evaluation = new Evaluation(trainInstances)
 	}
 
@@ -112,7 +115,7 @@ class ProductAnalyzer() {
 	}
 
 	def validate(): Unit = {
-		train(this.classifier)
+		train()
 		readTestInstances()
 		evaluation.evaluateModel(classifier, testInstances)
 
@@ -155,7 +158,8 @@ object ProductMain {
 		val analyzer = new ProductAnalyzer()
 
 		List(new J48, new HandcodedClassifier()).foreach { classifier =>
-			analyzer.train(classifier)
+			analyzer.setClassifier(classifier)
+			analyzer.train()
 
 			val cross = false
 			if (cross) {
