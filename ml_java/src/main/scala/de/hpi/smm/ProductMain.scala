@@ -1,11 +1,13 @@
 package de.hpi.smm
 
-import java.io.File
+import java.io.{FileWriter, File}
 import java.util.Random
 
 import com.blog_intelligence.nto.Document
 import de.hpi.smm.classification.HandcodedClassifier
 import de.hpi.smm.data_reader.DataReader
+import weka.classifiers.`lazy`.IBk
+import weka.classifiers.bayes.NaiveBayes
 import weka.classifiers.evaluation.output.prediction.PlainText
 import weka.classifiers.{Classifier, Evaluation}
 import weka.classifiers.trees.J48
@@ -19,8 +21,7 @@ class ProductAnalyzer() {
 		new File("../n2o_data/linked_in_posts.csv"),
 		new File("../n2o_data/brochures.csv"))
 
-	val classCount = mutable.Map[String, Int]().withDefaultValue(0)
-	private var wordCountWithTfIdf = mutable.Map[String, mutable.Map[String, Double]]()
+	var wordCountWithTfIdf = mutable.Map[String, mutable.Map[String, Double]]()
 
 	var featureAttributes: java.util.ArrayList[Attribute] = null
 	var featureWords: Map[String, Int] = null
@@ -53,7 +54,6 @@ class ProductAnalyzer() {
 			N += 1
 		}
 
-		classCount("None") = 0
 
 		wordCountWithTfIdf = wordCount.map { case (className, counts) =>
 			(className, counts.map { case (word, count) =>
@@ -63,7 +63,9 @@ class ProductAnalyzer() {
 
 		featureWords = determineFeatures(wordCountWithTfIdf).zipWithIndex.toMap
 		println(featureWords)
-		classAttr = new Attribute("@@class@@", new java.util.ArrayList[String](wordCountWithTfIdf.keySet.asJava))
+		val classes = new java.util.ArrayList[String](wordCountWithTfIdf.keySet.asJava)
+		classes.add("None")
+		classAttr = new Attribute("@@class@@", classes)
 		println(classAttr)
 
 		featureAttributes = new java.util.ArrayList[Attribute](featureWords.keys.map(new Attribute(_)).asJavaCollection)
@@ -88,7 +90,7 @@ class ProductAnalyzer() {
 		val result = new Array[Double](featureWords.size + 1)
 		doc.textTokens.foreach { word =>
 			if(featureWords.contains(word))
-				result(featureWords(word)) = 1.0
+				result(featureWords(word)) += 1.0
 		}
 		result(result.size - 1) = classAttr.indexOfValue(doc.documentClass)
 		result
@@ -157,33 +159,31 @@ object ProductMain {
 //		}
 		val analyzer = new ProductAnalyzer()
 
-		List(new J48/*, new HandcodedClassifier(analyzer.featureWords)*/).foreach { classifier =>
+		List(new J48/*, new IBk(5), new NaiveBayes, new HandcodedClassifier(analyzer.featureWords)*/).foreach { classifier =>
 			analyzer.setClassifier(classifier)
 			analyzer.readTrainInstances()
 
 			analyzer.buildClassifier()
 
-			val result = mutable.Map[Document, Array[Double]]()
+//			val result = mutable.Map[Document, Array[Double]]()
 
-			analyzer.dataReader.readPostsLinewise { doc =>
-				result(doc) = analyzer.distributionForInstance(doc)
-			}("category")
-
-			for (i <- 0 until analyzer.classCount.size){
-				println(s"================ ${analyzer.classAttr.value(i)} ==================== ")
-				result.toArray.sortBy(-_._2(i)).take(10).filter { case (doc, distribution) =>
-					distribution(i) == distribution.max
-				}.foreach { case (doc, distribution) =>
-					println(distribution(i))
-					println(doc.id)
-					println(doc.wholeText)
-					println(s"--------------- ${doc.documentClass} ----------------\n")
-				}
-			}
-
-//			analyzer.validate()
+//			analyzer.dataReader.readPostsLinewise { doc =>
+//				result(doc) = analyzer.distributionForInstance(doc)
+//			}("category")
 //
-//			analyzer.printEvaluation()
+//			for (i <- 0 to analyzer.wordCountWithTfIdf.size){
+//				val f = new FileWriter(new File(s"../ml_java/${analyzer.classAttr.value(i)}.csv"))
+//				result.toArray.filter { case (doc, distribution) =>
+//					distribution(i) == distribution.max
+//				}.sortBy(-_._2(i)).take(100).foreach { case (doc, distribution) =>
+//					f.write(doc.id + s": ${distribution(i)}" +"\n" + doc.wholeText + "\n\n")
+//				}
+//				f.close()
+//			}
+
+			analyzer.validate()
+
+			analyzer.printEvaluation()
 		}
 	}
 
