@@ -53,14 +53,14 @@ class DataReader(val postsFile: File, val brochuresFile: File) {
 			val rawPost = RawDocument(id, title, text, classifiedPosts.get(id).orNull)
 
 			val isClassifiedPost = classifiedPosts.contains(id)
-			if (isClassifiedPost) {
+//			if (isClassifiedPost) {
 				val sentences = NLP.detectSentences(rawPost)
 				val post = Document(id, title, text, sentences, rawPost.extract(className))
-				if(post.documentClass != "None"){
+//				if(post.documentClass != "None"){
 					postCount += 1
 					extractor(post)
-				}
-			}
+//				}
+//			}
 			line = reader.readNext()
 		}
 		reader.close()

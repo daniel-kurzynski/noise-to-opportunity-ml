@@ -15,16 +15,16 @@ import scala.collection.JavaConverters._
 
 class ProductAnalyzer() {
 
-	private val dataReader = new DataReader(
+	val dataReader = new DataReader(
 		new File("../n2o_data/linked_in_posts.csv"),
 		new File("../n2o_data/brochures.csv"))
 
-	private val classCount = mutable.Map[String, Int]().withDefaultValue(0)
+	val classCount = mutable.Map[String, Int]().withDefaultValue(0)
 	private var wordCountWithTfIdf = mutable.Map[String, mutable.Map[String, Double]]()
 
-	private var featureAttributes: java.util.ArrayList[Attribute] = null
+	var featureAttributes: java.util.ArrayList[Attribute] = null
 	var featureWords: Map[String, Int] = null
-	private var classAttr: Attribute = null
+	var classAttr: Attribute = null
 
 	private var classifier: Classifier = null
 	private var evaluation: Evaluation = null
@@ -52,6 +52,8 @@ class ProductAnalyzer() {
 			}
 			N += 1
 		}
+
+		classCount("None") = 0
 
 		wordCountWithTfIdf = wordCount.map { case (className, counts) =>
 			(className, counts.map { case (word, count) =>
@@ -82,22 +84,22 @@ class ProductAnalyzer() {
 		result.toArray
 	}
 
-	private def constructFeatureValues(featureAttributes: Map[String, Int], doc: Document, classAttr: Attribute): Array[Double] = {
-		val result = new Array[Double](featureAttributes.size + 1)
+	private def constructFeatureValues(doc: Document): Array[Double] = {
+		val result = new Array[Double](featureWords.size + 1)
 		doc.textTokens.foreach { word =>
-			if(featureAttributes.contains(word))
-				result(featureAttributes(word)) = 1.0
+			if(featureWords.contains(word))
+				result(featureWords(word)) = 1.0
 		}
 		result(result.size - 1) = classAttr.indexOfValue(doc.documentClass)
 		result
 	}
 
 
-	def train() : Unit = {
+	def readTrainInstances() : Unit = {
 		trainInstances = new Instances("train", featureAttributes, featureAttributes.size())
 		trainInstances.setClassIndex(featureAttributes.size() - 1)
 		dataReader.readBrochuresLinewise(List("en")) { doc =>
-			trainInstances.add(new DenseInstance(1.0, constructFeatureValues(featureWords, doc, classAttr)))
+			trainInstances.add(new DenseInstance(1.0, constructFeatureValues(doc)))
 		}
 		evaluation = new Evaluation(trainInstances)
 	}
@@ -111,31 +113,28 @@ class ProductAnalyzer() {
 		testInstances = new Instances("test", featureAttributes, featureAttributes.size())
 		testInstances.setClassIndex(featureAttributes.size() - 1)
 		dataReader.readPostsLinewise { doc =>
-			testInstances.add(new DenseInstance(1.0, constructFeatureValues(featureWords, doc, classAttr)))
+			testInstances.add(new DenseInstance(1.0, constructFeatureValues(doc)))
 		}("category")
 	}
 
 	def validate(): Unit = {
-		train()
+		readTrainInstances()
 		readTestInstances()
 		evaluation.evaluateModel(classifier, testInstances)
 
 	}
 
-	def crossValidate(): PlainText = {
-		readTestInstances()
-		val result = new PlainText()
-		result.setBuffer(new StringBuffer())
-		result.setOutputDistribution(true)
-
-		evaluation.crossValidateModel(classifier, trainInstances, 10, new Random(18), result)
-
-		result
-	}
-
 	def printEvaluation() : Unit  = {
 		println(evaluation.toSummaryString(f"%nResults%n======%n", false))
 		println(evaluation.toMatrixString)
+	}
+
+	def distributionForInstance(doc: Document): Array[Double] = {
+		val instance = new DenseInstance(1.0, constructFeatureValues(doc))
+		val dummyInstances = new Instances("bla", featureAttributes, featureAttributes.size())
+		dummyInstances.setClassIndex(featureAttributes.size() - 1)
+		instance.setDataset(dummyInstances)
+		classifier.distributionForInstance(instance)
 	}
 
 }
@@ -158,20 +157,33 @@ object ProductMain {
 //		}
 		val analyzer = new ProductAnalyzer()
 
-		List(new J48, new HandcodedClassifier(analyzer.featureWords)).foreach { classifier =>
+		List(new J48/*, new HandcodedClassifier(analyzer.featureWords)*/).foreach { classifier =>
 			analyzer.setClassifier(classifier)
-			analyzer.train()
+			analyzer.readTrainInstances()
 
-			val cross = false
-			if (cross) {
-				val results = analyzer.crossValidate()
-//				println(results.getBuffer)
-			} else {
-				analyzer.buildClassifier()
-				analyzer.validate()
+			analyzer.buildClassifier()
+
+			val result = mutable.Map[Document, Array[Double]]()
+
+			analyzer.dataReader.readPostsLinewise { doc =>
+				result(doc) = analyzer.distributionForInstance(doc)
+			}("category")
+
+			for (i <- 0 until analyzer.classCount.size){
+				println(s"================ ${analyzer.classAttr.value(i)} ==================== ")
+				result.toArray.sortBy(-_._2(i)).take(10).filter { case (doc, distribution) =>
+					distribution(i) == distribution.max
+				}.foreach { case (doc, distribution) =>
+					println(distribution(i))
+					println(doc.id)
+					println(doc.wholeText)
+					println(s"--------------- ${doc.documentClass} ----------------\n")
+				}
 			}
 
-			analyzer.printEvaluation()
+//			analyzer.validate()
+//
+//			analyzer.printEvaluation()
 		}
 	}
 
