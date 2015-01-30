@@ -4,16 +4,16 @@ import java.io.File
 import java.util.Random
 
 import com.blog_intelligence.nto.Document
+import de.hpi.smm.classification.HandcodedClassifier
 import de.hpi.smm.data_reader.DataReader
+import weka.classifiers.evaluation.output.prediction.PlainText
 import weka.classifiers.{Classifier, Evaluation}
 import weka.classifiers.trees.J48
-import weka.classifiers.bayes.NaiveBayes
-import weka.classifiers.evaluation.output.prediction.PlainText
 import weka.core.{DenseInstance, Attribute, Instances}
 import scala.collection.mutable
 import scala.collection.JavaConverters._
 
-class ProductAnalyzer(classifier: Classifier) {
+class ProductAnalyzer() {
 
 	private val dataReader = new DataReader(
 		new File("../n2o_data/linked_in_posts.csv"),
@@ -26,6 +26,7 @@ class ProductAnalyzer(classifier: Classifier) {
 	private var featureWords: Map[String, Int] = null
 	private var classAttr: Attribute = null
 
+	private var classifier: Classifier = null
 	private var evaluation: Evaluation = null
 
 	private var trainInstances: Instances = null
@@ -76,7 +77,7 @@ class ProductAnalyzer(classifier: Classifier) {
 		result.toArray
 	}
 
-	private def constructFeatureValues(featureAttributes: Map[String, Int], doc: Document, classAttr: Attribute): Array[Double] ={
+	private def constructFeatureValues(featureAttributes: Map[String, Int], doc: Document, classAttr: Attribute): Array[Double] = {
 		val result = new Array[Double](featureAttributes.size + 1)
 		doc.textTokens.foreach { word =>
 			if(featureAttributes.contains(word))
@@ -87,16 +88,17 @@ class ProductAnalyzer(classifier: Classifier) {
 	}
 
 
-	def train() : Unit = {
+	def train(classifier: Classifier) : Unit = {
 		trainInstances = new Instances("train", featureAttributes, featureAttributes.size())
 		trainInstances.setClassIndex(featureAttributes.size() - 1)
 		dataReader.readBrochuresLinewise(List("en")) { doc =>
 			trainInstances.add(new DenseInstance(1.0, constructFeatureValues(featureWords, doc, classAttr)))
 		}
+		this.classifier = classifier
 		evaluation = new Evaluation(trainInstances)
 	}
 
-	def buildClassifier() : Unit = {
+	def buildClassifier(): Unit = {
 		classifier.buildClassifier(trainInstances)
 	}
 
@@ -109,14 +111,14 @@ class ProductAnalyzer(classifier: Classifier) {
 		}("category")
 	}
 
-	def validate() = {
-		train()
+	def validate(): Unit = {
+		train(this.classifier)
 		readTestInstances()
 		evaluation.evaluateModel(classifier, testInstances)
 
 	}
 
-	def crossValidate() : PlainText = {
+	def crossValidate(): PlainText = {
 		readTestInstances()
 		val result = new PlainText()
 		result.setBuffer(new StringBuffer())
@@ -137,21 +139,35 @@ class ProductAnalyzer(classifier: Classifier) {
 object ProductMain {
 
 	def main(args: Array[String]): Unit = {
-		val analyzer = new ProductAnalyzer(new J48())
-//		val analyzer = new ProductAnalyzer(new NaiveBayes())
-		analyzer.train()
+//		val wordCountWithTfIdf = countFeatureWords()
+//		val (trainInstances: Instances, testInstances: Instances) = buildInstances(wordCountWithTfIdf)
+//
+//		val classifiers = List(new J48(), new HandcodedClassifier())
+//		classifiers.foreach { classifier =>
+//			val evaluation = new Evaluation(trainInstances)
+//
+//			classifier.buildClassifier(trainInstances)
+//			evaluation.evaluateModel(classifier, testInstances)
+//			println(classifier.toString)
+//			println(evaluation.toSummaryString(f"%nResults%n======%n", false))
+//			println(evaluation.toMatrixString)
+//		}
+		val analyzer = new ProductAnalyzer()
 
-		val cross = false
-		if(cross){
-			val results = analyzer.crossValidate()
-//			println(results.getBuffer)
-		} else {
-			analyzer.buildClassifier()
-			analyzer.validate()
+		List(new J48, new HandcodedClassifier()).foreach { classifier =>
+			analyzer.train(classifier)
+
+			val cross = false
+			if (cross) {
+				val results = analyzer.crossValidate()
+//				println(results.getBuffer)
+			} else {
+				analyzer.buildClassifier()
+				analyzer.validate()
+			}
+
+			analyzer.printEvaluation()
 		}
-
-		analyzer.printEvaluation()
-
 	}
 
 }
