@@ -30,14 +30,14 @@ object ProductMain {
 
 		classifier.buildClassifier(trainInstances)
 		evaluation.evaluateModel(classifier, testInstances)
-		println(classifier.graph())
+		println(classifier.toString)
 		println(evaluation.toSummaryString(f"%nResults%n======%n", false))
 		println(evaluation.toMatrixString)
 	}
 
 	def countFeatureWords(): mutable.Map[String, mutable.Map[String, Double]] = {
-		val classCount = mutable.Map[String, Int]().withDefaultValue(0)
-		val wordCount = mutable.Map[String, mutable.Map[String, Int]]()
+		val classCount    = mutable.Map[String, Int]().withDefaultValue(0)
+		val wordCount     = mutable.Map[String, mutable.Map[String, Int]]()
 		val documentCount = mutable.Map[String, Int]().withDefaultValue(0)
 		var N = 0
 
@@ -61,19 +61,20 @@ object ProductMain {
 				(word, count.toDouble * Math.log(N.toDouble / documentCount(word).toDouble))
 			})
 		}
-		/*		wordCountWithTfIdf.foreach { case (className, counts) =>
-					println(className)
-					counts.toList.sortBy(-_._2).take(10).foreach(println)
-				}
-				println(classCount)
-				println(N)*/
+//		wordCountWithTfIdf.foreach { case (className, counts) =>
+//			println(className)
+//			counts.toList.sortBy(-_._2).take(10).foreach(println)
+//		}
+//		println(classCount)
+//		println(N)
 
-		//		classCount("None") = 0
+//		classCount("None") = 0
 		wordCountWithTfIdf
 	}
 
 	def buildInstances(wordCountWithTfIdf: mutable.Map[String, mutable.Map[String, Double]]): (Instances, Instances) = {
 		val featureWords = determineFeatures(wordCountWithTfIdf).zipWithIndex.toMap
+		println(s"Feature-Words: $featureWords")
 		val featureAttributes = new util.ArrayList[Attribute](featureWords.keys.map(new Attribute(_)).asJavaCollection)
 		val classAttr = new Attribute("@@class@@", new util.ArrayList[String](wordCountWithTfIdf.keySet.asJava))
 		featureAttributes.add(classAttr)
@@ -96,8 +97,8 @@ object ProductMain {
 	def constructFeatureValues(featureAttributes: Map[String, Int], doc: Document, classAttr: Attribute): Array[Double] ={
 		val result = new Array[Double](featureAttributes.size + 1)
 		doc.textTokens.foreach { word =>
-			if(featureAttributes.contains(word))
-				result(featureAttributes(word)) += 1.0
+			if (featureAttributes.contains(word))
+				result(featureAttributes(word)) = 1.0
 		}
 		result(result.size - 1) = classAttr.indexOfValue(doc.documentClass)
 		result
