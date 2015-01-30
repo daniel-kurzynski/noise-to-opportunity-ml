@@ -1,12 +1,13 @@
 package de.hpi.smm
 
-import java.io.{File}
+import java.io.File
 import java.util
 import java.util.Random
 
 import com.blog_intelligence.nto.Document
 import de.hpi.smm.data_reader.DataReader
 import weka.classifiers.Evaluation
+import weka.classifiers.trees.J48
 import weka.classifiers.bayes.NaiveBayes
 import weka.classifiers.evaluation.output.prediction.PlainText
 import weka.core.{DenseInstance, Attribute, Instances}
@@ -20,47 +21,18 @@ object ProductMain {
 
 	val dataReader = new DataReader(postsFile, brochuresFile)
 
-
 	def main(args: Array[String]): Unit = {
 		val wordCountWithTfIdf = countFeatureWords()
+		val (trainInstances: Instances, testInstances: Instances) = buildInstances(wordCountWithTfIdf)
 
-		val featureWords = determineFeatures(wordCountWithTfIdf).zipWithIndex.toMap
-		val featureAttributes = new util.ArrayList[Attribute](featureWords.keys.map(new Attribute(_)).asJavaCollection)
-		val classAttr = new Attribute("@@class@@", new util.ArrayList[String](wordCountWithTfIdf.keySet.asJava))
-		featureAttributes.add(classAttr)
-
-		val trainInstances = new Instances("train", featureAttributes, featureAttributes.size())
-		val testInstances = new Instances("test", featureAttributes, featureAttributes.size())
-		trainInstances.setClassIndex(featureAttributes.size() - 1)
-		testInstances.setClassIndex(featureAttributes.size() - 1)
-
-		dataReader.readBrochuresLinewise(List("en")) { doc =>
-			trainInstances.add(new DenseInstance(1.0, constructFeatureValues(featureWords, doc, classAttr)))
-		}
-
-		dataReader.readPostsLinewise { doc =>
-			testInstances.add(new DenseInstance(1.0, constructFeatureValues(featureWords, doc, classAttr)))
-		}("category")
-
-		val cross = false
-
-		val classifier = new NaiveBayes()
+		val classifier = new J48()
 		val evaluation = new Evaluation(trainInstances)
-		val buffer = new StringBuffer()
-		val plainText = new PlainText()
-		plainText.setBuffer(buffer)
-		plainText.setOutputDistribution(true)
 
-		if (cross){
-			evaluation.crossValidateModel(classifier, trainInstances, 10, new Random(18), plainText)
-//			println(plainText.getBuffer)
-		} else {
-			classifier.buildClassifier(trainInstances)
-			evaluation.evaluateModel(classifier, testInstances)
-		}
+		classifier.buildClassifier(trainInstances)
+		evaluation.evaluateModel(classifier, testInstances)
+		println(classifier.graph())
 		println(evaluation.toSummaryString(f"%nResults%n======%n", false))
 		println(evaluation.toMatrixString)
-
 	}
 
 	def countFeatureWords(): mutable.Map[String, mutable.Map[String, Double]] = {
@@ -98,6 +70,27 @@ object ProductMain {
 
 		//		classCount("None") = 0
 		wordCountWithTfIdf
+	}
+
+	def buildInstances(wordCountWithTfIdf: mutable.Map[String, mutable.Map[String, Double]]): (Instances, Instances) = {
+		val featureWords = determineFeatures(wordCountWithTfIdf).zipWithIndex.toMap
+		val featureAttributes = new util.ArrayList[Attribute](featureWords.keys.map(new Attribute(_)).asJavaCollection)
+		val classAttr = new Attribute("@@class@@", new util.ArrayList[String](wordCountWithTfIdf.keySet.asJava))
+		featureAttributes.add(classAttr)
+
+		val trainInstances = new Instances("train", featureAttributes, featureAttributes.size())
+		val testInstances = new Instances("test", featureAttributes, featureAttributes.size())
+		trainInstances.setClassIndex(featureAttributes.size() - 1)
+		testInstances.setClassIndex(featureAttributes.size() - 1)
+
+		dataReader.readBrochuresLinewise(List("en")) { doc =>
+			trainInstances.add(new DenseInstance(1.0, constructFeatureValues(featureWords, doc, classAttr)))
+		}
+
+		dataReader.readPostsLinewise { doc =>
+			testInstances.add(new DenseInstance(1.0, constructFeatureValues(featureWords, doc, classAttr)))
+		}("category")
+		(trainInstances, testInstances)
 	}
 
 	def constructFeatureValues(featureAttributes: Map[String, Int], doc: Document, classAttr: Attribute): Array[Double] ={
