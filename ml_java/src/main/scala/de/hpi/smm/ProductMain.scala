@@ -23,7 +23,7 @@ class ProductAnalyzer() {
 	private var wordCountWithTfIdf = mutable.Map[String, mutable.Map[String, Double]]()
 
 	private var featureAttributes: java.util.ArrayList[Attribute] = null
-	private var featureWords: Map[String, Int] = null
+	var featureWords: Map[String, Int] = null
 	private var classAttr: Attribute = null
 
 	private var classifier: Classifier = null
@@ -41,7 +41,6 @@ class ProductAnalyzer() {
 
 		dataReader.readBrochuresLinewise(List("en")) { doc =>
 			val docClass = doc.documentClass
-			classCount(docClass) += 1
 
 			if (!wordCount.contains(docClass))
 				wordCount(docClass) = mutable.Map[String, Int]().withDefaultValue(0)
@@ -61,7 +60,9 @@ class ProductAnalyzer() {
 		}
 
 		featureWords = determineFeatures(wordCountWithTfIdf).zipWithIndex.toMap
-		classAttr = new Attribute("@@class@@", new java.util.ArrayList[String](classCount.keySet.asJava))
+		println(featureWords)
+		classAttr = new Attribute("@@class@@", new java.util.ArrayList[String](wordCountWithTfIdf.keySet.asJava))
+		println(classAttr)
 
 		featureAttributes = new java.util.ArrayList[Attribute](featureWords.keys.map(new Attribute(_)).asJavaCollection)
 		featureAttributes.add(classAttr)
@@ -157,7 +158,7 @@ object ProductMain {
 //		}
 		val analyzer = new ProductAnalyzer()
 
-		List(new J48, new HandcodedClassifier()).foreach { classifier =>
+		List(new J48, new HandcodedClassifier(analyzer.featureWords)).foreach { classifier =>
 			analyzer.setClassifier(classifier)
 			analyzer.train()
 
