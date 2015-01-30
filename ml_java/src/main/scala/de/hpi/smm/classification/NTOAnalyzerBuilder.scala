@@ -7,9 +7,6 @@ import de.hpi.smm.Constants._
 import de.hpi.smm.FeatureExtractorBuilder
 import de.hpi.smm.data_reader.DataReader
 
-/**
- * Created by Daniel on 23.01.2015.
- */
 object NTOAnalyzerBuilder {
 	def build(classificationFile: File, brochuresFile: File, postsFile: File): NTOAnalyzer = {
 
@@ -18,9 +15,7 @@ object NTOAnalyzerBuilder {
 				throw new FileNotFoundException(file.getAbsolutePath)
 		}
 
-		val classifiedPosts = JacksMapper.readValue[Map[String, Map[String, Map[String, String]]]](
-			new FileReader(classificationFile))
-		val dataReader = new DataReader(classifiedPosts, postsFile, brochuresFile, false)
+		val dataReader = new DataReader(postsFile, brochuresFile)
 		val featureExtractorBuilder = new FeatureExtractorBuilder(dataReader)
 		new NTOAnalyzer(featureExtractorBuilder)
 	}

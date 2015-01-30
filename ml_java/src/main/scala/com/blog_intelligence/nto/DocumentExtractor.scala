@@ -19,9 +19,7 @@ case class ReadingResult(demandDocuments: java.util.List[Document], productDocum
 class DocumentExtractor {
 
 	def readFromCSV(demandFile: File, productFile: File, classificationFile: File): ReadingResult = {
-		val classifiedPosts = JacksMapper.readValue[Map[String, Map[String, Map[String, String]]]](
-			new FileReader(classificationFile.getAbsolutePath))
-		new DataReader(classifiedPosts, demandFile, productFile, false).getReadingResult
+		new DataReader(demandFile, productFile).getReadingResult
 	}
 
 	def readFromDB(config: DataBaseConfiguration): ReadingResult = {

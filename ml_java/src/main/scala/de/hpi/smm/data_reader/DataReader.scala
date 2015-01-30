@@ -1,23 +1,17 @@
 package de.hpi.smm.data_reader
 
 import java.io.{File, FileReader}
-import java.util
 
+import de.hpi.smm.Constants._
 import au.com.bytecode.opencsv.CSVReader
 import com.blog_intelligence.nto.{ReadingResult, RawDocument, Document}
 import com.lambdaworks.jacks.JacksMapper
-import de.hpi.smm.domain.Word
 import de.hpi.smm.nlp.NLP
-import edu.stanford.nlp.ling.CoreAnnotations._
-import edu.stanford.nlp.pipeline.{Annotation, StanfordCoreNLP}
-import edu.stanford.nlp.util.CoreMap
-import edu.stanford.nlp.util.logging.RedwoodConfiguration
-import scala.collection.JavaConverters._
 
-class DataReader(val classifiedPosts :Map[String, Map[String, Map[String, String]]],
-								 	val postsFile: File,
-									val brochuresFile: File,
-									val FOR_ALL_POSTS: Boolean) {
+class DataReader(val postsFile: File, val brochuresFile: File) {
+
+	val classifiedPosts = JacksMapper.readValue[Map[String, Map[String, Map[String, String]]]](
+		new FileReader(CLASSIFICATION_JSON))
 
 	def readBrochuresLinewise(languages: List[String] = List("de", "en"))(extractor: Document => Unit): Unit = {
 		val reader = new CSVReader(new FileReader(brochuresFile))
@@ -62,17 +56,17 @@ class DataReader(val classifiedPosts :Map[String, Map[String, Map[String, String
 			if (isClassifiedPost) {
 				val sentences = NLP.detectSentences(rawPost)
 				val post = Document(id, title, text, sentences, rawPost.extract(className))
-//				if(post.documentClass != "None"){
+				if(post.documentClass != "None"){
 					postCount += 1
 					extractor(post)
-//				}
+				}
 			}
 			line = reader.readNext()
 		}
 		reader.close()
 	}
 
-	def getReadingResult: ReadingResult ={
+	def getReadingResult: ReadingResult = {
 
 		val demandDocs = new java.util.ArrayList[Document]()
 		val productDocs = new java.util.ArrayList[Document]()

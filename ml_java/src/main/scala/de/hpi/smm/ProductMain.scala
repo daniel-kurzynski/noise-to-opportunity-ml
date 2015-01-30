@@ -12,18 +12,13 @@ import weka.classifiers.evaluation.output.prediction.PlainText
 import weka.core.{DenseInstance, Attribute, Instances}
 import scala.collection.mutable
 import scala.collection.JavaConverters._
-import Constants._
 
 object ProductMain {
 
-	val FOR_ALL_POSTS = false
-
-	val classifiedPosts = JacksMapper.readValue[Map[String, Map[String, Map[String, String]]]](
-		new FileReader(CLASSIFICATION_JSON))
 	val postsFile = new File("../n2o_data/linked_in_posts.csv")
 	val brochuresFile = new File("../n2o_data/brochures.csv")
 
-	val dataReader = new DataReader(classifiedPosts, postsFile, brochuresFile, FOR_ALL_POSTS)
+	val dataReader = new DataReader(postsFile, brochuresFile)
 
 
 	def main(args: Array[String]): Unit = {
@@ -53,7 +48,7 @@ object ProductMain {
 			})
 		}
 
-		classCount("None") = 0
+//		classCount("None") = 0
 
 
 		val featureWords = determineFeatures(wordCountWithTfIdf).zipWithIndex.toMap
@@ -116,7 +111,7 @@ object ProductMain {
 	def determineFeatures(wordCounts: mutable.Map[String, mutable.Map[String, Double]]): Array[String] = {
 		var result = mutable.Set[String]()
 		wordCounts.foreach { case (className, counts) =>
-			counts.toList.sortBy(-_._2).take(10).foreach { case (word, count) =>
+			counts.toList.sortBy(-_._2).take(10).foreach { case (word, _) =>
 				result += word
 			}
 		}

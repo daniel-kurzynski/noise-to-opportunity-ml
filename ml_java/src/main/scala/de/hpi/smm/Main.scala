@@ -11,14 +11,10 @@ import de.hpi.smm.data_reader.DataReader
 
 object Main {
 
-	val FOR_ALL_POSTS = false
-
-	val classifiedPosts = JacksMapper.readValue[Map[String, Map[String, Map[String, String]]]](
-		new FileReader(CLASSIFICATION_JSON))
 	val postsFile = new File("../n2o_data/linked_in_posts.csv")
 	val brochuresFile = new File("../n2o_data/brochures.csv")
 
-	val dataReader = new DataReader(classifiedPosts, postsFile, brochuresFile, FOR_ALL_POSTS)
+	val dataReader = new DataReader(postsFile, brochuresFile)
 
 	val featureExtractorBuilder = new FeatureExtractorBuilder(dataReader)
 
