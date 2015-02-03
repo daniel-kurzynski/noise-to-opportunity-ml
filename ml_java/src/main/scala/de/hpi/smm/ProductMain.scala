@@ -4,14 +4,14 @@ import java.io.{FileWriter, File}
 import java.util.Random
 
 import com.blog_intelligence.nto.Document
-import de.hpi.smm.classification.HandcodedClassifier
 import de.hpi.smm.data_reader.DataReader
 import weka.classifiers.`lazy`.IBk
-import weka.classifiers.bayes.NaiveBayes
+import weka.classifiers.bayes.{NaiveBayesMultinomial, NaiveBayes}
 import weka.classifiers.evaluation.output.prediction.PlainText
+import weka.classifiers.functions.Logistic
 import weka.classifiers.{Classifier, Evaluation}
 import weka.classifiers.trees.J48
-import weka.core.{DenseInstance, Attribute, Instances}
+import weka.core.{Utils, DenseInstance, Attribute, Instances}
 import scala.collection.mutable
 import scala.collection.JavaConverters._
 
@@ -96,12 +96,26 @@ class ProductAnalyzer() {
 		result
 	}
 
+	def normalize(features: Array[Double]): Array[Double] = {
+		return features
+		val lastIndex = features.size - 1
+		val instanceClass = features(lastIndex)
+		features(lastIndex) = 0.0
+		if (features.sum == 0.0) {
+			features(lastIndex) = instanceClass
+			return features
+		}
+		Utils.normalize(features)
+		features(lastIndex) = instanceClass
+		features
+	}
 
 	def readTrainInstances() : Unit = {
 		trainInstances = new Instances("train", featureAttributes, featureAttributes.size())
 		trainInstances.setClassIndex(featureAttributes.size() - 1)
 		dataReader.readBrochuresLinewise(List("en")) { doc =>
-			trainInstances.add(new DenseInstance(1.0, constructFeatureValues(doc)))
+			val features = constructFeatureValues(doc)
+			trainInstances.add(new DenseInstance(1.0, normalize(features)))
 		}
 		evaluation = new Evaluation(trainInstances)
 	}
@@ -110,12 +124,13 @@ class ProductAnalyzer() {
 		classifier.buildClassifier(trainInstances)
 	}
 
-	private def readTestInstances() : Unit = {
+	private def readTestInstances(): Unit = {
 
 		testInstances = new Instances("test", featureAttributes, featureAttributes.size())
 		testInstances.setClassIndex(featureAttributes.size() - 1)
 		dataReader.readPostsLinewise { doc =>
-			testInstances.add(new DenseInstance(1.0, constructFeatureValues(doc)))
+			val features = constructFeatureValues(doc)
+			testInstances.add(new DenseInstance(1.0, normalize(features)))
 		}("category")
 	}
 
@@ -144,22 +159,20 @@ class ProductAnalyzer() {
 object ProductMain {
 
 	def main(args: Array[String]): Unit = {
-//		val wordCountWithTfIdf = countFeatureWords()
-//		val (trainInstances: Instances, testInstances: Instances) = buildInstances(wordCountWithTfIdf)
-//
-//		val classifiers = List(new J48(), new HandcodedClassifier())
-//		classifiers.foreach { classifier =>
-//			val evaluation = new Evaluation(trainInstances)
-//
-//			classifier.buildClassifier(trainInstances)
-//			evaluation.evaluateModel(classifier, testInstances)
-//			println(classifier.toString)
-//			println(evaluation.toSummaryString(f"%nResults%n======%n", false))
-//			println(evaluation.toMatrixString)
-//		}
 		val analyzer = new ProductAnalyzer()
 
-		List(new J48/*, new IBk(5), new NaiveBayes, new HandcodedClassifier(analyzer.featureWords)*/).foreach { classifier =>
+		List(
+			new J48
+			, new Logistic
+//			, new NaiveBayes()
+//			, new NaiveBayesMultinomial()
+//			, new IBk(5)
+//			, new IBk(15)
+//			, new IBk(50)
+//			,
+//			new HandcodedClassifier(analyzer.wordCountWithTfIdf, analyzer.featureWords)
+		).foreach { classifier =>
+//			classifier.
 			analyzer.setClassifier(classifier)
 			analyzer.readTrainInstances()
 
