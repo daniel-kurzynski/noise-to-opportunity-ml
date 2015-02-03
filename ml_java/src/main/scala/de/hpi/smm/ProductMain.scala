@@ -8,7 +8,7 @@ import de.hpi.smm.data_reader.DataReader
 import weka.classifiers.`lazy`.IBk
 import weka.classifiers.bayes.{NaiveBayesMultinomial, NaiveBayes}
 import weka.classifiers.evaluation.output.prediction.PlainText
-import weka.classifiers.functions.Logistic
+import weka.classifiers.functions.{MultilayerPerceptron, SMO, Logistic, VotedPerceptron}
 import weka.classifiers.{Classifier, Evaluation}
 import weka.classifiers.trees.J48
 import weka.core.{Utils, DenseInstance, Attribute, Instances}
@@ -90,7 +90,7 @@ class ProductAnalyzer() {
 		val result = new Array[Double](featureWords.size + 1)
 		doc.textTokens.foreach { word =>
 			if(featureWords.contains(word))
-				result(featureWords(word)) += 1.0
+				result(featureWords(word)) = 1.0
 		}
 		result(result.size - 1) = classAttr.indexOfValue(doc.documentClass)
 		result
@@ -162,8 +162,9 @@ object ProductMain {
 		val analyzer = new ProductAnalyzer()
 
 		List(
-			new J48
-			, new Logistic
+		new Logistic
+		, new SMO()
+		, new MultilayerPerceptron()
 //			, new NaiveBayes()
 //			, new NaiveBayesMultinomial()
 //			, new IBk(5)
