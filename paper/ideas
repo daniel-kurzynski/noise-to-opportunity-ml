@@ -1,3 +1,10 @@
 Differentiate between different use cases (recall-oriented and precision-oriented)
 
 A Comparison of Event Models for Naive Bayes Text Classification
+
+Why splitting is good: Typical Marketing buzzwords reoccur frequently
+
+Graph ideas:
+ See iPod
+ + Random Demand Post Generation
+ + Sentence Split Group Size (evaluate different)

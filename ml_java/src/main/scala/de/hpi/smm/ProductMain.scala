@@ -33,6 +33,8 @@ class ProductAnalyzer() {
 	private var trainInstances: Instances = null
 	private var testInstances: Instances = null
 
+	private var brochures = mutable.ArrayBuffer[Document]()
+
 	init()
 
 	private def init() = {
@@ -41,6 +43,18 @@ class ProductAnalyzer() {
 		var N = 0
 
 		dataReader.readBrochuresLinewise(List("en")) { doc =>
+			brochures += doc
+		}
+		println(s"Brochure size before ${brochures.size}")
+		brochures = brochures.flatMap { doc =>
+			var i = 0
+			doc.sentences.grouped(6).map { sentences =>
+				i += 1
+				Document(s"${doc.id}-$i", "", sentences.mkString(" "), sentences, doc.documentClass)
+			}
+		}
+		println(s"Brochure size after ${brochures.size}")
+		brochures.foreach { doc =>
 			val docClass = doc.documentClass
 
 			if (!wordCount.contains(docClass))
@@ -110,10 +124,10 @@ class ProductAnalyzer() {
 		features
 	}
 
-	def readTrainInstances() : Unit = {
+	def buildTrainInstances() : Unit = {
 		trainInstances = new Instances("train", featureAttributes, featureAttributes.size())
 		trainInstances.setClassIndex(featureAttributes.size() - 1)
-		dataReader.readBrochuresLinewise(List("en")) { doc =>
+		brochures.foreach { doc =>
 			val features = constructFeatureValues(doc)
 			trainInstances.add(new DenseInstance(1.0, normalize(features)))
 		}
@@ -135,7 +149,7 @@ class ProductAnalyzer() {
 	}
 
 	def validate(): Unit = {
-		readTrainInstances()
+		buildTrainInstances()
 		readTestInstances()
 		evaluation.evaluateModel(classifier, testInstances)
 
@@ -165,40 +179,42 @@ object ProductMain {
 		new Logistic
 		, new SMO()
 		, new MultilayerPerceptron()
-//			, new NaiveBayes()
-//			, new NaiveBayesMultinomial()
-//			, new IBk(5)
-//			, new IBk(15)
-//			, new IBk(50)
+		, new NaiveBayes()
+		, new NaiveBayesMultinomial()
+		, new IBk(5)
+		, new IBk(15)
 //			,
 //			new HandcodedClassifier(analyzer.wordCountWithTfIdf, analyzer.featureWords)
 		).foreach { classifier =>
 //			classifier.
 			analyzer.setClassifier(classifier)
-			analyzer.readTrainInstances()
+			analyzer.buildTrainInstances()
 
 			analyzer.buildClassifier()
 
-//			val result = mutable.Map[Document, Array[Double]]()
-
-//			analyzer.dataReader.readPostsLinewise { doc =>
-//				result(doc) = analyzer.distributionForInstance(doc)
-//			}("category")
-//
-//			for (i <- 0 to analyzer.wordCountWithTfIdf.size){
-//				val f = new FileWriter(new File(s"../ml_java/${analyzer.classAttr.value(i)}.csv"))
-//				result.toArray.filter { case (doc, distribution) =>
-//					distribution(i) == distribution.max
-//				}.sortBy(-_._2(i)).take(100).foreach { case (doc, distribution) =>
-//					f.write(doc.id + s": ${distribution(i)}" +"\n" + doc.wholeText + "\n\n")
-//				}
-//				f.close()
-//			}
 
 			analyzer.validate()
 
 			analyzer.printEvaluation()
 		}
+	}
+
+	def writeBestPredictions(): Unit = {
+//		val result = mutable.Map[Document, Array[Double]]()
+//
+//		analyzer.dataReader.readPostsLinewise { doc =>
+//			result(doc) = analyzer.distributionForInstance(doc)
+//		}("category")
+//
+//		for (i <- 0 to analyzer.wordCountWithTfIdf.size) {
+//			val f = new FileWriter(new File(s"../ml_java/${analyzer.classAttr.value(i)}.csv"))
+//			result.toArray.filter { case (doc, distribution) =>
+//				distribution(i) == distribution.max
+//			}.sortBy(-_._2(i)).take(100).foreach { case (doc, distribution) =>
+//				f.write(doc.id + s": ${distribution(i)}" + "\n" + doc.wholeText + "\n\n")
+//			}
+//			f.close()
+//		}
 	}
 
 }
