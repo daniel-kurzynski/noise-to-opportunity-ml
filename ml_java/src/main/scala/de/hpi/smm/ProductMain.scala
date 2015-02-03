@@ -104,14 +104,14 @@ class ProductAnalyzer() {
 		val result = new Array[Double](featureWords.size + 1)
 		doc.textTokens.foreach { word =>
 			if(featureWords.contains(word))
-				result(featureWords(word)) = 1.0
+				result(featureWords(word)) += 1.0
 		}
 		result(result.size - 1) = classAttr.indexOfValue(doc.documentClass)
 		result
 	}
 
-	def normalize(features: Array[Double]): Array[Double] = {
-//		return features
+	private def normalize(features: Array[Double]): Array[Double] = {
+		return features
 		val lastIndex = features.size - 1
 		val instanceClass = features(lastIndex)
 		features(lastIndex) = 0.0
@@ -179,10 +179,10 @@ object ProductMain {
 		new Logistic
 		, new SMO()
 		, new MultilayerPerceptron()
-		, new NaiveBayes()
-		, new NaiveBayesMultinomial()
-		, new IBk(5)
-		, new IBk(15)
+//		, new NaiveBayes()
+//		, new NaiveBayesMultinomial()
+//		, new IBk(5)
+//		, new IBk(15)
 //			,
 //			new HandcodedClassifier(analyzer.wordCountWithTfIdf, analyzer.featureWords)
 		).foreach { classifier =>
