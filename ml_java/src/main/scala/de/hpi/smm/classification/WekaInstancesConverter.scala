@@ -24,6 +24,7 @@ class WekaInstancesConverter {
 
 	def convert(name: String, documents : List[Document]):Instances = {
 		val instances = new Instances(name, attributes, 0)
+		instances.setClassIndex(classAttribute.index())
 		documents.foreach { document =>
 			instances.add(buildInstance(document))
 		}

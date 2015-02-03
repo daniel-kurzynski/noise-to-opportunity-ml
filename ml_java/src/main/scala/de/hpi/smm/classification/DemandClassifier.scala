@@ -98,7 +98,7 @@ class DemandClassifier(val className: String, val documents: Seq[Document], val 
 		val counts = featureExtractor.genericCounter.classCounts
 		evaluation.crossValidateModel(new PriorClassifier(classifier, Array(1.0 / counts(className), 100.0 / (counts.values.sum - counts(className)))), instances, 10, new Random(18), plainText)
 
-		println(plainText.getBuffer)
+//		println(plainText.getBuffer)
 		evaluation
 	}
 }

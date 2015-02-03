@@ -1,14 +1,16 @@
 package de.hpi.smm.classification
 
 import weka.classifiers.`lazy`.IBk
-import weka.core.{Instances, Capabilities, Instance}
+import weka.classifiers.trees.J48
+import weka.core.{Attribute, Instances, Capabilities, Instance}
 import weka.filters.Filter
 import weka.filters.unsupervised.attribute.{Normalize, StringToWordVector}
 
 class ProductClassifier extends weka.classifiers.Classifier {
 
 	val baseClassifier = new IBk(5)
-	val classifier = new PriorClassifier(baseClassifier, Array(1.0, 10.00, 10.0, 10.0, 10.0))
+//	2.0, 5.00, 2.0, 8.0, 20.0
+	val classifier = new PriorClassifier(baseClassifier, Array(2.0, 5.00, 2.0, 8.0, 20.0))
 
 	var tdfIdfFilter = null.asInstanceOf[StringToWordVector]
 	var normelizeFilter = null.asInstanceOf[Normalize]
@@ -19,30 +21,61 @@ class ProductClassifier extends weka.classifiers.Classifier {
 		structure = new Instances(data,0,0)
 		structure.clear()
 		tdfIdfFilter = new StringToWordVector()
-		tdfIdfFilter.setIDFTransform(true)
-		tdfIdfFilter.setTFTransform(true)
-		tdfIdfFilter.setWordsToKeep(5)
+		tdfIdfFilter.setIDFTransform(false)
+		tdfIdfFilter.setTFTransform(false)
+		tdfIdfFilter.setDoNotOperateOnPerClassBasis(false)
+		tdfIdfFilter.setWordsToKeep(20)
 		tdfIdfFilter.setInputFormat(data)
 
 		val filteredInstances = Filter.useFilter(data,tdfIdfFilter)
+
+		val enumeration = tdfIdfFilter.getOutputFormat.enumerateAttributes()
+
+		while(enumeration.hasMoreElements){
+			val attribute = enumeration.nextElement().asInstanceOf[Attribute]
+			println(attribute.toString)
+		}
 
 		normelizeFilter = new Normalize()
 		normelizeFilter.setInputFormat(filteredInstances)
 
 		val normilizedInstances = Filter.useFilter(filteredInstances,normelizeFilter)
-
-		normilizedInstances
+		println("finished")
+		filteredInstances
 	}
 
 	private def feautureCreation(instance: Instance): Instance = {
 
 		val instances = new Instances(structure)
 		structure.add(instance)
+		instance.setDataset(structure)
 
 		val filteredInstances = Filter.useFilter(structure,tdfIdfFilter)
 		val normilizedInstances = Filter.useFilter(filteredInstances,normelizeFilter)
 
-		normilizedInstances.firstInstance()
+		val result = normilizedInstances.firstInstance()
+		structure.clear()
+		printInstance(result)
+		result
+	}
+
+	private def printInstance(instance: Instance):Unit = {
+
+		if(!instance.classIsMissing()){
+			val classAttribute = instance.classAttribute()
+			val className = classAttribute.value(instance.value(classAttribute).toInt)
+			print(f"Class: $className - ")
+		}
+		val enumeration = instance.dataset().enumerateAttributes()
+		while(enumeration.hasMoreElements){
+			val attribute = enumeration.nextElement().asInstanceOf[Attribute]
+			val value = instance.value(attribute)
+			if(value!=0){
+				val attributeName = attribute.name()
+				print(f"Attribute: $attributeName%s: $value - ")
+			}
+		}
+		println()
 	}
 
 

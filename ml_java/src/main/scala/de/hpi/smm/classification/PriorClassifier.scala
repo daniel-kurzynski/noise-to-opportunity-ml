@@ -12,8 +12,8 @@ class PriorClassifier(classifier: weka.classifiers.Classifier, parameterFactors:
 		val distribution = classifier.distributionForInstance(instance)
 		assert(parameterFactors.size == distribution.size)
 
-		if (distribution.size == 5)
-			println(distribution.mkString("   "))
+//		if (distribution.size == 5)
+//			println(distribution.mkString("   "))
 		parameterFactors.zipWithIndex.foreach { case (value, i) =>
 				distribution(i) *= value
 		}

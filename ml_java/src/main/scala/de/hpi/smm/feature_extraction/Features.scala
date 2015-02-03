@@ -98,9 +98,9 @@ class QuestionNumberFeature extends Feature {
 
 	override def extract(): Switch = {
 		Switch(
-			Case(post => Array(post.sentences.count { sentence => sentence.last.text == "?" }.toDouble),
+			Case(post => Array(post.sentences.count { sentence => sentence.nonEmpty && sentence.last.text == "?" }.toDouble),
 				"question-number-without-question-word"),
-			Case(post => Array(post.sentences.count { sentence => sentence.last.text == "?" || sentence.head.pos.startsWith("W") }.toDouble),
+			Case(post => Array(post.sentences.count { sentence => sentence.nonEmpty && sentence.last.text == "?" || sentence.head.pos.startsWith("W") }.toDouble),
 				"question-number-with-question-word")
 		)
 	}

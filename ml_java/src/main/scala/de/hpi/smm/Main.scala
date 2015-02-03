@@ -4,7 +4,7 @@ import java.io.{File, FileReader, FileWriter}
 
 import au.com.bytecode.opencsv.CSVWriter
 import com.blog_intelligence.nto.Document
-import com.lambdaworks.jacks.JacksMapper	
+import com.lambdaworks.jacks.JacksMapper
 import de.hpi.smm.Constants._
 import de.hpi.smm.classification.NTOAnalyzer
 import de.hpi.smm.data_reader.DataReader
@@ -36,11 +36,12 @@ object Main {
 		ntoAnalyzer.trainProduct(classNames)
 
 		val post = "I need help. I am looking for support. Thanks in advance. I am searching for a good crm software."
-		val demandClassification = ntoAnalyzer.classifyDemand(post)
-		println(s"$post is: ${demandClassification.cls} with propability: ${demandClassification.classificationOutput.prob}")
+		val post2 = "What's the best ECommerce Platform for product subscription sales (Continuity model)?  Is there a platform with a strong CRM at it's core?"
+		val demandClassification = ntoAnalyzer.classifyDemand(post2)
+		println(s"$post2 is: ${demandClassification.cls} with propability: ${demandClassification.classificationOutput.prob}")
 
-		val productClassification = ntoAnalyzer.classifyProduct(post)
-		println(s"$post is: ${productClassification(0).cls} with propability: ${productClassification(0).classificationOutput.prob}")
+		val productClassification = ntoAnalyzer.classifyProduct(post2)
+		println(s"$post2 is: ${productClassification(0).cls} with propability: ${productClassification(0).classificationOutput.prob}")
 
 		ntoAnalyzer.validate()
 	}
