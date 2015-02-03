@@ -97,7 +97,7 @@ class ProductAnalyzer() {
 	}
 
 	def normalize(features: Array[Double]): Array[Double] = {
-		return features
+//		return features
 		val lastIndex = features.size - 1
 		val instanceClass = features(lastIndex)
 		features(lastIndex) = 0.0
