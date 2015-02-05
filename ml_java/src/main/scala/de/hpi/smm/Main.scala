@@ -34,15 +34,14 @@ object Main {
 	def runClassifyPost() {
 		val ntoClassifier = ExtendedNTOClassifierBuilder.build(classificationFile,brochuresFile,postsFile)
 
-
-
 		val post = "I need help. I am looking for support. Thanks in advance. I am searching for a good crm software."
 		val post2 = "What's the best ECommerce Platform for product subscription sales (Continuity model)?  Is there a platform with a strong CRM at it's core?"
 		val demandClassification = ntoClassifier.predictDemandExtendedOutput(post2)
 		println(s"$post2 is: ${demandClassification.cls} with propability: ${demandClassification.classificationOutput.prob}")
 
-//		val productClassification = ntoClassifier.predictProduct(post2)
-//		println(s"$post2 is: ${productClassification(0).cls} with propability: ${productClassification(0).classificationOutput.prob}")
+		val productClassification = ntoClassifier.predictProduct(post2)
+
+		println(s"$post2 is: ${productClassification.get(0).product} with propability: ${productClassification.get(0).prob}")
 
 		ntoClassifier.validate()
 	}

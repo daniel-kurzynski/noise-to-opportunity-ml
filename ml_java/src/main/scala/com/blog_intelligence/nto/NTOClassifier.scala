@@ -8,7 +8,7 @@ import de.hpi.smm.classification.old_classifier.ProductClassifier
 import scala.collection.JavaConverters._
 import scala.collection.mutable
 
-case class Classification(product: String, prob: Double)
+case class ProductClassification(product: String, prob: Double)
 
 class NTOClassifier {
 
@@ -63,6 +63,7 @@ class NTOClassifier {
 
 	def trainProduct(trainingSamples: java.util.List[Document]): Unit = {
 		productClassifier = new ProductAnalyzer(trainingSamples.asScala.toList)
+		productClassifier.buildClassifier()
 	}
 
 	def predictDemand(text: String): Double = {
@@ -70,7 +71,7 @@ class NTOClassifier {
 		demandClassifier.classProbability(text).prob
 	}
 
-	def predictProduct(text: String): java.util.List[Classification] = {
+	def predictProduct(text: String): java.util.List[ProductClassification] = {
 		requireNonNull(productClassifier)
 		productClassifier.predict(text).sortBy(-_.prob).asJava
 	}

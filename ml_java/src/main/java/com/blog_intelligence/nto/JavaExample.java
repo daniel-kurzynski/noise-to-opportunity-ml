@@ -40,8 +40,8 @@ public class JavaExample {
 		double probDemand = classifier.predictDemand(post);
 		System.out.println("Demand probability " + probDemand);
 
-		List<Classification> probsProduct = classifier.predictProduct(post);
-		for (Classification classification : probsProduct) {
+		List<ProductClassification> probsProduct = classifier.predictProduct(post);
+		for (ProductClassification classification : probsProduct) {
 			System.out.println(classification.product() + ": " + classification.prob());
 		}
 	}

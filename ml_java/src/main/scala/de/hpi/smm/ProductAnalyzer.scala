@@ -2,7 +2,8 @@ package de.hpi.smm
 
 import java.io.File
 
-import com.blog_intelligence.nto.{Classification, Document}
+import com.blog_intelligence.nto.{RawDocument, ProductClassification, Document}
+import de.hpi.smm.nlp.NLP
 import weka.classifiers.functions.MultilayerPerceptron
 import weka.classifiers.{Evaluation, Classifier}
 import weka.core.{DenseInstance, Utils, Instances, Attribute}
@@ -154,8 +155,24 @@ class ProductAnalyzer(
 		println(evaluation.toMatrixString)
 	}
 
-	def predict(text: String): List[Classification] = {
-		List[Classification]()
+	def predict(text: String): List[ProductClassification] = {
+		val id = ""
+		val title = ""
+
+		val rawPost = RawDocument(id, title, text, null)
+		val sentences = NLP.detectSentences(rawPost)
+		val post = Document(id, title, text, sentences, "None")
+
+		val instance = new DenseInstance(1.0, constructFeatureValues(post))
+		val dummyInstances = new Instances("bla", featureAttributes,1)
+		dummyInstances.setClassIndex(featureAttributes.size() - 1)
+		instance.setDataset(dummyInstances)
+		val distribution = classifier.distributionForInstance(instance)
+
+		distribution.zipWithIndex.map { case (probability,index) =>
+			val className = classAttr.value(index)
+			ProductClassification(className,probability)
+		}.toList
 	}
 
 
