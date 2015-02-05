@@ -14,7 +14,8 @@ import scala.collection.mutable
 class ProductAnalyzer(
 		groupSize:Int = 6,
 		classifier: Classifier = new MultilayerPerceptron(),
-		binaryFeatures:Boolean = false
+		binaryFeatures:Boolean = false,
+		normalize:Boolean=false
 	) {
 
 	val dataReader = new DataReader(
@@ -112,7 +113,8 @@ class ProductAnalyzer(
 	}
 
 	private def normalize(features: Array[Double]): Array[Double] = {
-		return features
+		if(!normalize)
+			return features
 		val lastIndex = features.size - 1
 		val instanceClass = features(lastIndex)
 		features(lastIndex) = 0.0
