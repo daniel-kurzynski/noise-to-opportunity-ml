@@ -1,16 +1,13 @@
-package de.hpi.smm
+package de.hpi.smm.classification
 
-import java.io.File
-
-import com.blog_intelligence.nto.{RawDocument, ProductClassification, Document}
+import com.blog_intelligence.nto.{Document, ProductClassification, RawDocument}
 import de.hpi.smm.nlp.NLP
 import weka.classifiers.functions.MultilayerPerceptron
-import weka.classifiers.{Evaluation, Classifier}
-import weka.core.{DenseInstance, Utils, Instances, Attribute}
-import scala.collection.JavaConverters._
+import weka.classifiers.{Classifier, Evaluation}
+import weka.core.{Attribute, DenseInstance, Instances, Utils}
 
+import scala.collection.JavaConverters._
 import scala.collection.mutable
-import scala.collection.mutable.ArrayBuffer
 
 class ProductAnalyzer(
 		originalBrochures: List[Document],

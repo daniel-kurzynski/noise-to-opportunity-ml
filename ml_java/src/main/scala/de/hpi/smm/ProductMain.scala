@@ -4,6 +4,7 @@ import java.io.{FileWriter, File}
 import java.util.Random
 import de.hpi.smm.Constants._
 import com.blog_intelligence.nto.Document
+import de.hpi.smm.classification.ProductAnalyzer
 import de.hpi.smm.data_reader.DataReader
 import weka.classifiers.`lazy`.IBk
 import weka.classifiers.bayes.{NaiveBayesMultinomial, NaiveBayes}

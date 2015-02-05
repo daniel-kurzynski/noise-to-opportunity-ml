@@ -2,8 +2,8 @@ package com.blog_intelligence.nto
 
 import java.io._
 
-import de.hpi.smm.{ProductAnalyzer, FeatureExtractorBuilder}
-import de.hpi.smm.classification.DemandClassifier
+import de.hpi.smm.FeatureExtractorBuilder
+import de.hpi.smm.classification.{ProductAnalyzer, DemandClassifier}
 import scala.collection.JavaConverters._
 import scala.collection.mutable
 
