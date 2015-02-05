@@ -4,7 +4,7 @@ import java.io.{FileWriter, File}
 import java.util.Random
 import de.hpi.smm.Constants._
 import com.blog_intelligence.nto.Document
-import de.hpi.smm.classification.ProductAnalyzer
+import de.hpi.smm.classification.ProductClassifier
 import de.hpi.smm.data_reader.DataReader
 import weka.classifiers.`lazy`.IBk
 import weka.classifiers.bayes.{NaiveBayesMultinomial, NaiveBayes}
@@ -60,7 +60,7 @@ object ProductMain {
 					normalize.foreach { normalizeFeatures =>
 						println(f"groupSize:$groupSize, classifier:${classifier.getClass},binaryFeature:$useBinaryFeature,normalize:$normalizeFeatures")
 
-						val analyzer = new ProductAnalyzer(brochures.toList,groupSize,classifier,useBinaryFeature,normalizeFeatures)
+						val analyzer = new ProductClassifier(brochures.toList,groupSize,classifier,useBinaryFeature,normalizeFeatures)
 						analyzer.buildTrainInstances()
 						analyzer.buildClassifier()
 

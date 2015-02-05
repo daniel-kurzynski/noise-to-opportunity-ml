@@ -9,7 +9,7 @@ import weka.core.{Attribute, DenseInstance, Instances, Utils}
 import scala.collection.JavaConverters._
 import scala.collection.mutable
 
-class ProductAnalyzer(
+class ProductClassifier(
 		originalBrochures: List[Document],
 		groupSize: Int = 6,
 		classifier: Classifier = new MultilayerPerceptron(),

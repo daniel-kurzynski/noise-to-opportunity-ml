@@ -3,7 +3,7 @@ package com.blog_intelligence.nto
 import java.io._
 
 import de.hpi.smm.FeatureExtractorBuilder
-import de.hpi.smm.classification.{ProductAnalyzer, DemandClassifier}
+import de.hpi.smm.classification.{ProductClassifier, DemandClassifier}
 import scala.collection.JavaConverters._
 import scala.collection.mutable
 
@@ -12,7 +12,7 @@ case class ProductClassification(product: String, prob: Double)
 class NTOClassifier {
 
 	var demandClassifier: DemandClassifier = null
-	var productClassifier: ProductAnalyzer = null
+	var productClassifier: ProductClassifier = null
 
 	def requireNonNull(o: Object) {
 		if (o == null)
@@ -42,7 +42,7 @@ class NTOClassifier {
 	}
 
 	def loadProduct(modelFile: File): Unit = {
-		productClassifier = loadModel(modelFile).asInstanceOf[ProductAnalyzer]
+		productClassifier = loadModel(modelFile).asInstanceOf[ProductClassifier]
 	}
 
 
@@ -61,7 +61,7 @@ class NTOClassifier {
 	}
 
 	def trainProduct(trainingSamples: java.util.List[Document]): Unit = {
-		productClassifier = new ProductAnalyzer(trainingSamples.asScala.toList)
+		productClassifier = new ProductClassifier(trainingSamples.asScala.toList)
 		productClassifier.buildClassifier()
 	}
 
