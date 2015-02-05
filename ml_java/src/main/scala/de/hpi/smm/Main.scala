@@ -6,15 +6,17 @@ import au.com.bytecode.opencsv.CSVWriter
 import com.blog_intelligence.nto.Document
 import com.lambdaworks.jacks.JacksMapper
 import de.hpi.smm.Constants._
-import de.hpi.smm.classification.NTOAnalyzer
+import de.hpi.smm.classification.{ExtendedNTOClassifierBuilder, ExtendedNTOClassifier}
 import de.hpi.smm.data_reader.DataReader
+import de.hpi.smm.Constants._
 
 object Main {
 
 	val postsFile = new File("../n2o_data/linked_in_posts.csv")
 	val brochuresFile = new File("../n2o_data/brochures.csv")
+	val classificationFile = new File(CLASSIFICATION_JSON)
 
-	val dataReader = new DataReader(postsFile, brochuresFile)
+	val dataReader = new DataReader(postsFile, brochuresFile,classificationFile)
 
 	val featureExtractorBuilder = new FeatureExtractorBuilder(dataReader)
 
@@ -30,20 +32,19 @@ object Main {
 	}
 
 	def runClassifyPost() {
-		val ntoAnalyzer = new NTOAnalyzer(featureExtractorBuilder)
-		ntoAnalyzer.trainDemand()
-		val classNames = List("CRM", "ECOM", "HCM", "LVM", "None")
-		ntoAnalyzer.trainProduct(classNames)
+		val ntoClassifier = ExtendedNTOClassifierBuilder.build(classificationFile,brochuresFile,postsFile)
+
+
 
 		val post = "I need help. I am looking for support. Thanks in advance. I am searching for a good crm software."
 		val post2 = "What's the best ECommerce Platform for product subscription sales (Continuity model)?  Is there a platform with a strong CRM at it's core?"
-		val demandClassification = ntoAnalyzer.classifyDemand(post2)
+		val demandClassification = ntoClassifier.predictDemandExtendedOutput(post2)
 		println(s"$post2 is: ${demandClassification.cls} with propability: ${demandClassification.classificationOutput.prob}")
 
-		val productClassification = ntoAnalyzer.classifyProduct(post2)
-		println(s"$post2 is: ${productClassification(0).cls} with propability: ${productClassification(0).classificationOutput.prob}")
+//		val productClassification = ntoClassifier.predictProduct(post2)
+//		println(s"$post2 is: ${productClassification(0).cls} with propability: ${productClassification(0).classificationOutput.prob}")
 
-		ntoAnalyzer.validate()
+		ntoClassifier.validate()
 	}
 
 	def runDemandFeatureExtraction(): Unit = {

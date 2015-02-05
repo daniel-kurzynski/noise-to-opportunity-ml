@@ -2,15 +2,18 @@ package com.blog_intelligence.nto
 
 import java.io._
 
-import de.hpi.smm.FeatureExtractorBuilder
+import de.hpi.smm.{ProductAnalyzer, FeatureExtractorBuilder}
 import de.hpi.smm.classification.DemandClassifier
 import de.hpi.smm.classification.old_classifier.ProductClassifier
 import scala.collection.JavaConverters._
+import scala.collection.mutable
+
+case class Classification(product: String, prob: Double)
 
 class NTOClassifier {
 
 	var demandClassifier: DemandClassifier = null
-	var productClassifiers: List[ProductClassifier] = null
+	var productClassifier: ProductAnalyzer = null
 
 	def requireNonNull(o: Object) {
 		if (o == null)
@@ -22,7 +25,7 @@ class NTOClassifier {
 	}
 
 	def persistProducts(modelFile: File): Unit  = {
-		persist(modelFile, productClassifiers)
+		persist(modelFile, productClassifier)
 	}
 
 	private def persist(modelFile: File, o: Object): Unit  = {
@@ -40,7 +43,7 @@ class NTOClassifier {
 	}
 
 	def loadProduct(modelFile: File): Unit = {
-		productClassifiers = loadModel(modelFile).asInstanceOf[List[ProductClassifier]]
+		productClassifier = loadModel(modelFile).asInstanceOf[ProductAnalyzer]
 	}
 
 
@@ -59,11 +62,7 @@ class NTOClassifier {
 	}
 
 	def trainProduct(trainingSamples: java.util.List[Document]): Unit = {
-		val productClasses = List("CRM", "HCM", "ECOM", "LVM")
-		productClassifiers = productClasses.map { clazz =>
-			new ProductClassifier(clazz,
-				trainingSamples.asScala)
-		}
+		productClassifier = new ProductAnalyzer(trainingSamples.asScala.toList)
 	}
 
 	def predictDemand(text: String): Double = {
@@ -72,13 +71,7 @@ class NTOClassifier {
 	}
 
 	def predictProduct(text: String): java.util.List[Classification] = {
-		requireNonNull(productClassifiers)
-		productClassifiers.map { classifier =>
-			val prob = classifier.classProbability(text).prob
-			Classification(classifier.className, prob)
-		}.sortBy(-_.prob).asJava
+		requireNonNull(productClassifier)
+		productClassifier.predict(text).sortBy(-_.prob).asJava
 	}
-
-	case class Classification(product: String, prob: Double)
-
 }

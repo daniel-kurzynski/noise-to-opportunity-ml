@@ -2,8 +2,7 @@ package de.hpi.smm
 
 import java.io.File
 
-import com.blog_intelligence.nto.Document
-import de.hpi.smm.data_reader.DataReader
+import com.blog_intelligence.nto.{Classification, Document}
 import weka.classifiers.functions.MultilayerPerceptron
 import weka.classifiers.{Evaluation, Classifier}
 import weka.core.{DenseInstance, Utils, Instances, Attribute}
@@ -13,7 +12,7 @@ import scala.collection.mutable
 import scala.collection.mutable.ArrayBuffer
 
 class ProductAnalyzer(
-		originalBrochures: mutable.ArrayBuffer[Document],
+		originalBrochures: List[Document],
 		groupSize: Int = 6,
 		classifier: Classifier = new MultilayerPerceptron(),
 		binaryFeatures: Boolean = false,
@@ -132,7 +131,7 @@ class ProductAnalyzer(
 		classifier.buildClassifier(trainInstances)
 	}
 
-	private def buildTestInstances(posts:mutable.ArrayBuffer[Document]): Instances = {
+	private def buildTestInstances(posts:List[Document]): Instances = {
 		val testInstances = new Instances("test", featureAttributes, featureAttributes.size())
 		testInstances.setClassIndex(featureAttributes.size() - 1)
 		posts.foreach { doc =>
@@ -142,13 +141,23 @@ class ProductAnalyzer(
 		testInstances
 	}
 
-	def validate(posts:mutable.ArrayBuffer[Document]): Unit = {
+	def validate(posts: List[Document]): Evaluation = {
 		val testInstances = buildTestInstances(posts)
 		val evaluation = new Evaluation(testInstances)
 		evaluation.evaluateModel(classifier, testInstances)
+		evaluation
+	}
+
+	def printValidation(posts: List[Document]): Unit = {
+		val evaluation = validate(posts)
 		println(evaluation.toSummaryString(f"%nResults%n======%n", false))
 		println(evaluation.toMatrixString)
 	}
+
+	def predict(text: String): List[Classification] = {
+		List[Classification]()
+	}
+
 
 	def distributionForInstance(doc: Document): Array[Double] = {
 		val instance = new DenseInstance(1.0, constructFeatureValues(doc))

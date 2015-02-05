@@ -3,7 +3,7 @@ package de.hpi.smm.classification.old_classifier
 import java.util
 
 import com.blog_intelligence.nto.{Document, RawDocument}
-import de.hpi.smm.classification.{Classification, ClassificationOutput, PriorClassifier}
+import de.hpi.smm.classification.{ExtendedClassification, ClassificationOutput, PriorClassifier}
 import de.hpi.smm.nlp.NLP
 import weka.classifiers.Evaluation
 import weka.classifiers.`lazy`.IBk
@@ -53,7 +53,7 @@ class MultiProductClassifier(val brochures: List[Document], val posts: List[Docu
 	
 	classifier.buildClassifier(normilizedInstances)
 
-	def classProbability(text: String): List[Classification] = {
+	def classProbability(text: String): List[ExtendedClassification] = {
 		val id = ""
 		val title = ""
 
@@ -72,7 +72,7 @@ class MultiProductClassifier(val brochures: List[Document], val posts: List[Docu
 		val dist = classifier.distributionForInstance(normilizedClassifyInstances.get(0))
 
 		dist.toList.zipWithIndex.map { case (distValue, index) =>
-			Classification(classAttribute.value(index),ClassificationOutput(distValue,new Array[Array[Any]](0)))
+			ExtendedClassification(classAttribute.value(index),ClassificationOutput(distValue,new Array[Array[Any]](0)))
 		}
 	}
 

@@ -2,7 +2,7 @@ package de.hpi.smm
 
 import java.io.{FileWriter, File}
 import java.util.Random
-
+import de.hpi.smm.Constants._
 import com.blog_intelligence.nto.Document
 import de.hpi.smm.data_reader.DataReader
 import weka.classifiers.`lazy`.IBk
@@ -19,7 +19,8 @@ object ProductMain {
 
 	val dataReader = new DataReader(
 		new File("../n2o_data/linked_in_posts.csv"),
-		new File("../n2o_data/brochures.csv"))
+		new File("../n2o_data/brochures.csv"),
+		new File(CLASSIFICATION_JSON))
 
 	var posts = mutable.ArrayBuffer[Document]()
 	var brochures = mutable.ArrayBuffer[Document]()
@@ -58,11 +59,11 @@ object ProductMain {
 					normalize.foreach { normalizeFeatures =>
 						println(f"groupSize:$groupSize, classifier:${classifier.getClass},binaryFeature:$useBinaryFeature,normalize:$normalizeFeatures")
 
-						val analyzer = new ProductAnalyzer(brochures,groupSize,classifier,useBinaryFeature,normalizeFeatures)
+						val analyzer = new ProductAnalyzer(brochures.toList,groupSize,classifier,useBinaryFeature,normalizeFeatures)
 						analyzer.buildTrainInstances()
 						analyzer.buildClassifier()
 
-						analyzer.validate(posts)
+						analyzer.printValidation(posts.toList)
 					}
 				}
 			}

@@ -19,7 +19,7 @@ case class ReadingResult(demandDocuments: java.util.List[Document], productDocum
 class DocumentExtractor {
 
 	def readFromCSV(demandFile: File, productFile: File, classificationFile: File): ReadingResult = {
-		new DataReader(demandFile, productFile).getReadingResult
+		new DataReader(demandFile, productFile, classificationFile).getReadingResult
 	}
 
 	def readFromDB(config: DataBaseConfiguration): ReadingResult = {

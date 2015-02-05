@@ -2,16 +2,15 @@ package de.hpi.smm.data_reader
 
 import java.io.{File, FileReader}
 
-import de.hpi.smm.Constants._
 import au.com.bytecode.opencsv.CSVReader
 import com.blog_intelligence.nto.{ReadingResult, RawDocument, Document}
 import com.lambdaworks.jacks.JacksMapper
 import de.hpi.smm.nlp.NLP
 
-class DataReader(val postsFile: File, val brochuresFile: File) {
+class DataReader(val postsFile: File, val brochuresFile: File, classificationFile: File) {
 
 	val classifiedPosts = JacksMapper.readValue[Map[String, Map[String, Map[String, String]]]](
-		new FileReader(CLASSIFICATION_JSON))
+		new FileReader(classificationFile))
 
 	def readBrochuresLinewise(languages: List[String] = List("de", "en"))(extractor: Document => Unit): Unit = {
 		val reader = new CSVReader(new FileReader(brochuresFile))

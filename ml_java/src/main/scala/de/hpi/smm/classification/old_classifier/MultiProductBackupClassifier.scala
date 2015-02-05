@@ -1,7 +1,7 @@
 package de.hpi.smm.classification.old_classifier
 
 import com.blog_intelligence.nto.{Document, RawDocument}
-import de.hpi.smm.classification.{ClassificationOutput, Classification}
+import de.hpi.smm.classification.{ClassificationOutput, ExtendedClassification}
 import de.hpi.smm.nlp.NLP
 import weka.classifiers.Evaluation
 
@@ -15,7 +15,7 @@ class MultiProductBackupClassifier(val brochures: List[Document], val posts: Lis
 		"None"-> List("NoneType")
 	)
 
-	def classProbability(text: String): List[Classification] = {
+	def classProbability(text: String): List[ExtendedClassification] = {
 
 		val id = ""
 		val title = ""
@@ -38,7 +38,7 @@ class MultiProductBackupClassifier(val brochures: List[Document], val posts: Lis
 		val normDist = dist.map(distValue => distValue/dist.sum)
 
 		classNames.zipWithIndex.map { case(className, index) =>
-			Classification(className, ClassificationOutput(dist(index),new Array[Array[Any]](0)))
+			ExtendedClassification(className, ClassificationOutput(dist(index),new Array[Array[Any]](0)))
 		}
 
 	}

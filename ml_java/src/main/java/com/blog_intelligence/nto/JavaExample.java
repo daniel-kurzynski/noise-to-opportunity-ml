@@ -40,8 +40,8 @@ public class JavaExample {
 		double probDemand = classifier.predictDemand(post);
 		System.out.println("Demand probability " + probDemand);
 
-		List<NTOClassifier.Classification> probsProduct = classifier.predictProduct(post);
-		for (NTOClassifier.Classification classification : probsProduct) {
+		List<Classification> probsProduct = classifier.predictProduct(post);
+		for (Classification classification : probsProduct) {
 			System.out.println(classification.product() + ": " + classification.prob());
 		}
 	}

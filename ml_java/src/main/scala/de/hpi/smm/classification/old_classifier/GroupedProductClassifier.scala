@@ -1,7 +1,7 @@
 package de.hpi.smm.classification.old_classifier
 
 import com.blog_intelligence.nto.Document
-import de.hpi.smm.classification.{ClassificationOutput, Classification}
+import de.hpi.smm.classification.{ClassificationOutput, ExtendedClassification}
 import weka.classifiers.Evaluation
 
 class GroupedProductClassifier(val brochures: List[Document], val posts: List[Document], classNames: List[String]) {
@@ -14,17 +14,17 @@ class GroupedProductClassifier(val brochures: List[Document], val posts: List[Do
 		className -> new ProductClassifier(className, brochures)
 	}.toMap
 
-	def classProbability(text: String): List[Classification] = {
+	def classProbability(text: String): List[ExtendedClassification] = {
 
 		var result = classNamesWithoutNone.map { className =>
-			Classification(className,classifiers(className).classProbability(text))
+			ExtendedClassification(className,classifiers(className).classProbability(text))
 		}
 
 		val maxDistValue = result.map { classification =>
 			classification.classificationOutput.prob
 		}.max
 
-		result ::= Classification("None",ClassificationOutput(maxDistValue, new Array[Array[Any]](0)))
+		result ::= ExtendedClassification("None",ClassificationOutput(maxDistValue, new Array[Array[Any]](0)))
 
 		result.sortBy(-_.classificationOutput.prob)
 	}
