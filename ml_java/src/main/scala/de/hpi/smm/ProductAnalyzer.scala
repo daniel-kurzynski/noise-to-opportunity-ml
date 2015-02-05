@@ -10,17 +10,15 @@ import weka.core.{DenseInstance, Utils, Instances, Attribute}
 import scala.collection.JavaConverters._
 
 import scala.collection.mutable
+import scala.collection.mutable.ArrayBuffer
 
 class ProductAnalyzer(
-		groupSize:Int = 6,
+		originalBrochures: mutable.ArrayBuffer[Document],
+		groupSize: Int = 6,
 		classifier: Classifier = new MultilayerPerceptron(),
-		binaryFeatures:Boolean = false,
-		normalize:Boolean=false
+		binaryFeatures: Boolean = false,
+		normalize: Boolean=false
 	) {
-
-	val dataReader = new DataReader(
-		new File("../n2o_data/linked_in_posts.csv"),
-		new File("../n2o_data/brochures.csv"))
 
 	var wordCountWithTfIdf = mutable.Map[String, mutable.Map[String, Double]]()
 
@@ -28,12 +26,7 @@ class ProductAnalyzer(
 	var featureWords: Map[String, Int] = null
 	var classAttr: Attribute = null
 
-	private var evaluation: Evaluation = null
-
-	private var trainInstances: Instances = null
-	private var testInstances: Instances = null
-
-	private var brochures = mutable.ArrayBuffer[Document]()
+	private var brochures = originalBrochures
 
 	init()
 
@@ -42,9 +35,6 @@ class ProductAnalyzer(
 		val documentCount = mutable.Map[String, Int]().withDefaultValue(0)
 		var N = 0
 
-		dataReader.readBrochuresLinewise(List("en")) { doc =>
-			brochures += doc
-		}
 		println(s"Brochure size before ${brochures.size}")
 		brochures = brochures.flatMap { doc =>
 			var i = 0
@@ -127,38 +117,35 @@ class ProductAnalyzer(
 		features
 	}
 
-	def buildTrainInstances() : Unit = {
-		trainInstances = new Instances("train", featureAttributes, featureAttributes.size())
+	def buildTrainInstances() : Instances = {
+		val trainInstances = new Instances("train", featureAttributes, featureAttributes.size())
 		trainInstances.setClassIndex(featureAttributes.size() - 1)
 		brochures.foreach { doc =>
 			val features = constructFeatureValues(doc)
 			trainInstances.add(new DenseInstance(1.0, normalize(features)))
 		}
-		evaluation = new Evaluation(trainInstances)
+		trainInstances
 	}
 
 	def buildClassifier(): Unit = {
+		val trainInstances = buildTrainInstances()
 		classifier.buildClassifier(trainInstances)
 	}
 
-	private def readTestInstances(): Unit = {
-
-		testInstances = new Instances("test", featureAttributes, featureAttributes.size())
+	private def buildTestInstances(posts:mutable.ArrayBuffer[Document]): Instances = {
+		val testInstances = new Instances("test", featureAttributes, featureAttributes.size())
 		testInstances.setClassIndex(featureAttributes.size() - 1)
-		dataReader.readPostsLinewise { doc =>
+		posts.foreach { doc =>
 			val features = constructFeatureValues(doc)
 			testInstances.add(new DenseInstance(1.0, normalize(features)))
-		}("category")
+		}
+		testInstances
 	}
 
-	def validate(): Unit = {
-		buildTrainInstances()
-		readTestInstances()
+	def validate(posts:mutable.ArrayBuffer[Document]): Unit = {
+		val testInstances = buildTestInstances(posts)
+		val evaluation = new Evaluation(testInstances)
 		evaluation.evaluateModel(classifier, testInstances)
-
-	}
-
-	def printEvaluation() : Unit  = {
 		println(evaluation.toSummaryString(f"%nResults%n======%n", false))
 		println(evaluation.toMatrixString)
 	}

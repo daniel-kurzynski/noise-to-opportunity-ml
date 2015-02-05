@@ -17,6 +17,29 @@ import scala.collection.JavaConverters._
 
 object ProductMain {
 
+	val dataReader = new DataReader(
+		new File("../n2o_data/linked_in_posts.csv"),
+		new File("../n2o_data/brochures.csv"))
+
+	var posts = mutable.ArrayBuffer[Document]()
+	var brochures = mutable.ArrayBuffer[Document]()
+
+	def readData(): Unit = {
+		posts = mutable.ArrayBuffer[Document]()
+		brochures = mutable.ArrayBuffer[Document]()
+
+		if (dataReader != null) {
+
+			dataReader.readPostsLinewise { post =>
+				posts += post
+			}("category")
+
+			dataReader.readBrochuresLinewise(List("en")) { brochure =>
+				brochures += brochure
+			}
+		}
+	}
+
 	val groupSizes  = List(6)
 	val classifiers = List(
 		new MultilayerPerceptron()
@@ -27,21 +50,19 @@ object ProductMain {
 	val normalize = List(false)
 
 	def main(args: Array[String]): Unit = {
+		readData()
+
 		groupSizes.foreach { groupSize =>
 			classifiers.foreach { classifier =>
 				binaryFeatures.foreach { useBinaryFeature =>
 					normalize.foreach { normalizeFeatures =>
 						println(f"groupSize:$groupSize, classifier:${classifier.getClass},binaryFeature:$useBinaryFeature,normalize:$normalizeFeatures")
 
-						val analyzer = new ProductAnalyzer(groupSize,classifier,useBinaryFeature,normalizeFeatures)
-
+						val analyzer = new ProductAnalyzer(brochures,groupSize,classifier,useBinaryFeature,normalizeFeatures)
 						analyzer.buildTrainInstances()
-
 						analyzer.buildClassifier()
 
-						analyzer.validate()
-						analyzer.printEvaluation()
-
+						analyzer.validate(posts)
 					}
 				}
 			}
