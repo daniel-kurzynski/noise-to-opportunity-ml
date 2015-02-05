@@ -4,7 +4,6 @@ import java.io._
 
 import de.hpi.smm.{ProductAnalyzer, FeatureExtractorBuilder}
 import de.hpi.smm.classification.DemandClassifier
-import de.hpi.smm.classification.old_classifier.ProductClassifier
 import scala.collection.JavaConverters._
 import scala.collection.mutable
 
