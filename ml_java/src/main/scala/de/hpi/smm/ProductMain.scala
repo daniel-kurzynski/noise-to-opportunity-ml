@@ -33,7 +33,7 @@ object ProductMain {
 					normalize.foreach { normalizeFeatures =>
 						println(f"groupSize:$groupSize, classifier:${classifier.getClass},binaryFeature:$useBinaryFeature,normalize:$normalizeFeatures")
 
-						val analyzer = new ProductAnalyzer(groupSize,classifier)
+						val analyzer = new ProductAnalyzer(groupSize,classifier,useBinaryFeature)
 
 						analyzer.buildTrainInstances()
 

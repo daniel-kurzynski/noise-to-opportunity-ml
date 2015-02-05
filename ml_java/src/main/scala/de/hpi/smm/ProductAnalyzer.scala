@@ -12,8 +12,9 @@ import scala.collection.JavaConverters._
 import scala.collection.mutable
 
 class ProductAnalyzer(
-	groupSize:Int = 6,
-		classifier: Classifier = new MultilayerPerceptron()
+		groupSize:Int = 6,
+		classifier: Classifier = new MultilayerPerceptron(),
+		binaryFeatures:Boolean = false
 	) {
 
 	val dataReader = new DataReader(
@@ -97,8 +98,14 @@ class ProductAnalyzer(
 	private def constructFeatureValues(doc: Document): Array[Double] = {
 		val result = new Array[Double](featureWords.size + 1)
 		doc.textTokens.foreach { word =>
-			if(featureWords.contains(word))
-				result(featureWords(word)) += 1.0
+			if(featureWords.contains(word)) {
+				if(binaryFeatures){
+					result(featureWords(word)) = 1.0
+				}
+				else{
+					result(featureWords(word)) += 1.0
+				}
+			}
 		}
 		result(result.size - 1) = classAttr.indexOfValue(doc.documentClass)
 		result
