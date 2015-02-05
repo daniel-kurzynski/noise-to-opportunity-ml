@@ -18,7 +18,6 @@ import scala.collection.JavaConverters._
 object ProductMain {
 
 	def main(args: Array[String]): Unit = {
-		val analyzer = new ProductAnalyzer()
 
 		List(
 		new Logistic
@@ -31,7 +30,8 @@ object ProductMain {
 //			,
 //			new HandcodedClassifier(analyzer.wordCountWithTfIdf, analyzer.featureWords)
 		).foreach { classifier =>
-//			classifier.
+
+			val analyzer = new ProductAnalyzer()
 			analyzer.setClassifier(classifier)
 			analyzer.buildTrainInstances()
 
