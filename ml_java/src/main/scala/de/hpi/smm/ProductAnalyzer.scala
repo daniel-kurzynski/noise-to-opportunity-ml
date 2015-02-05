@@ -4,13 +4,14 @@ import java.io.File
 
 import com.blog_intelligence.nto.Document
 import de.hpi.smm.data_reader.DataReader
+import weka.classifiers.functions.MultilayerPerceptron
 import weka.classifiers.{Evaluation, Classifier}
 import weka.core.{DenseInstance, Utils, Instances, Attribute}
 import scala.collection.JavaConverters._
 
 import scala.collection.mutable
 
-class ProductAnalyzer() {
+class ProductAnalyzer(classifier: Classifier = new MultilayerPerceptron()) {
 
 	val dataReader = new DataReader(
 		new File("../n2o_data/linked_in_posts.csv"),
@@ -22,7 +23,6 @@ class ProductAnalyzer() {
 	var featureWords: Map[String, Int] = null
 	var classAttr: Attribute = null
 
-	private var classifier: Classifier = null
 	private var evaluation: Evaluation = null
 
 	private var trainInstances: Instances = null
@@ -79,10 +79,6 @@ class ProductAnalyzer() {
 
 		featureAttributes = new java.util.ArrayList[Attribute](featureWords.keys.map(new Attribute(_)).asJavaCollection)
 		featureAttributes.add(classAttr)
-	}
-
-	def setClassifier(classifier: Classifier): Unit = {
-		this.classifier = classifier
 	}
 
 	private def determineFeatures(wordCounts: mutable.Map[String, mutable.Map[String, Double]]): Array[String] = {
