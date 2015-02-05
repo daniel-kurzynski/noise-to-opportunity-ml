@@ -17,7 +17,7 @@ import scala.collection.JavaConverters._
 
 object ProductMain {
 
-	val groupSizes  =List(6)
+	val groupSizes  = List(6)
 	val classifiers = List(
 		new MultilayerPerceptron()
 		, new Logistic
@@ -33,7 +33,7 @@ object ProductMain {
 					normalize.foreach { normalizeFeatures =>
 						println(f"groupSize:$groupSize, classifier:${classifier.getClass},binaryFeature:$useBinaryFeature,normalize:$normalizeFeatures")
 
-						val analyzer = new ProductAnalyzer(classifier)
+						val analyzer = new ProductAnalyzer(groupSize,classifier)
 
 						analyzer.buildTrainInstances()
 

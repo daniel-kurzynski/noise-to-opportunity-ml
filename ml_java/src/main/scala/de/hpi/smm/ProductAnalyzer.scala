@@ -11,7 +11,10 @@ import scala.collection.JavaConverters._
 
 import scala.collection.mutable
 
-class ProductAnalyzer(classifier: Classifier = new MultilayerPerceptron()) {
+class ProductAnalyzer(
+	groupSize:Int = 6,
+		classifier: Classifier = new MultilayerPerceptron()
+	) {
 
 	val dataReader = new DataReader(
 		new File("../n2o_data/linked_in_posts.csv"),
@@ -43,7 +46,7 @@ class ProductAnalyzer(classifier: Classifier = new MultilayerPerceptron()) {
 		println(s"Brochure size before ${brochures.size}")
 		brochures = brochures.flatMap { doc =>
 			var i = 0
-			doc.sentences.grouped(6).map { sentences =>
+			doc.sentences.grouped(groupSize).map { sentences =>
 				i += 1
 				Document(s"${doc.id}-$i", "", sentences.mkString(" "), sentences, doc.documentClass)
 			}
