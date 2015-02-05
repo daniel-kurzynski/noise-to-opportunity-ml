@@ -17,30 +17,34 @@ import scala.collection.JavaConverters._
 
 object ProductMain {
 
-	def main(args: Array[String]): Unit = {
-
-		List(
+	val groupSizes  =List(6)
+	val classifiers = List(
 		new Logistic
 		, new SMO()
 		, new MultilayerPerceptron()
-//		, new NaiveBayes()
-//		, new NaiveBayesMultinomial()
-//		, new IBk(5)
-//		, new IBk(15)
-//			,
-//			new HandcodedClassifier(analyzer.wordCountWithTfIdf, analyzer.featureWords)
-		).foreach { classifier =>
+	)
+	val binaryFeatures = List(false)
+	val normalize = List(false)
 
-			val analyzer = new ProductAnalyzer()
-			analyzer.setClassifier(classifier)
-			analyzer.buildTrainInstances()
+	def main(args: Array[String]): Unit = {
+		groupSizes.foreach { groupSize =>
+			classifiers.foreach { classifier =>
+				binaryFeatures.foreach { useBinaryFeature =>
+					normalize.foreach { normalizeFeatures =>
+						println(f"groupSize:$groupSize, classifier:${classifier.getClass},binaryFeature:$useBinaryFeature,normalize:$normalizeFeatures")
 
-			analyzer.buildClassifier()
+						val analyzer = new ProductAnalyzer()
+						analyzer.setClassifier(classifier)
+						analyzer.buildTrainInstances()
 
+						analyzer.buildClassifier()
 
-			analyzer.validate()
+						analyzer.validate()
+						analyzer.printEvaluation()
 
-			analyzer.printEvaluation()
+					}
+				}
+			}
 		}
 	}
 
