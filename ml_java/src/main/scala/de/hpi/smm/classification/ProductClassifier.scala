@@ -157,7 +157,7 @@ class ProductClassifier(
 		val evaluation = validate(posts)
 		println(evaluation.pctCorrect())
 //		println(evaluation.toSummaryString(f"%nResults%n======%n", false))
-//		println(evaluation.toMatrixString)
+		println(evaluation.toMatrixString)
 	}
 
 	def predict(text: String): List[ProductClassification] = {
