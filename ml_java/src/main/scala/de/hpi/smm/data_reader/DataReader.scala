@@ -6,11 +6,14 @@ import au.com.bytecode.opencsv.CSVReader
 import com.blog_intelligence.nto.{ReadingResult, RawDocument, Document}
 import com.lambdaworks.jacks.JacksMapper
 import de.hpi.smm.nlp.NLP
+import scala.collection.mutable
 
 class DataReader(val postsFile: File, val brochuresFile: File, classificationFile: File) {
 
 	val classifiedPosts = JacksMapper.readValue[Map[String, Map[String, Map[String, String]]]](
 			new FileReader(classificationFile))
+
+	val theirClassifications = mutable.Map[String, String]()
 
 	def readBrochuresLinewise(languages: List[String] = List("de", "en"))(extractor: Document => Unit): Unit = {
 		val reader = new CSVReader(new FileReader(brochuresFile))
@@ -19,8 +22,8 @@ class DataReader(val postsFile: File, val brochuresFile: File, classificationFil
 		var line: Array[String] = reader.readNext()
 		var lastID = "-1"
 		while (line != null && brochuresCount <= Int.MaxValue) {
-			if(line.length<4)
-				println("!"+line(0)+", lastID: "+lastID)
+			if (line.length < 4)
+				println("!" + line(0) + ", lastID: " + lastID)
 			val id = line(0)
 			lastID = id
 			val text = line(1)
@@ -39,7 +42,7 @@ class DataReader(val postsFile: File, val brochuresFile: File, classificationFil
 		reader.close()
 	}
 
-	def readPostsLinewise(extractor: Document => Unit)(className: String = "demand", count: Int = Int.MaxValue): Unit = {
+	def readPostsLinewise(extractor: Document => Unit)(className: String = "demand", count: Int = Int.MaxValue, all: Boolean = false): Unit = {
 		val reader = new CSVReader(new FileReader(postsFile))
 
 		var postCount: Int = 1
@@ -48,11 +51,12 @@ class DataReader(val postsFile: File, val brochuresFile: File, classificationFil
 			val id = line(0)
 			val title = line(1)
 			val text = line(2)
+			val theirClassification = line(8)
+			theirClassifications(id) = theirClassification
 
 			val rawPost = RawDocument(id, title, text, classifiedPosts.get(id).orNull)
 
-			val isClassifiedPost = classifiedPosts.contains(id)
-			if (isClassifiedPost) {
+			if (all || classifiedPosts.contains(id)) {
 				val sentences = NLP.detectSentences(rawPost)
 				val post = Document(id, title, text, sentences, rawPost.extract(className))
 //				if(post.documentClass != "None"){

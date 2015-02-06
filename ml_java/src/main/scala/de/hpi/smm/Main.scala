@@ -10,6 +10,9 @@ import de.hpi.smm.classification.{ExtendedNTOClassifierBuilder, ExtendedNTOClass
 import de.hpi.smm.data_reader.DataReader
 import de.hpi.smm.Constants._
 
+import scala.collection.mutable
+import scala.util.hashing.MurmurHash3
+
 object Main {
 
 	val postsFile = new File("../n2o_data/linked_in_posts.csv")
@@ -27,8 +30,34 @@ object Main {
 //		println("Brochure Feature Extraction")
 //		runBrochureFeatureExtraction()
 
-		 println("Classify Post")
-		 runClassifyPost()
+		 // println("Classify Post")
+		 // runClassifyPost()
+
+		println("Most certain Posts")
+		mostCertainPosts()
+	}
+
+
+	def mostCertainPosts() = {
+		val ntoClassifier = ExtendedNTOClassifierBuilder.build(classificationFile,brochuresFile,postsFile)
+		val allPosts = mutable.ArrayBuffer[Document]()
+		ntoClassifier.dataReader.readPostsLinewise{post => allPosts += post}("category", all = true)
+
+		List("CRM", "ECOM", "HCM", "LVM").foreach { productClass =>
+			val posts = ntoClassifier.extractMostCertainPosts(5, productClass, allPosts)
+
+			val writer = new FileWriter(new File(s"../n2o_data/${productClass}_most_certain.csv"))
+
+			println(s"========== Most certain posts for $productClass ==========")
+			posts.foreach { case(document, prediction)=>
+				writer.write(document.title + "\n")
+				writer.write(document.text + "\n")
+				writer.write(s"=== product-prob: ${prediction.productProb}, demand-prob: ${prediction.demandProb}." + "\n")
+				writer.write("=====================================================================================\n\n")
+			}
+
+			writer.close()
+		}
 	}
 
 	def runClassifyPost() {
