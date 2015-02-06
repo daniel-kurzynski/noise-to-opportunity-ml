@@ -13,8 +13,9 @@ class NoneClassifier(classifier: weka.classifiers.Classifier) extends weka.class
 
 	override def distributionForInstance(instance: Instance): Array[Double] = {
 		val distribution = classifier.distributionForInstance(instance)
+		println(distribution.mkString(" "))
 		val (maxProb, maxIndex) = distribution.zipWithIndex.maxBy(_._1)
-		if(maxIndex!=noneIndex && maxProb<0.6){
+		if(maxIndex!=noneIndex && maxProb<0.5){
 			distribution.zipWithIndex.map{ case (prob, index) =>
 				if(index ==noneIndex) 1.0 else 0.0
 			}
