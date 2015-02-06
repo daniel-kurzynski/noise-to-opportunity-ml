@@ -20,9 +20,9 @@ jQuery(function() {
 			data: {
 				text: blogPost
 			},
-			// complete: function() {
-			// 	window.setTimeout(doPrediction, 2500)
-			// },
+			complete: function() {
+				window.setTimeout(doPrediction, 2500)
+			},
 			success: function (data) {
 				console.log(data);
 				var $productResults = $("#product-results");
