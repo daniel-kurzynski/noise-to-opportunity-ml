@@ -3696,5 +3696,245 @@
       "daniel": "no-demand",
       "dima": "no-demand"
     }
+  },
+  "g-150224-S-5922761976693415940": {
+    "demand": {
+      "stefan": "demand",
+      "dima": "demand"
+    },
+    "category": {
+      "stefan": "CRM",
+      "dima": "CRM"
+    }
+  },
+  "g-73825-S-5929980450599612416": {
+    "demand": {
+      "stefan": "demand",
+      "dima": "demand"
+    },
+    "category": {
+      "stefan": "ECOM",
+      "dima": "ECOM"
+    }
+  },
+  "g-73825-S-5893509315653816322": {
+    "demand": {
+      "stefan": "demand",
+      "dima": "demand"
+    },
+    "category": {
+      "stefan": "ECOM",
+      "dima": "ECOM"
+    }
+  },
+  "g-73825-S-5886912140421390336": {
+    "demand": {
+      "stefan": "demand",
+      "dima": "demand"
+    },
+    "category": {
+      "stefan": "ECOM",
+      "dima": "ECOM"
+    }
+  },
+  "g-73825-S-5916725045824073728": {
+    "demand": {
+      "stefan": "demand",
+      "dima": "demand"
+    },
+    "category": {
+      "stefan": "ECOM",
+      "dima": "ECOM"
+    }
+  },
+  "g-73825-S-232057035": {
+    "demand": {
+      "stefan": "demand",
+      "dima": "demand"
+    },
+    "category": {
+      "stefan": "ECOM",
+      "dima": "ECOM"
+    }
+  },
+  "g-73825-S-5879948817398259712": {
+    "demand": {
+      "stefan": "demand",
+      "dima": "demand"
+    },
+    "category": {
+      "stefan": "ECOM",
+      "dima": "ECOM"
+    }
+  },
+  "g-73825-S-5831079140098338817": {
+    "demand": {
+      "stefan": "demand",
+      "dima": "demand"
+    },
+    "category": {
+      "stefan": "ECOM",
+      "dima": "ECOM"
+    }
+  },
+  "g-73825-S-5824652236084506625": {
+    "demand": {
+      "stefan": "demand",
+      "dima": "demand"
+    },
+    "category": {
+      "stefan": "ECOM",
+      "dima": "ECOM"
+    }
+  },
+  "g-150224-S-276436137": {
+    "demand": {
+      "stefan": "demand",
+      "dima": "demand"
+    },
+    "category": {
+      "stefan": "CRM",
+      "dima": "CRM"
+    }
+  },
+  "g-130388-S-234616255": {
+    "demand": {
+      "stefan": "demand",
+      "dima": "demand"
+    },
+    "category": {
+      "stefan": "LVM",
+      "dima": "LVM"
+    }
+  },
+  "g-130388-S-217151779": {
+    "demand": {
+      "stefan": "demand",
+      "dima": "demand"
+    },
+    "category": {
+      "stefan": "LVM",
+      "dima": "LVM"
+    }
+  },
+  "g-150224-S-143969889": {
+    "demand": {
+      "stefan": "demand",
+      "dima": "demand"
+    },
+    "category": {
+      "stefan": "CRM",
+      "dima": "CRM"
+    }
+  },
+  "g-100358-S-5925155462143045635": {
+    "demand": {
+      "stefan": "demand",
+      "dima": "demand"
+    },
+    "category": {
+      "stefan": "ECOM",
+      "dima": "ECOM"
+    }
+  },
+  "g-62887-S-5905339157022023680": {
+    "demand": {
+      "stefan": "demand",
+      "dima": "demand"
+    },
+    "category": {
+      "stefan": "HCM",
+      "dima": "HCM"
+    }
+  },
+  "g-3120872-S-153135689": {
+    "demand": {
+      "stefan": "demand",
+      "dima": "demand"
+    },
+    "category": {
+      "stefan": "CRM",
+      "dima": "CRM"
+    }
+  },
+  "g-100358-S-5907788249631309826": {
+    "demand": {
+      "stefan": "demand",
+      "dima": "demand"
+    },
+    "category": {
+      "stefan": "CRM",
+      "dima": "CRM"
+    }
+  },
+  "g-100358-S-5905068431778021380": {
+    "demand": {
+      "stefan": "demand",
+      "dima": "demand"
+    },
+    "category": {
+      "stefan": "CRM",
+      "dima": "CRM"
+    }
+  },
+  "g-3803500-S-5904230260236374016": {
+    "demand": {
+      "stefan": "demand",
+      "dima": "demand"
+    },
+    "category": {
+      "stefan": "ECOM",
+      "dima": "ECOM"
+    }
+  },
+  "g-100358-S-5806718898548015104": {
+    "demand": {
+      "stefan": "demand",
+      "dima": "demand"
+    },
+    "category": {
+      "stefan": "HCM",
+      "dima": "HCM"
+    }
+  },
+  "g-3803500-S-5906625136353632260": {
+    "demand": {
+      "stefan": "demand",
+      "dima": "demand"
+    },
+    "category": {
+      "stefan": "ECOM",
+      "dima": "ECOM"
+    }
+  },
+  "g-3803500-S-5890541948292313088": {
+    "demand": {
+      "stefan": "demand",
+      "dima": "demand"
+    },
+    "category": {
+      "stefan": "ECOM",
+      "dima": "ECOM"
+    }
+  },
+  "g-3803500-S-5877799831610605570": {
+    "demand": {
+      "stefan": "demand",
+      "dima": "demand"
+    },
+    "category": {
+      "stefan": "ECOM",
+      "dima": "ECOM"
+    }
+  },
+  "g-4278743-S-5803641697560702979": {
+    "demand": {
+      "stefan": "demand",
+      "dima": "demand"
+    },
+    "category": {
+      "stefan": "HCM",
+      "dima": "HCM"
+    }
   }
 }

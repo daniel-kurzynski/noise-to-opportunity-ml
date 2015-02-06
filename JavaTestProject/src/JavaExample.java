@@ -1,9 +1,10 @@
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.blog_intelligence.nto.*;
 
-public class TryPostClassifier {
+public class JavaExample {
 
 	static DataBaseConfiguration CONFIG = new DataBaseConfiguration(
 			"141.89.225.134", 				// ip
@@ -19,7 +20,7 @@ public class TryPostClassifier {
 	public static void main(String[] args) {
 		NTOClassifier classifier;
 		if (DEMAND_MODEL_FILE.exists() && PRODUCT_MODEL_FILE.exists()) {
-			System.out.println("reading from model file");
+			System.out.print("Reading from model file");
 			long l1 = System.currentTimeMillis();
 			classifier = readFromModel();
 			long l2 = System.currentTimeMillis();
@@ -38,11 +39,13 @@ public class TryPostClassifier {
 		String post = "Hi! I am the CTO of Startup Inc. Lately, I have problems organising my customers. " +
 				"Do you have any recommendations for a good crm system to handle them?";
 
+		System.out.println(post);
+
 		double probDemand = classifier.predictDemand(post);
 		System.out.println("Demand probability " + probDemand);
 
-		List<NTOClassifier.Classification> probsProduct = classifier.predictProduct(post);
-		for (NTOClassifier.Classification classification : probsProduct) {
+		List<ProductClassification> probsProduct = classifier.predictProduct(post);
+		for (ProductClassification classification : probsProduct) {
 			System.out.println(classification.product() + ": " + classification.prob());
 		}
 	}
@@ -63,21 +66,29 @@ public class TryPostClassifier {
 		 */
 		DocumentExtractor documentExtractor = new DocumentExtractor();
 
-		ReadingResult documents = documentExtractor.readFromCSV(
-				new File("../JavaTestProject/linked_in_posts.csv"),
-				new File("../JavaTestProject/brochures.csv"),
-				new File("../JavaTestProject/classification.json"));
+		// Adapt files here if necessary.
+		ReadingResult csvDocs = documentExtractor.readFromCSV(
+				new File("linked_in_posts.csv"),
+				new File("brochures.csv"),
+				new File("classification.json"));
 
+		// Load documents from database. Can be used in the same way as csvDocs, or even combined with csvDocs.
 		// ReadingResult dbDocs = documentExtractor.readFromDB(CONFIG);
+		// Like this:
+		// List<Document> combined = new ArrayList<>();
+		// combined.addAll(csvDocs.demandDocuments());
+		// combined.addAll(dbDocs.demandDocuments());
 
 		/**
 		 * Building classifier
 		 */
 		NTOClassifier classifier = new NTOClassifier();
 
-		classifier.trainDemand(documents.demandDocuments());
-		classifier.trainProduct(documents.productDocuments());
+		// Training
+		classifier.trainDemand(csvDocs.demandDocuments());
+		classifier.trainProduct(csvDocs.productDocuments());
 
+		// Persisting for next run
 		classifier.persistDemand(DEMAND_MODEL_FILE);
 		classifier.persistProducts(PRODUCT_MODEL_FILE);
 
