@@ -50,7 +50,7 @@ object Main {
 			, "LVM"
 		).foreach { productClass =>
 			println(s"========== Most certain posts for $productClass ==========")
-			val posts = ntoClassifier.extractMostCertainPosts(5, productClass, allPosts)
+			val posts = ntoClassifier.extractMostCertainPosts(20, productClass, allPosts)
 			val writer = new FileWriter(new File(s"../n2o_data/most_certain/${productClass}_most_certain.csv"))
 
 			posts.foreach { case(document, prediction)=>
