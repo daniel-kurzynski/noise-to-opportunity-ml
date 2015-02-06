@@ -18,7 +18,7 @@ class ProductClassifier(
 		normalize: Boolean = true,
 		useNoneClassifier: Boolean = true,
 		useTheirClassification: Boolean = false
-	) {
+	) extends Serializable {
 	val PRINT_FEATURE_WORDS = false
 
 	val classifier = if (useNoneClassifier) new NoneClassifier(originalClassifier) else originalClassifier
