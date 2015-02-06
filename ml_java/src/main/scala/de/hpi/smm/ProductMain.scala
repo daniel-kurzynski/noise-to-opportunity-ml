@@ -28,6 +28,8 @@ object ProductMain {
 
 		if (dataReader != null) {
 
+			dataReader.INCLUDE_NONE = INCLUDE_NONE_POSTS
+
 			dataReader.readPostsLinewise { post =>
 				posts += post
 			}("category")
@@ -47,6 +49,7 @@ object ProductMain {
 	)
 	val binaryFeatures = List(false, true)
 	val normalize = List(false, true)
+	val INCLUDE_NONE_POSTS = true
 
 	def main(args: Array[String]): Unit = {
 		readData()
@@ -72,7 +75,7 @@ object ProductMain {
 					normalize.foreach { normalizeFeatures =>
 						println(f"Classifier: ${classifier.getClass}, GroupSize: $groupSize, binaryFeature: $useBinaryFeature, normalize: $normalizeFeatures")
 
-						val analyzer = new ProductClassifier(brochures, groupSize, classifier, useBinaryFeature, normalizeFeatures, true, !BUILD_RANDOM_BROCHURES)
+						val analyzer = new ProductClassifier(brochures, groupSize, classifier, useBinaryFeature, normalizeFeatures, INCLUDE_NONE_POSTS, !BUILD_RANDOM_BROCHURES)
 						analyzer.buildClassifier()
 
 						analyzer.printValidation(posts)

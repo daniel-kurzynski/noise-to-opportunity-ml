@@ -14,7 +14,7 @@ object DataReader {
 
 class DataReader(val postsFile: File, val brochuresFile: File, classificationFile: File) {
 
-	val INCLUDE_NONE = false
+	var INCLUDE_NONE = false
 
 	val classifiedPosts = JacksMapper.readValue[Map[String, Map[String, Map[String, String]]]](
 			new FileReader(classificationFile))

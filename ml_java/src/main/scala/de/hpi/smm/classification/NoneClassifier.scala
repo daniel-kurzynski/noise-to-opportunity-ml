@@ -13,10 +13,17 @@ class NoneClassifier(classifier: weka.classifiers.Classifier) extends AbstractCl
 		classifier.buildClassifier(data)
 	}
 
+	private def isNone(distribution: Array[Double]): Boolean = {
+		val noNoneDist = distribution.zipWithIndex.filter(_._2!=noneIndex).map(_._1).sortBy(-_)
+		val maxValue = noNoneDist.max
+		val minValue = noNoneDist.min
+		maxValue-minValue<1.0/noNoneDist.length || maxValue<0.3
+	}
+
 	override def distributionForInstance(instance: Instance): Array[Double] = {
 		val distribution = classifier.distributionForInstance(instance)
-		val (maxProb, maxIndex) = distribution.zipWithIndex.maxBy(_._1)
-		if(maxIndex != noneIndex && maxProb < 0.5) {
+//		println(distribution.mkString(" "))
+		if(isNone(distribution)) {
 			distribution.zipWithIndex.map { case (prob, index) =>
 				if(index == noneIndex) 1.0 else 0.0
 			}
