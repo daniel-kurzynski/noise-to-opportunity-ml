@@ -3,7 +3,7 @@ package de.hpi.smm
 import java.io.File
 import de.hpi.smm.Constants._
 import com.blog_intelligence.nto.Document
-import de.hpi.smm.classification.ProductClassifier
+import de.hpi.smm.classification.{TheirClassifier, ProductClassifier}
 import de.hpi.smm.data_reader.DataReader
 import de.hpi.smm.domain.Word
 import weka.classifiers.functions.{MultilayerPerceptron, SMO, Logistic}
@@ -41,9 +41,11 @@ object ProductMain {
 		new MultilayerPerceptron()
 		, new Logistic
 		, new SMO()
+		, new TheirClassifier
 	)
 	val binaryFeatures = List(false)
 	val normalize = List(false)
+	val BUILD_RANDOM_BROCHURES = false
 
 	def main(args: Array[String]): Unit = {
 		readData()
@@ -58,6 +60,28 @@ object ProductMain {
 			sentenceSet(docClass) ++= post.sentences
 		}
 
+		if (BUILD_RANDOM_BROCHURES)
+			buildRandomBrochures(sentenceSet)
+
+		println(s"Now we have ${posts.size} posts.")
+
+		groupSizes.foreach { groupSize =>
+			classifiers.foreach { classifier =>
+				binaryFeatures.foreach { useBinaryFeature =>
+					normalize.foreach { normalizeFeatures =>
+						println(f"GroupSize: $groupSize, Classifier: ${classifier.getClass}, binaryFeature: $useBinaryFeature, normalize: $normalizeFeatures")
+
+						val analyzer = new ProductClassifier(brochures, groupSize, classifier, useBinaryFeature, normalizeFeatures, false)
+						analyzer.buildClassifier()
+
+						analyzer.printValidation(posts)
+					}
+				}
+			}
+		}
+	}
+
+	def buildRandomBrochures(sentenceSet: mutable.Map[String, mutable.Set[Seq[Word]]]) {
 		val r = new Random(44)
 		val NUM_DOCS = 30
 		val NUM_SENTENCES = 2
@@ -69,23 +93,6 @@ object ProductMain {
 			for (i <- 1 to NUM_DOCS) {
 				val newSentences = r.shuffle(sentenceList).take(NUM_SENTENCES + (r.nextInt(4) + 1) / 4)
 				posts += Document(r.nextInt().toString, "", newSentences.flatten.mkString(" "), newSentences, docClass)
-			}
-		}
-
-		println(s"Now we have ${posts.size} posts.")
-
-		groupSizes.foreach { groupSize =>
-			classifiers.foreach { classifier =>
-				binaryFeatures.foreach { useBinaryFeature =>
-					normalize.foreach { normalizeFeatures =>
-						println(f"GroupSize: $groupSize, Classifier: ${classifier.getClass}, binaryFeature: $useBinaryFeature, normalize: $normalizeFeatures")
-
-						val analyzer = new ProductClassifier(brochures, groupSize, classifier, useBinaryFeature, normalizeFeatures)
-						analyzer.buildClassifier()
-
-						analyzer.printValidation(posts)
-					}
-				}
 			}
 		}
 	}
