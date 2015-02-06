@@ -1,6 +1,7 @@
 package com.blog_intelligence.nto;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 public class JavaExample {
@@ -12,6 +13,7 @@ public class JavaExample {
 			"Popcorn54",					// password
 			"SMA1415.CLASSIFIED_POSTS"		// database
 	);
+
 	static File DEMAND_MODEL_FILE = new File("demand.model");
 	static File PRODUCT_MODEL_FILE = new File("product.model");
 
@@ -62,21 +64,29 @@ public class JavaExample {
 		 */
 		DocumentExtractor documentExtractor = new DocumentExtractor();
 
-		ReadingResult documents = documentExtractor.readFromCSV(
+		// Adapt files here if necessary.
+		ReadingResult csvDocs = documentExtractor.readFromCSV(
 				new File("../n2o_data/linked_in_posts.csv"),
 				new File("../n2o_data/brochures.csv"),
 				new File("../n2o_data/classification_updates/latest.json"));
 
-		// ReadingResult dbDocs = documentExtractor.readFromDB(CONFIG);
+		// Load documents from database. Can be used in the same way as csvDocs, or even combined with csvDocs.
+		ReadingResult dbDocs = documentExtractor.readFromDB(CONFIG);
+		// Like this:
+		// List<Document> combined = new ArrayList<>();
+		// combined.addAll(csvDocs.demandDocuments());
+		// combined.addAll(dbDocs.demandDocuments());
 
 		/**
 		 * Building classifier
 		 */
 		NTOClassifier classifier = new NTOClassifier();
 
-		classifier.trainDemand(documents.demandDocuments());
-		classifier.trainProduct(documents.productDocuments());
+		// Training
+		classifier.trainDemand(csvDocs.demandDocuments());
+		classifier.trainProduct(csvDocs.productDocuments());
 
+		// Persisting for next run
 		classifier.persistDemand(DEMAND_MODEL_FILE);
 		classifier.persistProducts(PRODUCT_MODEL_FILE);
 
