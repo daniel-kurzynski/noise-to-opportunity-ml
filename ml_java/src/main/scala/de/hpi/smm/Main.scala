@@ -43,12 +43,16 @@ object Main {
 		val allPosts = mutable.ArrayBuffer[Document]()
 		ntoClassifier.dataReader.readPostsLinewise{post => allPosts += post}("category", all = true)
 
-		List("CRM", "ECOM", "HCM", "LVM").foreach { productClass =>
+		List(
+			"CRM"
+			 , "ECOM"
+			, "HCM"
+			, "LVM"
+		).foreach { productClass =>
+			println(s"========== Most certain posts for $productClass ==========")
 			val posts = ntoClassifier.extractMostCertainPosts(5, productClass, allPosts)
-
 			val writer = new FileWriter(new File(s"../n2o_data/most_certain/${productClass}_most_certain.csv"))
 
-			println(s"========== Most certain posts for $productClass ==========")
 			posts.foreach { case(document, prediction)=>
 				writer.write(document.title + "\n")
 				writer.write(document.text + "\n")
