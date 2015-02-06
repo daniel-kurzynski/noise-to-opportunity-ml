@@ -45,7 +45,7 @@ object Main {
 
 		List(
 			"CRM"
-			 , "ECOM"
+			, "ECOM"
 			, "HCM"
 			, "LVM"
 		).foreach { productClass =>
