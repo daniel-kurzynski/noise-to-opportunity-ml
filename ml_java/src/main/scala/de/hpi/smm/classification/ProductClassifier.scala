@@ -12,10 +12,12 @@ import scala.collection.mutable
 class ProductClassifier(
 		originalBrochures: Seq[Document],
 		groupSize: Int = 6,
-		classifier: Classifier = new MultilayerPerceptron(),
+		originalClassifier: Classifier = new MultilayerPerceptron(),
 		binaryFeatures: Boolean = false,
 		normalize: Boolean=false
 	) {
+
+	val classifier = new NoneClassifier(originalClassifier)
 
 	var wordCountWithTfIdf = mutable.Map[String, mutable.Map[String, Double]]()
 

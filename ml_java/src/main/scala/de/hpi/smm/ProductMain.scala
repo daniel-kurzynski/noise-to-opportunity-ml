@@ -42,8 +42,8 @@ object ProductMain {
 		, new Logistic
 		, new SMO()
 	)
-	val binaryFeatures = List(false,true)
-	val normalize = List(false,true)
+	val binaryFeatures = List(false)
+	val normalize = List(false)
 
 	def main(args: Array[String]): Unit = {
 		readData()
