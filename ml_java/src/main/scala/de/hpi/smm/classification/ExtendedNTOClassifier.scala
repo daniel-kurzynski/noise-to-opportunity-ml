@@ -1,6 +1,5 @@
 package de.hpi.smm.classification
 
-
 import com.blog_intelligence.nto.{Document, NTOClassifier}
 import de.hpi.smm.data_reader.DataReader
 import scala.collection.mutable

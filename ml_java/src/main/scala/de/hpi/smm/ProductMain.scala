@@ -1,20 +1,14 @@
 package de.hpi.smm
 
-import java.io.{FileWriter, File}
-import java.util.Random
+import java.io.File
 import de.hpi.smm.Constants._
 import com.blog_intelligence.nto.Document
 import de.hpi.smm.classification.ProductClassifier
 import de.hpi.smm.data_reader.DataReader
-import weka.classifiers.`lazy`.IBk
-import weka.classifiers.bayes.{NaiveBayesMultinomial, NaiveBayes}
-import weka.classifiers.evaluation.output.prediction.PlainText
-import weka.classifiers.functions.{MultilayerPerceptron, SMO, Logistic, VotedPerceptron}
-import weka.classifiers.{Classifier, Evaluation}
-import weka.classifiers.trees.J48
-import weka.core.{Utils, DenseInstance, Attribute, Instances}
+import de.hpi.smm.domain.Word
+import weka.classifiers.functions.{MultilayerPerceptron, SMO, Logistic}
 import scala.collection.mutable
-import scala.collection.JavaConverters._
+import scala.util.Random
 
 object ProductMain {
 
@@ -54,17 +48,42 @@ object ProductMain {
 	def main(args: Array[String]): Unit = {
 		readData()
 
+		val sentenceSet = mutable.Map[String, mutable.Set[Seq[Word]]]()
+
+		posts.foreach { post =>
+			val docClass = post.documentClass
+			if (!sentenceSet.contains(docClass)) {
+				sentenceSet(docClass) = mutable.Set[Seq[Word]]()
+			}
+			sentenceSet(docClass) ++= post.sentences
+		}
+
+		val r = new Random(44)
+		val NUM_DOCS = 30
+		val NUM_SENTENCES = 2
+
+		posts.clear()
+		sentenceSet.foreach { case (docClass, sentences) =>
+			println(s"$docClass ${sentences.size} ${sentences.flatten.size}")
+			val sentenceList = sentences.toList
+			for (i <- 1 to NUM_DOCS) {
+				val newSentences = r.shuffle(sentenceList).take(NUM_SENTENCES + (r.nextInt(4) + 1) / 4)
+				posts += Document(r.nextInt().toString, "", newSentences.flatten.mkString(" "), newSentences, docClass)
+			}
+		}
+
+		println(s"Now we have ${posts.size} posts.")
+
 		groupSizes.foreach { groupSize =>
 			classifiers.foreach { classifier =>
 				binaryFeatures.foreach { useBinaryFeature =>
 					normalize.foreach { normalizeFeatures =>
-						println(f"groupSize:$groupSize, classifier:${classifier.getClass},binaryFeature:$useBinaryFeature,normalize:$normalizeFeatures")
+						println(f"GroupSize: $groupSize, Classifier: ${classifier.getClass}, binaryFeature: $useBinaryFeature, normalize: $normalizeFeatures")
 
-						val analyzer = new ProductClassifier(brochures.toList,groupSize,classifier,useBinaryFeature,normalizeFeatures)
-						analyzer.buildTrainInstances()
+						val analyzer = new ProductClassifier(brochures, groupSize, classifier, useBinaryFeature, normalizeFeatures)
 						analyzer.buildClassifier()
 
-						analyzer.printValidation(posts.toList)
+						analyzer.printValidation(posts)
 					}
 				}
 			}
