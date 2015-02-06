@@ -3,7 +3,7 @@ package de.hpi.smm.classification
 import com.blog_intelligence.nto.{Document, ProductClassification, RawDocument}
 import de.hpi.smm.data_reader.DataReader
 import de.hpi.smm.nlp.NLP
-import weka.classifiers.functions.MultilayerPerceptron
+import weka.classifiers.functions.{Logistic, MultilayerPerceptron}
 import weka.classifiers.{Classifier, Evaluation}
 import weka.core.{Attribute, DenseInstance, Instances, Utils}
 
@@ -13,7 +13,7 @@ import scala.collection.mutable
 class ProductClassifier(
 		originalBrochures: Seq[Document],
 		groupSize: Int = 6,
-		originalClassifier: Classifier = new MultilayerPerceptron(),
+		originalClassifier: Classifier = new Logistic(),
 		binaryFeatures: Boolean = false,
 		normalize: Boolean = false,
         useNoneClassifier: Boolean = true

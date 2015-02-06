@@ -34,14 +34,14 @@ class ExtendedNTOClassifier(val dataReader: DataReader) extends NTOClassifier{
 		}
 
 
-		def harmonicMean(prediction: FullPrediction): Double = {
-			(2 * prediction.demandProb * prediction.productProb) / (prediction.demandProb + prediction.productProb)
+		def harmonicMean(prediction: FullPrediction, measure: Double = 1): Double = {
+			((1 + math.pow(measure, 2)) * prediction.demandProb * prediction.productProb) / (math.pow(measure, 2) * prediction.demandProb + prediction.productProb)
 		}
 
 		predictions.toList
 			.filter {case (doc, prediction) => prediction.productClass == productClass}
-			.filter {case (doc, prediction) => harmonicMean(prediction) > 0.6}
-			.sortBy {case (doc, prediction) => -harmonicMean(prediction)}
+			.filter {case (doc, prediction) => harmonicMean(prediction, 2) > 0.6}
+			.sortBy {case (doc, prediction) => -harmonicMean(prediction, 2)}
 			.take(num)
 	}
 
