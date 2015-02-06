@@ -171,14 +171,4 @@ class ProductClassifier(
 			ProductClassification(className,probability)
 		}.toList
 	}
-
-
-	def distributionForInstance(doc: Document): Array[Double] = {
-		val instance = new DenseInstance(1.0, constructFeatureValues(doc))
-		val dummyInstances = new Instances("bla", featureAttributes, featureAttributes.size())
-		dummyInstances.setClassIndex(featureAttributes.size() - 1)
-		instance.setDataset(dummyInstances)
-		classifier.distributionForInstance(instance)
-	}
-
 }

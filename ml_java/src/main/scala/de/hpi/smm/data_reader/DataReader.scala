@@ -10,7 +10,7 @@ import de.hpi.smm.nlp.NLP
 class DataReader(val postsFile: File, val brochuresFile: File, classificationFile: File) {
 
 	val classifiedPosts = JacksMapper.readValue[Map[String, Map[String, Map[String, String]]]](
-		new FileReader(classificationFile))
+			new FileReader(classificationFile))
 
 	def readBrochuresLinewise(languages: List[String] = List("de", "en"))(extractor: Document => Unit): Unit = {
 		val reader = new CSVReader(new FileReader(brochuresFile))

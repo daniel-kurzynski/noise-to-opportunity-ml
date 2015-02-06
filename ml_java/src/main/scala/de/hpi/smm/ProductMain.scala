@@ -48,8 +48,8 @@ object ProductMain {
 		, new Logistic
 		, new SMO()
 	)
-	val binaryFeatures = List(false)
-	val normalize = List(false)
+	val binaryFeatures = List(false,true)
+	val normalize = List(false,true)
 
 	def main(args: Array[String]): Unit = {
 		readData()
@@ -61,7 +61,6 @@ object ProductMain {
 						println(f"groupSize:$groupSize, classifier:${classifier.getClass},binaryFeature:$useBinaryFeature,normalize:$normalizeFeatures")
 
 						val analyzer = new ProductClassifier(brochures, groupSize, classifier, useBinaryFeature, normalizeFeatures)
-						analyzer.buildTrainInstances()
 						analyzer.buildClassifier()
 
 						analyzer.printValidation(posts)
