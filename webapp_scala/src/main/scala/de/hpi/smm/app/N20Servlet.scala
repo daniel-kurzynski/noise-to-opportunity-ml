@@ -11,7 +11,7 @@ case class Prediction(percentage: Int, text: String)
 class N20Servlet extends N20DemoStack with JacksonJsonSupport {
 	protected implicit val jsonFormats: Formats = DefaultFormats
 
-	import ClassificationPreparation.postClassifier
+	import ClassificationPreparation.ntoClassifier
 
 	get("/") {
 		contentType = "text/html"
@@ -22,8 +22,8 @@ class N20Servlet extends N20DemoStack with JacksonJsonSupport {
 	get("/predictions") {
 		val text = params("text")
 		try {
-			val demandClassification  = postClassifier.classifyDemand(text)
-			val productClassification = postClassifier.classifyProduct(text)
+			val demandClassification  = ntoClassifier.predictDemandExtendedOutput(text)
+			val productClassification = ntoClassifier.predictProduct(text)
 			contentType = formats("json")
 			Ok(Map(
 				"demand" -> demandClassification,

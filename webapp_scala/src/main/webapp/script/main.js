@@ -24,6 +24,7 @@ jQuery(function() {
 			// 	window.setTimeout(doPrediction, 2500)
 			// },
 			success: function (data) {
+				console.log(data);
 				var $productResults = $("#product-results");
 				var $demandResults  = $("#demand-results");
 				$productResults.empty();
