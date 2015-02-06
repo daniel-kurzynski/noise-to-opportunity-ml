@@ -43,8 +43,8 @@ object ProductMain {
 		, new SMO()
 		, new TheirClassifier
 	)
-	val binaryFeatures = List(false)
-	val normalize = List(false)
+	val binaryFeatures = List(false, true)
+	val normalize = List(false, true)
 	val BUILD_RANDOM_BROCHURES = false
 
 	def main(args: Array[String]): Unit = {
@@ -69,7 +69,7 @@ object ProductMain {
 			classifiers.foreach { classifier =>
 				binaryFeatures.foreach { useBinaryFeature =>
 					normalize.foreach { normalizeFeatures =>
-						println(f"GroupSize: $groupSize, Classifier: ${classifier.getClass}, binaryFeature: $useBinaryFeature, normalize: $normalizeFeatures")
+						println(f"Classifier: ${classifier.getClass}, GroupSize: $groupSize, binaryFeature: $useBinaryFeature, normalize: $normalizeFeatures")
 
 						val analyzer = new ProductClassifier(brochures, groupSize, classifier, useBinaryFeature, normalizeFeatures, false)
 						analyzer.buildClassifier()
