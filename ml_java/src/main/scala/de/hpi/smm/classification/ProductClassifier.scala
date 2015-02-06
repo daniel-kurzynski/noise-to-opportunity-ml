@@ -16,7 +16,8 @@ class ProductClassifier(
 		originalClassifier: Classifier = new MultilayerPerceptron(),
 		binaryFeatures: Boolean = false,
 		normalize: Boolean = false,
-        useNoneClassifier: Boolean = true
+    useNoneClassifier: Boolean = true,
+		useTheirClassification: Boolean = false
 	) {
 	val PRINT_FEATURE_WORDS = false
 
@@ -139,9 +140,14 @@ class ProductClassifier(
 		testInstances.setClassIndex(featureAttributes.size() - 1)
 		posts.foreach { doc =>
 			val features = constructFeatureValues(doc)
-			val theirClassification = DataReader.theirClassifications(doc.id)
-			if (theirClassification.size >= 3)
-				testInstances.add(new CustomTheirInstance(1.0, normalize(features), theirClassification))
+			if(useTheirClassification){
+				val theirClassification = DataReader.theirClassifications(doc.id)
+				if (theirClassification.size >= 3)
+					testInstances.add(new CustomTheirInstance(1.0, normalize(features), theirClassification))
+			}
+			else{
+				testInstances.add(new DenseInstance(1.0, normalize(features)))
+			}
 		}
 		testInstances
 	}

@@ -41,11 +41,11 @@ object ProductMain {
 		new MultilayerPerceptron()
 		, new Logistic
 		, new SMO()
-		, new TheirClassifier
+//		, new TheirClassifier
 	)
 	val binaryFeatures = List(false, true)
 	val normalize = List(false, true)
-	val BUILD_RANDOM_BROCHURES = false
+	val BUILD_RANDOM_BROCHURES = true
 
 	def main(args: Array[String]): Unit = {
 		readData()
@@ -71,7 +71,7 @@ object ProductMain {
 					normalize.foreach { normalizeFeatures =>
 						println(f"Classifier: ${classifier.getClass}, GroupSize: $groupSize, binaryFeature: $useBinaryFeature, normalize: $normalizeFeatures")
 
-						val analyzer = new ProductClassifier(brochures, groupSize, classifier, useBinaryFeature, normalizeFeatures, false)
+						val analyzer = new ProductClassifier(brochures, groupSize, classifier, useBinaryFeature, normalizeFeatures, false, !BUILD_RANDOM_BROCHURES)
 						analyzer.buildClassifier()
 
 						analyzer.printValidation(posts)
