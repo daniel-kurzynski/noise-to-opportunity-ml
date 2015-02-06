@@ -3,7 +3,7 @@ package de.hpi.smm.classification
 import com.blog_intelligence.nto.{Document, ProductClassification, RawDocument}
 import de.hpi.smm.data_reader.DataReader
 import de.hpi.smm.nlp.NLP
-import weka.classifiers.functions.MultilayerPerceptron
+import weka.classifiers.functions.{Logistic, MultilayerPerceptron}
 import weka.classifiers.{Classifier, Evaluation}
 import weka.core.{Attribute, DenseInstance, Instances, Utils}
 
@@ -13,10 +13,10 @@ import scala.collection.mutable
 class ProductClassifier(
 		originalBrochures: Seq[Document],
 		groupSize: Int = 6,
-		originalClassifier: Classifier = new MultilayerPerceptron(),
-		binaryFeatures: Boolean = false,
-		normalize: Boolean = false,
-    useNoneClassifier: Boolean = true,
+		originalClassifier: Classifier = new Logistic(),
+		binaryFeatures: Boolean = true,
+		normalize: Boolean = true,
+		useNoneClassifier: Boolean = true,
 		useTheirClassification: Boolean = false
 	) {
 	val PRINT_FEATURE_WORDS = false
@@ -163,7 +163,7 @@ class ProductClassifier(
 		val evaluation = validate(posts)
 		println(evaluation.pctCorrect())
 //		println(evaluation.toSummaryString(f"%nResults%n======%n", false))
-		println(evaluation.toMatrixString)
+//		println(evaluation.toMatrixString)
 	}
 
 	def predict(text: String): List[ProductClassification] = {
