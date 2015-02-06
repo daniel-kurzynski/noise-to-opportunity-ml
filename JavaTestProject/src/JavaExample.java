@@ -2,7 +2,12 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import breeze.signal.OptOverhang;
 import com.blog_intelligence.nto.*;
+import de.hpi.smm.classification.ExtendedNTOClassifier;
+import de.hpi.smm.classification.ExtendedNTOClassifier.FullPrediction;
+import de.hpi.smm.classification.ExtendedNTOClassifierBuilder;
+import scala.Tuple2;
 
 public class JavaExample {
 
@@ -17,7 +22,7 @@ public class JavaExample {
 	static File DEMAND_MODEL_FILE = new File("demand.model");
 	static File PRODUCT_MODEL_FILE = new File("product.model");
 
-	public static void main(String[] args) {
+	private static void predictSingleDoc(){
 		NTOClassifier classifier;
 		if (DEMAND_MODEL_FILE.exists() && PRODUCT_MODEL_FILE.exists()) {
 			System.out.print("Reading from model file");
@@ -48,6 +53,60 @@ public class JavaExample {
 		for (ProductClassification classification : probsProduct) {
 			System.out.println(classification.product() + ": " + classification.prob());
 		}
+	}
+
+	public static void predictMultipleDocs() {
+		/**
+		 * Building classifier
+		 */
+		ExtendedNTOClassifier classifier = ExtendedNTOClassifierBuilder.build(
+				new File("classification.json"),
+				new File("brochures.csv"),
+				new File("linked_in_posts.csv"));
+
+
+		/**
+		 * Fill posts
+		 */
+		List<String> posts = new ArrayList<>();
+		posts.add("Hi! I am the CTO of Startup Inc. Lately, I have problems organising my customers. " +
+				"Do you have any recommendations for a good crm system to handle them?");
+
+		posts.add("Hi! I am the CTO of Startup Inc. Lately, I have problems reach my customers. " +
+				"Do you have any recommendations for a commerce software?");
+
+		posts.add("Hi! I am the CTO of Startup Inc. Lately, I have problems virtual resources. " +
+				"Do you have any recommendations for a good virtualization software?");
+
+		posts.add("Hi! I am the CTO of Startup Inc. Lately, I have problems organising my employees. " +
+				"Do you have any recommendations for a good HR software?");
+
+		/**
+		 * Predict for each class the most certain
+		 */
+		for(String productClass: new String[] {"CRM", "ECOM", "HCM", "LVM"}){
+			List<Tuple2<String, FullPrediction>> classifications = classifier.extractMostCertainPosts(
+					3,				// top most
+					productClass, 	// for this class
+					posts);			// from these posts
+
+			System.out.println("best posts for " + productClass);
+			for(Tuple2<String, FullPrediction> classification: classifications){
+				System.out.println("Text: " + classification._1());
+				System.out.println("Demand prob: " + classification._2().demandProb());
+				System.out.println("Product prob: " + classification._2().productProb());
+				System.out.println("===================================");
+			}
+		}
+
+
+	}
+
+	public static void main(String[] args) {
+
+//		predictSingleDoc();
+		predictMultipleDocs();
+
 	}
 
 	public static NTOClassifier readFromModel() {
