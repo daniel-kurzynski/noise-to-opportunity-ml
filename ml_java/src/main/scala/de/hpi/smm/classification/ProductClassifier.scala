@@ -14,9 +14,9 @@ class ProductClassifier(
 		originalBrochures: Seq[Document],
 		groupSize: Int = 6,
 		originalClassifier: Classifier = new Logistic(),
-		binaryFeatures: Boolean = false,
-		normalize: Boolean = false,
-    useNoneClassifier: Boolean = true,
+		binaryFeatures: Boolean = true,
+		normalize: Boolean = true,
+		useNoneClassifier: Boolean = true,
 		useTheirClassification: Boolean = false
 	) {
 	val PRINT_FEATURE_WORDS = false
@@ -163,7 +163,7 @@ class ProductClassifier(
 		val evaluation = validate(posts)
 		println(evaluation.pctCorrect())
 //		println(evaluation.toSummaryString(f"%nResults%n======%n", false))
-		println(evaluation.toMatrixString)
+//		println(evaluation.toMatrixString)
 	}
 
 	def predict(text: String): List[ProductClassification] = {
