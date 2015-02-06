@@ -60,11 +60,11 @@ object ProductMain {
 					normalize.foreach { normalizeFeatures =>
 						println(f"groupSize:$groupSize, classifier:${classifier.getClass},binaryFeature:$useBinaryFeature,normalize:$normalizeFeatures")
 
-						val analyzer = new ProductClassifier(brochures.reverse.toList, groupSize, classifier, useBinaryFeature, normalizeFeatures)
+						val analyzer = new ProductClassifier(brochures, groupSize, classifier, useBinaryFeature, normalizeFeatures)
 						analyzer.buildTrainInstances()
 						analyzer.buildClassifier()
 
-						analyzer.printValidation(posts.toList)
+						analyzer.printValidation(posts)
 					}
 				}
 			}

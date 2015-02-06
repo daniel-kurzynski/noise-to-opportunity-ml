@@ -10,7 +10,7 @@ import scala.collection.JavaConverters._
 import scala.collection.mutable
 
 class ProductClassifier(
-		originalBrochures: List[Document],
+		originalBrochures: Seq[Document],
 		groupSize: Int = 6,
 		classifier: Classifier = new MultilayerPerceptron(),
 		binaryFeatures: Boolean = false,
@@ -129,7 +129,7 @@ class ProductClassifier(
 		classifier.buildClassifier(trainInstances)
 	}
 
-	private def buildTestInstances(posts:List[Document]): Instances = {
+	private def buildTestInstances(posts: Seq[Document]): Instances = {
 		val testInstances = new Instances("test", featureAttributes, featureAttributes.size())
 		testInstances.setClassIndex(featureAttributes.size() - 1)
 		posts.foreach { doc =>
@@ -139,14 +139,14 @@ class ProductClassifier(
 		testInstances
 	}
 
-	def validate(posts: List[Document]): Evaluation = {
+	def validate(posts: Seq[Document]): Evaluation = {
 		val testInstances = buildTestInstances(posts)
 		val evaluation = new Evaluation(testInstances)
 		evaluation.evaluateModel(classifier, testInstances)
 		evaluation
 	}
 
-	def printValidation(posts: List[Document]): Unit = {
+	def printValidation(posts: Seq[Document]): Unit = {
 		val evaluation = validate(posts)
 		println(evaluation.toSummaryString(f"%nResults%n======%n", false))
 		println(evaluation.toMatrixString)
