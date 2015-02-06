@@ -39,7 +39,7 @@ class DataReader(val postsFile: File, val brochuresFile: File, classificationFil
 		reader.close()
 	}
 
-	def readPostsLinewise(extractor: Document => Unit)(className: String = "demand", count: Int = Int.MaxValue): Unit = {
+	def readPostsLinewise(extractor: Document => Unit)(className: String = "demand", count: Int = Int.MaxValue, all: Boolean = false): Unit = {
 		val reader = new CSVReader(new FileReader(postsFile))
 
 		var postCount: Int = 1
@@ -51,8 +51,7 @@ class DataReader(val postsFile: File, val brochuresFile: File, classificationFil
 
 			val rawPost = RawDocument(id, title, text, classifiedPosts.get(id).orNull)
 
-			val isClassifiedPost = classifiedPosts.contains(id)
-			if (isClassifiedPost) {
+			if (all || classifiedPosts.contains(id)) {
 				val sentences = NLP.detectSentences(rawPost)
 				val post = Document(id, title, text, sentences, rawPost.extract(className))
 				if(post.documentClass != "None"){
