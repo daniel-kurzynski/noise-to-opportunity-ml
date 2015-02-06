@@ -13,6 +13,7 @@ class TheirClassifier extends AbstractClassifier {
 
 	override def classifyInstance(data: Instance): Double = {
 		val theirClassification = data.asInstanceOf[CustomTheirInstance].theirClassification
-		instances.classAttribute().indexOfValue(theirClassification)
+		val result = instances.classAttribute().indexOfValue(theirClassification)
+		result
 	}
 }

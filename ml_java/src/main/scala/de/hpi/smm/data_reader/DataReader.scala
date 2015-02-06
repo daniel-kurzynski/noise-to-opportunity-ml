@@ -14,6 +14,8 @@ object DataReader {
 
 class DataReader(val postsFile: File, val brochuresFile: File, classificationFile: File) {
 
+	val INCLUDE_NONE = false
+
 	val classifiedPosts = JacksMapper.readValue[Map[String, Map[String, Map[String, String]]]](
 			new FileReader(classificationFile))
 
@@ -62,10 +64,10 @@ class DataReader(val postsFile: File, val brochuresFile: File, classificationFil
 			if (all || classifiedPosts.contains(id)) {
 				val sentences = NLP.detectSentences(rawPost)
 				val post = Document(id, title, text, sentences, rawPost.extract(className))
-//				if(post.documentClass != "None"){
+				if (INCLUDE_NONE || post.documentClass != "None") {
 					postCount += 1
 					extractor(post)
-//				}
+				}
 			}
 			line = reader.readNext()
 		}

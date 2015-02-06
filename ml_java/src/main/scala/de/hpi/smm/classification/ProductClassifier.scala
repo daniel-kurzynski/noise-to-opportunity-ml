@@ -15,10 +15,11 @@ class ProductClassifier(
 		groupSize: Int = 6,
 		originalClassifier: Classifier = new MultilayerPerceptron(),
 		binaryFeatures: Boolean = false,
-		normalize: Boolean=false
+		normalize: Boolean = false,
+        useNoneClassifier: Boolean = true
 	) {
 
-	val classifier = new NoneClassifier(originalClassifier)
+	val classifier = if (useNoneClassifier) new NoneClassifier(originalClassifier) else originalClassifier
 
 	var wordCountWithTfIdf = mutable.Map[String, mutable.Map[String, Double]]()
 
@@ -35,7 +36,7 @@ class ProductClassifier(
 		val documentCount = mutable.Map[String, Int]().withDefaultValue(0)
 		var N = 0
 
-		println(s"Brochure size before ${brochures.size}")
+//		println(s"Brochure size before ${brochures.size}")
 		brochures = brochures.flatMap { doc =>
 			var i = 0
 			doc.sentences.grouped(groupSize).map { sentences =>
@@ -43,7 +44,7 @@ class ProductClassifier(
 				Document(s"${doc.id}-$i", "", sentences.mkString(" "), sentences, doc.documentClass)
 			}
 		}
-		println(s"Brochure size after ${brochures.size}")
+//		println(s"Brochure size after ${brochures.size}")
 		brochures.foreach { doc =>
 			val docClass = doc.documentClass
 
@@ -137,7 +138,9 @@ class ProductClassifier(
 		testInstances.setClassIndex(featureAttributes.size() - 1)
 		posts.foreach { doc =>
 			val features = constructFeatureValues(doc)
-			testInstances.add(new CustomTheirInstance(1.0, normalize(features), DataReader.theirClassifications(doc.id)))
+			val theirClassification = DataReader.theirClassifications(doc.id)
+			if (theirClassification.size >= 3)
+				testInstances.add(new CustomTheirInstance(1.0, normalize(features), theirClassification))
 		}
 		testInstances
 	}

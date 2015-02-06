@@ -38,10 +38,10 @@ object ProductMain {
 
 	val groupSizes  = List(6)
 	val classifiers = List(
-//		new MultilayerPerceptron()
-//		, new Logistic
-//		, new SMO()
-		new TheirClassifier
+		new MultilayerPerceptron()
+		, new Logistic
+		, new SMO()
+		, new TheirClassifier
 	)
 	val binaryFeatures = List(false)
 	val normalize = List(false)
@@ -71,7 +71,7 @@ object ProductMain {
 					normalize.foreach { normalizeFeatures =>
 						println(f"GroupSize: $groupSize, Classifier: ${classifier.getClass}, binaryFeature: $useBinaryFeature, normalize: $normalizeFeatures")
 
-						val analyzer = new ProductClassifier(brochures, groupSize, classifier, useBinaryFeature, normalizeFeatures)
+						val analyzer = new ProductClassifier(brochures, groupSize, classifier, useBinaryFeature, normalizeFeatures, false)
 						analyzer.buildClassifier()
 
 						analyzer.printValidation(posts)
