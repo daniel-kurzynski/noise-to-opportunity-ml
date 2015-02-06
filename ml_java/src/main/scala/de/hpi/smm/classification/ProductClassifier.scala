@@ -16,8 +16,10 @@ class ProductClassifier(
 		originalClassifier: Classifier = new Logistic(),
 		binaryFeatures: Boolean = false,
 		normalize: Boolean = false,
-        useNoneClassifier: Boolean = true
+    useNoneClassifier: Boolean = true,
+		useTheirClassification: Boolean = false
 	) {
+	val PRINT_FEATURE_WORDS = false
 
 	val classifier = if (useNoneClassifier) new NoneClassifier(originalClassifier) else originalClassifier
 
@@ -67,11 +69,11 @@ class ProductClassifier(
 		}
 
 		featureWords = determineFeatures(wordCountWithTfIdf).zipWithIndex.toMap
-		println(featureWords)
+		if (PRINT_FEATURE_WORDS)
+			println(featureWords)
 		val classes = new java.util.ArrayList[String](wordCountWithTfIdf.keySet.asJava)
 		classes.add("None")
 		classAttr = new Attribute("@@class@@", classes)
-		println(classAttr)
 
 		featureAttributes = new java.util.ArrayList[Attribute](featureWords.keys.map(new Attribute(_)).asJavaCollection)
 		featureAttributes.add(classAttr)
@@ -138,9 +140,14 @@ class ProductClassifier(
 		testInstances.setClassIndex(featureAttributes.size() - 1)
 		posts.foreach { doc =>
 			val features = constructFeatureValues(doc)
-			val theirClassification = DataReader.theirClassifications(doc.id)
-			if (theirClassification.size >= 3)
-				testInstances.add(new CustomTheirInstance(1.0, normalize(features), theirClassification))
+			if(useTheirClassification){
+				val theirClassification = DataReader.theirClassifications(doc.id)
+				if (theirClassification.size >= 3)
+					testInstances.add(new CustomTheirInstance(1.0, normalize(features), theirClassification))
+			}
+			else{
+				testInstances.add(new DenseInstance(1.0, normalize(features)))
+			}
 		}
 		testInstances
 	}
@@ -154,7 +161,8 @@ class ProductClassifier(
 
 	def printValidation(posts: Seq[Document]): Unit = {
 		val evaluation = validate(posts)
-		println(evaluation.toSummaryString(f"%nResults%n======%n", false))
+		println(evaluation.pctCorrect())
+//		println(evaluation.toSummaryString(f"%nResults%n======%n", false))
 		println(evaluation.toMatrixString)
 	}
 

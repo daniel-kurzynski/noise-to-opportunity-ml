@@ -12,6 +12,8 @@ import scala.util.Random
 
 object ProductMain {
 
+	val BUILD_RANDOM_BROCHURES = true
+
 	val dataReader = new DataReader(
 		new File("../n2o_data/linked_in_posts.csv"),
 		new File("../n2o_data/brochures.csv"),
@@ -41,11 +43,10 @@ object ProductMain {
 		new MultilayerPerceptron()
 		, new Logistic
 		, new SMO()
-		, new TheirClassifier
+//		, new TheirClassifier
 	)
-	val binaryFeatures = List(false)
-	val normalize = List(false)
-	val BUILD_RANDOM_BROCHURES = false
+	val binaryFeatures = List(false, true)
+	val normalize = List(false, true)
 
 	def main(args: Array[String]): Unit = {
 		readData()
@@ -69,9 +70,9 @@ object ProductMain {
 			classifiers.foreach { classifier =>
 				binaryFeatures.foreach { useBinaryFeature =>
 					normalize.foreach { normalizeFeatures =>
-						println(f"GroupSize: $groupSize, Classifier: ${classifier.getClass}, binaryFeature: $useBinaryFeature, normalize: $normalizeFeatures")
+						println(f"Classifier: ${classifier.getClass}, GroupSize: $groupSize, binaryFeature: $useBinaryFeature, normalize: $normalizeFeatures")
 
-						val analyzer = new ProductClassifier(brochures, groupSize, classifier, useBinaryFeature, normalizeFeatures, false)
+						val analyzer = new ProductClassifier(brochures, groupSize, classifier, useBinaryFeature, normalizeFeatures, true, !BUILD_RANDOM_BROCHURES)
 						analyzer.buildClassifier()
 
 						analyzer.printValidation(posts)

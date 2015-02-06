@@ -7,7 +7,7 @@ import scala.collection.mutable
 case class ClassificationOutput(prob: Double, relevantFeatures: Array[Array[Any]] = Array())
 case class ExtendedClassification(cls: String, classificationOutput: ClassificationOutput)
 
-class ExtendedNTOClassifier(val dataReader: DataReader) extends NTOClassifier{
+class ExtendedNTOClassifier(val dataReader: DataReader) extends NTOClassifier {
 
 	def validate():Unit = {
 		val demandEvaluation = demandClassifier.crossValidate()
