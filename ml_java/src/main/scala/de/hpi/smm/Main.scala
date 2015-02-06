@@ -54,8 +54,7 @@ object Main {
 			val writer = new FileWriter(new File(s"../n2o_data/most_certain/${productClass}_most_certain.csv"))
 
 			posts.foreach { case(document, prediction)=>
-				writer.write(document.title + "\n")
-				writer.write(document.text + "\n")
+				writer.write(document + "\n")
 				writer.write(s"=== product-prob: ${prediction.productProb}, demand-prob: ${prediction.demandProb}." + "\n")
 				writer.write("=====================================================================================\n\n")
 			}
