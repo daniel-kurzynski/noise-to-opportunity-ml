@@ -12,6 +12,8 @@ import scala.util.Random
 
 object ProductMain {
 
+	val BUILD_RANDOM_BROCHURES = true
+
 	val dataReader = new DataReader(
 		new File("../n2o_data/linked_in_posts.csv"),
 		new File("../n2o_data/brochures.csv"),
@@ -45,7 +47,6 @@ object ProductMain {
 	)
 	val binaryFeatures = List(false, true)
 	val normalize = List(false, true)
-	val BUILD_RANDOM_BROCHURES = true
 
 	def main(args: Array[String]): Unit = {
 		readData()
@@ -71,7 +72,7 @@ object ProductMain {
 					normalize.foreach { normalizeFeatures =>
 						println(f"Classifier: ${classifier.getClass}, GroupSize: $groupSize, binaryFeature: $useBinaryFeature, normalize: $normalizeFeatures")
 
-						val analyzer = new ProductClassifier(brochures, groupSize, classifier, useBinaryFeature, normalizeFeatures, false, !BUILD_RANDOM_BROCHURES)
+						val analyzer = new ProductClassifier(brochures, groupSize, classifier, useBinaryFeature, normalizeFeatures, true, !BUILD_RANDOM_BROCHURES)
 						analyzer.buildClassifier()
 
 						analyzer.printValidation(posts)
