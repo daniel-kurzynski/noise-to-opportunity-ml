@@ -1,6 +1,7 @@
 package de.hpi.smm.classification
 
 import com.blog_intelligence.nto.{Document, ProductClassification, RawDocument}
+import de.hpi.smm.data_reader.DataReader
 import de.hpi.smm.nlp.NLP
 import weka.classifiers.functions.MultilayerPerceptron
 import weka.classifiers.{Classifier, Evaluation}
@@ -136,7 +137,7 @@ class ProductClassifier(
 		testInstances.setClassIndex(featureAttributes.size() - 1)
 		posts.foreach { doc =>
 			val features = constructFeatureValues(doc)
-			testInstances.add(new DenseInstance(1.0, normalize(features)))
+			testInstances.add(new CustomTheirInstance(1.0, normalize(features), DataReader.theirClassifications(doc.id)))
 		}
 		testInstances
 	}

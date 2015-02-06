@@ -8,12 +8,15 @@ import com.lambdaworks.jacks.JacksMapper
 import de.hpi.smm.nlp.NLP
 import scala.collection.mutable
 
+object DataReader {
+	val theirClassifications = mutable.Map[String, String]()
+}
+
 class DataReader(val postsFile: File, val brochuresFile: File, classificationFile: File) {
 
 	val classifiedPosts = JacksMapper.readValue[Map[String, Map[String, Map[String, String]]]](
 			new FileReader(classificationFile))
 
-	val theirClassifications = mutable.Map[String, String]()
 
 	def readBrochuresLinewise(languages: List[String] = List("de", "en"))(extractor: Document => Unit): Unit = {
 		val reader = new CSVReader(new FileReader(brochuresFile))
@@ -52,7 +55,7 @@ class DataReader(val postsFile: File, val brochuresFile: File, classificationFil
 			val title = line(1)
 			val text = line(2)
 			val theirClassification = line(8)
-			theirClassifications(id) = theirClassification
+			DataReader.theirClassifications(id) = theirClassification
 
 			val rawPost = RawDocument(id, title, text, classifiedPosts.get(id).orNull)
 

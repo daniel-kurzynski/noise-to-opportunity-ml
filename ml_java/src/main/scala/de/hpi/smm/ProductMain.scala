@@ -3,7 +3,7 @@ package de.hpi.smm
 import java.io.File
 import de.hpi.smm.Constants._
 import com.blog_intelligence.nto.Document
-import de.hpi.smm.classification.ProductClassifier
+import de.hpi.smm.classification.{TheirClassifier, ProductClassifier}
 import de.hpi.smm.data_reader.DataReader
 import de.hpi.smm.domain.Word
 import weka.classifiers.functions.{MultilayerPerceptron, SMO, Logistic}
@@ -38,12 +38,14 @@ object ProductMain {
 
 	val groupSizes  = List(6)
 	val classifiers = List(
-		new MultilayerPerceptron()
-		, new Logistic
-		, new SMO()
+//		new MultilayerPerceptron()
+//		, new Logistic
+//		, new SMO()
+		new TheirClassifier
 	)
 	val binaryFeatures = List(false)
 	val normalize = List(false)
+	val BUILD_RANDOM_BROCHURES = false
 
 	def main(args: Array[String]): Unit = {
 		readData()
@@ -58,19 +60,8 @@ object ProductMain {
 			sentenceSet(docClass) ++= post.sentences
 		}
 
-		val r = new Random(44)
-		val NUM_DOCS = 30
-		val NUM_SENTENCES = 2
-
-		posts.clear()
-		sentenceSet.foreach { case (docClass, sentences) =>
-			println(s"$docClass ${sentences.size} ${sentences.flatten.size}")
-			val sentenceList = sentences.toList
-			for (i <- 1 to NUM_DOCS) {
-				val newSentences = r.shuffle(sentenceList).take(NUM_SENTENCES + (r.nextInt(4) + 1) / 4)
-				posts += Document(r.nextInt().toString, "", newSentences.flatten.mkString(" "), newSentences, docClass)
-			}
-		}
+		if (BUILD_RANDOM_BROCHURES)
+			buildRandomBrochures(sentenceSet)
 
 		println(s"Now we have ${posts.size} posts.")
 
@@ -86,6 +77,22 @@ object ProductMain {
 						analyzer.printValidation(posts)
 					}
 				}
+			}
+		}
+	}
+
+	def buildRandomBrochures(sentenceSet: mutable.Map[String, mutable.Set[Seq[Word]]]) {
+		val r = new Random(44)
+		val NUM_DOCS = 30
+		val NUM_SENTENCES = 2
+
+		posts.clear()
+		sentenceSet.foreach { case (docClass, sentences) =>
+			println(s"$docClass ${sentences.size} ${sentences.flatten.size}")
+			val sentenceList = sentences.toList
+			for (i <- 1 to NUM_DOCS) {
+				val newSentences = r.shuffle(sentenceList).take(NUM_SENTENCES + (r.nextInt(4) + 1) / 4)
+				posts += Document(r.nextInt().toString, "", newSentences.flatten.mkString(" "), newSentences, docClass)
 			}
 		}
 	}

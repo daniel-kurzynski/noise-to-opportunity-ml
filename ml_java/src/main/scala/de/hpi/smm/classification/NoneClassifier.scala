@@ -8,6 +8,8 @@ class NoneClassifier(classifier: weka.classifiers.Classifier) extends weka.class
 
 	override def buildClassifier(data: Instances): Unit = {
 		noneIndex = data.classAttribute().indexOfValue("None")
+		if (noneIndex == -1)
+			throw new Exception("Did not find 'None' class.")
 		classifier.buildClassifier(data)
 	}
 
