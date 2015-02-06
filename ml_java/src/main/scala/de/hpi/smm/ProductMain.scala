@@ -42,8 +42,8 @@ object ProductMain {
 		, new Logistic
 		, new SMO()
 	)
-	val binaryFeatures = List(false,true)
-	val normalize = List(false,true)
+	val binaryFeatures = List(false, true)
+	val normalize = List(false, true)
 
 	def main(args: Array[String]): Unit = {
 		readData()
@@ -61,12 +61,13 @@ object ProductMain {
 		val r = new Random(44)
 		val NUM_DOCS = 30
 		val NUM_SENTENCES = 2
+
 		posts.clear()
 		sentenceSet.foreach { case (docClass, sentences) =>
 			println(s"$docClass ${sentences.size} ${sentences.flatten.size}")
 			val sentenceList = sentences.toList
 			for (i <- 1 to NUM_DOCS) {
-				val newSentences = r.shuffle(sentenceList).take(NUM_SENTENCES + r.nextInt(2))
+				val newSentences = r.shuffle(sentenceList).take(NUM_SENTENCES + (r.nextInt(4) + 1) / 4)
 				posts += Document(r.nextInt().toString, "", newSentences.flatten.mkString(" "), newSentences, docClass)
 			}
 		}
