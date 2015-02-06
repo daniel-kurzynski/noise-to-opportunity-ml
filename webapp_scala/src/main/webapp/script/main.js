@@ -36,8 +36,8 @@ jQuery(function() {
 				} else {
 					setTextAndAnimate("demand", "NO-DEMAND (" + roundValue(1 - demandProb) + ")", "#f04124");
 				}
-				if (data.product[0].classificationOutput.prob >= 0.45) {
-					setTextAndAnimate("product", data.product[0].cls, "#008cba");
+				if (data.product[0].prob >= 0.45) {
+					setTextAndAnimate("product", data.product[0].product, "#008cba");
 				} else {
 					setTextAndAnimate("product", "NONE", "#5bc0de");
 				}
@@ -47,7 +47,7 @@ jQuery(function() {
 				data.product.forEach(function (el) {
 					// Use templates, if this gets more complicated.
 					$productResults.append("<tr><td class='product-category-label'><div class='result-percentage label-primary'>" +
-						roundValue(el.classificationOutput.prob, 6) + " %</div></td><td>" + el.cls + "</td></tr>")
+						roundValue(el.prob, 6) + " %</div></td><td>" + el.product + "</td></tr>")
 				});
 			},
 			error: function() {
@@ -59,6 +59,7 @@ jQuery(function() {
 	doPrediction();
 	$(document).keydown(function(event){
 		if(event.keyCode === 18){
+			console.log("Trigger prediction!")
 			doPrediction();
 		}
 	});
