@@ -54,7 +54,7 @@ object ProductMain {
 		val sentenceSet = mutable.Map[String, mutable.Set[Seq[Word]]]()
 
 		posts.foreach { post =>
-			val docClass = post.documentClass
+	val docClass = post.documentClass
 			if (!sentenceSet.contains(docClass)) {
 				sentenceSet(docClass) = mutable.Set[Seq[Word]]()
 			}
