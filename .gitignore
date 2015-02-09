@@ -31,3 +31,8 @@ build.log
 libs
 demand.model
 product.model
+llncs.cls
+*.aux
+*.pdf
+*.gz
+*.log
