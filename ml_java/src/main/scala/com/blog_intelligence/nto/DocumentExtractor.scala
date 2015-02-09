@@ -1,10 +1,8 @@
 package com.blog_intelligence.nto
 
-import java.io.{FileReader, File}
+import java.io.File
 
-import com.lambdaworks.jacks.JacksMapper
-import de.hpi.smm.Constants._
-import de.hpi.smm.data_reader.{DataReader, DataBaseReader}
+import de.hpi.smm.data_reader.{DataBaseReader, DataReader}
 
 case class DataBaseConfiguration(
 	host: String,

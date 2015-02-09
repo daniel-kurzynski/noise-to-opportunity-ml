@@ -3,9 +3,9 @@ package com.blog_intelligence.nto
 import java.io._
 
 import de.hpi.smm.FeatureExtractorBuilder
-import de.hpi.smm.classification.{ProductClassifier, DemandClassifier}
+import de.hpi.smm.classification.{DemandClassifier, ProductClassifier}
+
 import scala.collection.JavaConverters._
-import scala.collection.mutable
 
 case class ProductClassification(product: String, prob: Double)
 

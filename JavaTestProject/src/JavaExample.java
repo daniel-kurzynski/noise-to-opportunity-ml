@@ -1,13 +1,12 @@
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
-import breeze.signal.OptOverhang;
 import com.blog_intelligence.nto.*;
 import de.hpi.smm.classification.ExtendedNTOClassifier;
 import de.hpi.smm.classification.ExtendedNTOClassifier.FullPrediction;
 import de.hpi.smm.classification.ExtendedNTOClassifierBuilder;
 import scala.Tuple2;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class JavaExample {
 
