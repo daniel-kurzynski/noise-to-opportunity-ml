@@ -1,16 +1,8 @@
 package de.hpi.smm.amazon_crawling
 
-import java.io.{File, FileInputStream, FileWriter}
-import java.util.Properties
-
-import scala.collection.mutable
-import scala.collection.JavaConverters._
+import java.io.{File, FileWriter}
 
 import au.com.bytecode.opencsv.CSVWriter
-import com.amazon.advertising.api.sample.SignedRequestsHelper
-import javax.xml.parsers.DocumentBuilderFactory
-import org.jsoup.{HttpStatusException, Jsoup}
-import org.w3c.dom.Document
 
 /**
  * Created by Daniel on 16.12.2014.
