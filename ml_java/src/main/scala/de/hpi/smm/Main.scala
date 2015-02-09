@@ -50,12 +50,12 @@ object Main {
 			, "LVM"
 		).foreach { productClass =>
 			println(s"========== Most certain posts for $productClass ==========")
-			val posts = ntoClassifier.extractMostCertainPosts(20, productClass, allPosts)
+			val predictedPosts = ntoClassifier.extractMostCertainPosts(20, productClass, allPosts)
 			val writer = new FileWriter(new File(s"../n2o_data/most_certain/${productClass}_most_certain.csv"))
 
-			posts.foreach { case(document, prediction)=>
-				writer.write(document + "\n")
-				writer.write(s"=== product-prob: ${prediction.productProb}, demand-prob: ${prediction.demandProb}." + "\n")
+			predictedPosts.foreach { predictedPost=>
+				writer.write(predictedPost.text + "\n")
+				writer.write(s"=== product-prob: ${predictedPost.fullPrediction.productProb}, demand-prob: ${predictedPost.fullPrediction.demandProb}." + "\n")
 				writer.write("=====================================================================================\n\n")
 			}
 

@@ -19,6 +19,11 @@ public class JavaExample {
 	static File PRODUCT_MODEL_FILE = new File("product.model");
 
 	private static void predictSingleDoc(){
+		System.out.println("Execute example for predicting a single post");
+		/**
+		 * Building classifier
+		 */
+
 		NTOClassifier classifier;
 		if (DEMAND_MODEL_FILE.exists() && PRODUCT_MODEL_FILE.exists()) {
 			System.out.print("Reading from model file");
@@ -52,6 +57,7 @@ public class JavaExample {
 	}
 
 	public static void predictMultipleDocs() {
+		System.out.println("Execute example for predicting a multiple posts");
 		/**
 		 * Building classifier
 		 */
@@ -110,7 +116,7 @@ public class JavaExample {
 
 	public static void main(String[] args) {
 
-//		predictSingleDoc();
+		predictSingleDoc();
 		predictMultipleDocs();
 
 	}
