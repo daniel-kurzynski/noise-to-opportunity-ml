@@ -6,6 +6,7 @@ import com.blog_intelligence.nto.Document
 import de.hpi.smm.classification.{TheirClassifier, ProductClassifier}
 import de.hpi.smm.data_reader.DataReader
 import de.hpi.smm.domain.Word
+import de.hpi.smm.nlp.NLP
 import weka.classifiers.functions.{MultilayerPerceptron, SMO, Logistic}
 import scala.collection.mutable
 import scala.util.Random
@@ -14,10 +15,13 @@ object ProductMain {
 
 	val BUILD_RANDOM_BROCHURES = true
 
-	val dataReader = new DataReader(
-		new File("../n2o_data/linked_in_posts.csv"),
-		new File("../n2o_data/brochures.csv"),
-		new File(CLASSIFICATION_JSON))
+	val postsFile = new File(POSTS_PATH)
+	val brochuresFile = new File(BROCHURES_PATH)
+	val classificationFile = new File(CLASSIFICATION_JSON)
+	val stopWordsFile = new File(STOPWORDS_PATH)
+	val posModelFile = new File(POSMODEL_PATH)
+	val nlp = new NLP(stopWordsFile, posModelFile)
+	val dataReader = new DataReader(postsFile, brochuresFile,classificationFile,nlp)
 
 	var posts = mutable.ArrayBuffer[Document]()
 	var brochures = mutable.ArrayBuffer[Document]()
@@ -75,7 +79,7 @@ object ProductMain {
 					normalize.foreach { normalizeFeatures =>
 						println(f"Classifier: ${classifier.getClass}, GroupSize: $groupSize, binaryFeature: $useBinaryFeature, normalize: $normalizeFeatures")
 
-						val analyzer = new ProductClassifier(brochures, groupSize, classifier, useBinaryFeature, normalizeFeatures, INCLUDE_NONE_POSTS, !BUILD_RANDOM_BROCHURES)
+						val analyzer = new ProductClassifier(brochures, nlp, groupSize, classifier, useBinaryFeature, normalizeFeatures, INCLUDE_NONE_POSTS, !BUILD_RANDOM_BROCHURES)
 						analyzer.buildClassifier()
 
 						analyzer.printValidation(posts)

@@ -12,6 +12,7 @@ import scala.collection.mutable
 
 class ProductClassifier(
 		originalBrochures: Seq[Document],
+		nlp: NLP,
 		groupSize: Int = 6,
 		originalClassifier: Classifier = new Logistic(),
 		binaryFeatures: Boolean = true,
@@ -171,7 +172,7 @@ class ProductClassifier(
 		val title = ""
 
 		val rawPost = RawDocument(id, title, text, null)
-		val sentences = NLP.detectSentences(rawPost)
+		val sentences = nlp.detectSentences(rawPost)
 		val post = Document(id, title, text, sentences, "None")
 
 		val instance = new DenseInstance(1.0, constructFeatureValues(post))

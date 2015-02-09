@@ -122,8 +122,10 @@ public class JavaExample {
 	}
 
 	public static NTOClassifier readFromModel() {
-
-		NTOClassifier classifier = new NTOClassifier();
+		NTOClassifier classifier = new NTOClassifier(
+				new File("stopwords.txt"),
+				new File("german-fast.tagger")
+		);
 
 		classifier.loadDemand(DEMAND_MODEL_FILE);
 		classifier.loadProduct(PRODUCT_MODEL_FILE);
@@ -135,13 +137,17 @@ public class JavaExample {
 		/**
 		 * Reading training data
 		 */
-		DocumentExtractor documentExtractor = new DocumentExtractor();
+		DocumentExtractor documentExtractor = new DocumentExtractor(
+				new File("stopwords.txt"),
+				new File("german-fast.tagger")
+		);
 
 		// Adapt files here if necessary.
 		ReadingResult csvDocs = documentExtractor.readFromCSV(
 				new File("linked_in_posts.csv"),
 				new File("brochures.csv"),
-				new File("classification.json"));
+				new File("classification.json")
+		);
 
 		// Load documents from database. Can be used in the same way as csvDocs, or even combined with csvDocs.
 		// ReadingResult dbDocs = documentExtractor.readFromDB(CONFIG);
@@ -153,7 +159,10 @@ public class JavaExample {
 		/**
 		 * Building classifier
 		 */
-		NTOClassifier classifier = new NTOClassifier();
+		NTOClassifier classifier = new NTOClassifier(
+				new File("stopwords.txt"),
+				new File("german-fast.tagger")
+		);
 
 		// Training
 		classifier.trainDemand(csvDocs.demandDocuments());

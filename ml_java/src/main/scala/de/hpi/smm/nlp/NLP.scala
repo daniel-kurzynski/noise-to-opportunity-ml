@@ -14,16 +14,16 @@ import edu.stanford.nlp.util.logging.RedwoodConfiguration
 
 import scala.io.Source
 
-object NLP {
+class NLP(stopWordsFile: File, posModelFile: File) extends Serializable{
 
-	val stopWords = Source.fromFile(new File("../n2o_data/stopwords.txt")).getLines().toSet
+	val stopWords = Source.fromFile(stopWordsFile).getLines().toSet
 
 	def detectSentences(rawPost: RawDocument): Seq[Seq[Word]] = {
 		val props = new util.Properties()
 //		props.put("annotators", "tokenize,ssplit,pos,lemma,ner")
 		props.put("annotators", "tokenize,ssplit,pos")
 		if (rawPost.lang == "de") {
-			props.put("pos.model", "../n2o_data/german-fast.tagger")
+			props.put("pos.model", posModelFile.getAbsolutePath)
 		}
 		else if (rawPost.lang == "en" || rawPost.lang == null) Unit
 		else throw new RuntimeException("Unknown language.")
