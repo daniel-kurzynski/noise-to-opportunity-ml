@@ -10,6 +10,8 @@ import scala.collection.mutable
 
 case class ProductClassification(product: String, prob: Double)
 case class FullPrediction(demandProb: Double, productClass: String, productProb: Double)
+case class PredictedPost(text: String, fullPrediction: FullPrediction)
+
 
 class NTOClassifier {
 
@@ -77,7 +79,7 @@ class NTOClassifier {
 		productClassifier.predict(text).sortBy(-_.prob).asJava
 	}
 
-	def extractMostCertainPosts(num: Integer, productClass: String, posts: java.util.List[String]): java.util.List[(String, FullPrediction)] = {
+	def extractMostCertainPosts(num: Integer, productClass: String, posts: java.util.List[String]): java.util.List[PredictedPost] = {
 
 		val predictions = mutable.Map[String, FullPrediction]()
 
@@ -96,12 +98,9 @@ class NTOClassifier {
 			.filter {case (doc, prediction) => prediction.productClass == productClass}
 			.filter {case (doc, prediction) => harmonicMean(prediction, 2) > 0.6}
 			.sortBy {case (doc, prediction) => -harmonicMean(prediction, 2)}
-			.take(num).asJava
-	}
-
-	def extractMostCertainPosts(num: Integer, productClass: String, posts: Seq[Document]) : List[(String, FullPrediction)] = {
-
-		extractMostCertainPosts(num, productClass, posts.map(_.wholeText).asJava).asScala.toList
+			.take(num)
+			.map {case (doc, prediction) => new PredictedPost(doc, prediction)}
+			.asJava
 	}
 
 }

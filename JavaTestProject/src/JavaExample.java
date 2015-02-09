@@ -91,16 +91,16 @@ public class JavaExample {
 		 * Predict for each class the most certain
 		 */
 		for(String productClass: new String[] {"CRM", "ECOM", "HCM", "LVM"}){
-			List<Tuple2<String, FullPrediction>> classifications = classifier.extractMostCertainPosts(
+			List<PredictedPost> predictedPosts = classifier.extractMostCertainPosts(
 					3,				// top most
 					productClass, 	// for this class
 					posts);			// from these posts
 
 			System.out.println("best posts for " + productClass);
-			for(Tuple2<String, FullPrediction> classification: classifications){
-				System.out.println("Text: " + classification._1());
-				System.out.println("Demand prob: " + classification._2().demandProb());
-				System.out.println("Product prob: " + classification._2().productProb());
+			for(PredictedPost predictedPost: predictedPosts){
+				System.out.println("Text: " + predictedPost.text());
+				System.out.println("Demand prob: " + predictedPost.fullPrediction().demandProb());
+				System.out.println("Product prob: " + predictedPost.fullPrediction().productProb());
 				System.out.println("===================================");
 			}
 		}
