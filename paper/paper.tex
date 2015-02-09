@@ -6,10 +6,6 @@
 \usepackage{color}
 \usepackage{comment}
 \usepackage{amsmath}
-\usepackage{algorithm}
-\usepackage{algpseudocode}
-\usepackage{subcaption}
-\captionsetup{compatibility=false}
 
 \pagestyle{plain}
 \newcommand{\todo}[1]{{\color{red}TODO:~#1}}
@@ -27,21 +23,24 @@
 \maketitle
 
 \begin{abstract}
-\input{sections/abstract}
+\input{sections/abstract.tex}
 \end{abstract}
 
 \input{sections/introduction}
 
-\input{sections/related}
+
 
 \input{sections/concept}
 
 \input{sections/implementation}
 
-\input{sections/evaluation}
+\input{sections/results}
+
+\input{sections/related}
 
 \input{sections/conclusion}
 
+\newpage
 \bibliographystyle{abbrv}
 \bibliography{references}
 
