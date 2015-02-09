@@ -1,12 +1,13 @@
 package de.hpi.smm.data_reader
 
+import java.io.File
 import java.sql.{DriverManager, Connection}
 
 import com.blog_intelligence.nto.RawDocument
 import de.hpi.smm.nlp.NLP
 import com.blog_intelligence.nto.{Document, ReadingResult, DataBaseConfiguration}
 
-class DataBaseReader(dataBaseConfiguration: DataBaseConfiguration) {
+class DataBaseReader(dataBaseConfiguration: DataBaseConfiguration, nlp:NLP) {
 
 	private val driver = "com.sap.db.jdbc.Driver"
 	private val host = dataBaseConfiguration.host
@@ -48,7 +49,7 @@ class DataBaseReader(dataBaseConfiguration: DataBaseConfiguration) {
 				val productClass = resultSet.getString("PRODUCT_CLASS")
 
 				val rawPost = RawDocument(id, title, text, null)
-				val sentences = NLP.detectSentences(rawPost)
+				val sentences = nlp.detectSentences(rawPost)
 
 				demandPosts.add(Document(id, title, text, sentences, demandClass))
 				productPosts.add(Document(id, title, text, sentences, productClass))
@@ -101,14 +102,4 @@ class DataBaseReader(dataBaseConfiguration: DataBaseConfiguration) {
 		disconnect()
 	}
 
-}
-
-object DataBaseReader {
-	def main(args: Array[String]) {
-		val config = new DataBaseConfiguration("141.89.225.134","30315","SMA1415", "Popcorn54","SMA1415.CLASSIFIED_POSTS");
-
-		val reader = new DataBaseReader(config)
-		reader.readFromDB()
-
-	}
 }

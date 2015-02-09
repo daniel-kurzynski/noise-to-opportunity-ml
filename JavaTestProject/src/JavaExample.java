@@ -135,13 +135,17 @@ public class JavaExample {
 		/**
 		 * Reading training data
 		 */
-		DocumentExtractor documentExtractor = new DocumentExtractor();
+		DocumentExtractor documentExtractor = new DocumentExtractor(
+				new File("stopwords.txt"),
+				new File("german-fast.tagger")
+		);
 
 		// Adapt files here if necessary.
 		ReadingResult csvDocs = documentExtractor.readFromCSV(
 				new File("linked_in_posts.csv"),
 				new File("brochures.csv"),
-				new File("classification.json"));
+				new File("classification.json")
+		);
 
 		// Load documents from database. Can be used in the same way as csvDocs, or even combined with csvDocs.
 		// ReadingResult dbDocs = documentExtractor.readFromDB(CONFIG);

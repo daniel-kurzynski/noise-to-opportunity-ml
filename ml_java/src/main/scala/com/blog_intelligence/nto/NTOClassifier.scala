@@ -4,6 +4,7 @@ import java.io._
 
 import de.hpi.smm.FeatureExtractorBuilder
 import de.hpi.smm.classification.{DemandClassifier, ProductClassifier}
+import de.hpi.smm.nlp.NLP
 
 import scala.collection.JavaConverters._
 import scala.collection.mutable
@@ -13,7 +14,7 @@ case class FullPrediction(demandProb: Double, productClass: String, productProb:
 case class PredictedPost(text: String, fullPrediction: FullPrediction)
 
 
-class NTOClassifier {
+class NTOClassifier(nlp: NLP) {
 
 	var demandClassifier: DemandClassifier = null
 	var productClassifier: ProductClassifier = null
@@ -61,11 +62,12 @@ class NTOClassifier {
 		val featureExtraction = new FeatureExtractorBuilder(null).buildForDemand(trainingSamples)
 		demandClassifier = new DemandClassifier("demand",
 			trainingSamples.asScala,
-			featureExtraction)
+			featureExtraction,
+			nlp)
 	}
 
 	def trainProduct(trainingSamples: java.util.List[Document]): Unit = {
-		productClassifier = new ProductClassifier(trainingSamples.asScala.toList)
+		productClassifier = new ProductClassifier(trainingSamples.asScala.toList, nlp)
 		productClassifier.buildClassifier()
 	}
 

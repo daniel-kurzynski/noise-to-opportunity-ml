@@ -9,17 +9,20 @@ import de.hpi.smm.Constants._
 import de.hpi.smm.classification.{ExtendedNTOClassifierBuilder, ExtendedNTOClassifier}
 import de.hpi.smm.data_reader.DataReader
 import de.hpi.smm.Constants._
+import de.hpi.smm.nlp.NLP
 
 import scala.collection.mutable
 import scala.util.hashing.MurmurHash3
 
 object Main {
 
-	val postsFile = new File("../n2o_data/linked_in_posts.csv")
-	val brochuresFile = new File("../n2o_data/brochures.csv")
+	val postsFile = new File(POSTS_PATH)
+	val brochuresFile = new File(BROCHURES_PATH)
 	val classificationFile = new File(CLASSIFICATION_JSON)
-
-	val dataReader = new DataReader(postsFile, brochuresFile,classificationFile)
+	val stopWordsFile = new File(STOPWORDS_PATH)
+	val posModelFile = new File(POSMODEL_PATH)
+	val nlp = new NLP(stopWordsFile, posModelFile)
+	val dataReader = new DataReader(postsFile, brochuresFile,classificationFile,nlp)
 
 	val featureExtractorBuilder = new FeatureExtractorBuilder(dataReader)
 
@@ -39,7 +42,14 @@ object Main {
 
 
 	def mostCertainPosts() = {
-		val ntoClassifier = ExtendedNTOClassifierBuilder.build(classificationFile,brochuresFile,postsFile)
+		val ntoClassifier = ExtendedNTOClassifierBuilder.build(
+			classificationFile,
+			brochuresFile,
+			postsFile,
+			stopWordsFile,
+			posModelFile
+		)
+
 		val allPosts = mutable.ArrayBuffer[Document]()
 		ntoClassifier.dataReader.readPostsLinewise{post => allPosts += post}("category", all = true)
 
@@ -64,7 +74,13 @@ object Main {
 	}
 
 	def runClassifyPost() {
-		val ntoClassifier = ExtendedNTOClassifierBuilder.build(classificationFile,brochuresFile,postsFile)
+		val ntoClassifier =  ExtendedNTOClassifierBuilder.build(
+			classificationFile,
+			brochuresFile,
+			postsFile,
+			stopWordsFile,
+			posModelFile
+		)
 
 		val post = "I need help. I am looking for support. Thanks in advance. I am searching for a good crm software."
 		val post2 = "What's the best ECommerce Platform for product subscription sales (Continuity model)?  Is there a platform with a strong CRM at it's core?"

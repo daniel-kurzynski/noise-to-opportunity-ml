@@ -2,6 +2,7 @@ package de.hpi.smm.classification
 
 import com.blog_intelligence.nto.{PredictedPost, FullPrediction, Document, NTOClassifier}
 import de.hpi.smm.data_reader.DataReader
+import de.hpi.smm.nlp.NLP
 
 import scala.collection.JavaConverters._
 import scala.collection.mutable
@@ -9,7 +10,7 @@ import scala.collection.mutable
 case class ClassificationOutput(prob: Double, relevantFeatures: Array[Array[Any]] = Array())
 case class ExtendedClassification(cls: String, classificationOutput: ClassificationOutput)
 
-class ExtendedNTOClassifier(val dataReader: DataReader) extends NTOClassifier {
+class ExtendedNTOClassifier(val dataReader: DataReader, nlp: NLP) extends NTOClassifier(nlp) {
 
 	def validate():Unit = {
 		val demandEvaluation = demandClassifier.crossValidate()

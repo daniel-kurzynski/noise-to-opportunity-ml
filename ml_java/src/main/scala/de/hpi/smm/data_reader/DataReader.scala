@@ -12,7 +12,7 @@ object DataReader {
 	val theirClassifications = mutable.Map[String, String]()
 }
 
-class DataReader(val postsFile: File, val brochuresFile: File, classificationFile: File) {
+class DataReader(val postsFile: File, val brochuresFile: File, classificationFile: File, nlp: NLP) {
 
 	var INCLUDE_NONE = false
 
@@ -39,7 +39,7 @@ class DataReader(val postsFile: File, val brochuresFile: File, classificationFil
 				val rawPost = RawDocument(id, "", text, null, language)
 
 				brochuresCount += 1
-				val sentences = NLP.detectSentences(rawPost)
+				val sentences = nlp.detectSentences(rawPost)
 				extractor(Document(id, "", text, sentences, classification))
 			}
 			line = reader.readNext()
@@ -62,7 +62,7 @@ class DataReader(val postsFile: File, val brochuresFile: File, classificationFil
 			val rawPost = RawDocument(id, title, text, classifiedPosts.get(id).orNull)
 
 			if (all || classifiedPosts.contains(id)) {
-				val sentences = NLP.detectSentences(rawPost)
+				val sentences = nlp.detectSentences(rawPost)
 				val post = Document(id, title, text, sentences, rawPost.extract(className))
 				if (INCLUDE_NONE || post.documentClass != "None") {
 					postCount += 1
