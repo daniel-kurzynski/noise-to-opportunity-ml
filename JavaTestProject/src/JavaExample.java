@@ -1,7 +1,4 @@
 import com.blog_intelligence.nto.*;
-import de.hpi.smm.classification.ExtendedNTOClassifier;
-import de.hpi.smm.classification.ExtendedNTOClassifier.FullPrediction;
-import de.hpi.smm.classification.ExtendedNTOClassifierBuilder;
 import scala.Tuple2;
 
 import java.io.File;
@@ -58,10 +55,20 @@ public class JavaExample {
 		/**
 		 * Building classifier
 		 */
-		ExtendedNTOClassifier classifier = ExtendedNTOClassifierBuilder.build(
-				new File("classification.json"),
-				new File("brochures.csv"),
-				new File("linked_in_posts.csv"));
+		NTOClassifier classifier;
+		if (DEMAND_MODEL_FILE.exists() && PRODUCT_MODEL_FILE.exists()) {
+			System.out.print("Reading from model file");
+			long l1 = System.currentTimeMillis();
+			classifier = readFromModel();
+			long l2 = System.currentTimeMillis();
+			System.out.println(" in " + (l2 - l1) + " ms.");
+		} else {
+			System.out.print("Creating new model");
+			long l1 = System.currentTimeMillis();
+			classifier = buildModelFromScratch();
+			long l2 = System.currentTimeMillis();
+			System.out.println(" in " + (l2 - l1) + " ms.");
+		}
 
 
 		/**

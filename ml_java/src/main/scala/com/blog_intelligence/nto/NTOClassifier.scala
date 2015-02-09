@@ -6,8 +6,10 @@ import de.hpi.smm.FeatureExtractorBuilder
 import de.hpi.smm.classification.{DemandClassifier, ProductClassifier}
 
 import scala.collection.JavaConverters._
+import scala.collection.mutable
 
 case class ProductClassification(product: String, prob: Double)
+case class FullPrediction(demandProb: Double, productClass: String, productProb: Double)
 
 class NTOClassifier {
 
@@ -74,4 +76,32 @@ class NTOClassifier {
 		requireNonNull(productClassifier)
 		productClassifier.predict(text).sortBy(-_.prob).asJava
 	}
+
+	def extractMostCertainPosts(num: Integer, productClass: String, posts: java.util.List[String]): java.util.List[(String, FullPrediction)] = {
+
+		val predictions = mutable.Map[String, FullPrediction]()
+
+		posts.asScala.foreach { post =>
+			val demandPrediction = demandClassifier.classProbability(post)
+			val productPrediction = productClassifier.predict(post).maxBy(_.prob)
+			predictions(post) = FullPrediction(demandPrediction.prob, productPrediction.product, productPrediction.prob)
+		}
+
+
+		def harmonicMean(prediction: FullPrediction, measure: Double = 1): Double = {
+			((1 + math.pow(measure, 2)) * prediction.demandProb * prediction.productProb) / (math.pow(measure, 2) * prediction.demandProb + prediction.productProb)
+		}
+
+		predictions.toList
+			.filter {case (doc, prediction) => prediction.productClass == productClass}
+			.filter {case (doc, prediction) => harmonicMean(prediction, 2) > 0.6}
+			.sortBy {case (doc, prediction) => -harmonicMean(prediction, 2)}
+			.take(num).asJava
+	}
+
+	def extractMostCertainPosts(num: Integer, productClass: String, posts: Seq[Document]) : List[(String, FullPrediction)] = {
+
+		extractMostCertainPosts(num, productClass, posts.map(_.wholeText).asJava).asScala.toList
+	}
+
 }
