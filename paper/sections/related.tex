@@ -1,9 +1,34 @@
 %!TEX root = ../paper.tex
 
-\section{Related Work}
+\section{Text Classification in Marketing}
 \label{sec:related}
 \begin{itemize}
 	\item Who inspired your work?
 	\item Which aspect do you improve?
 	\item What are the basic foundations?
 \end{itemize}
+
+\subsection{Related Work}
+
+Show related work for text classification (initial presentation)
+
+\subsection{Problem Definition}
+
+\todo{Make a formal problem definition, something like} \\
+Let $p \in POSTS$ be a post from a business-oriented social networking service.
+Figure x shows an example for such a post.
+Let $PRODUCT$ denote the set of a company's product.
+
+Then, the problem can be classified as a function $marketing$ \todo{Better name}, such as:
+\begin{displaymath}
+	marketing: POSTS \to PRODUCT \cup {NONE}
+\end{displaymath}
+
+If $p$ is a post, then we propose $p$ to a salesman if $marketing(p) != NONE$.
+
+\begin{quote}
+	Which self-hosted CRM do you recommend?
+	I'm looking for a self-hosted CRM for a very small business (so preferably free).
+	I've only heard of SugarCRM and vTiger in that category. Do you have any recommendations?
+\end{quote}
+In practice, this classifier this 
