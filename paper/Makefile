@@ -6,4 +6,4 @@ make:
 	@mv .output/paper.pdf .
 
 clean:
-	rm *.aux *.log
+	rm .output/*.aux .output/*.log
