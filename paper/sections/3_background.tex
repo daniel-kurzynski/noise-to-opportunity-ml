@@ -19,11 +19,11 @@ As in every company there are salesmen who want to get in contact with potential
 To find these buyers we help \acme to identify people on business networks who seems to have a need for products offered by \acme.
 
 We call our approach Noise-To-Opportunity conversion or \nto problem.
-We choose the word noise because of the amount of daily status updates which makes it infeasible to listen to all off them.
+We choose the word noise because of the amount of daily status updates in the business network which makes it infeasible to listen to all off them.
 Nevertheless, there are many post which are a good opportunity the get in contact with people who wants to buy products a salesman's company offers. 
 
-Post \ref{post:demand-and-product}
-Quotes one to three shows how posts in such a business network could like. 
+Post~\ref{post:demand-and-product}, ~\ref{post:demand-only}, and~\ref{post:product-only} shows how posts in such a business network could like. 
+We have to decide which off these posts are written by potentially customers of \acme. 
 
 \begin{post}
 	\centering
@@ -58,27 +58,33 @@ Quotes one to three shows how posts in such a business network could like.
 	\label{post:product-only}
 \end{post}
 
-We would only recommend Post
+We would only recommend post~\ref{post:demand-and-product} to \acme.
+Post~\ref{post:demand-and-product} expresses that the user is searching for a new crm system.
+This is offered by \acme.
+In Post~\ref{post:demand-only} the user is searching for a product. 
+However, this post is uninteresting for \acme because a car is not in \acme's product portfolio. 
+In contrast post~\ref{post:product-only} is about crm systems, but the user is not interested in a new crm system.
+Therefore the post should not be shown to a salesman.
 
-Formally, we define the problem  
+The decision, whether to recommend a post, depends on two characteristics.
+The post should express that users needs something, e.g. a product.
+The product needed by the user should be offered by \acme.
 
-Let $p \in POSTS$ be a post from a business-oriented social networking service.
-Figure x shows an example for such a post.
-Let $PRODUCT$ denote the set of a company's product.
 
-Then, the problem can be classified as a function $marketing$ \todo{Better name}, such as:
+Formally, the problem can be defined as: 
+Each $p \in POSTS$ is a post from a business-oriented social networking service. $PRODUCT$ denote the set of a company's product.
+Then, the problem can be classified as a function $\nto$, such as:
 \begin{displaymath}
-	nto: POSTS \to PRODUCT \cup {NONE}
+	nto: POSTS \to PRODUCT \cup \{NONE\}
 \end{displaymath}
 
-If $p$ is a post, then we propose $p$ to a salesman if $marketing(p) != NONE$.
+If $p$ is a post, then we propose $p$ to a salesman if $\nto(p) != NONE$.
 A classification of a post $p \in POSTS$ is $correct$, if it is indeed the correct product recommended.
-
-We have to find a function like this, do ml
 
 optimize for both use cases: For salesman and for machine.
 
-we need training data
+In the following chapters we explain how we build this~\nto.
+We archive this by learning from a sample dataset. 
 
 small corpus
 
