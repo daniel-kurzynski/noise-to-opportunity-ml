@@ -83,56 +83,52 @@ The number of positive training samples would be at least a magnitude lower than
 This skew has been shown to harm the performance of machine learning systems significantly \cite{monard2002learning, guo2008class}.
 
 However, even with two classifiers, the number of positive samples is much lower than the number of negative examples.
-Therefore, a sophisticated feature selection needs to be employed.
+Therefore, we employ techniques of feature selection and training data sampling, which are shown in the next two sections.
 
 \subsection{Feature Selection}
 
-\begin{itemize}
-	\item Two-staged classifier (why we did this)
-	\item Feature selection
-	\item Training data generation (using splits and random recombinations)
-\end{itemize}
+\subsection{Training data generation}
 
 % \begin{itemize}
 % 	\item Elaborate on your idea
 % 	\item First give examples and than try to generalize
 % \end{itemize}
 
-\begin{figure}
-	\centering
-	\begin{subfigure}[t]{0.3\textwidth}
-		\begin{tabular}{r | r}
-			\textbf{Threads} & \textbf{Runtime}\\
-			\hline
-			1 & 29952\\
-			2 & 15538\\
-			4 & 10467\\
-			8 & 7987
-		\end{tabular}
-		\caption{Computation of keyword distribution and identification of bursty intervals}
-	\end{subfigure}~
-	\begin{subfigure}[t]{0.3\textwidth}
-		\begin{tabular}{r | r}
-			\textbf{Threads} & \textbf{Runtime}\\
-			\hline
-			1 & 4649\\
-			2 & 4430\\
-			4 & 5429\\
-			8 & 6427
-		\end{tabular}
-		\caption{Creation of events from keyword clustering}
-	\end{subfigure}~
-	\begin{subfigure}[t]{0.3\textwidth}
-		\begin{tabular}{r | r}
-			\textbf{Threads} & \textbf{Runtime}\\
-			\hline
-			1 & 514\\
-			2 & 281\\
-			4 & 250\\
-			8 & 203
-		\end{tabular}
-		\caption{Matching of documents to events}
-	\end{subfigure}
-	\caption{Performance of each step of the algorithm in dependence of the number of threads employed}
-	\label{fig:scalability}
-\end{figure}
+% \begin{figure}
+% 	\centering
+% 	\begin{subfigure}[t]{0.3\textwidth}
+% 		\begin{tabular}{r | r}
+% 			\textbf{Threads} & \textbf{Runtime}\\
+% 			\hline
+% 			1 & 29952\\
+% 			2 & 15538\\
+% 			4 & 10467\\
+% 			8 & 7987
+% 		\end{tabular}
+% 		\caption{Computation of keyword distribution and identification of bursty intervals}
+% 	\end{subfigure}~
+% 	\begin{subfigure}[t]{0.3\textwidth}
+% 		\begin{tabular}{r | r}
+% 			\textbf{Threads} & \textbf{Runtime}\\
+% 			\hline
+% 			1 & 4649\\
+% 			2 & 4430\\
+% 			4 & 5429\\
+% 			8 & 6427
+% 		\end{tabular}
+% 		\caption{Creation of events from keyword clustering}
+% 	\end{subfigure}~
+% 	\begin{subfigure}[t]{0.3\textwidth}
+% 		\begin{tabular}{r | r}
+% 			\textbf{Threads} & \textbf{Runtime}\\
+% 			\hline
+% 			1 & 514\\
+% 			2 & 281\\
+% 			4 & 250\\
+% 			8 & 203
+% 		\end{tabular}
+% 		\caption{Matching of documents to events}
+% 	\end{subfigure}
+% 	\caption{Performance of each step of the algorithm in dependence of the number of threads employed}
+% 	\label{fig:scalability}
+% \end{figure}
