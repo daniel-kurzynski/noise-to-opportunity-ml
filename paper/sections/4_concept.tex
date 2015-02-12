@@ -18,7 +18,7 @@ Typical phrases, taken from an experiment on our example data set (see Section~\
 \end{center}
 We call this the \emph{demand classification}:
 \begin{align}
-	\mathbf{demand}&: POSTS \longrightarrow \big\{ ``demand", ``no-demand" \big\}
+	\mathbf{demand}&: POSTS \longrightarrow \big\{ ``demand", ``\operatorname{no-demand}" \big\}
 \end{align}
 
 The second concept is about which product the user is talking about in the post.
@@ -36,9 +36,12 @@ We call this the \emph{product classification}:
 \end{align}
 
 The intersection of the most relevant words for demand and product classification is the empty set.
-This shows, that these concepts are independent of each other and should be treated separately.
-Therefore, we split the \nto problem in two subproblems: given a post $p \in POSTS$ we first identify, whether the posts expresses a demand for a product.
-If this is true, we then check whether we can actually categorize the post into one of our product groups.
+This observation shows, that these concepts are independent of each other and should be treated separately.
+If a post is about a product of the company, that does not necessarily mean, that the system should make a recommendation and vice versa.
+Demand posts and posts about one of ACME's product have different characteristica, which should be represented in the system's architecture.
+
+Therefore, we split the \nto problem in two subproblems: given a post $p \in POSTS$ we first identify, whether the posts expresses a demand for any product in general.
+If this is true, we then check whether we can actually categorize the post into one of ACME's products.
 All together, given $demand$ and $product$, we can define \nto:
 \begin{alignat*}{3}
   &\mathbf{NTO}: && ~POSTS && \longrightarrow PRODUCT \cup \big\{ NONE \big\} \\
@@ -52,13 +55,15 @@ In our system, both $demand$ and $product$ are implemented by two independent te
 We are using supervised machine learning for this.
 Supervised learning requires tagged training samples to draw conclusions on unseen test samples.
 
-The training data for the $demand$ classifier comes from manually classified demand posts.
+The training data for the $demand$ classifier comes from posts from social media networks.
+This requires manually classifying posts into ``demand" and ``no-demand"
 However, the demand classification does not change for different companies or products.
 It is independent from the product classification, which is why companies do not need to supply training data for the demand classification.
-Rather, they can use a prebuild demand classifier.
+Rather, they can use a prebuilt demand classifier.
 
 The training data for the $product$ classifier needs to be supplied in form of brochures and/or marketing material for the different products.
 Each brochure must be assigned to one product.
+There can be more than one product.
 The system then automatically learns from the brochures.
 Figure~\ref{fig:workflow} illustrates the architecture of the system.
 
@@ -70,20 +75,17 @@ Figure~\ref{fig:workflow} illustrates the architecture of the system.
 	\caption{Together, a demand classifier training from social network posts and a product classifier trained from marketing material form a classification-model for unseen posts.}
 \end{figure}
 
-
-Learning these two concepts with different classifiers also helps over come data sparsity issues.
-The number of posts that actually are asking for a product of the company is low.
+Learning demand and product categorization as two concepts with different classifiers also helps overcome data sparsity issues.
+The number of posts that actually are asking for a product of the company is usually very low.
 In our example data set, these posts only cover \todo{XX}~\% of the posts, whereas demand posts occur with \todo{XX}~\% probabilty and product documents with \todo{XX}~\%.
-If the machine learning would work \cite{monard2002learning}.
-This allows to get better results with fewer training data.
+If the machine learning would work directly on the positive examples, this would introduce a high data skew.
+The number of positive training samples would be at least a magnitude lower than the number of negative samples.
+This skew has been shown to harm the performance of machine learning systems significantly \cite{monard2002learning, guo2008class}.
 
-Only a few training data
-Different characteristica
-Example: Demand aber kein PRoduct
-Schnittmenge der charakteristischen worte sehr klein
-Schnittmenge der eigentlichen Dokumente auch sehr klein (only few positive examples)
+However, even with two classifiers, the number of positive samples is much lower than the number of negative examples.
+Therefore, a sophisticated feature selection needs to be employed.
 
-only a few 
+\subsection{Feature Selection}
 
 \begin{itemize}
 	\item Two-staged classifier (why we did this)
