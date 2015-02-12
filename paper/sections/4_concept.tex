@@ -18,7 +18,7 @@ Typical phrases, taken from an experiment on our example data set (see Section~\
 \end{center}
 We call this the \emph{demand classification}:
 \begin{align}
-	\mathbf{demand}&: POSTS \longrightarrow \big\{ ``demand``, ``no-demand`` \big\}
+	\mathbf{demand}&: POSTS \longrightarrow \big\{ ``demand", ``no-demand" \big\}
 \end{align}
 
 The second concept is about which product the user is talking about in the post.
@@ -43,16 +43,16 @@ All together, given $demand$ and $product$, we can define $nto$:
 \begin{alignat*}{3}
   &\mathbf{nto}: && ~POSTS && \longrightarrow PRODUCT \cup \big\{ NONE \big\} \\
   &\mathbf{nto}: && ~~p   && \longmapsto \begin{cases}
-	    product(post)~~~~~~~\text{if }~demand(post) = ``demand`` \\
+	    product(post)~~~~~~~\text{if }~demand(post) = ``demand" \\
 	    NONE~~~~~~~~~~~~~~~\text{otherwise}
    \end{cases}
 \end{alignat*}
 
 \begin{figure}
-  \caption{Summary of }
-  % \begin{center}
-  %   \includegraphics{tucan.eps}
-  % \end{center}
+	\caption{Workflow of the noise-to-opportunity system.}
+	\begin{center}
+		\includegraphics[width=0.7\textwidth]{figures/nto_workflow.eps}
+	\end{center}
 \end{figure}
 
 Only a few training data
