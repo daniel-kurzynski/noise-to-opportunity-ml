@@ -2,7 +2,7 @@
 \section{Concept}
 \label{sec:concept}
 
-We now present our approach to the $nto$ problem.
+We now present our approach to the \nto problem.
 The next section details our two-staged classification approach.
 We then talk about what features we select and how we approach the \emph{\documentmismatch}.
 
@@ -37,12 +37,12 @@ We call this the \emph{product classification}:
 
 The intersection of the most relevant words for demand and product classification is the empty set.
 This shows, that these concepts are independent of each other and should be treated separately.
-Therefore, we split the $nto$ problem in two subproblems: given a post $p \in POSTS$ we first identify, whether the posts expresses a demand for a product.
+Therefore, we split the \nto problem in two subproblems: given a post $p \in POSTS$ we first identify, whether the posts expresses a demand for a product.
 If this is true, we then check whether we can actually categorize the post into one of our product groups.
-All together, given $demand$ and $product$, we can define $nto$:
+All together, given $demand$ and $product$, we can define \nto:
 \begin{alignat*}{3}
-  &\mathbf{nto}: && ~POSTS && \longrightarrow PRODUCT \cup \big\{ NONE \big\} \\
-  &\mathbf{nto}: && ~~p   && \longmapsto \begin{cases}
+  &\mathbf{NTO}: && ~POSTS && \longrightarrow PRODUCT \cup \big\{ NONE \big\} \\
+  &\mathbf{NTO}: && ~~p   && \longmapsto \begin{cases}
 	    product(post)~~~~~~~\text{if }~demand(post) = ``demand" \\
 	    NONE~~~~~~~~~~~~~~~\text{otherwise}
    \end{cases}
@@ -50,19 +50,31 @@ All together, given $demand$ and $product$, we can define $nto$:
 
 In our system, both $demand$ and $product$ are implemented by two independent text classification algorithms.
 We are using supervised machine learning for this.
-The training data for the $demand$ classifier comes from 
+Supervised learning requires tagged training samples to draw conclusions on unseen test samples.
 
-Learning these two concepts with different classifiers also helps over come data sparsity issues.
-The number of posts that actually are asking for a product of the company is low.
-In our example data set, this is , whereas there are \todo{XX}~\%
-This allows to get better results with fewer training data.
+The training data for the $demand$ classifier comes from manually classified demand posts.
+However, the demand classification does not change for different companies or products.
+It is independent from the product classification, which is why companies do not need to supply training data for the demand classification.
+Rather, they can use a prebuild demand classifier.
+
+The training data for the $product$ classifier needs to be supplied in form of brochures and/or marketing material for the different products.
+Each brochure must be assigned to one product.
+Figure~\ref{fig:workflow} illustrates the architecture of the system.
 
 \begin{figure}
-	\caption{Workflow of the noise-to-opportunity system.}
+	\label{fig:workflow}
 	\begin{center}
 		\includegraphics[width=0.7\textwidth]{figures/nto_workflow.eps}
 	\end{center}
+	\caption{Together, a demand classifier training from social network posts and a product classifier trained from marketing material form a classification-model for unseen posts.}
 \end{figure}
+
+
+Learning these two concepts with different classifiers also helps over come data sparsity issues.
+The number of posts that actually are asking for a product of the company is low.
+In our example data set, these posts only cover \todo{XX}~\% of the posts, whereas demand posts occur with \todo{XX}~\% probabilty and product documents with \todo{XX}~\%.
+To minimize the document 
+This allows to get better results with fewer training data.
 
 Only a few training data
 Different characteristica
