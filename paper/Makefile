@@ -4,7 +4,7 @@ else
 	pdfviewer=evince
 endif
 
-show: 	make
+show:	make
 	$(pdfviewer) paper.pdf
 
 make:
