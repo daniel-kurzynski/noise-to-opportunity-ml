@@ -10,7 +10,7 @@
 \end{itemize}
 
 \subsection{Problem Definition}
-
+\todo{Class this NTO because}
 \begin{itemize}
 	\item Different use cases (weigh precision vs recall)
 	\item Introduce small corpus problem (few brochures)
@@ -25,7 +25,7 @@ Let $PRODUCT$ denote the set of a company's product.
 
 Then, the problem can be classified as a function $marketing$ \todo{Better name}, such as:
 \begin{displaymath}
-	marketing: POSTS \to PRODUCT \cup {NONE}
+	nto: POSTS \to PRODUCT \cup {NONE}
 \end{displaymath}
 
 If $p$ is a post, then we propose $p$ to a salesman if $marketing(p) != NONE$.
@@ -35,10 +35,15 @@ A classification of a post $p \in POSTS$ is $correct$, if it is indeed the corre
 
 Figure x shows an example for such a post.
 
+\todo{Three posts for each positive case: demand, product}
 \begin{quote}
+	\centering
+	\boxedQuote{
 	Which self-hosted CRM do you recommend?
 	I'm looking for a self-hosted CRM for a very small business (so preferably free).
 	I've only heard of SugarCRM and vTiger in that category. Do you have any recommendations?
+}
+\caption{Test}\label{fig:1a}
 \end{quote}
 
 % \begin{itemize}

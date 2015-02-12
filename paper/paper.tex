@@ -7,11 +7,17 @@
 \usepackage{comment}
 \usepackage{amsmath}
 \usepackage{subcaption}
+\usepackage{float}
+
 \captionsetup{compatibility=false}
+
+\newfloat{quote}{th}{qt}
+\floatname{quote}{Quote}
 
 \pagestyle{plain}
 \newcommand{\todo}[1]{{\color{red}TODO:~#1}}
 \newcommand{\documentmismatch}{document mismatch problem}
+\newcommand{\boxedQuote}[1]{{\fbox{\begin{minipage}{10 cm}~#1\end{minipage}}}}
 
 \title{N2O \todo{Better Title}}
 \author{Stefan Bunk, Dimitri Korsch, Daniel Kurzynski}
