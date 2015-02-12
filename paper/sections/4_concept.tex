@@ -7,8 +7,53 @@ The next section details our two-staged classification approach.
 We then talk about what features we select and how we approach the \emph{\documentmismatch}.
 
 \subsection{Two-staged classification}
+As presented in Section~\ref{sec:background-problem} there exist two different concepts within a user's post.
+These concepts are orthogonal to each other, as shown below.
 
-In our example data set (see Section~\ref{sec:evaluation})
+First, users might express a need, demand, or interest for some product or not.
+This might be a product of our company or not.
+Typical phrases, taken from an experiment on our example data set (see Section~\ref{sec:evaluation}), for this concept are:
+\begin{center}
+	\textit{need, hi, looking for, recommend, please, anyone, appreciate, thank you}
+\end{center}
+We call this the \emph{demand classification}:
+\begin{align}
+	\mathbf{demand}&: POSTS \longrightarrow \big\{ ``demand``, ``no-demand`` \big\}
+\end{align}
+
+The second concept is about which product the user is talking about in the post.
+Here, the decision needs to be made whether this is a product of the company or not.
+In the latter case, we are not interested in the post anymore.
+Depending on the actual product, the relevant words vary greatly.
+The following words are relevant words for a customer relationship managment software, also taken from our example data:
+\begin{center}
+	\textit{customer, sales, crm, b2b, consumer, salesforce, organization, account}
+\end{center}
+
+We call this the \emph{product classification}:
+\begin{align}
+	\mathbf{product}&: POST \longrightarrow  PRODUCT \cup \big\{ NONE \big\}, \\
+\end{align}
+
+The intersection of the most relevant words for demand and product classification is the empty set.
+This shows, that these concepts are independent of each other and should be treated separately.
+Therefore, we split the $nto$ problem in two subproblems: given a post $p \in POSTS$ we first identify, whether the posts expresses a demand for a product.
+If this is true, we then check whether we can actually categorize the post into one of our product groups.
+All together, given $demand$ and $product$, we can define $nto$:
+\begin{alignat*}{3}
+  &\mathbf{nto}: && ~POSTS && \longrightarrow PRODUCT \cup \big\{ NONE \big\} \\
+  &\mathbf{nto}: && ~~p   && \longmapsto \begin{cases}
+	    product(post)~~~~~~~\text{if }~demand(post) = ``demand`` \\
+	    NONE~~~~~~~~~~~~~~~\text{otherwise}
+   \end{cases}
+\end{alignat*}
+
+\begin{figure}
+  \caption{Summary of }
+  % \begin{center}
+  %   \includegraphics{tucan.eps}
+  % \end{center}
+\end{figure}
 
 Only a few training data
 Different characteristica
