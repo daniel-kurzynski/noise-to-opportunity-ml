@@ -48,6 +48,15 @@ All together, given $demand$ and $product$, we can define $nto$:
    \end{cases}
 \end{alignat*}
 
+In our system, both $demand$ and $product$ are implemented by two independent text classification algorithms.
+We are using supervised machine learning for this.
+The training data for the $demand$ classifier comes from 
+
+Learning these two concepts with different classifiers also helps over come data sparsity issues.
+The number of posts that actually are asking for a product of the company is low.
+In our example data set, this is , whereas there are \todo{XX}~\%
+This allows to get better results with fewer training data.
+
 \begin{figure}
 	\caption{Workflow of the noise-to-opportunity system.}
 	\begin{center}
