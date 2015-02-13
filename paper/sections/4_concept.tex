@@ -7,8 +7,10 @@ The next section details our two-staged classification approach.
 We then talk about what features we select and how we approach the \todo{\emph{documentmismatch}}.
 
 \subsection{Two-staged classification}
-As presented in Section~\ref{sec:background-problem} there exist two different concepts within a user's post.
-These concepts are orthogonal to each other, as shown below.
+As presented in Section~\ref{sec:background-problem} there exist the problem, that brochures are not written from the user perspective.
+We called this the \emph{non-user perspective problem}.
+In fact, there also exist two concepts in the posts.
+These concepts are orthogonal to each other and are shown below.
 
 First, users might express a need, demand, or interest for some product or not.
 This might be a product of our company or not.
@@ -56,7 +58,8 @@ We are using supervised machine learning for this.
 Supervised learning requires tagged training samples to draw conclusions on unseen test samples.
 
 The training data for the $demand$ classifier comes from posts from social media networks.
-This requires manually classifying posts into ``demand" and ``no-demand"
+This requires manually classifying posts into ``demand" and ``no-demand".
+We did this manually for a randomly selected sample of social network posts.
 However, the demand classification does not change for different companies or products.
 It is independent from the product classification, which is why companies do not need to supply training data for the demand classification.
 Rather, they can use a prebuilt demand classifier.
@@ -92,7 +95,8 @@ This model treats each text as a multiset of words in the text.
 This approach loses the text order, but keeps the information about the frequency of words.
 Our classifiers are based on a bag-of-word approach.
 
-To deal with \emph{problem of the dfasdf}
+
+To deal with \emph{problem of document mismatch}, we use a rather strict feature selection.
 
 
 For the demand classifier, we employ a strict feature
