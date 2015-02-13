@@ -12,8 +12,9 @@
 \subsection{Problem Definition}
 \label{sec:background-problem}
 
-In this section we specify the problem we are going to solve. We also talk about problems that could occur while solving the problem. 
+In this section we specify the problem we are going to solve. We also talk about problems that could occur while solving the task. 
 
+\todo{change \acme definition}
 Let \acme be our example software company that offers products like customer relationship management systems or human capital management systems. 
 As in every company there are salesmen who want to get in contact with potential buyers of these products. 
 To find these buyers we help \acme to identify people on business networks who seems to have a need for products offered by \acme.
@@ -22,7 +23,7 @@ We call our approach Noise-To-Opportunity conversion or \nto problem.
 We choose the word noise because of the amount of daily status updates in business networks which makes it infeasible to listen to all off them.
 Nevertheless, there are many posts which are a good opportunity the get in contact with people who wants to buy products a salesman's company offers. 
 
-Post~\ref{post:demand-and-product}, ~\ref{post:demand-only}, and~\ref{post:product-only} shows how posts in such a business network could like. 
+Post~\ref{post:demand-and-product}, ~\ref{post:demand-only}, and~\ref{post:product-only} shows how posts in such business-oriented social networks could like. 
 We have to decide which off these posts are written by potentially customers of \acme. 
 
 \begin{post}
@@ -72,19 +73,27 @@ The product needed by the user should be offered by \acme.
 
 
 Formally, the problem can be defined as: 
-Each $p \in POSTS$ is a post from a business-oriented social networking service. $PRODUCT$ denote the set of a company's product.
+Each $p \in POSTS$ is a post from a business-oriented social networking service. $PRODUCTS$ denote the set of a company's product.
 Then, the problem can be classified as a function $\nto$, such as:
 \begin{displaymath}
-	nto: POSTS \to PRODUCT \cup \{NONE\}
+	\nto: POSTS \to PRODUCTS \cup \{NONE\}
 \end{displaymath}
 
-If $p$ is a post, then we propose $p$ to a salesman if $\nto(p) != NONE$.
-A classification of a post $p \in POSTS$ is $correct$, if it is indeed the correct product recommended.
 
-optimize for both use cases: For salesman and for machine.
+A classification of a post $p \in POSTS$ is $correct$, if $\nto(p)$ equates to the product that seems to be needed by the user who posted $p$ or equates to $NONE$ if the user does not need a product offered by the company. If $p$ is a post, then we propose $p$ to a salesman if $\nto(p) != NONE$.
 
-In the following chapters we explain how we build this~\nto.
+However, we can optimize our algorithm for both use cases: Helping salesmen or displaying advertisement automatically.
+For helping salesmen it is important to have a high precision. 
+If we recommend a post to salesmen we should be definitely sure, that our recommendation is correct. 
+A high precision reduces the unnecessary work.
+For displaying advertisement automatically the recall should be high. 
+It is important to recommend products to as many users as possible.
+It is acceptable if some of theses recommendation are not correct.   
+
+In the following chapters we explain how we build the~\nto function.
 We archive this by learning from a sample dataset. 
+However, from the theoretical learning perspective a problem arises.
+
 
 small corpus
 
