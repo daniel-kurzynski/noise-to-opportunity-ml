@@ -16,7 +16,11 @@ class ExtendedNTOClassifier(val dataReader: DataReader, stopWordsFile: File, pos
 
 	def validate():Unit = {
 		val demandEvaluation = demandClassifier.crossValidate()
-		println(demandEvaluation.toSummaryString(f"%nResults%n======%n", false))
+		println("=" * 80)
+		println("Demand")
+		println("=" * 80)
+		println(demandEvaluation.toSummaryString("", false))
+//		println(demandEvaluation.pctCorrect())
 		println(demandEvaluation.toMatrixString)
 
 		var posts = mutable.ArrayBuffer[Document]()
@@ -24,6 +28,9 @@ class ExtendedNTOClassifier(val dataReader: DataReader, stopWordsFile: File, pos
 			posts += post
 		}("category")
 
+		println("=" * 80)
+		println("Product")
+		println("=" * 80)
 		productClassifier.printValidation(posts.toList)
 	}
 

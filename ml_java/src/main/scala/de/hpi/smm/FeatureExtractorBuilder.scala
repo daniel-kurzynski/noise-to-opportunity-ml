@@ -11,6 +11,7 @@ class FeatureExtractorBuilder(val dataReader: DataReader) {
 	var postForCategory = List[Document]()
 	var brochures = List[Document]()
 
+
 	if (dataReader != null) {
 		dataReader.readPostsLinewise { post =>
 			posts ::= post

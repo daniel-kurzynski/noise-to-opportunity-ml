@@ -1,12 +1,16 @@
 package de.hpi.smm.data_reader
 
 import java.io.{File, FileReader}
+import java.util.Collections
 
 import au.com.bytecode.opencsv.CSVReader
 import com.blog_intelligence.nto.{ReadingResult, RawDocument, Document}
 import com.lambdaworks.jacks.JacksMapper
+import de.hpi.smm.domain.Word
 import de.hpi.smm.nlp.NLP
 import scala.collection.mutable
+import scala.collection.JavaConverters._
+import scala.util.Random
 
 object DataReader {
 	val theirClassifications = mutable.Map[String, String]()
@@ -82,6 +86,29 @@ class DataReader(val postsFile: File, val brochuresFile: File, classificationFil
 		this.readPostsLinewise { post =>
 			demandDocs.add(post)
 		}()
+		val sentences = mutable.Map[String, Set[Seq[Word]]]()
+		demandDocs.asScala.foreach { post =>
+			val docClass = post.documentClass
+			if (!sentences.contains(docClass))
+				sentences(docClass) = Set[Seq[Word]]()
+			sentences(docClass) ++= post.sentences
+		}
+		demandDocs.clear()
+		sentences.foreach { case (key, set) =>
+			println(s"$key --> ${set.size}")
+		}
+		val r = new Random(7)
+		var i = 0
+		sentences.foreach { case (docClass, sentencesForKey) =>
+			for (_ <- 1 to 300) {
+				val chosenSentences = r.shuffle(sentencesForKey.toList).take(2)
+				val doc = Document(i.toString, "", chosenSentences.flatten.mkString(" "), chosenSentences, docClass)
+				demandDocs.add(doc)
+				i += 1
+			}
+		}
+		Collections.shuffle(demandDocs, new java.util.Random(7))
+		println(demandDocs.size)
 
 		this.readBrochuresLinewise(List("en")) { brochure =>
 			productDocs.add(brochure)
