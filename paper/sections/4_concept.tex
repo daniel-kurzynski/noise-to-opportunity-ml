@@ -80,14 +80,21 @@ The number of posts that actually are asking for a product of the company is usu
 In our example data set, these posts only cover \todo{XX}~\% of the posts, whereas demand posts occur with \todo{XX}~\% probabilty and product documents with \todo{XX}~\%.
 If the machine learning would work directly on the positive examples, this would introduce a high data skew.
 The number of positive training samples would be at least a magnitude lower than the number of negative samples.
-This skew has been shown to harm the performance of machine learning systems significantly \cite{monard2002learning, guo2008class}.
+This skew has been shown to harm the performance of machine learning systems significantly \cite{monard2002learning,guo2008class}.
 
 However, even with two classifiers, the number of positive samples is much lower than the number of negative examples.
 Therefore, we employ techniques of feature selection and training data sampling, which are shown in the next two sections.
 
 \subsection{Feature Selection}
-As we supervised machine-learning.
-Our classifiers are based on a bag-of-word approach \cite{yang1997comparative}
+As we use supervised machine-learning for the text categorization, we need to define features, which are good for predicting a demand and the product classes.
+The general approach to features in text classification is the bag-of-words model \cite{yang1997comparative,zhang2010understanding}.
+This model treats each text as a multiset of words in the text.
+This approach loses the text order, but keeps the information about the frequency of words.
+Our classifiers are based on a bag-of-word approach.
+
+To deal with \emph{problem of the dfasdf}
+
+
 For the demand classifier, we employ a strict feature 
 Often, only a few keywords indicate membership of product class.
 Furthermore, the number of posts used for learning.

@@ -11,6 +11,8 @@ object ClassificationPreparation {
 	val classificationFile = new File(CLASSIFICATION_JSON)
 	val postsFile = new File("../n2o_data/linked_in_posts.csv")
 	val brochuresFile = new File("../n2o_data/brochures.csv")
+	val stopWordsFile = new File(STOPWORDS_PATH)
+	val posModelFile = new File(POSMODEL_PATH)
 
 	val ntoClassifier = ExtendedNTOClassifierBuilder.build(classificationFile, brochuresFile, postsFile, stopWordsFile, posModelFile)
 
