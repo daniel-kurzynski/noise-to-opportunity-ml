@@ -22,22 +22,22 @@ object Main {
 	val stopWordsFile = new File(STOPWORDS_PATH)
 	val posModelFile = new File(POSMODEL_PATH)
 	val nlp = new NLP(stopWordsFile, posModelFile)
-	val dataReader = new DataReader(postsFile, brochuresFile,classificationFile,nlp)
+	val dataReader = new DataReader(postsFile, brochuresFile, classificationFile, nlp)
 
 	val featureExtractorBuilder = new FeatureExtractorBuilder(dataReader)
 
 	def main(args: Array[String]): Unit = {
-		//println("Demand Feature Extraction")
-		//runDemandFeatureExtraction()
+//		println("Demand Feature Extraction")
+//		runDemandFeatureExtraction()
 
 //		println("Brochure Feature Extraction")
 //		runBrochureFeatureExtraction()
 
-		 // println("Classify Post")
-		 // runClassifyPost()
+		println("Classify Post")
+		runClassifyPost()
 
-		println("Most certain Posts")
-		mostCertainPosts()
+//		println("Most certain Posts")
+//		mostCertainPosts()
 	}
 
 

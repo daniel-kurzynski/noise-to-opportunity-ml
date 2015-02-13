@@ -12,7 +12,7 @@ object ClassificationPreparation {
 	val postsFile = new File("../n2o_data/linked_in_posts.csv")
 	val brochuresFile = new File("../n2o_data/brochures.csv")
 
-	val ntoClassifier = ExtendedNTOClassifierBuilder.build(classificationFile,brochuresFile,postsFile)
+	val ntoClassifier = ExtendedNTOClassifierBuilder.build(classificationFile, brochuresFile, postsFile, stopWordsFile, posModelFile)
 
 	println("Finished preparing post prediction")
 

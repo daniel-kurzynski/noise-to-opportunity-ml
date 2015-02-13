@@ -19,7 +19,7 @@ object ExtendedNTOClassifierBuilder {
 		val extractor = new DocumentExtractor(stopWordsFile, posModelFile)
 		val nlp = new NLP(stopWordsFile, posModelFile)
 		val dataReader = new DataReader(postsFile, brochuresFile, classificationFile, nlp)
-		val readingResult = extractor.readFromCSV(postsFile,brochuresFile,classificationFile)
+		val readingResult = extractor.readFromCSV(postsFile, brochuresFile, classificationFile)
 
 		val extendedNTOClassifier = new ExtendedNTOClassifier(dataReader, stopWordsFile, posModelFile)
 		extendedNTOClassifier.trainDemand(readingResult.demandDocuments)
