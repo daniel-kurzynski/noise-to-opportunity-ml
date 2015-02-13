@@ -2,35 +2,60 @@
 
 \section{Evaluation}
 \label{sec:evaluation}
-We built a prototype of the \nto system.
+
+\subsection{Evaluation measures} % (fold)
+\label{sub:evaluation_measures}
+In this section we will evaluate some of our design decisions and for the evaluation we use following measures.
+As already mentioned in previous section, the demand classifier can be optimized for precision or recall, depending on the purpose it is used for.
+Thats why we consider for the demand classifier the precision and the recall of the demand predictions, and the overall precision for both demand and no-demand.
+Since the product classifier has more than two classes it classifies, we consider for the product classifier only the overall precision.
+% In both cases is the overall precision equal to the overall recall, because we ???
+
+% subsection evaluation_measures (end)
+
+\subsection{Initial data set} % (fold)
+\label{sub:initial_data_set}
+We built a prototype of an \nto system.
 This prototype is build for the products of a German software company called SAP.
 SAP is the biggest software company in Europe and builds software for small and large enterprises.
-SAP provided us 100 brochures about four SAP software products: CRM, ECOM, HCM, and LVM
-We used brochures from a German software company called SAP
-We received xx brochures for four products.
-The different products can be
+SAP provided us nearly 100 brochures about four SAP software products, which are explained in the table \ref{table:products}.
+The targeted social media posts are approximately 19,000 LinkedIn posts.
+Unfortunately three forth of the brochures are in German language and the LinkedIn posts are written in English.
+To solve the language mismatch, we have translated the documents with an automated translator and replaced the German brochures with its translations.
+Additionally we have added some book descriptions from Amazon about these products to enlarge the training set.
+As already mentioned in the previous sections to extend our training set further, we split the brochures and the Amazon descriptions.
+With the help of the splitting the training set grows to 994 document, which we use for the training of the product classifier.
 
-\subsection{Manual annotation of the LinkedIn posts}
+% subsection initial_data_set (end)
 
-
-
+\subsection{Manual annotation of the LinkedIn posts} % (fold)
+\label{sub:manual_annotation_of_the_linkedin_posts}
 Because the \nto problem is not very well researched, we could not find any demand data sets, which have been already annotated and can be used for learning and evaluation purposes.
-The data set we have used consists of approximately 19,000 LinkedIn posts.
-Some of these posts we have annotated manually using active learning implemented in a self created tagging web app.
-The app proposes to the tagger first some random posts, which he annotates with demand/no-demand tag and the product category.
+Some of the 19,000 LinkedIn posts we have annotated manually using active learning approach.
+We have implemented a tagging web app which implements the active learning.
+Firstly the app proposes to the tagger some random posts, which he annotates with demand/no-demand tag and the product category.
 When enough posts are annotated the app learns on these posts and proposes the tagger the most uncertain posts, which he annotates again.
-This way each of us have annotated roughly 120 posts.
+Hereby each of us have annotated roughly 120 posts.
 After the posts were annotated once, we have annotated the posts from each other second time to improve the annotations.
-To solve incurred conflicts, the posts, which were annotated in different ways, were annotated third time by another person.
+To solve incurred conflicts, the posts which were annotated in different ways, were annotated third time by another person.
 As the result we had a test set of nearly 350 LinkedIn posts with two annotations for the demand and the product classifier.
 On these posts we have made a ten-fold cross validation of the demand classifier.
 Since we had some brochures of the products, on which we can learn, for the product classifier we used the annotated posts exclusively for the evaluation.
-In the following we show and explain the evaluation results of our classifiers.
+
+% subsection manual_annotation_of_the_linkedin_posts (end)
+
+\subsection{Results} % (fold)
+\label{sub:results}
+Compared with a naive approach, using the brochures as they are, the translation of the German brochures and the enlargement of the training brings an improvement of ...\% for the demand classifier as it is shown in the table \ref{table:demand_trainset_enlargement}.
+% subsection results (end)
+
+
+
+
 
 
 
 \endinput
-
 \begin{itemize}
 	\item Introduce our data set (show numbers, show examples)
 	\item How we got our training data (everything at least twice, use the demands for learning, use the products for evaluation, Active Learning approach)
@@ -38,8 +63,4 @@ In the following we show and explain the evaluation results of our classifiers.
 	\item Evaluate of the training data generation, which approach is best (random, grouping)
 \end{itemize}
 
-% \begin{itemize}
-% 	\item Demonstrate that your idea actually works
-% 	\item Identify possible drawbacks
-% \end{itemize}
 
