@@ -91,16 +91,37 @@ It is important to recommend products to as many users as possible.
 It is acceptable if some of theses recommendation are not correct.   
 
 In the following chapters we explain how we build the~\nto function.
-We archive this by learning from a sample dataset. 
-However, from the theoretical learning perspective a problem arises.
+We archive this by learning a classifier from a sample data set. 
+Therefore, we need a data set where for each document is already tagged whether our \nto function should recommend a product or not.
+However, salesmen does not want to read through hundreds of posts to tag them manually.
+We need a different data source.
+We decide to use advertisement brochures describing \acme's products. 
+Using brochures a problem arises from the theoretical learning perspective.
+
+In a learning task the instances should be drawn from the same population in the training phase and during the classification.\nr
+Here in the training phase we use brochures. Later on we want to classify posts. 
+Both groups of documents are slightly different. 
+
+For each product the relative frequency of documents dealing with this product is different.
+The probability that a randomly chosen document belongs to a specific product should be the same in both groups.
+The classifier uses this probability in the training phase to improve the predictions.\nr
+
+Furthermore, brochures and posts have different lengths.
+We call this the \todo{documentmismatch}.
+
 
 
 small corpus
 
-document-/length mismatch problem (theory vs practice)
-
-listing to summarize
-
+\todo{listing to summarize if needed}
+ \begin{itemize}
+ 	\item \emph{Non-user perspective}: Brochures are written from the perspective of the salesman. However, we want to classify on user-written social network posts.
+ 	As Quote xx illustrates simply finding posts similar to the brochures is not sufficient, as we also need to consider whether the user actually wants feedback and recommendations.
+ 	do not express a demand. Brochures mismatch posts with respect to demand
+	\item \emph{Document mismatch}: Andere Worte kommen in Marketing vor, z. B. ``" . Also, they are more frequent as brochures are usually much longer (often at least one pdf page) while social network posts 
+	There is a crucial difference in writing style and word choice between 
+	\item \emph{Small corpus}: 
+ \end{itemize}
 
 % \begin{itemize}
 % 	\item Who inspired your work?
