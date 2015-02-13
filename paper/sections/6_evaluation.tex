@@ -2,11 +2,39 @@
 
 \section{Evaluation}
 \label{sec:evaluation}
+We built a prototype of the \nto system.
+This prototype is build for the products of a German software company called SAP.
+SAP is the biggest software company in Europe and builds software for small and large enterprises.
+SAP provided us 100 brochures about four SAP software products: CRM, ECOM, HCM, and LVM
+We used brochures from a German software company called SAP
+We received xx brochures for four products.
+The different products can be
+
+\subsection{Manual annotation of the LinkedIn posts}
+
+
+
+Because the \nto problem is not very well researched, we could not find any demand data sets, which have been already annotated and can be used for learning and evaluation purposes.
+The data set we have used consists of approximately 19,000 LinkedIn posts.
+Some of these posts we have annotated manually using active learning implemented in a self created tagging web app.
+The app proposes to the tagger first some random posts, which he annotates with demand/no-demand tag and the product category.
+When enough posts are annotated the app learns on these posts and proposes the tagger the most uncertain posts, which he annotates again.
+This way each of us have annotated roughly 120 posts.
+After the posts were annotated once, we have annotated the posts from each other second time to improve the annotations.
+To solve incurred conflicts, the posts, which were annotated in different ways, were annotated third time by another person.
+As the result we had a test set of nearly 350 LinkedIn posts with two annotations for the demand and the product classifier.
+On these posts we have made a ten-fold cross validation of the demand classifier.
+Since we had some brochures of the products, on which we can learn, for the product classifier we used the annotated posts exclusively for the evaluation.
+In the following we show and explain the evaluation results of our classifiers.
+
+
+
+\endinput
 
 \begin{itemize}
 	\item Introduce our data set (show numbers, show examples)
 	\item How we got our training data (everything at least twice, use the demands for learning, use the products for evaluation, Active Learning approach)
-	\item Reference Precision/Recall from above again, final 
+	\item Reference Precision/Recall from above again, final
 	\item Evaluate of the training data generation, which approach is best (random, grouping)
 \end{itemize}
 
