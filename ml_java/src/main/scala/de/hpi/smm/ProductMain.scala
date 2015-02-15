@@ -14,6 +14,7 @@ import scala.util.Random
 object ProductMain {
 
 	val BUILD_RANDOM_BROCHURES = true
+	val INCLUDE_NONE_POSTS = true
 
 	val postsFile = new File(POSTS_PATH)
 	val brochuresFile = new File(BROCHURES_PATH)
@@ -21,7 +22,7 @@ object ProductMain {
 	val stopWordsFile = new File(STOPWORDS_PATH)
 	val posModelFile = new File(POSMODEL_PATH)
 	val nlp = new NLP(stopWordsFile, posModelFile)
-	val dataReader = new DataReader(postsFile, brochuresFile,classificationFile,nlp)
+	val dataReader = new DataReader(postsFile, brochuresFile, classificationFile, nlp, include_none = INCLUDE_NONE_POSTS)
 
 	var posts = mutable.ArrayBuffer[Document]()
 	var brochures = mutable.ArrayBuffer[Document]()
@@ -31,8 +32,6 @@ object ProductMain {
 		brochures = mutable.ArrayBuffer[Document]()
 
 		if (dataReader != null) {
-
-			dataReader.INCLUDE_NONE = INCLUDE_NONE_POSTS
 
 			dataReader.readPostsLinewise { post =>
 				posts += post
@@ -53,7 +52,6 @@ object ProductMain {
 	)
 	val binaryFeatures = List(false, true)
 	val normalize = List(false, true)
-	val INCLUDE_NONE_POSTS = true
 
 	def main(args: Array[String]): Unit = {
 		readData()
@@ -81,7 +79,6 @@ object ProductMain {
 
 						val analyzer = new ProductClassifier(brochures, nlp, groupSize, classifier, useBinaryFeature, normalizeFeatures, INCLUDE_NONE_POSTS, !BUILD_RANDOM_BROCHURES)
 						analyzer.buildClassifier()
-
 						analyzer.printValidation(posts)
 					}
 				}

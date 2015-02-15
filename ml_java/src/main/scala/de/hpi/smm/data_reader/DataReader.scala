@@ -16,9 +16,7 @@ object DataReader {
 	val theirClassifications = mutable.Map[String, String]()
 }
 
-class DataReader(val postsFile: File, val brochuresFile: File, classificationFile: File, nlp: NLP) {
-
-	var INCLUDE_NONE = false
+class DataReader(val postsFile: File, val brochuresFile: File, classificationFile: File, nlp: NLP, val include_none: Boolean = false) {
 
 	val classifiedPosts = JacksMapper.readValue[Map[String, Map[String, Map[String, String]]]](
 			new FileReader(classificationFile))
@@ -51,10 +49,11 @@ class DataReader(val postsFile: File, val brochuresFile: File, classificationFil
 		reader.close()
 	}
 
-	def readPostsLinewise(extractor: Document => Unit)(className: String = "demand", count: Int = Int.MaxValue, all: Boolean = false): Unit = {
+	def readPostsLinewise(extractor: Document => Unit)(className: String = "demand", count: Int = Int.MaxValue): Unit = {
 		val reader = new CSVReader(new FileReader(postsFile))
 
-		var postCount: Int = 1
+		var postCount: Int = 0
+		var postRead: Int = 0
 		var line: Array[String] = reader.readNext()
 		while (line != null && postCount <= count) {
 			val id = line(0)
@@ -64,18 +63,20 @@ class DataReader(val postsFile: File, val brochuresFile: File, classificationFil
 			DataReader.theirClassifications(id) = theirClassification
 
 			val rawPost = RawDocument(id, title, text, classifiedPosts.get(id).orNull)
-
-			if (all || classifiedPosts.contains(id)) {
+			postRead += 1
+			if (include_none || classifiedPosts.contains(id)) {
 				val sentences = nlp.detectSentences(rawPost)
 				val post = Document(id, title, text, sentences, rawPost.extract(className))
-				if (INCLUDE_NONE || post.documentClass != "None") {
-					postCount += 1
+				if (include_none || post.documentClass != "None") {
 					extractor(post)
+					postCount += 1
 				}
 			}
 			line = reader.readNext()
 		}
 		reader.close()
+
+		println(s"read $postRead posts, extracted $postCount of them")
 	}
 
 	def getReadingResult: ReadingResult = {

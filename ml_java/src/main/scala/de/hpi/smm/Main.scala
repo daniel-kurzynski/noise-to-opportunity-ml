@@ -16,25 +16,27 @@ import scala.util.hashing.MurmurHash3
 
 object Main {
 
+	val include_not_classified = true
+
 	val postsFile = new File(POSTS_PATH)
 	val brochuresFile = new File(BROCHURES_PATH)
 	val classificationFile = new File(CLASSIFICATION_JSON)
 	val stopWordsFile = new File(STOPWORDS_PATH)
 	val posModelFile = new File(POSMODEL_PATH)
 	val nlp = new NLP(stopWordsFile, posModelFile)
-	val dataReader = new DataReader(postsFile, brochuresFile, classificationFile, nlp)
+	val dataReader = new DataReader(postsFile, brochuresFile, classificationFile, nlp, include_none = include_not_classified)
 
 	val featureExtractorBuilder = new FeatureExtractorBuilder(dataReader)
 
 	def main(args: Array[String]): Unit = {
-//		println("Demand Feature Extraction")
-//		runDemandFeatureExtraction()
+		println("Demand Feature Extraction")
+		runDemandFeatureExtraction()
 
 //		println("Brochure Feature Extraction")
 //		runBrochureFeatureExtraction()
 
-		println("Classify Post")
-		runClassifyPost()
+//		println("Classify Post")
+//		runClassifyPost()
 
 //		println("Most certain Posts")
 //		mostCertainPosts()
@@ -51,7 +53,7 @@ object Main {
 		)
 
 		val allPosts = mutable.ArrayBuffer[Document]()
-		ntoClassifier.dataReader.readPostsLinewise{post => allPosts += post}("category", all = true)
+		ntoClassifier.dataReader.readPostsLinewise{post => allPosts += post}("category")
 
 		List(
 			"CRM"
@@ -103,8 +105,11 @@ object Main {
 
 		writer.writeNext(features.names)
 
+		val classes = mutable.Set[String]()
+
 		features.buildFeatureVectors(posts, { (post, instance) =>
-			val outputLine = buildLine(post, instance, "demand")
+			classes.add(post.documentClass)
+			val outputLine = buildLine(post, instance, "demand", include_not_classified)
 			writer.writeNext(outputLine)
 		})
 
@@ -113,6 +118,8 @@ object Main {
 		features.takeTopOccurrence("demand").take(10).foreach(println)
 		println("----------------")
 		features.takeTopNotOccurrence("demand").take(10).foreach(println)
+		println("----------------")
+		classes.foreach(println)
 	}
 
 	def runBrochureFeatureExtraction(): Unit = {
@@ -131,7 +138,7 @@ object Main {
 
 			clsFeatures.writeNext(features.names)
 			features.buildFeatureVectors(brochures, { (post, instance) =>
-				val outputLine = buildLine(post, instance, clsName)
+				val outputLine = buildLine(post, instance, clsName, include_not_classified)
 				clsFeatures.writeNext(outputLine)
 			})
 			clsFeatures.close()
@@ -156,11 +163,11 @@ object Main {
 
 	}
 
-	private def buildLine(post: Document, instance: Array[Double], currentClass: String, emptyClass: Boolean = false): Array[String] = {
+	private def buildLine(post: Document, instance: Array[Double], currentClass: String, allowEmtpyClass: Boolean = false): Array[String] = {
 		val line = new Array[String](instance.size + 2)
 		line(0) = post.id
-		if (emptyClass){
-			line(line.size - 1) = ""//if (List(currentClass, "no-idea", null).contains(post.documentClass)) post.documentClass else "no-" + currentClass
+		if (allowEmtpyClass){
+			line(line.size - 1) = post.documentClass
 		} else {
 			line(line.size - 1) = if (List(currentClass, "no-idea", null).contains(post.documentClass)) post.documentClass else "no-" + currentClass
 		}

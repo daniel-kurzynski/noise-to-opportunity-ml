@@ -8,6 +8,7 @@ import scala.collection.mutable
 class FeatureExtractor(smooting: Boolean) extends Serializable {
 
 	var finished = false
+	var docCounter = 0
 	
 	val genericCounter = new GenericCountsCounter()
 	genericCounter.smoothing = smooting
@@ -89,11 +90,13 @@ class FeatureExtractor(smooting: Boolean) extends Serializable {
 			features.foreach { feature => feature.touch(document)}
 			countTypes(document)
 			countWords(document)
+			docCounter += 1
 		}
 	}
 	def finishTraining(): Unit = {
 		finished = true
 		features.foreach(_.finishTraining())
+		println(s"extracted features from $docCounter documents")
 	}
 	def buildFeatureVectors(documents: Seq[Document], vectorHandler: (Document, Array[Double]) => Unit): Unit = {
 		documents.foreach { document =>

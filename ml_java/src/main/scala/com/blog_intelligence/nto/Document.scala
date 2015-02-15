@@ -61,7 +61,7 @@ case class Document(
 	}
 
 	def isClassified: Boolean = {
-		documentClass != null
+		!(documentClass == null || documentClass == "None")
 	}
 
 }
