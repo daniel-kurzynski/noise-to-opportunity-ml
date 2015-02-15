@@ -35,7 +35,7 @@ class CSVReader(object):
 
 	replacements = [
 		["<br />", ""],
-		["\\,", "<komma>"],
+		["\\,", ""],
 		["\"", ""],
 		["\\", ""],
 	]
@@ -74,6 +74,5 @@ class CSVReader(object):
 			CSVReader.replacements,
 			line)
 		idx, title, text, _, _, _, _, _, category, _, _ = line.split(",")
-		title, text = title.replace("<komma>", ","), text.replace("<komma>", ",")
 		return Data(idx, title, text, classification.get(idx))
 

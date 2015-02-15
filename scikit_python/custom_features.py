@@ -2,6 +2,8 @@ from os.path import dirname, join
 from scipy.sparse import issparse
 import numpy as np
 
+from constants import DEMAND_FEATURES, PRODUCT_FEATURES
+
 def __build_data(fname):
 	ids, X, y, predict_ids, X_predict = [], [], [], [], []
 	with open(join(dirname(dirname(__file__)), fname)) as f:
@@ -28,13 +30,13 @@ def __build_data(fname):
 def build_demand_data(printFoo = True):
 	if printFoo:
 		print "=== Custom Feature Extractor ==="
-	return __build_data("n2o_data/features.csv")
+	return __build_data(DEMAND_FEATURES)
 
 
 def build_product_data(product_class):
 	print "=== Custom Feature Extractor ==="
-	_, X_train, y_train, _, _, _ = __build_data("n2o_data/features_%s.csv"%(product_class.lower()))
-	_, X_test, y_true, _, ids, X_predict = __build_data("n2o_data/features_test_%s.csv"%(product_class.lower()))
+	_, X_train, y_train, _, _, _ = __build_data(PRODUCT_FEATURES(product_class, ""))
+	_, X_test, y_true, _, ids, X_predict = __build_data(PRODUCT_FEATURES(product_class, "_test"))
 
 	if not len(X_test):
 		X_test = X_predict
