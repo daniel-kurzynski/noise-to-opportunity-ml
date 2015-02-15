@@ -1,13 +1,15 @@
 from flask import Flask, request, render_template,session
-from active_learner import active_learner
-import simplejson as json
 from flask.ext.compress import Compress
-import numpy as np
+import simplejson as json, numpy as np
+
+sys.path.append("../scikit_python")
+from evaluation import Classifiers
+from active_learner import active_learner
 
 compress = Compress()
 app = Flask(__name__)
 
-learner = active_learner()
+learner = active_learner(Classifiers.CLASSIFIERS[Classifiers.BERNOULLI_NB]["demand"])
 
 @app.route("/")
 def hello():

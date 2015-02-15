@@ -5,16 +5,16 @@ from os.path import join, abspath
 from post import Post, Prediction
 from collections import Counter
 from math import exp
+from sklearn.base import clone
 
-sys.path.append("../scikit_python")
-from evaluation import Classifiers
 from custom_features import build_demand_data
 from constants import LINKED_IN_POSTS, CLASSIFICATION
 
 ids, X_train, y_train, _, predict_ids, X_predict = build_demand_data(False)
 
 class active_learner(object):
-	def __init__(self):
+	def __init__(self, classifier):
+		self.classifier = classifier
 		self.classification = collections.OrderedDict()
 		self.posts = []
 		self.load_posts()
@@ -89,11 +89,10 @@ class active_learner(object):
 		X_predict = new_X_predict
 		predict_ids = new_predict_ids
 
-		# Train the classifier
-		classifier = Classifiers.CLASSIFIERS[Classifiers.BERNOULLI_NB]
-		print classifier.__class__.__name__
-		classifier.fit(X_train, y_train)
-		return classifier, X_predict, unlabeled_posts
+		# Train the classifier with same parameters but with new data
+		self.classifier = clone(self.classifier)
+		self.classifier.fit(X_train, y_train)
+		return X_predict, unlabeled_posts
 
 
 	def predicted_posts(self, type):
@@ -103,13 +102,13 @@ class active_learner(object):
 
 		print "Choosing " + type + " posts"
 
-		classifier, X_predict, unlabeled_posts = self.build_classifier()
+		X_predict, unlabeled_posts = self.build_classifier()
 
 		assert(len(X_predict) == len(unlabeled_posts))
 		# Old predictions, where we have a confidence
-		# predictions = self.calculate_predictions(classifier, X_predict)
+		# predictions = self.calculate_predictions(self.classifier, X_predict)
 		# As we are using BernoulliNB basically, we do not have prediction confidences anymore
-		predictions = self.calculate_predictions_nb(classifier, X_predict)
+		predictions = self.calculate_predictions_nb(X_predict)
 
 		confidence_predictions = sorted(predictions, key = lambda prediction: prediction.confidence)
 
@@ -167,19 +166,19 @@ class active_learner(object):
 			conflicting_posts.append(post)
 		return conflicting_posts
 
-	def calculate_predictions(self, classifier, data):
-		confidences = np.abs(classifier.decision_function(data))
+	def calculate_predictions(self, data):
+		confidences = np.abs(self.classifier.decision_function(data))
 		# The following line first sorts the confidences, and then extracts the predictions from these orders.
 		# The index for the highest confidence is in the last position.
 		# We then build Prediction objects for these.
-		predictions = [Prediction(classifier.classes_[confOrders[-1]], confidences[index][confOrders[-1]], index) for index, confOrders in enumerate(np.argsort(confidences))]
+		predictions = [Prediction(self.classifier.classes_[confOrders[-1]], confidences[index][confOrders[-1]], index) for index, confOrders in enumerate(np.argsort(confidences))]
 		return predictions
 
-	def calculate_predictions_nb(self, classifier, X_predict):
+	def calculate_predictions_nb(self, X_predict):
 		predictions = []
 		for index, x in enumerate(X_predict):
-			predictedClass = classifier.predict(x)
-			class_probs = map(lambda x: exp(x), classifier.predict_log_proba(x)[0])
+			predictedClass = self.classifier.predict(x)
+			class_probs = map(lambda x: exp(x), self.classifier.predict_log_proba(x)[0])
 			# if index == 4: # print some example values
 			# 	print class_probs
 			# 	print max(class_probs)
