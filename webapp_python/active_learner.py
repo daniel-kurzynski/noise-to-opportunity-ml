@@ -9,7 +9,6 @@ from math import exp
 sys.path.append("../scikit_python")
 from evaluation import Classifiers
 from custom_features import build_demand_data
-
 from constants import LINKED_IN_POSTS, CLASSIFICATION
 
 ids, X_train, y_train, _, predict_ids, X_predict = build_demand_data(False)

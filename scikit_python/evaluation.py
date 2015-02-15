@@ -21,9 +21,10 @@ import sys
 from os.path import join, abspath, dirname
 
 from preprocessing import CSVReader
+from constants import LINKED_IN_POSTS
 
 csv_reader = CSVReader()
-csv_reader.read("../n2o_data/linked_in_posts.csv", CSVReader.linked_in_extractor)
+csv_reader.read(LINKED_IN_POSTS, CSVReader.linked_in_extractor)
 all_posts = csv_reader.data
 
 def score(y_true, y_pred, score_function, label_index):
