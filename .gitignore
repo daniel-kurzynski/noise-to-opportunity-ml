@@ -1,6 +1,5 @@
 # data files
 lib/
-data
 *.csv
 tagger_name.conf
 n2o_data
