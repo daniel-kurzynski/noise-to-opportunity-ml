@@ -4,17 +4,20 @@ import numpy as np
 
 from constants import DEMAND_FEATURES, PRODUCT_FEATURES
 
-def __build_data(fname):
+def __build_data(f_path):
 	ids, X, y, predict_ids, X_predict = [], [], [], [], []
-	with open(join(dirname(dirname(__file__)), fname)) as f:
+	with open(f_path) as f:
 		first = True
 		for line in f:
-			if first: first = False; continue
+			if first:
+				first = False
+				continue
 			content = line.strip().split(",")
 			cls = content[-1]
 			if not content or cls == "no-idea":
+				# print "class was no-idea({}) or content was empty({})!".format(cls == "no-idea", not content)
 				continue
-			if cls == "":
+			if cls == "" or cls == "None":
 				predict_ids.append(content[0])
 				X_predict.append([float(val) for val in content[3:-1]])
 			else:
