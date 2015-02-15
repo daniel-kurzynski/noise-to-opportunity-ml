@@ -1,16 +1,15 @@
-from os.path import join, abspath
-from post import Post, Prediction
 import simplejson as json
 import numpy as np
-import collections
+import collections, sys
+from os.path import join, abspath
+from post import Post, Prediction
 from collections import Counter
 from math import exp
 
-import time
-import sys
 sys.path.append("../scikit_python")
 from evaluation import Classifiers
 from custom_features import build_demand_data
+
 ids, X_train, y_train, _, predict_ids, X_predict = build_demand_data(False)
 
 class active_learner(object):
@@ -82,7 +81,6 @@ class active_learner(object):
 
 		relevant_ids = set(map(lambda x: x.id, unlabeled_posts))
 
-		# start = time.time()
 		new_X_predict = []
 		new_predict_ids = []
 		for index, x in enumerate(X_predict):
@@ -91,8 +89,6 @@ class active_learner(object):
 				new_predict_ids.append(predict_ids[index])
 		X_predict = new_X_predict
 		predict_ids = new_predict_ids
-		# end = time.time()
-		# print end - start, " seconds"
 
 		# Train the classifier
 		classifier = Classifiers.CLASSIFIERS[Classifiers.BERNOULLI_NB]

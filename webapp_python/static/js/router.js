@@ -4,7 +4,7 @@ define(['jquery',
 	'views/demand_classification_view',
 	'views/overview_view',
 	'views/tagger_view'	,
-	'views/analyze_post_view'	
+	'views/analyze_post_view'
 	], function($, _, Backbone, DemandClassificationView, DemandView, TaggerView, AnalyzePostView) {
 
 
@@ -38,7 +38,7 @@ define(['jquery',
 		////////////// Routes //////////////////
 
 		home: function() {
-			console.log("Routing home…");
+			console.log("Routing home...");
 			this.classifyPost();
 		},
 
@@ -99,7 +99,7 @@ define(['jquery',
 			this.$el.append(view.$el);
 		},
 
-		
+
 	});///////////////////////////////////////////////////////
 
 });

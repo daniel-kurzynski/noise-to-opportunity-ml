@@ -1,5 +1,4 @@
-import sys
-import json
+import sys, json
 
 class Merger:
 
@@ -8,23 +7,23 @@ class Merger:
 		self.conflicts={"posts":[]}
 
 	def load_classification(self):
-		with open('data/classification.json') as infile:    
+		with open('data/classification.json') as infile:
 			self.classification = json.load(infile)
-			
+
 	def save_classification(self):
 		with open('data/classification.json', 'w') as outfile:
 			json.dump(self.classification, outfile)
 
 	def load_conflicts(self):
-		with open('data/conflicts.json') as infile:    
+		with open('data/conflicts.json') as infile:
 			self.conflicts = json.load(infile)
-			
+
 	def save_conflicts(self):
 		with open('data/conflicts.json', 'w') as outfile:
 			json.dump(self.conflicts, outfile)
 
 	def merge(self, filename):
-		with open(filename) as classification_file:    
+		with open(filename) as classification_file:
 			another_classification = json.load(classification_file)
 			for each in another_classification:
 				if each not in self.classification:
@@ -36,7 +35,7 @@ class Merger:
 					if 'category' in self.classification[each] and self.classification[each]['category'] != another_classification[each]['category']:
 						self.conflicts[each]='category'
 						continue
-					
+
 
 
 

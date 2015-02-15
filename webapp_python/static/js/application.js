@@ -1,10 +1,10 @@
 require.config({
 	paths: {
-		jquery:                   './../libs/jquery/dist/jquery.min',
-		underscore:               './../libs/underscore/underscore-min',
-		backbone:                 './../libs/backbone/backbone',
-		text: 					  './../libs/requirejs-text/text',
-		bootstrap: 				  './../libs/bootstrap/dist/js/bootstrap.min',  
+		jquery:							'./jquery.min',
+		underscore:					'./underscore-min',
+		backbone:						'./backbone',
+		text:								'./text',
+		bootstrap:					'./bootstrap.min',
 	}
 });
 
@@ -32,7 +32,7 @@ define([
 		var navigationView = new NavigationView({$el: $(".navigation-view")});
 
 		new Router({
-			$el: $(".content"), 
+			$el: $(".content"),
 			navigationView:navigationView
 		});
 
