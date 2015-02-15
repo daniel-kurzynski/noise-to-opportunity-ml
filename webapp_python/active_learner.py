@@ -10,6 +10,8 @@ sys.path.append("../scikit_python")
 from evaluation import Classifiers
 from custom_features import build_demand_data
 
+from constants import LINKED_IN_POSTS, CLASSIFICATION
+
 ids, X_train, y_train, _, predict_ids, X_predict = build_demand_data(False)
 
 class active_learner(object):
@@ -21,21 +23,19 @@ class active_learner(object):
 
 	def load_posts(self):
 		"""Called once in the initialization to load all posts."""
-		with open(join(abspath("../n2o_data"), "linked_in_posts.csv")) as f:
+		with open(LINKED_IN_POSTS) as f:
 			for line in f:
-				id, title, text, _, _, _, _, _, category, _, _ = line.replace("\\,", "<komma>").replace("\"", "").replace("\\", "").split(",")
-				title = title.replace("<komma>", ",")
-				text = text.replace("<komma>", ",")
+				id, title, text, _, _, _, _, _, category, _, _ = line.replace("\\,", "").replace("\"", "").replace("\\", "").split(",")
 				self.posts.append(Post(id, title, text))
 
 	def load_classification(self):
 		"""Called once in the initialization to load the already existing classification file."""
-		with open('../n2o_data/classification_updates/latest.json') as infile:
+		with open(CLASSIFICATION) as infile:
 			self.classification = json.JSONDecoder(object_pairs_hook=collections.OrderedDict).decode(infile.read())
 
 	def save_classification(self):
 		"""Writes the classification back to disk."""
-		with open('data/classification.json', 'w') as outfile:
+		with open(CLASSIFICATION, 'w') as outfile:
 			json.dump(self.classification, outfile, indent = 2)
 
 	def tag_post(self, tagger, post_id, key, value):
