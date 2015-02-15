@@ -1,6 +1,6 @@
 from flask import Flask, request, render_template,session
 from flask.ext.compress import Compress
-import simplejson as json, numpy as np
+import simplejson as json, numpy as np, sys
 
 sys.path.append("../scikit_python")
 from evaluation import Classifiers

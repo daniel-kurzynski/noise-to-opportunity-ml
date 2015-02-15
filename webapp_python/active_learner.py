@@ -1,9 +1,8 @@
 import simplejson as json
 import numpy as np
-import collections, sys
+import collections
 from os.path import join, abspath
 from post import Post, Prediction
-from collections import Counter
 from math import exp
 from sklearn.base import clone
 
@@ -56,7 +55,7 @@ class active_learner(object):
 	def determine_class_from_conflicting_votes(self, post_id, key):
 		"""For a given post and key, this determines whether a class can be determined or whether there is a conflict (None)."""
 		votes = self.classification.get(post_id,{}).get(key,{})
-		freqs = Counter(votes.values()).most_common(2)
+		freqs = collections.Counter(votes.values()).most_common(2)
 		if (len(freqs) == 0) or (len(freqs) > 1 and freqs[0][1] == freqs[1][1]):
 			# First two votes have the same count --> conflict --> do not predict anything
 			return None
