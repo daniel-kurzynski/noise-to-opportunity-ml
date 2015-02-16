@@ -3,6 +3,8 @@ import Keys._
 import org.scalatra.sbt._
 import com.mojolly.scalate.ScalatePlugin._
 import ScalateKeys._
+import com.earldouglas.xsbtwebplugin.PluginKeys._
+import com.earldouglas.xsbtwebplugin.WebPlugin._
 
 object N20DemoBuild extends Build {
   val Organization = "de.hpi.smm"
@@ -15,6 +17,7 @@ object N20DemoBuild extends Build {
     "n20-demo",
     file("."),
     settings = ScalatraPlugin.scalatraWithJRebel ++ scalateSettings ++ Seq(
+      port in container.Configuration := 9001,
       organization := Organization,
       name := Name,
       version := Version,
