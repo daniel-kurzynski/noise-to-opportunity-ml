@@ -12,7 +12,8 @@
 \subsection{Problem Definition}
 \label{sec:background-problem}
 
-In this section we specify the problem we are going to solve. We also talk about problems that could occur while solving the task. 
+In this section we formally define the noise to opportunity problem.
+We also talk about problems that occur while solving the task. 
 
 \todo{change \acme definition}
 Let \acme be our example software company that offers products like customer relationship management systems or human capital management systems. 
@@ -20,12 +21,12 @@ As in every company there are salesmen who want to get in contact with potential
 To find these buyers we help \acme to identify people on business networks who seems to have a need for products offered by \acme.
 
 \todo{Noise refers to both: amount and quality of input}
-We call our approach Noise-To-Opportunity conversion or \nto problem.
+We call our approach Noise-To-Opportunity conversion or the \nto problem.
 We choose the word noise because of the amount of daily status updates in business networks which makes it infeasible to listen to all off them.
-Nevertheless, there are many posts which are a good opportunity the get in contact with people who wants to buy products a salesman's company offers. 
+Nevertheless, there are many posts which are a good opportunity the get in contact with people who want to buy products a salesman's company offers. 
 
-Post~\ref{post:demand-and-product}, ~\ref{post:demand-only}, and~\ref{post:product-only} shows how posts in such business-oriented social networks could like. 
-We have to decide which off these posts are written by potentially customers of \acme. 
+Post~\ref{post:demand-and-product}, ~\ref{post:demand-only}, and~\ref{post:product-only} shows how posts in such business-oriented social networks look like. 
+We have to decide which of these posts are written by potentially customers of \acme. 
 
 \begin{post}
 	\centering
@@ -69,49 +70,61 @@ In contrast post~\ref{post:product-only} is about CRM systems, but the user is n
 Therefore the post should not be shown to a salesman.
 
 The decision, whether to recommend a post, depends on two characteristics.
-The post should express that users needs something, e.g. a product.
+The post should express that users needs something, e.g. a certain product.
 The product needed by the user should be offered by \acme.
 
 
 Formally, the problem can be defined as: 
-Each $p \in POSTS$ is a post from a business-oriented social networking service. $PRODUCTS$ denote the set of a company's product.
-Then, the problem can be classified as a function $\nto$, such as:
+Let $p \in POSTS$ be a post from a business-oriented social networking service.
+Let $PRODUCTS$ denote the set of a company's products.
+Then, the problem can be modelled as a function $\nto$, such that:
 \begin{displaymath}
 	\nto: POSTS \to PRODUCTS \cup \{NONE\}
 \end{displaymath}
 
 \todo{salesmen are responsible for different products: only for one -> Use \nto function to detect posts that belong to salesman}
 
-A classification of a post $p \in POSTS$ is $correct$, if $\nto(p)$ equates to the product that seems to be needed by the user who posted $p$ or equates to $NONE$ if the user does not need a product offered by the company. If $p$ is a post, then we propose $p$ to a salesman if $\nto(p) != NONE$.
+A classification of a post $p \in POSTS$ is $correct$, if $\nto(p)$ is indeed the product that seems to be needed by the user who posted $p$ or $NONE$ if the user does not need a product offered by the company \acme.
+If $p$ is a post, then we propose $p$ to a salesman if $\nto(p) \neq NONE$.
 
-However, we can optimize our algorithm for both use cases: Helping salesmen or displaying advertisement automatically.
+We can optimize our algorithm for two use cases: helping salesmen find relevant posts or displaying advertisement automatically.
 For helping salesmen it is important to have a high precision. 
-If we recommend a post to salesmen we should be definitely sure, that our recommendation is correct. 
-A high precision reduces the unnecessary work.
-For displaying advertisement automatically the recall should be high. 
+If we recommend a post to salesmen we should be very confident, that our recommendation is correct. 
+A high precision reduces the amount of unnecessary work.
+For displaying advertisements automatically the recall should be high. 
 It is important to recommend products to as many users as possible.
-It is acceptable if some of theses recommendation are not correct.   
+It is acceptable if some of the recommendations are not correct.   
 
-In the following chapters we explain how we build the~\nto function.
-We archive this by learning a classifier from a sample data set. 
-Therefore, we need a data set where for each document is already tagged whether our \nto function should recommend a product or not.
-However, salesmen does not want to read through hundreds of posts to tag them manually.
-We need a different data source.
+In the following sections we explain how we approached the problem of approximating the~\nto function.
+We achieve this by learning a classifier from a sample data set. 
+The classifier needs a data set where some documents are already tagged with respect to whether our \nto function should recommend a product or not.
+This is called a gold standard.
+However, salesmen do not want to read through hundreds of posts to tag them manually.
+Therefore, we need a different data source.
+\todo{Decide, whether this is duplicate content with the introduction}
 We decide to use advertisement brochures describing \acme's products. 
 Using brochures a problem arises from the theoretical learning perspective.
 
-In a learning task the instances should be drawn from the same population in the training phase and during the classification.\nr
-Here in the training phase we use brochures. Later on we want to classify posts. 
+In a learning task the instances should be drawn from the same population in the training phase as the instances which are to be classified in the end.\nr
+In our approach, training phase works on brochures, while later we want to classify social network posts. 
 Both groups of documents are slightly different.
-The following problems we are going to solve:
+The following problems arise in this setup:
 
  \begin{itemize}
- 	\item \emph{Non-user perspective}: Brochures are written from the perspective of salesmen. However, we want to classify on user-written social network posts.
- 	As Post~\ref{post:product-only} illustrates simply finding posts similar to the brochures is not sufficient, as we also need to consider whether the user actually wants feedback and recommendations.
-	\item \emph{Document mismatch}: Brochures are written with a different intend as posts. 
-	Andere Worte kommen in Marketing vor, z. B. ``" . Also, they are more frequent as brochures are usually much longer (often at least one pdf page) while social network posts 
-	There is a crucial difference in writing style and word choice between 
-	\item \emph{Small corpus}: 
+ 	\item
+		\emph{Non-user perspective}:
+		Brochures are written from the perspective of salesmen.
+		However, we want to classify on user-written social network posts.
+		As Post~\ref{post:product-only} illustrates, simply finding posts similar to the brochures is not sufficient, as we also need to consider whether the user actually wants feedback and recommendations.
+	\item
+		\emph{Document mismatch}:
+		Brochures are written with a different intent as posts. 
+		Andere Worte kommen in Marketing vor, z. B. ``" .
+		Also, they are more frequent as brochures are usually much longer (often at least one pdf page) while social network posts 
+		There is a crucial difference in writing style and word choice between 
+	\item
+		\emph{Small corpus}: 
+		\todo{Write about small corpus problem}
  \end{itemize}
 
 % \begin{itemize}

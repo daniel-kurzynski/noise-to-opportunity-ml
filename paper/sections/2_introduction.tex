@@ -25,16 +25,16 @@
 	\end{itemize}	
 }
 
-Recent years have shown a trend for companies from buying standalone software with big service contracts products to buying small cloud products, also known as software as a service (SaaS).
+Recent years have shown a trend for companies from buying standalone software with big service contracts to buying small cloud products, also known as software as a service (SaaS).
 Software is licensed on a subscription and per-use basis and is hosted on the vendors's servers.
 Vendors of such software are now able to set the subscription fees dynamically according to usage time, company size, or revenue.
 For the customer companies, this allows to scale easily when the company grows or declines or does not need the services for a certain time span.
 
 These new possibilities increased the set of potential customers for software vendors.
-As Dubey and Wagle said \todo{cite}, ``buyers have more flexibility to switch vendors and perhaps fewer headaches in maintaining the software".
-Especially young companies are more likely to build SaaS, as it gives them the flexibility to adapt to the growth of the company in the future.
+As Dubey and Wagle~\cite{dubey2007delivering} said, ``buyers have more flexibility to switch vendors and perhaps fewer headaches in maintaining the software".
+Especially young companies are more likely to buy SaaS, as it gives them the flexibility to adapt to the growth of the company in the future.
 So, rather than being restricted to a small range of companies, for example only big enterprise companies or only young startups, vendors can sell their products to all kinds of companies.
-However, this introduces a new problem for the salesmen: It is harder to find potential customers.
+However, this introduces a new problem for the salesmen: due to the sheer amount of possible customers, it is harder to find those, who are likely to buy the product.
 When only a few companies are available, salesmen can just inquire personally and try to sell their products.
 In the new setting, it becomes harder and more time-consuming to find potential customers.
 % New startups do not need to make a decision about whether to buy a big, standalone software straightahead, or first buying a smaller system and only later upgrade to a bigger system.
@@ -42,7 +42,7 @@ In the new setting, it becomes harder and more time-consuming to find potential 
 We propose a new approach to finding potential customers by automatically recommending users, who ask for product recommendations in social networks.
 Social networks are platforms, where users can post status updates, ask questions, start discussions, or get recommendations.
 A special type of social network, so called business-oriented social networking services like LinkedIn\footnote{http://www.linkedin.com/} or Xing\footnote{http://www.xing.com}, especially lend themselves to building business relations and asking for professional advice.
-There, users ask for opinions and recommendations on a product.
+There, users ask for opinions and recommendations on products.
 
 This offers a huge possibility for companies to identify potential buyers.
 Rather than booking advertising time in television or advertising banners on news websites, they can target their salesman on persons, who are more likely to buy a product.
@@ -64,7 +64,7 @@ Therefore, we employ techniques of supervised machine learning to categorize pos
 We call our approach \emph{Noise to Opportunity}, as we automatically filter the best selling opportunities from the large and diverse set of potential social network posts.
 
 To classify posts, the machine learning requires to have labeled posts to use as training data for the learning algorithm.
-As this training data does exist, it would need to be created manually by the salesmen.
+As this training data does not exist, it would need to be created manually by the salesmen.
 However, this is not feasible for a company, as it takes precious time for tagging post from the salesmen, in which they could actually sell products.
 Therefore, we propose an approach, which automatically uses the company's brochures and advertising texts for learning.
 A company usually has some set of advertising material, flyers, or presentation slides, where they promote their own products.
@@ -81,14 +81,14 @@ The architecture of our system is illustrated in Figure~\ref{fig:figureone}.
 
 Yet, this approach introduces new problems.
 Firstly, there are not many documents to learn from.
-A company may have twenty different brochures, but it never has one million.
-To overcome this short corpus problem \todo{correct name?}, we employ feature selection to only select the most relevant words and ignore the noise.
+The number of brochures per product is usually far below one hundred.
+To overcome this small corpus problem \todo{correct name?}, we employ feature selection to only select the most relevant words and ignore the noise.
 Secondly, if a user posts something about a certain product, this does not automatically allow the conclusion, that the user is actually interested in buying the product.
 Therefore, we introduce a two-staged classifier, which first determines the demand of a user, and then determines, whether the user posts about a product.
 This approach allows to capture, whether the user actually needs the product.
 
 Section~\ref{sec:background} gives a formal problem definition and shows related work.
-Section~\ref{sec:concept} shows our two-staged classification and how we use feature selection to overcome the short corpus problem.
+Section~\ref{sec:concept} shows our two-staged classification and how we use feature selection to overcome the small corpus problem.
 Section~\ref{sec:implementation} shows the implementation of both the demand and the product classifier.
 It also presents the best configuration for the algorithm.
 In Section~\ref{sec:evaluation}, we evaluate our approach.
