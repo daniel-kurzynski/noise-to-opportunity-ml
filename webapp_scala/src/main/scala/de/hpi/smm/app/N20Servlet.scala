@@ -12,6 +12,7 @@ class N20Servlet extends N20DemoStack with JacksonJsonSupport {
 	protected implicit val jsonFormats: Formats = DefaultFormats
 
 	import ClassificationPreparation.ntoClassifier
+	val foo = ntoClassifier
 
 	get("/") {
 		contentType = "text/html"
