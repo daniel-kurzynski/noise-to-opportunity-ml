@@ -10,37 +10,65 @@
 	\item Introduce normalization and binary features.
 \end{itemize}
 
-\subsection{Evaluation data set}
+\subsection{Example data set}
 \label{sub:initial_data_set}
-We built a prototype of an \nto system.
-This prototype is build for the products of a German software company called SAP.
+We implemented a prototype of our \nto system based on data from a Germany software company called SAP.
 SAP is the biggest software vendor in Europe and builds software for both small and large enterprises.
 SAP provided us with nearly 100 brochures about four SAP software products, which are explained in Table~\ref{table:products}.
 We chose LinkedIn as the business-oriented social network, as it is the biggest and most popular platform.
-We crawled approximately 19,000 LinkedIn posts.
-Unfortunately three forth of the brochures are in German language and the LinkedIn posts are written in English.
-To solve the language mismatch, we have translated the documents with an automated translator and replaced the German brochures with its translations.
-Additionally we have added some book descriptions from Amazon about these products to enlarge the training set.
-As already mentioned in the previous sections to extend our training set further, we split the brochures and the Amazon descriptions.
-With the help of the splitting the training set grows to 994 document, which we use for the training of the product classifier.
+We crawled approximately 19,000 posts from LinkedIn.
+
+Unfortunately, around 75~\% of the brochures are in German and the LinkedIn posts are written in English.
+To solve the language mismatch, we translated the documents with an machine translation tools and replaced the German brochures with its translations.
+Additionally, we added some book descriptions from Amazon about these products to enlarge the training set.
+
+\todo{Move following two sentences elsewhere}
+As already mentioned in the previous sections, we extend our training set further by splitting the brochures and Amazon product texts into smaller chunks.
+We end up with 994 documents, which we use for the training of the product classifier.
+
+\begin{table}[h]
+	\centering
+	\label{table:products}
+	{
+		\renewcommand\arraystretch{1.25}
+		\begin{tabular}{lll}
+			\hline
+			\textbf{Product} & \multicolumn{2}{l}{\textbf{Explanation}} \\
+			\hline\hline
+			CRM  & \multicolumn{2}{p{10cm}}{\raggedright
+				Customer relationship management software to manage a company's interactions with past, present and future, potential customers.} \\
+			\hline
+			ECOM  & \multicolumn{2}{p{10cm}}{\raggedright
+				\todo{Write about ECOM}} \\
+			\hline
+			HCM  & \multicolumn{2}{p{10cm}}{\raggedright
+				\todo{Write about HCM}} \\
+			\hline
+			LVM  & \multicolumn{2}{p{10cm}}{\raggedright
+				\todo{Write about LVM}} \\
+			\hline
+		\end{tabular}
+	}
+	\caption{Different products in the training data set of SAP brochures.}
+\end{table}
 
 \subsection{Manual annotation of the LinkedIn posts}
-\label{sub:manual_annotation_of_the_linkedin_posts}
 
-At the moment, there exists no data set for a demand classification, which can be used for learning and evaluation purposes: we tagged some post manually.
+At the moment, there exists no data set for a demand classification, which can be used for learning and evaluation purposes.
+Therefore, we tagged some post manually.
 We used an active learning \nr approach to create the gold standard for both training and evaluation:
-first, we randomly tagged some posts, then we build a basic classifier, which repeatedly asked for those instances, where it was most unsure about.
-Then it reran the classification and asked again.
-We have implemented a tagging web app which implements the active learning.
-All together, we tagged about 350 LinkedIn posts, both for demand and product.
-In an initial step, each post was tagged at least twice to avoid misclassifications because of the opinion of one tagger.
-If there were conflicts between the tagging decisions, a third person was tagging again to solve the conflict.
-To evaluate the demand classifier, we use a ten-fold cross validation.
-Since we have brochures for the products, on which we can learn, we used all annotated posts exclusively for the evaluation in the case of the product classifier.
+first, we randomly tagged some posts, then we built a basic classifier, which we ran over all posts to finally ask for a tagging decision for the most unsure post.
+Then we reran the classification and the classifier asked again.
+Using this approach, we are able to get the most out of our limited tagging time.
 
+We built a tagging web app which implements the active learning.
+All together, we tagged about 350 LinkedIn posts, both in respect of demand and product.
+In an initial step, each post was tagged by at least two different persons to avoid misclassifications because of the opinion of one tagger.
+If there were conflicts between the tagging decisions, a third person was tagging again to solve the conflict.
+To evaluate the demand classifier, we use a ten-fold cross validation of all posts, because we need the posts also for training.
+To evaluate the product classifier, we can use all annotated posts, because the learning step works on the brochures.
 
 \subsection{Demand Classifier}
-
 Furthermore, we added the following handcrafted \todo{Better word} features, which have been show to increase the overall performance:
 \begin{itemize}
 	\item Number of questions in the post. Demand posts usually have more questions.
