@@ -17,7 +17,7 @@ class ProductClassifier(
 		originalClassifier: Classifier = new Logistic(),
 		binaryFeatures: Boolean = true,
 		normalize: Boolean = true,
-		useNoneClassifier: Boolean = true,
+		useNoneClassifier: Boolean = false,
 		useTheirClassification: Boolean = false
 	) extends Serializable {
 	val PRINT_FEATURE_WORDS = false
@@ -158,13 +158,6 @@ class ProductClassifier(
 		val evaluation = new Evaluation(testInstances)
 		evaluation.evaluateModel(classifier, testInstances)
 		evaluation
-	}
-
-	def printValidation(posts: Seq[Document]): Unit = {
-		val evaluation = validate(posts)
-		println(evaluation.pctCorrect())
-//		println(evaluation.toSummaryString(f"%nResults%n======%n", false))
-		println(evaluation.toMatrixString)
 	}
 
 	def predict(text: String): List[ProductClassification] = {

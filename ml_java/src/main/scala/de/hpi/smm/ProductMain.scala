@@ -13,7 +13,8 @@ import scala.util.Random
 
 object ProductMain {
 
-	val BUILD_RANDOM_BROCHURES = true
+	val BUILD_RANDOM_POSTS = false
+	val INCLUDE_NONE_POSTS = false
 
 	val postsFile = new File(POSTS_PATH)
 	val brochuresFile = new File(BROCHURES_PATH)
@@ -21,7 +22,7 @@ object ProductMain {
 	val stopWordsFile = new File(STOPWORDS_PATH)
 	val posModelFile = new File(POSMODEL_PATH)
 	val nlp = new NLP(stopWordsFile, posModelFile)
-	val dataReader = new DataReader(postsFile, brochuresFile,classificationFile,nlp)
+	val dataReader = new DataReader(postsFile, brochuresFile, classificationFile, nlp, includeNone = INCLUDE_NONE_POSTS)
 
 	var posts = mutable.ArrayBuffer[Document]()
 	var brochures = mutable.ArrayBuffer[Document]()
@@ -31,9 +32,6 @@ object ProductMain {
 		brochures = mutable.ArrayBuffer[Document]()
 
 		if (dataReader != null) {
-
-			dataReader.INCLUDE_NONE = INCLUDE_NONE_POSTS
-
 			dataReader.readPostsLinewise { post =>
 				posts += post
 			}("category")
@@ -46,30 +44,30 @@ object ProductMain {
 
 	val groupSizes  = List(6)
 	val classifiers = List(
-		new MultilayerPerceptron()
-		, new Logistic
-		, new SMO()
-//		, new TheirClassifier
+//		new MultilayerPerceptron()
+//		, new Logistic
+//		, new SMO()
+//		,
+		new TheirClassifier
 	)
 	val binaryFeatures = List(false, true)
 	val normalize = List(false, true)
-	val INCLUDE_NONE_POSTS = true
 
 	def main(args: Array[String]): Unit = {
 		readData()
 
-		val sentenceSet = mutable.Map[String, mutable.Set[Seq[Word]]]()
+		val postsSentenceSet = mutable.Map[String, mutable.Set[Seq[Word]]]()
 
 		posts.foreach { post =>
 	val docClass = post.documentClass
-			if (!sentenceSet.contains(docClass)) {
-				sentenceSet(docClass) = mutable.Set[Seq[Word]]()
+			if (!postsSentenceSet.contains(docClass)) {
+				postsSentenceSet(docClass) = mutable.Set[Seq[Word]]()
 			}
-			sentenceSet(docClass) ++= post.sentences
+			postsSentenceSet(docClass) ++= post.sentences
 		}
 
-		if (BUILD_RANDOM_BROCHURES)
-			buildRandomBrochures(sentenceSet)
+		if (BUILD_RANDOM_POSTS)
+			buildRandomPosts(postsSentenceSet)
 
 		println(s"Now we have ${posts.size} posts.")
 
@@ -79,17 +77,20 @@ object ProductMain {
 					normalize.foreach { normalizeFeatures =>
 						println(f"Classifier: ${classifier.getClass}, GroupSize: $groupSize, binaryFeature: $useBinaryFeature, normalize: $normalizeFeatures")
 
-						val analyzer = new ProductClassifier(brochures, nlp, groupSize, classifier, useBinaryFeature, normalizeFeatures, INCLUDE_NONE_POSTS, !BUILD_RANDOM_BROCHURES)
+						val analyzer = new ProductClassifier(brochures, nlp, groupSize, classifier, useBinaryFeature, normalizeFeatures, INCLUDE_NONE_POSTS, !BUILD_RANDOM_POSTS)
 						analyzer.buildClassifier()
 
-						analyzer.printValidation(posts)
+						val productEvaluation = analyzer.validate(posts)
+						println(productEvaluation.toSummaryString("", false))
+						//		println(productEvaluation.pctCorrect())
+						println(productEvaluation.toMatrixString)
 					}
 				}
 			}
 		}
 	}
 
-	def buildRandomBrochures(sentenceSet: mutable.Map[String, mutable.Set[Seq[Word]]]) {
+	def buildRandomPosts(sentenceSet: mutable.Map[String, mutable.Set[Seq[Word]]]) {
 		val r = new Random(44)
 		val NUM_DOCS = 30
 		val NUM_SENTENCES = 2

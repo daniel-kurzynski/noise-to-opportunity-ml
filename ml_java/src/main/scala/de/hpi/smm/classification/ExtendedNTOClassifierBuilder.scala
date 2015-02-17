@@ -9,7 +9,7 @@ import de.hpi.smm.nlp.NLP
 import scala.collection.JavaConverters._
 
 object ExtendedNTOClassifierBuilder {
-	def build(classificationFile: File, brochuresFile: File, postsFile: File, stopWordsFile: File, posModelFile: File): ExtendedNTOClassifier = {
+	def build(classificationFile: File, brochuresFile: File, postsFile: File, stopWordsFile: File, posModelFile: File, includeNone: Boolean = false): ExtendedNTOClassifier = {
 
 		List(classificationFile, brochuresFile, postsFile).foreach { file =>
 			if (!file.exists())
@@ -18,12 +18,12 @@ object ExtendedNTOClassifierBuilder {
 
 		val extractor = new DocumentExtractor(stopWordsFile, posModelFile)
 		val nlp = new NLP(stopWordsFile, posModelFile)
-		val dataReader = new DataReader(postsFile, brochuresFile, classificationFile, nlp)
+		val dataReader = new DataReader(postsFile, brochuresFile, classificationFile, nlp, includeNone)
 		val readingResult = extractor.readFromCSV(postsFile, brochuresFile, classificationFile)
 
 		val extendedNTOClassifier = new ExtendedNTOClassifier(dataReader, stopWordsFile, posModelFile)
 		extendedNTOClassifier.trainDemand(readingResult.demandDocuments)
-		extendedNTOClassifier.trainProduct(readingResult.productDocuments)
+		extendedNTOClassifier.trainProduct(readingResult.productDocuments, useNoneClassifier = dataReader.includeNone)
 
 		extendedNTOClassifier
 	}

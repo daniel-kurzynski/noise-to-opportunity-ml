@@ -1,0 +1,23 @@
+
+---- No None ----
+MultilayerPerceptron,                   GroupSize: 6, binaryFeature: true, normalize: true
+Correctly Classified Instances          85               70.8333 %
+
+SMO,                                    GroupSize: 6, binaryFeature: true, normalize: true
+Correctly Classified Instances          96               80      %
+
+Logistic,                               GroupSize: 6, binaryFeature: true, normalize: true
+Correctly Classified Instances          89               74.1667 %
+
+TheirClassifier,                        GroupSize: 6, binaryFeature: true, normalize: true
+Correctly Classified Instances          72               61.5385 %
+
+---- Use None ----
+Logistic,                               GroupSize: 6, binaryFeature: true, normalize: true
+Correctly Classified Instances          95               63.3333 %
+
+SMO,                                    GroupSize: 6, binaryFeature: true, normalize: true
+Correctly Classified Instances          90               60      %
+
+MultilayerPerceptron,                   GroupSize: 6, binaryFeature: true, normalize: true
+Correctly Classified Instances          94               62.6667 %

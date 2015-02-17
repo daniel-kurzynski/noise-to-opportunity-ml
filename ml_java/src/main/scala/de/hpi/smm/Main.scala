@@ -47,11 +47,12 @@ object Main {
 			brochuresFile,
 			postsFile,
 			stopWordsFile,
-			posModelFile
+			posModelFile,
+			includeNone = true
 		)
 
 		val allPosts = mutable.ArrayBuffer[Document]()
-		ntoClassifier.dataReader.readPostsLinewise{post => allPosts += post}("category", all = true)
+		ntoClassifier.dataReader.readPostsLinewise{post => allPosts += post}("category")
 
 		List(
 			"CRM"
@@ -79,13 +80,14 @@ object Main {
 			brochuresFile,
 			postsFile,
 			stopWordsFile,
-			posModelFile
+			posModelFile,
+			includeNone = true
 		)
 
 		val post = "I need help. I am looking for support. Thanks in advance. I am searching for a good crm software."
 		val post2 = "What's the best ECommerce Platform for product subscription sales (Continuity model)?  Is there a platform with a strong CRM at it's core?"
 		val demandClassification = ntoClassifier.predictDemandExtendedOutput(post2)
-		println(s"$post2 is: ${demandClassification.cls} with propability: ${demandClassification.classificationOutput.prob}")
+		println(s"$post2 is: ${demandClassification.cls} with probability: ${demandClassification.classificationOutput.prob}")
 
 		val productClassification = ntoClassifier.predictProduct(post2)
 

@@ -16,9 +16,7 @@ object DataReader {
 	val theirClassifications = mutable.Map[String, String]()
 }
 
-class DataReader(val postsFile: File, val brochuresFile: File, classificationFile: File, nlp: NLP) {
-
-	var INCLUDE_NONE = false
+class DataReader(val postsFile: File, val brochuresFile: File, classificationFile: File, nlp: NLP, val includeNone: Boolean = false) {
 
 	val classifiedPosts = JacksMapper.readValue[Map[String, Map[String, Map[String, String]]]](
 			new FileReader(classificationFile))
@@ -68,7 +66,7 @@ class DataReader(val postsFile: File, val brochuresFile: File, classificationFil
 			if (all || classifiedPosts.contains(id)) {
 				val sentences = nlp.detectSentences(rawPost)
 				val post = Document(id, title, text, sentences, rawPost.extract(className))
-				if (INCLUDE_NONE || post.documentClass != "None") {
+				if (includeNone || post.documentClass != "None") {
 					postCount += 1
 					extractor(post)
 				}
@@ -86,29 +84,29 @@ class DataReader(val postsFile: File, val brochuresFile: File, classificationFil
 		this.readPostsLinewise { post =>
 			demandDocs.add(post)
 		}()
-		val sentences = mutable.Map[String, Set[Seq[Word]]]()
-		demandDocs.asScala.foreach { post =>
-			val docClass = post.documentClass
-			if (!sentences.contains(docClass))
-				sentences(docClass) = Set[Seq[Word]]()
-			sentences(docClass) ++= post.sentences
-		}
-		demandDocs.clear()
-		sentences.foreach { case (key, set) =>
-			println(s"$key --> ${set.size}")
-		}
-		val r = new Random(7)
-		var i = 0
-		sentences.foreach { case (docClass, sentencesForKey) =>
-			for (_ <- 1 to 300) {
-				val chosenSentences = r.shuffle(sentencesForKey.toList).take(2)
-				val doc = Document(i.toString, "", chosenSentences.flatten.mkString(" "), chosenSentences, docClass)
-				demandDocs.add(doc)
-				i += 1
-			}
-		}
-		Collections.shuffle(demandDocs, new java.util.Random(7))
-		println(demandDocs.size)
+//		val sentences = mutable.Map[String, Set[Seq[Word]]]()
+//		demandDocs.asScala.foreach { post =>
+//			val docClass = post.documentClass
+//			if (!sentences.contains(docClass))
+//				sentences(docClass) = Set[Seq[Word]]()
+//			sentences(docClass) ++= post.sentences
+//		}
+//		demandDocs.clear()
+//		sentences.foreach { case (key, set) =>
+//			println(s"$key --> ${set.size}")
+//		}
+//		val r = new Random(7)
+//		var i = 0
+//		sentences.foreach { case (docClass, sentencesForKey) =>
+//			for (_ <- 1 to 300) {
+//				val chosenSentences = r.shuffle(sentencesForKey.toList).take(2)
+//				val doc = Document(i.toString, "", chosenSentences.flatten.mkString(" "), chosenSentences, docClass)
+//				demandDocs.add(doc)
+//				i += 1
+//			}
+//		}
+//		Collections.shuffle(demandDocs, new java.util.Random(7))
+//		println(demandDocs.size)
 
 		this.readBrochuresLinewise(List("en")) { brochure =>
 			productDocs.add(brochure)
