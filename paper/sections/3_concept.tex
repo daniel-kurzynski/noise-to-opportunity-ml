@@ -2,7 +2,6 @@
 %Concept is more general where as implementation is solving problems with the specific domain/data
 \section{Concept}
 \label{sec:concept}
-\todo{motivate why is this a 2 stage approach}
 We now present our approach to the \nto problem.
 The next section details our two-staged classification approach.
 We then talk about what features we select and how we approach the \todo{\emph{documentmismatch}}.
@@ -48,13 +47,16 @@ If this is true, we then check whether we can actually categorize the post into 
 All together, given $demand$ and $product$, we can define \nto:
 
 \todo{if demand(post) = true, better than = "demand", confusing naming, demand() seems to have boolean return value}
-\begin{alignat*}{3}
-  &\mathbf{NTO}: && ~POSTS && \longrightarrow PRODUCT \cup \big\{ NONE \big\} \\
-  &\mathbf{NTO}: && ~~p   && \longmapsto \begin{cases}
-	    product(post)~~~~~~~\text{if }~demand(post) = ``demand" \\
-	    NONE~~~~~~~~~~~~~~~\text{otherwise}
-   \end{cases}
-\end{alignat*}
+\begin{figure}
+	\begin{alignat*}{3}
+	  &\mathbf{NTO}: && ~POSTS && \longrightarrow PRODUCT \cup \big\{ NONE \big\} \\
+	  &\mathbf{NTO}: && ~~p   && \longmapsto \begin{cases}
+		    product(post)~~~~~~~\text{if }~demand(post) = ``demand" \\
+		    NONE~~~~~~~~~~~~~~~\text{otherwise}
+	   \end{cases}
+	\end{alignat*}
+	\caption{Defining \nto via two-staged classifation.}
+\end{figure}
 
 In our system, both $demand$ and $product$ are implemented by two independent text classification algorithms.
 We are using supervised machine learning for this.
@@ -106,58 +108,61 @@ Therefore, we choose to select only words, which express a demand (e.g. ``recomm
 The intuition is, that if enough of demand words occur, we classify a demand, otherwise a no-demand.
 To identify these words we run two statistics on the data:
 which words are more likely to occur in demand-posts, and which words are more likely to not occur in no-demand posts.
-\begin{alignat*}{3}
-	demand\_prob(w) &= \dfrac{
-	 		\#~\operatorname{demand}~posts~\mathbf{with}~w
-		}{
-			 \#~\operatorname{demand}~posts
-		}
-		\\
-	no\_demand\_prob(w) &= \dfrac{
-	 		\#~\operatorname{no-demand}~posts~\mathbf{with}~w
-		}{
-			 \#~\operatorname{no-demand}~posts
-		}
-		\\
-	demand\_fraction(w) &= \frac{
-			demand\_prob(w)
-		}{
-			no\_demand\_prob(w)
-		}
-		\\[2mm]
-		\hline
-		\\[0.1mm]
-	demand\_no\_prob(w) &= \dfrac{
-	 		\#~\operatorname{demand}~posts~\mathbf{without}~w
-		}{
-			 \#~\operatorname{demand}~posts
-		}
-		\\
-	no\_demand\_no\_prob(w) &= \dfrac{
-	 		\#~\operatorname{no-demand}~posts~\mathbf{without}~w
-		}{
-			 \#~\operatorname{no-demand}~posts
-		}
-		\\
-	demand\_no\_fraction(w) &= \frac{
-			demand\_no\_prob(w)
-		}{
-			no\_demand\_no\_prob(w)
-		}
-\end{alignat*}
-We select those words with the highest $demand\_fraction$ and the highest $demand\_no\_fraction$.
+\begin{figure}
+	\label{eq:demand_feature_selection}
+	\begin{alignat*}{3}
+		&demand\_prob\_with(w) &&= \dfrac{
+		 		\#~\operatorname{demand}~posts~\mathbf{with}~w
+			}{
+				 \#~\operatorname{demand}~posts
+			}
+			\\
+		&no\_demand\_prob\_with(w) &&= \dfrac{
+		 		\#~\operatorname{no-demand}~posts~\mathbf{with}~w
+			}{
+				 \#~\operatorname{no-demand}~posts
+			}
+			\\
+		&demand\_fraction\_with(w) &&= \frac{
+				demand\_prob\_with(w)
+			}{
+				no\_demand\_prob\_with(w)
+			}
+			\\[2mm]
+			\hline
+			\\[0.1mm]
+		&demand\_prob\_without(w) &&= \dfrac{
+		 		\#~\operatorname{demand}~posts~\mathbf{without}~w
+			}{
+				 \#~\operatorname{demand}~posts
+			}
+			\\
+		&no\_demand\_prob\_without(w) &&= \dfrac{
+		 		\#~\operatorname{no-demand}~posts~\mathbf{without}~w
+			}{
+				 \#~\operatorname{no-demand}~posts
+			}
+			\\
+		&demand\_fraction\_without(w) &&= \frac{
+				no\_demand\_prob\_without(w)
+			}{
+				demand\_prob\_without(w)
+			}
+	\end{alignat*}
+	\caption{The demand feature selection is based on the two functions $demand\_fraction\_with$ and $demand\_fraction\_without$, which select words, that are an indication for a demand post.}
+\end{figure}
+We select those words with the highest $demand\_fraction\_with$ and the highest $demand\_fraction\_without$.
 The final demand words is the set union of these two sets.
 These words indicate a demand: if they do occur, then that is a sign for a demand post, if they do not occur, then that is a sign for a no-demand post.
 Using this approach we can overcome the \emph{small corpus problem} for the demand posts.
 
 For the product classifier we use a classical tf-idf\cite{sparck1972statistical} feature selection.
 Often, only a few keywords indicate membership to a product class.
-Tf-Idf helps to find these words, while ignoring words that may occur in every brochure, like the company name, stop words or generic words.
+Tf-idf helps to find these words, while ignoring words that may occur in every brochure, like the company name, stop words or generic words.
 % The demand classifier is trained on social network posts and also predicts on social network posts.
 
-document mismatch --> strict feature selection
-small corpus --> training data generation
-
+% document mismatch --> strict feature selection
+% small corpus --> training data generation
 
 \subsection{Training data generation}
 
@@ -165,47 +170,3 @@ As said before, the number of brochures is usually quite low, hence there is not
 Also, there exists a mismatch between the posts and the brochures.
 One part of this document mismatch is, that brochures are usually much longer than social network posts, which often only contain two or three sentences, while brochures span over pages.
 Hence, a natural approach is to split one long brochure into several smaller brochures, which both creates more training data and adapts the document length closer to the post's document length.
-
-% \begin{itemize}
-% 	\item Elaborate on your idea
-% 	\item First give examples and then try to generalize
-% \end{itemize}
-
-% \begin{figure}
-% 	\centering
-% 	\begin{subfigure}[t]{0.3\textwidth}
-% 		\begin{tabular}{r | r}
-% 			\textbf{Threads} & \textbf{Runtime}\\
-% 			\hline
-% 			1 & 29952\\
-% 			2 & 15538\\
-% 			4 & 10467\\
-% 			8 & 7987
-% 		\end{tabular}
-% 		\caption{Computation of keyword distribution and identification of bursty intervals}
-% 	\end{subfigure}~
-% 	\begin{subfigure}[t]{0.3\textwidth}
-% 		\begin{tabular}{r | r}
-% 			\textbf{Threads} & \textbf{Runtime}\\
-% 			\hline
-% 			1 & 4649\\
-% 			2 & 4430\\
-% 			4 & 5429\\
-% 			8 & 6427
-% 		\end{tabular}
-% 		\caption{Creation of events from keyword clustering}
-% 	\end{subfigure}~
-% 	\begin{subfigure}[t]{0.3\textwidth}
-% 		\begin{tabular}{r | r}
-% 			\textbf{Threads} & \textbf{Runtime}\\
-% 			\hline
-% 			1 & 514\\
-% 			2 & 281\\
-% 			4 & 250\\
-% 			8 & 203
-% 		\end{tabular}
-% 		\caption{Matching of documents to events}
-% 	\end{subfigure}
-% 	\caption{Performance of each step of the algorithm in dependence of the number of threads employed}
-% 	\label{fig:scalability}
-% \end{figure}
