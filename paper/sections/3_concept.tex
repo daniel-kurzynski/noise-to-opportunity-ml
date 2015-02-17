@@ -92,31 +92,83 @@ However, even with two classifiers, the number of positive samples is much lower
 Therefore, we employ techniques of feature selection and training data sampling, which are shown in the next two sections.
 
 \subsection{Feature Selection}
-As we use supervised machine-learning for the text categorization, we need to define features, which are good for predicting a demand and the product classes.
+As we use supervised machine-learning for the text categorization, we need to define features, which are good for predicting a demand and a certain product.
 The general approach to features in text classification is the bag-of-words model \cite{yang1997comparative,zhang2010understanding}.
 This model treats each text as a multiset of words in the text.
 This approach loses the text order, but keeps the information about the frequency of words.
 Our classifiers are based on a bag-of-word approach.
 
+Because we have both the \emph{problem of document mismatch} and the \emph{problem of a small corpus}, we use a strict feature selection to avoid any overfitting to the training data and selecting the wrong words.
 
-To deal with \emph{problem of document mismatch}, we use a rather strict feature selection.
+For the demand classifier, the first observation is, that there no specific words for no-demand posts.
+Almost every randomly selected post does not express a demand, and it could be about any topic.
+Therefore, we choose to select only words, which express a demand (e.g. ``recommend'', ``help'', ``looking'', ``need'').
+The intuition is, that if enough of demand words occur, we classify a demand, otherwise a no-demand.
+To identify these words we run two statistics on the data:
+which words are more likely to occur in demand-posts, and which words are more likely to not occur in no-demand posts.
+\begin{alignat*}{3}
+	demand\_prob(w) &= \dfrac{
+	 		\#~\operatorname{demand}~posts~\mathbf{with}~w
+		}{
+			 \#~\operatorname{demand}~posts
+		}
+		\\
+	no\_demand\_prob(w) &= \dfrac{
+	 		\#~\operatorname{no-demand}~posts~\mathbf{with}~w
+		}{
+			 \#~\operatorname{no-demand}~posts
+		}
+		\\
+	demand\_fraction(w) &= \frac{
+			demand\_prob(w)
+		}{
+			no\_demand\_prob(w)
+		}
+		\\[2mm]
+		\hline
+		\\[0.1mm]
+	demand\_no\_prob(w) &= \dfrac{
+	 		\#~\operatorname{demand}~posts~\mathbf{without}~w
+		}{
+			 \#~\operatorname{demand}~posts
+		}
+		\\
+	no\_demand\_no\_prob(w) &= \dfrac{
+	 		\#~\operatorname{no-demand}~posts~\mathbf{without}~w
+		}{
+			 \#~\operatorname{no-demand}~posts
+		}
+		\\
+	demand\_no\_fraction(w) &= \frac{
+			demand\_no\_prob(w)
+		}{
+			no\_demand\_no\_prob(w)
+		}
+\end{alignat*}
+We select those words with the highest $demand\_fraction$ and the highest $demand\_no\_fraction$.
+The final demand words is the set union of these two sets.
+These words indicate a demand: if they do occur, then that is a sign for a demand post, if they do not occur, then that is a sign for a no-demand post.
+Using this approach we can overcome the \emph{small corpus problem} for the demand posts.
 
+For the product classifier we use a classical tf-idf\cite{sparck1972statistical} feature selection.
+Often, only a few keywords indicate membership to a product class.
+Tf-Idf helps to find these words, while ignoring words that may occur in every brochure, like the company name, stop words or generic words.
+% The demand classifier is trained on social network posts and also predicts on social network posts.
 
-For the demand classifier, we employ a strict feature
-Often, only a few keywords indicate membership of product class.
-Furthermore, the number of posts used for learning.
-
-
-The demand classifier is trained on social network posts and also predicts on social network posts.
-However, as
-According to
+document mismatch --> strict feature selection
+small corpus --> training data generation
 
 
 \subsection{Training data generation}
 
+As said before, the number of brochures is usually quite low, hence there is not much training data.
+Also, there exists a mismatch between the posts and the brochures.
+One part of this document mismatch is, that brochures are usually much longer than social network posts, which often only contain two or three sentences, while brochures span over pages.
+Hence, a natural approach is to split one long brochure into several smaller brochures, which both creates more training data and adapts the document length closer to the post's document length.
+
 % \begin{itemize}
 % 	\item Elaborate on your idea
-% 	\item First give examples and than try to generalize
+% 	\item First give examples and then try to generalize
 % \end{itemize}
 
 % \begin{figure}
