@@ -3,6 +3,41 @@
 \section{Implementation}
 \label{sec:implementation}
 
+\begin{itemize}
+	\item Present data set?
+	\item Do classifier optimization
+	\item For the concrete data set, how do we split concretely.
+\end{itemize}
+
+\subsection{Evaluation data set}
+\label{sub:initial_data_set}
+We built a prototype of an \nto system.
+This prototype is build for the products of a German software company called SAP.
+SAP is the biggest software vendor in Europe and builds software for both small and large enterprises.
+SAP provided us with nearly 100 brochures about four SAP software products, which are explained in Table~\ref{table:products}.
+We chose LinkedIn as the business-oriented social network, as it is the biggest and most popular platform.
+We crawled approximately 19,000 LinkedIn posts.
+Unfortunately three forth of the brochures are in German language and the LinkedIn posts are written in English.
+To solve the language mismatch, we have translated the documents with an automated translator and replaced the German brochures with its translations.
+Additionally we have added some book descriptions from Amazon about these products to enlarge the training set.
+As already mentioned in the previous sections to extend our training set further, we split the brochures and the Amazon descriptions.
+With the help of the splitting the training set grows to 994 document, which we use for the training of the product classifier.
+
+\subsection{Manual annotation of the LinkedIn posts}
+\label{sub:manual_annotation_of_the_linkedin_posts}
+
+At the moment, there exists no data set for a demand classification, which can be used for learning and evaluation purposes: we tagged some post manually.
+We used an active learning \nr approach to create the gold standard for both training and evaluation:
+first, we randomly tagged some posts, then we build a basic classifier, which repeatedly asked for those instances, where it was most unsure about.
+Then it reran the classification and asked again.
+We have implemented a tagging web app which implements the active learning.
+All together, we tagged about 350 LinkedIn posts, both for demand and product.
+In an initial step, each post was tagged at least twice to avoid misclassifications because of the opinion of one tagger.
+If there were conflicts between the tagging decisions, a third person was tagging again to solve the conflict.
+To evaluate the demand classifier, we use a ten-fold cross validation.
+Since we have brochures for the products, on which we can learn, we used all annotated posts exclusively for the evaluation in the case of the product classifier.
+
+
 \subsection{Demand Classifier}
 
 Furthermore, we added the following handcrafted \todo{Better word} features, which have been show to increase the overall performance:
@@ -14,3 +49,6 @@ Furthermore, we added the following handcrafted \todo{Better word} features, whi
 
 \subsection{Product Classifier}
 To be done.
+
+\subsection{Choosing splitting algorithm}
+How we split.
