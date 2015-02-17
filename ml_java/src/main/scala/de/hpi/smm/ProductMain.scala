@@ -13,8 +13,8 @@ import scala.util.Random
 
 object ProductMain {
 
-	val BUILD_RANDOM_POSTS = false
-	val INCLUDE_NONE_POSTS = false
+	val BUILD_RANDOM_POSTS = true
+	val INCLUDE_NONE_POSTS = true
 
 	val postsFile = new File(POSTS_PATH)
 	val brochuresFile = new File(BROCHURES_PATH)
@@ -42,16 +42,16 @@ object ProductMain {
 		}
 	}
 
-	val groupSizes  = List(6)
+	val groupSizes  = List(1)
 	val classifiers = List(
-//		new MultilayerPerceptron()
-//		, new Logistic
+		new Logistic
 //		, new SMO()
-//		,
-		new TheirClassifier
+//		,new MultilayerPerceptron()
+		//		,
+		//		new TheirClassifier
 	)
-	val binaryFeatures = List(false, true)
-	val normalize = List(false, true)
+	val binaryFeatures = List(/*false, */true)
+	val normalize = List(/*false, */true)
 
 	def main(args: Array[String]): Unit = {
 		readData()
@@ -75,15 +75,16 @@ object ProductMain {
 			classifiers.foreach { classifier =>
 				binaryFeatures.foreach { useBinaryFeature =>
 					normalize.foreach { normalizeFeatures =>
-						println(f"Classifier: ${classifier.getClass}, GroupSize: $groupSize, binaryFeature: $useBinaryFeature, normalize: $normalizeFeatures")
+//						println(f"Classifier: ${classifier.getClass.getName.split(".").last}, GroupSize: $groupSize, binaryFeature: $useBinaryFeature, normalize: $normalizeFeatures")
+//						println(f"Classifier: ${classifier.getClass.getSimpleName}, GroupSize: $groupSize, binaryFeature: $useBinaryFeature, normalize: $normalizeFeatures")
 
 						val analyzer = new ProductClassifier(brochures, nlp, groupSize, classifier, useBinaryFeature, normalizeFeatures, INCLUDE_NONE_POSTS, !BUILD_RANDOM_POSTS)
 						analyzer.buildClassifier()
 
 						val productEvaluation = analyzer.validate(posts)
-						println(productEvaluation.toSummaryString("", false))
-						//		println(productEvaluation.pctCorrect())
-						println(productEvaluation.toMatrixString)
+//						println(productEvaluation.toSummaryString("", false))
+						println(s"$groupSize\t${productEvaluation.pctCorrect}")
+//						println(productEvaluation.toMatrixString)
 					}
 				}
 			}

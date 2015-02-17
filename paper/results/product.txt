@@ -1,5 +1,8 @@
-
 ---- No None ----
+TheirClassifier,                        GroupSize: 6, binaryFeature: true, normalize: true
+Correctly Classified Instances          72               61.5385 %
+
+
 MultilayerPerceptron,                   GroupSize: 6, binaryFeature: true, normalize: true
 Correctly Classified Instances          85               70.8333 %
 
@@ -9,10 +12,21 @@ Correctly Classified Instances          96               80      %
 Logistic,                               GroupSize: 6, binaryFeature: true, normalize: true
 Correctly Classified Instances          89               74.1667 %
 
-TheirClassifier,                        GroupSize: 6, binaryFeature: true, normalize: true
-Correctly Classified Instances          72               61.5385 %
+
+---- No None, 100 most occured words as features ----
+
+MultilayerPerceptron,                   GroupSize: 6, binaryFeature: true, normalize: true
+Correctly Classified Instances          47               39.1667 %
+
+Logistic,                               GroupSize: 6, binaryFeature: true, normalize: true
+Correctly Classified Instances          78               65      %
+
+SMO,                                    GroupSize: 6, binaryFeature: true, normalize: true
+Correctly Classified Instances          83               69.1667 %
+
 
 ---- Use None ----
+
 Logistic,                               GroupSize: 6, binaryFeature: true, normalize: true
 Correctly Classified Instances          95               63.3333 %
 
@@ -21,3 +35,31 @@ Correctly Classified Instances          90               60      %
 
 MultilayerPerceptron,                   GroupSize: 6, binaryFeature: true, normalize: true
 Correctly Classified Instances          94               62.6667 %
+
+
+
+---- Use None, 100 most occured words as features ----
+
+MultilayerPerceptron,                   GroupSize: 6, binaryFeature: true, normalize: true
+Correctly Classified Instances          48               32      %
+
+Logistic,                               GroupSize: 6, binaryFeature: true, normalize: true
+Correctly Classified Instances          76               50.6667 %
+
+SMO,                                    GroupSize: 6, binaryFeature: true, normalize: true
+Correctly Classified Instances          82               54.6667 %
+
+
+---- Use None, 1000 most occured words as features ----
+
+Logistic,                               GroupSize: 6, binaryFeature: true, normalize: true
+Correctly Classified Instances          74               49.3333 %
+
+SMO, 																		GroupSize: 6, binaryFeature: true, normalize: true
+Correctly Classified Instances          74               49.3333 %
+
+
+
+The classifier also predicts none if it does not predicts a product...
+
+if it always predict a product, and
