@@ -4,10 +4,8 @@
 \label{sec:implementation}
 
 \begin{itemize}
-	\item Present data set?
 	\item Do classifier optimization
 	\item For the concrete data set, how do we split concretely.
-	\item Introduce normalization and binary features.
 \end{itemize}
 
 \subsection{Example data set}
@@ -21,10 +19,6 @@ We crawled approximately 19,000 posts from LinkedIn.
 Unfortunately, around 75~\% of the brochures are in German and the LinkedIn posts are written in English.
 To solve the language mismatch, we translated the documents with an machine translation tools and replaced the German brochures with its translations.
 Additionally, we added some book descriptions from Amazon about these products to enlarge the training set.
-
-\todo{Move following two sentences elsewhere}
-As already mentioned in the previous sections, we extend our training set further by splitting the brochures and Amazon product texts into smaller chunks.
-We end up with 994 documents, which we use for the training of the product classifier.
 
 \begin{table}[h]
 	\centering
@@ -66,18 +60,25 @@ All together, we tagged about 350 LinkedIn posts, both in respect of demand and 
 In an initial step, each post was tagged by at least two different persons to avoid misclassifications because of the opinion of one tagger.
 If there were conflicts between the tagging decisions, a third person was tagging again to solve the conflict.
 To evaluate the demand classifier, we use a ten-fold cross validation of all posts, because we need the posts also for training.
-To evaluate the product classifier, we can use all annotated posts, because the learning step works on the brochures.
+To evaluate the product classifier, we can use all annotated posts, because the learning works on the brochures.
 
 \subsection{Demand Classifier}
-Furthermore, we added the following handcrafted \todo{Better word} features, which have been show to increase the overall performance:
+For the demand classifier, we added the following manually built features, which have been show to increase the overall performance:
 \begin{itemize}
 	\item Number of questions in the post. Demand posts usually have more questions.
 	\item Number of imperatives in the post. Demand posts usually have more imperatives like ``Please help me out" or ``Give me advice".
 	\item Whether an e-mail address was given in the post. Demand posts often give an e-mail address to send answers to.
 \end{itemize}
 
+We decided on a na\"{i}ve bayes classifier with a Bernoulli event model.
+The bernoulli event model is especially suited for \todo{for what?}.
+
 \subsection{Product Classifier}
 To be done.
+\todo{Introduce normalization and binary features.}
 
-\subsection{Choosing splitting algorithm}
+\subsection{Sampling algorithm}
+As already mentioned in the previous sections, we extend our training set further by splitting the brochures and Amazon product texts into smaller chunks.
+We end up with 994 documents, which we use for the training of the product classifier.
+
 How we split.
