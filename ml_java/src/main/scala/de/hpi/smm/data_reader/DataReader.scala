@@ -65,7 +65,14 @@ class DataReader(val postsFile: File, val brochuresFile: File, classificationFil
 
 			if (all || classifiedPosts.contains(id)) {
 				val sentences = nlp.detectSentences(rawPost)
-				val post = Document(id, title, text, sentences, rawPost.extract(className))
+        val extractedClass = if (className == "nto") {
+          if (rawPost.extractDemand() == "demand")
+            rawPost.extractCategory()
+          else
+            "None"
+        } else
+          rawPost.extract(className)
+				val post = Document(id, title, text, sentences, extractedClass)
 				if (includeNone || post.documentClass != "None") {
 					postCount += 1
 					extractor(post)

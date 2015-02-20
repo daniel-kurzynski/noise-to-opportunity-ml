@@ -26,7 +26,7 @@ class ExtendedNTOClassifier(val dataReader: DataReader, stopWordsFile: File, pos
 		var posts = mutable.ArrayBuffer[Document]()
 		dataReader.readPostsLinewise { post =>
 			posts += post
-		}("category")
+		}("nto")
 
 		println("=" * 80)
 		println("Product")
