@@ -114,12 +114,17 @@ This means that term influences the probability also if the term is not in the d
 		\overline{p(w|C)} 		&\text{otherwise}
 	\end{cases}
 	\end{align*}
-	\caption{Bernoulli na\"{i}ve bayes definition~\cite{mccallum1998comparison}.\todo{Do not start with small letter.} d is the document. C is the class. w is a term in a document and vocabulary V is the set of all terms in all documents}
+	\caption{Bernoulli na\"{i}ve bayes definition~\cite{mccallum1998comparison}. \todo{Do not start with small letter.} The letter d is the document. C is the class. w is a term in a document and vocabulary V is the set of all terms in all documents}
 \end{equationBlock}
 
 \subsection{Product Classifier}
 For the product classifier we evaluated several classifiers and variants of the feature vector using the most important words as features as described in Section~\ref{sec:feature-selection}.
 The results are shown in Figure~\ref{fig:product-classifier}.
+
+Generally the linear classifiers like logistic regression, svm, and perceptron performs better then the others. 
+Therefore we decide to use a linear classifier.
+For the linear classifier using binary features is best. Here binary features means that we just take into account whether a documents contains a word and not how often.
+Normalization also improves the classification result. We normalize the vector by dividing with the sum of the binary feature vector.    
 
 \begin{figure}
 	\centering
@@ -185,12 +190,9 @@ The results are shown in Figure~\ref{fig:product-classifier}.
 		\end{tabular}
 		\caption{Bernoulli Naive Bayes~\cite{John1995}}
 	\end{subfigure}~
-	\caption{Precision of the classifier. N indicates whether the feature vector was normalized with the L1-Norm. B indicates whether we use binary features per document. \todo{}}
+	\caption{Precision of the classifier. N indicates whether the feature vector was normalized with the L1-Norm. B indicates whether we use binary features per document. The linear classifiers like logistic regression, svm, and perceptron perform best.}
 	\label{fig:product-classifier}
 \end{figure}
-
-To be done.
-\todo{Introduce normalization and binary features.}
 
 \subsection{Sampling algorithm}
 As already mentioned in the previous sections, we extend our training set further by splitting the brochures and Amazon product texts into smaller chunks.
