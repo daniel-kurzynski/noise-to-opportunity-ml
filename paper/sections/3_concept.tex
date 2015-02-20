@@ -37,7 +37,7 @@ We call this the \emph{product classification}:
 	\mathbf{product}&: POST \longrightarrow  PRODUCT \cup \big\{ NONE \big\}
 \end{align}
 
-The intersection of the most relevant words for demand and product classification is the empty set.\todo{Is it really empty?: What about: Talking about buying a product could express a demand for another product or listing requirements/feautures of a product could express a demand...}
+The intersection of the most relevant words for demand and product classification is the empty set.
 This observation shows, that these concepts are independent of each other and should be treated separately.
 If a post is about a product of the company, that does not necessarily mean, that the system should make a recommendation and vice versa.
 Demand posts and posts about one of ACME's product have different characteristica, which should be represented in the system's architecture.
@@ -46,7 +46,6 @@ Therefore, we split the \nto problem in two subproblems: given a post $p \in POS
 If this is true, we then check whether we can actually categorize the post into one of ACME's products.
 All together, given $demand$ and $product$, we can define \nto:
 
-\todo{if demand(post) = true, better than = "demand", confusing naming, demand() seems to have boolean return value}
 \begin{figure}
 	\begin{alignat*}{3}
 	  &\mathbf{NTO}: && ~POSTS && \longrightarrow PRODUCT \cup \big\{ NONE \big\} \\
@@ -55,7 +54,7 @@ All together, given $demand$ and $product$, we can define \nto:
 		    NONE~~~~~~~~~~~~~~~\text{otherwise}
 	   \end{cases}
 	\end{alignat*}
-	\caption{Defining \nto via two-staged classifation.}
+	\caption{Defining \nto via two-staged classification.}
 \end{figure}
 
 In our system, both $demand$ and $product$ are implemented by two independent text classification algorithms.
