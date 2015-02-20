@@ -41,6 +41,14 @@ According to LinkedIn, there were 186 million unique monthly visitors in 2013\fo
 % http://www.forbes.com/sites/cherylsnappconner/2014/05/04/new-research-2014-linkedin-user-trends-and-10-top-surprises/
 The sheer amount of this shows, that technical assistance is needed.
 
+\begin{figure}
+	\label{fig:figureone}
+	\begin{center}
+		\includegraphics[width=0.7\textwidth]{figures/nto_workflow.eps}
+	\end{center}
+	\caption{Together, a demand classifier trained from social network posts and a product classifier trained from marketing material form a classification-model for unseen posts.}
+\end{figure}
+
 At the moment, the process of finding relevant status updates mostly happens by providing a search engine on the posts.
 Salesmen need to manually find good search terms, enter them in the network's search field and then scan the results for potential buyers.
 This requires expertise on the hand of the salesman to find good search terms and tweak them accordingly.
@@ -50,13 +58,6 @@ Also, it is simply impossible to search through a large set of posts, say over a
 We propose an approach, which is based on automatic text classification to identify relevant posts for a salesman.
 Therefore, we employ techniques of supervised machine learning to categorize posts.
 We call our approach \emph{Noise to Opportunity}, as we automatically filter the best selling opportunities from the large and diverse set of potential social network posts.
-\begin{figure}
-	\label{fig:figureone}
-	\begin{center}
-		\includegraphics[width=0.7\textwidth]{figures/nto_workflow.eps}
-	\end{center}
-	\caption{Together, a demand classifier trained from social network posts and a product classifier trained from marketing material form a classification-model for unseen posts.}
-\end{figure}
 
 To classify posts, the machine learning requires to have labeled posts to use as training data for the learning algorithm.
 As this training data does not exist, it would need to be created manually by the salesmen.

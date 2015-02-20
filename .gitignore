@@ -5,6 +5,7 @@ JavaTestProject/*.csv
 tagger_name.conf
 n2o_data
 webapp_scala/lib
+paper/plots/*.eps
 
 # use glob syntax.
 *.class
