@@ -107,14 +107,14 @@ We decided on a na\"{i}ve bayes classifier with a Bernoulli event model.
 The bernoulli event model is especially suited for \todo{write on}.
 
 \begin{equationBlock}
-\begin{alignat}{3}
-	p(d|C)=\prod_{w~\epsilon~V}^{}bernoulli(w,d,C) \\
-	bernoulli(w,d,C)=
+\begin{align*}
+	p(d|C) &= \prod_{w~\epsilon~V} bernoulli(w, d, C) \\
+	bernoulli(w, d, C) &=
 	\begin{cases}
 		product(post)~~~~~~~\text{if }~demand(post) = \operatorname{``demand''} \\
 		NONE~~~~~~~~~~~~~~~\text{otherwise}
 	\end{cases}
-	\end{alignat}
+	\end{align*}
 	\caption{Defining \nto via two-staged classification.}
 \end{equationBlock}
 

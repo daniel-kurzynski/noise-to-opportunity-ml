@@ -19,9 +19,9 @@ Typical phrases, taken from an experiment on our example data set (see Section~\
 	\textit{need, hi, looking for, recommend, please, anyone, appreciate, thank you}
 \end{center}
 We call this the \emph{demand classification}:
-\begin{align}
+\begin{align*}
 	\mathbf{demand}&: POSTS \longrightarrow \big\{ \operatorname{``demand''}, \operatorname{``no-demand''} \big\}
-\end{align}
+\end{align*}
 
 The second concept is about which product the user is talking about in the post.
 Here, the decision needs to be made whether this is a product of the company or not.
@@ -33,9 +33,9 @@ The following words are relevant words for a customer relationship managment sof
 \end{center}
 
 We call this the \emph{product classification}:
-\begin{align}
+\begin{align*}
 	\mathbf{product}&: POST \longrightarrow  PRODUCT \cup \big\{ NONE \big\}
-\end{align}
+\end{align*}
 
 The intersection of the most relevant words for demand and product classification is the empty set.
 This observation shows, that these concepts are independent of each other and should be treated separately.
