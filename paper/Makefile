@@ -4,7 +4,7 @@ else
 	pdfviewer=evince
 endif
 
-show: plot make bibtex
+show: make bibtex
 	$(pdfviewer) paper.pdf &
 
 plot:

@@ -80,7 +80,9 @@ Then, the problem can be modelled as a function $\nto$, such that:
 \begin{displaymath}
 	\nto: POSTS \to PRODUCTS \cup \{NONE\}
 \end{displaymath}
-
+This function can also be seen as a assignment of a post to a salesman.
+Usually, there is one salesman responsible for one product.
+If the \nto function outputs $CRM$, then the post is shown to the CRM salesman for review.
 \todo{salesmen are responsible for different products: only for one -> Use \nto function to detect posts that belong to salesman}
 
 A classification of a post $p \in POSTS$ is $correct$, if $\nto(p)$ is indeed the product that seems to be needed by the user who posted $p$ or $NONE$ if the user does not need a product offered by the company \acme.
