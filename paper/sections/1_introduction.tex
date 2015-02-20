@@ -9,13 +9,11 @@
 	\end{itemize}
 	\textbf{Final checks} \\
 	\begin{itemize}
-		\item "data set" vs "dataset"
+		\item ``data set'' vs ``dataset''
 		\item Check headline capitalization
 		\item Check capitalization after hyphen
 	\end{itemize}
 }
-
-\todo{Talk about 2-step classifier and show figure one on first page}
 
 \section{Introduction}
 \label{sec:introduction}
@@ -26,7 +24,7 @@ Vendors of such software are now able to set the subscription fees dynamically a
 For the customer companies, this allows to scale easily when the company grows or declines or does not need the services for a certain time span.
 
 These new possibilities increased the set of potential customers for software vendors.
-As Dubey and Wagle~\cite{dubey2007delivering} said, ``buyers have more flexibility to switch vendors and perhaps fewer headaches in maintaining the software".
+As Dubey and Wagle~\cite{dubey2007delivering} said, ``buyers have more flexibility to switch vendors and perhaps fewer headaches in maintaining the software''.
 Especially young companies are more likely to buy SaaS, as it gives them the flexibility to adapt to the growth of the company in the future.
 So, rather than being restricted to a small range of companies, for example only big enterprise companies or only young startups, vendors can sell their products to all kinds of companies.
 However, this introduces a new problem for the salesmen: due to the sheer amount of possible customers, it is harder to find those, who are likely to buy the product.
@@ -41,14 +39,15 @@ There, users ask for opinions and recommendations on products.
 
 This offers a huge possibility for companies to identify potential buyers.
 Rather than booking advertising time in television or advertising banners on news websites, they can target their salesman on persons, who are more likely to buy a product.
-It is a basic truism from marketing, that it is best to target those potential customers, who are already predisposed towards the product. \nr
+As Mobasher et~al. \cite{mobasher2007toward} state, ``it is a basic truism from marketing, that it is best to target those potential customers, who are already predisposed towards the product''.
 
 Thus, it makes sense for companies to find these people looking for advice.
 However, the large amount of daily status updates every day makes it infeasible to identify this posts manually.
-According to LinkedIn, there were 350 users in 2014, each of them posting three posts each week \todo{Random numbers: Check actual values}.
+According to LinkedIn, there were 186 million unique monthly visitors in 2013\footnote{http://blog.linkedin.com/2014/05/01/linkedins-q1-2014-earnings/}, of which 39~\% post status updates regularily.
+% http://www.forbes.com/sites/cherylsnappconner/2014/05/04/new-research-2014-linkedin-user-trends-and-10-top-surprises/
 The sheer amount of this shows, that technical assistance is needed.
 
-At the moment, this mostly happens by providing a search engine on the posts.
+At the moment, the process of finding relevant status updates mostly happens by providing a search engine on the posts.
 Salesmen need to manually find good search terms, enter them in the network's search field and then scan the results for potential buyers.
 This requires expertise on the hand of the salesman to find good search terms and tweak them accordingly.
 Furthermore, scanning through the result lists is cumbersome and tedious.
@@ -57,6 +56,13 @@ Also, it is simply impossible to search through a large set of posts, say over a
 We propose an approach, which is based on automatic text classification to identify relevant posts for a salesman.
 Therefore, we employ techniques of supervised machine learning to categorize posts.
 We call our approach \emph{Noise to Opportunity}, as we automatically filter the best selling opportunities from the large and diverse set of potential social network posts.
+\begin{figure}
+	\label{fig:figureone}
+	\begin{center}
+		\includegraphics[width=0.7\textwidth]{figures/nto_workflow.eps}
+	\end{center}
+	\caption{Together, a demand classifier trained from social network posts and a product classifier trained from marketing material form a classification-model for unseen posts.}
+\end{figure}
 
 To classify posts, the machine learning requires to have labeled posts to use as training data for the learning algorithm.
 As this training data does not exist, it would need to be created manually by the salesmen.
@@ -66,18 +72,10 @@ A company usually has some set of advertising material, flyers, or presentation 
 Based on this material, we automatically learn to distinguish between products, and then propose posts with selling opportunities to the salesman.
 The architecture of our system is illustrated in Figure~\ref{fig:figureone}.
 
-\begin{figure}
-	\label{fig:figureone}
-	\begin{center}
-		\includegraphics[width=0.7\textwidth]{figures/nto_workflow.eps}
-	\end{center}
-	\caption{Together, a demand classifier training from social network posts and a product classifier trained from marketing material form a classification-model for unseen posts.}
-\end{figure}
-
 Yet, this approach introduces new problems.
 Firstly, there are not many documents to learn from.
 The number of brochures per product is usually far below one hundred.
-To overcome this small corpus problem \todo{correct name?}, we employ feature selection to only select the most relevant words and ignore the noise.
+To overcome this small corpus problem, we employ feature selection to only select the most relevant words and ignore the noise.
 Secondly, if a user posts something about a certain product, this does not automatically allow the conclusion, that the user is actually interested in buying the product.
 Therefore, we introduce a two-staged classifier, which first determines the demand of a user, and then determines, whether the user posts about a product.
 This approach allows to capture, whether the user actually needs the product.
