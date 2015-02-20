@@ -1,0 +1,13 @@
+id,classifier,accuracy
+0,Multilayer Perceptron,70.83
+0.2,Multilayer Perceptron,72.50
+0.4,Multilayer Perceptron,67.50
+0.6,Multilayer Perceptron,54.16
+1,SMO,80.00
+1.2,SMO,75.00
+1.4,SMO,71.67
+1.6,SMO,52.5
+2,Logistic,74.17
+2.2,Logistic,69.17
+2.4,Logistic,68.33
+2.6,Logistic,51.66
