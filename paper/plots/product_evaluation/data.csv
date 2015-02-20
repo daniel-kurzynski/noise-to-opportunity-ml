@@ -1,4 +1,4 @@
-id,size,accuracy
+id,classifier,accuracy
 0,K-Nearest Neighbor,61.53
 0.4,K-Nearest Neighbor,nothing
 1,Multilayer Perceptron,70.83

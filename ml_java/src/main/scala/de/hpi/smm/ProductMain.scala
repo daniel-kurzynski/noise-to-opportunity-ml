@@ -14,7 +14,7 @@ import scala.util.Random
 object ProductMain {
 
 	val BUILD_RANDOM_POSTS = true
-	val INCLUDE_NONE_POSTS = true
+	val INCLUDE_NONE_POSTS = false
 
 	val postsFile = new File(POSTS_PATH)
 	val brochuresFile = new File(BROCHURES_PATH)
@@ -42,11 +42,11 @@ object ProductMain {
 		}
 	}
 
-	val groupSizes  = List(1)
+	val groupSizes  = List(6)
 	val classifiers = List(
 		new Logistic
-//		, new SMO()
-//		,new MultilayerPerceptron()
+		, new SMO()
+		,new MultilayerPerceptron()
 		//		,
 		//		new TheirClassifier
 	)
@@ -83,7 +83,7 @@ object ProductMain {
 
 						val productEvaluation = analyzer.validate(posts)
 //						println(productEvaluation.toSummaryString("", false))
-						println(s"$groupSize\t${productEvaluation.pctCorrect}")
+						println(s"${classifier.getClass.getSimpleName}\t$groupSize\t${productEvaluation.pctCorrect}")
 //						println(productEvaluation.toMatrixString)
 					}
 				}

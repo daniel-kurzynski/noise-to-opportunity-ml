@@ -41,7 +41,7 @@
 	  <feComposite in='SourceGraphic' in2='grey' operator='atop'/>
 	</filter>
 </defs>
-<g fill="none" color="white" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
+<g fill="none" color="white" stroke="black" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
 </g>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
 	<path stroke='black'  d='M84.0,658.0 L94.5,658.0 M770.8,658.0 L760.3,658.0  '/>	<g transform="translate(74.3,663.2)" stroke="none" fill="black" font-family="Verdana" font-size="14.00"  text-anchor="end">
@@ -74,22 +74,17 @@
 	</g>
 </g>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-	<path stroke='black'  d='M179.8,658.0 L179.8,647.5 M179.8,19.5 L179.8,30.0  '/>	<g transform="translate(179.8,684.2)" stroke="none" fill="black" font-family="Verdana" font-size="14.00"  text-anchor="middle">
-		<text><tspan font-family="Verdana" >K-Nearest Neighbor</tspan></text>
-	</g>
-</g>
-<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-	<path stroke='black'  d='M339.6,658.0 L339.6,647.5 M339.6,19.5 L339.6,30.0  '/>	<g transform="translate(339.6,684.2)" stroke="none" fill="black" font-family="Verdana" font-size="14.00"  text-anchor="middle">
+	<path stroke='black'  d='M229.7,658.0 L229.7,647.5 M229.7,19.5 L229.7,30.0  '/>	<g transform="translate(229.7,684.2)" stroke="none" fill="black" font-family="Verdana" font-size="14.00"  text-anchor="middle">
 		<text><tspan font-family="Verdana" >Multilayer Perceptron</tspan></text>
 	</g>
 </g>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-	<path stroke='black'  d='M499.3,658.0 L499.3,647.5 M499.3,19.5 L499.3,30.0  '/>	<g transform="translate(499.3,684.2)" stroke="none" fill="black" font-family="Verdana" font-size="14.00"  text-anchor="middle">
+	<path stroke='black'  d='M437.8,658.0 L437.8,647.5 M437.8,19.5 L437.8,30.0  '/>	<g transform="translate(437.8,684.2)" stroke="none" fill="black" font-family="Verdana" font-size="14.00"  text-anchor="middle">
 		<text><tspan font-family="Verdana" >SMO</tspan></text>
 	</g>
 </g>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-	<path stroke='black'  d='M659.0,658.0 L659.0,647.5 M659.0,19.5 L659.0,30.0  '/>	<g transform="translate(659.0,684.2)" stroke="none" fill="black" font-family="Verdana" font-size="14.00"  text-anchor="middle">
+	<path stroke='black'  d='M645.9,658.0 L645.9,647.5 M645.9,19.5 L645.9,30.0  '/>	<g transform="translate(645.9,684.2)" stroke="none" fill="black" font-family="Verdana" font-size="14.00"  text-anchor="middle">
 		<text><tspan font-family="Verdana" >Logistic</tspan></text>
 	</g>
 </g>
@@ -104,10 +99,10 @@
 </g>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
 </g>
-	<g id="gnuplot_plot_1" ><title>Without "No-Product" Prediction</title>
+	<g id="gnuplot_plot_1" ><title>Translated and with Amazon book descriptions</title>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
 	<g transform="translate(692.4,45.7)" stroke="none" fill="black" font-family="Verdana" font-size="14.00"  text-anchor="end">
-		<text><tspan font-family="Verdana" >Without "No-Product" Prediction</tspan></text>
+		<text><tspan font-family="Verdana" >Translated and with Amazon book descriptions</tspan></text>
 	</g>
 </g>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
@@ -117,39 +112,33 @@
 	<path stroke='rgb( 34,  34,  34)'  d='M702.1,45.7 L751.4,45.7 L751.4,35.3 L702.1,35.3 L702.1,45.7 Z  '/></g>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
 	<g stroke='none' shape-rendering='crispEdges'>
-		<polygon fill = 'rgb( 34,  34,  34)' points = '115.9,658.0 179.9,658.0 179.9,265.0 115.9,265.0 '/>
+		<polygon fill = 'rgb( 34,  34,  34)' points = '146.4,658.0 188.2,658.0 188.2,205.7 146.4,205.7 '/>
 	</g>
-	<path stroke='rgb( 34,  34,  34)'  d='M115.9,658.0 L115.9,265.1 L179.8,265.1 L179.8,658.0 L115.9,658.0 Z  '/>	<g stroke='none' shape-rendering='crispEdges'>
-		<polygon fill = 'rgb( 34,  34,  34)' points = '275.7,658.0 339.7,658.0 339.7,205.7 275.7,205.7 '/>
+	<path stroke='rgb( 34,  34,  34)'  d='M146.4,658.0 L146.4,205.8 L188.1,205.8 L188.1,658.0 L146.4,658.0 Z  '/>	<g stroke='none' shape-rendering='crispEdges'>
+		<polygon fill = 'rgb( 34,  34,  34)' points = '354.6,658.0 396.3,658.0 396.3,147.1 354.6,147.1 '/>
 	</g>
-	<path stroke='rgb( 34,  34,  34)'  d='M275.7,658.0 L275.7,205.8 L339.6,205.8 L339.6,658.0 L275.7,658.0 Z  '/>	<g stroke='none' shape-rendering='crispEdges'>
-		<polygon fill = 'rgb( 34,  34,  34)' points = '435.4,658.0 499.4,658.0 499.4,147.1 435.4,147.1 '/>
+	<path stroke='rgb( 34,  34,  34)'  d='M354.6,658.0 L354.6,147.2 L396.2,147.2 L396.2,658.0 L354.6,658.0 Z  '/>	<g stroke='none' shape-rendering='crispEdges'>
+		<polygon fill = 'rgb( 34,  34,  34)' points = '562.7,658.0 604.4,658.0 604.4,184.3 562.7,184.3 '/>
 	</g>
-	<path stroke='rgb( 34,  34,  34)'  d='M435.4,658.0 L435.4,147.2 L499.3,147.2 L499.3,658.0 L435.4,658.0 Z  '/>	<g stroke='none' shape-rendering='crispEdges'>
-		<polygon fill = 'rgb( 34,  34,  34)' points = '595.1,658.0 659.1,658.0 659.1,184.3 595.1,184.3 '/>
-	</g>
-	<path stroke='rgb( 34,  34,  34)'  d='M595.1,658.0 L595.1,184.4 L659.0,184.4 L659.0,658.0 L595.1,658.0 Z  '/></g>
+	<path stroke='rgb( 34,  34,  34)'  d='M562.7,658.0 L562.7,184.4 L604.3,184.4 L604.3,658.0 L562.7,658.0 Z  '/></g>
 	</g>
 	<g id="gnuplot_plot_2" ><title>gnuplot_plot_2</title>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-	<g transform="translate(147.9,257.6)" stroke="none" fill="black" font-family="Verdana" font-size="14.00"  text-anchor="middle">
-		<text><tspan font-family="Verdana" >61.53</tspan></text>
-	</g>
-	<g transform="translate(307.6,198.2)" stroke="none" fill="black" font-family="Verdana" font-size="14.00"  text-anchor="middle">
+	<g transform="translate(167.2,198.2)" stroke="none" fill="black" font-family="Verdana" font-size="14.00"  text-anchor="middle">
 		<text><tspan font-family="Verdana" >70.83</tspan></text>
 	</g>
-	<g transform="translate(467.3,139.6)" stroke="none" fill="black" font-family="Verdana" font-size="14.00"  text-anchor="middle">
+	<g transform="translate(375.4,139.6)" stroke="none" fill="black" font-family="Verdana" font-size="14.00"  text-anchor="middle">
 		<text><tspan font-family="Verdana" >80.00</tspan></text>
 	</g>
-	<g transform="translate(627.1,176.9)" stroke="none" fill="black" font-family="Verdana" font-size="14.00"  text-anchor="middle">
+	<g transform="translate(583.5,176.9)" stroke="none" fill="black" font-family="Verdana" font-size="14.00"  text-anchor="middle">
 		<text><tspan font-family="Verdana" >74.17</tspan></text>
 	</g>
 </g>
 	</g>
-	<g id="gnuplot_plot_3" ><title>With "No-Product" Prediction</title>
+	<g id="gnuplot_plot_3" ><title>Translated and without Amazon book descriptions</title>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
 	<g transform="translate(692.4,66.7)" stroke="none" fill="black" font-family="Verdana" font-size="14.00"  text-anchor="end">
-		<text><tspan font-family="Verdana" >With "No-Product" Prediction</tspan></text>
+		<text><tspan font-family="Verdana" >Translated and without Amazon book descriptions</tspan></text>
 	</g>
 </g>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
@@ -159,26 +148,98 @@
 	<path stroke='rgb(102, 102, 102)'  d='M702.1,66.7 L751.4,66.7 L751.4,56.3 L702.1,56.3 L702.1,66.7 Z  '/></g>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
 	<g stroke='none' shape-rendering='crispEdges'>
-		<polygon fill = 'rgb(102, 102, 102)' points = '339.6,658.0 403.5,658.0 403.5,257.8 339.6,257.8 '/>
+		<polygon fill = 'rgb(102, 102, 102)' points = '188.1,658.0 229.8,658.0 229.8,195.0 188.1,195.0 '/>
 	</g>
-	<path stroke='rgb(102, 102, 102)'  d='M339.6,658.0 L339.6,257.9 L403.4,257.9 L403.4,658.0 L339.6,658.0 Z  '/>	<g stroke='none' shape-rendering='crispEdges'>
-		<polygon fill = 'rgb(102, 102, 102)' points = '499.3,658.0 563.3,658.0 563.3,274.8 499.3,274.8 '/>
+	<path stroke='rgb(102, 102, 102)'  d='M188.1,658.0 L188.1,195.1 L229.7,195.1 L229.7,658.0 L188.1,658.0 Z  '/>	<g stroke='none' shape-rendering='crispEdges'>
+		<polygon fill = 'rgb(102, 102, 102)' points = '396.2,658.0 437.9,658.0 437.9,179.0 396.2,179.0 '/>
 	</g>
-	<path stroke='rgb(102, 102, 102)'  d='M499.3,658.0 L499.3,274.9 L563.2,274.9 L563.2,658.0 L499.3,658.0 Z  '/>	<g stroke='none' shape-rendering='crispEdges'>
-		<polygon fill = 'rgb(102, 102, 102)' points = '659.0,658.0 723.0,658.0 723.0,253.5 659.0,253.5 '/>
+	<path stroke='rgb(102, 102, 102)'  d='M396.2,658.0 L396.2,179.1 L437.8,179.1 L437.8,658.0 L396.2,658.0 Z  '/>	<g stroke='none' shape-rendering='crispEdges'>
+		<polygon fill = 'rgb(102, 102, 102)' points = '604.3,658.0 646.0,658.0 646.0,216.2 604.3,216.2 '/>
 	</g>
-	<path stroke='rgb(102, 102, 102)'  d='M659.0,658.0 L659.0,253.6 L722.9,253.6 L722.9,658.0 L659.0,658.0 Z  '/></g>
+	<path stroke='rgb(102, 102, 102)'  d='M604.3,658.0 L604.3,216.3 L645.9,216.3 L645.9,658.0 L604.3,658.0 Z  '/></g>
 	</g>
 	<g id="gnuplot_plot_4" ><title>gnuplot_plot_4</title>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-	<g transform="translate(371.5,250.3)" stroke="none" fill="black" font-family="Verdana" font-size="14.00"  text-anchor="middle">
-		<text><tspan font-family="Verdana" >62.67</tspan></text>
+	<g transform="translate(208.9,187.5)" stroke="none" fill="black" font-family="Verdana" font-size="14.00"  text-anchor="middle">
+		<text><tspan font-family="Verdana" >72.50</tspan></text>
 	</g>
-	<g transform="translate(531.2,267.3)" stroke="none" fill="black" font-family="Verdana" font-size="14.00"  text-anchor="middle">
-		<text><tspan font-family="Verdana" >60.00</tspan></text>
+	<g transform="translate(417.0,171.6)" stroke="none" fill="black" font-family="Verdana" font-size="14.00"  text-anchor="middle">
+		<text><tspan font-family="Verdana" >75.00</tspan></text>
 	</g>
-	<g transform="translate(690.9,246.1)" stroke="none" fill="black" font-family="Verdana" font-size="14.00"  text-anchor="middle">
-		<text><tspan font-family="Verdana" >63.33</tspan></text>
+	<g transform="translate(625.1,208.8)" stroke="none" fill="black" font-family="Verdana" font-size="14.00"  text-anchor="middle">
+		<text><tspan font-family="Verdana" >69.17</tspan></text>
+	</g>
+</g>
+	</g>
+	<g id="gnuplot_plot_5" ><title>Not translated and with Amazon book descriptions</title>
+<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
+	<g transform="translate(692.4,87.7)" stroke="none" fill="black" font-family="Verdana" font-size="14.00"  text-anchor="end">
+		<text><tspan font-family="Verdana" >Not translated and with Amazon book descriptions</tspan></text>
+	</g>
+</g>
+<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
+	<g stroke='none' shape-rendering='crispEdges'>
+		<polygon fill = 'rgb(170, 170, 170)' points = '702.1,87.7 751.4,87.7 751.4,77.2 702.1,77.2 '/>
+	</g>
+	<path stroke='rgb(170, 170, 170)'  d='M702.1,87.7 L751.4,87.7 L751.4,77.3 L702.1,77.3 L702.1,87.7 Z  '/></g>
+<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
+	<g stroke='none' shape-rendering='crispEdges'>
+		<polygon fill = 'rgb(170, 170, 170)' points = '229.7,658.0 271.4,658.0 271.4,226.9 229.7,226.9 '/>
+	</g>
+	<path stroke='rgb(170, 170, 170)'  d='M229.7,658.0 L229.7,227.0 L271.3,227.0 L271.3,658.0 L229.7,658.0 Z  '/>	<g stroke='none' shape-rendering='crispEdges'>
+		<polygon fill = 'rgb(170, 170, 170)' points = '437.8,658.0 479.5,658.0 479.5,200.3 437.8,200.3 '/>
+	</g>
+	<path stroke='rgb(170, 170, 170)'  d='M437.8,658.0 L437.8,200.4 L479.4,200.4 L479.4,658.0 L437.8,658.0 Z  '/>	<g stroke='none' shape-rendering='crispEdges'>
+		<polygon fill = 'rgb(170, 170, 170)' points = '645.9,658.0 687.7,658.0 687.7,221.6 645.9,221.6 '/>
+	</g>
+	<path stroke='rgb(170, 170, 170)'  d='M645.9,658.0 L645.9,221.7 L687.6,221.7 L687.6,658.0 L645.9,658.0 Z  '/></g>
+	</g>
+	<g id="gnuplot_plot_6" ><title>gnuplot_plot_6</title>
+<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
+	<g transform="translate(250.5,219.4)" stroke="none" fill="black" font-family="Verdana" font-size="14.00"  text-anchor="middle">
+		<text><tspan font-family="Verdana" >67.50</tspan></text>
+	</g>
+	<g transform="translate(458.6,192.8)" stroke="none" fill="black" font-family="Verdana" font-size="14.00"  text-anchor="middle">
+		<text><tspan font-family="Verdana" >71.67</tspan></text>
+	</g>
+	<g transform="translate(666.7,214.1)" stroke="none" fill="black" font-family="Verdana" font-size="14.00"  text-anchor="middle">
+		<text><tspan font-family="Verdana" >68.33</tspan></text>
+	</g>
+</g>
+	</g>
+	<g id="gnuplot_plot_7" ><title>Not translated and without Amazon book descriptions</title>
+<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
+	<g transform="translate(692.4,108.7)" stroke="none" fill="black" font-family="Verdana" font-size="14.00"  text-anchor="end">
+		<text><tspan font-family="Verdana" >Not translated and without Amazon book descriptions</tspan></text>
+	</g>
+</g>
+<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
+	<g stroke='none' shape-rendering='crispEdges'>
+		<polygon fill = 'rgb(  0,   0,   0)' points = '702.1,108.7 751.4,108.7 751.4,98.2 702.1,98.2 '/>
+	</g>
+	<path stroke='rgb(  0,   0,   0)'  d='M702.1,108.7 L751.4,108.7 L751.4,98.3 L702.1,98.3 L702.1,108.7 Z  '/></g>
+<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
+	<g stroke='none' shape-rendering='crispEdges'>
+		<polygon fill = 'rgb(  0,   0,   0)' points = '271.3,658.0 313.0,658.0 313.0,312.1 271.3,312.1 '/>
+	</g>
+	<path stroke='rgb(  0,   0,   0)'  d='M271.3,658.0 L271.3,312.2 L312.9,312.2 L312.9,658.0 L271.3,658.0 Z  '/>	<g stroke='none' shape-rendering='crispEdges'>
+		<polygon fill = 'rgb(  0,   0,   0)' points = '479.4,658.0 521.2,658.0 521.2,322.7 479.4,322.7 '/>
+	</g>
+	<path stroke='rgb(  0,   0,   0)'  d='M479.4,658.0 L479.4,322.8 L521.1,322.8 L521.1,658.0 L479.4,658.0 Z  '/>	<g stroke='none' shape-rendering='crispEdges'>
+		<polygon fill = 'rgb(  0,   0,   0)' points = '687.6,658.0 729.3,658.0 729.3,328.1 687.6,328.1 '/>
+	</g>
+	<path stroke='rgb(  0,   0,   0)'  d='M687.6,658.0 L687.6,328.2 L729.2,328.2 L729.2,658.0 L687.6,658.0 Z  '/></g>
+	</g>
+	<g id="gnuplot_plot_8" ><title>gnuplot_plot_8</title>
+<g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
+	<g transform="translate(292.1,304.6)" stroke="none" fill="black" font-family="Verdana" font-size="14.00"  text-anchor="middle">
+		<text><tspan font-family="Verdana" >54.16</tspan></text>
+	</g>
+	<g transform="translate(500.2,315.2)" stroke="none" fill="black" font-family="Verdana" font-size="14.00"  text-anchor="middle">
+		<text><tspan font-family="Verdana" >52.5</tspan></text>
+	</g>
+	<g transform="translate(708.4,320.6)" stroke="none" fill="black" font-family="Verdana" font-size="14.00"  text-anchor="middle">
+		<text><tspan font-family="Verdana" >51.66</tspan></text>
 	</g>
 </g>
 	</g>
