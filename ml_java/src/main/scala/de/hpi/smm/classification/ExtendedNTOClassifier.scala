@@ -5,9 +5,11 @@ import java.io.File
 import com.blog_intelligence.nto.{PredictedPost, FullPrediction, Document, NTOClassifier}
 import de.hpi.smm.data_reader.DataReader
 import de.hpi.smm.nlp.NLP
+import weka.classifiers.Evaluation
 
 import scala.collection.JavaConverters._
 import scala.collection.mutable
+import scala.util.Random
 
 case class ClassificationOutput(prob: Double, relevantFeatures: Array[Array[Any]] = Array())
 case class ExtendedClassification(cls: String, classificationOutput: ClassificationOutput)
@@ -23,20 +25,51 @@ class ExtendedNTOClassifier(val dataReader: DataReader, stopWordsFile: File, pos
 ////		println(demandEvaluation.pctCorrect())
 //		println(demandEvaluation.toMatrixString)
 
-		var posts = mutable.ArrayBuffer[Document]()
+		val nto_posts = mutable.ArrayBuffer[Document]()
 		dataReader.readPostsLinewise { post =>
-			posts += post
+			nto_posts += post
 		}("nto")
 
-		println("=" * 80)
-		println("Product")
-		println("=" * 80)
+
+		val demand_posts = mutable.ArrayBuffer[Document]()
+		dataReader.readPostsLinewise { post =>
+			demand_posts += post
+		}("demand")
 
 
-		val productEvaluation = productClassifier.validate(posts)
-		println(productEvaluation.toSummaryString("", false))
-//		println(productEvaluation.pctCorrect())
-		println(productEvaluation.toMatrixString)
+		List(ourClassifier _, onlyProductClassifier _).foreach { classifier =>
+			var accuracy = 0.0
+			(0 to 10).foreach{ value =>
+				val train_posts = new Random().shuffle(demand_posts).take((demand_posts.size * 0.9).toInt)
+				trainDemand(train_posts.asJava)
+				val train_ids = train_posts.map(_.id)
+				val test_posts = nto_posts.filter {doc => !train_ids.contains(doc.id)}
+				val correctlyPredicted = test_posts.count { post =>
+					classifier(post) == post.documentClass
+				}
+				accuracy += 100 * correctlyPredicted.toDouble / test_posts.size
+			}
+			println(accuracy / 10)
+		}
+
+		//		println("=" * 80)
+		//		println("Product")
+		//		println("=" * 80)
+		//
+		//		val productEvaluation = productClassifier.validate(posts)
+		////		println(productEvaluation.toSummaryString("", false))
+		//		println(productEvaluation.pctCorrect())
+		//		println(productEvaluation.toMatrixString
+	}
+
+	def ourClassifier(post: Document): String = {
+		val demandProb = demandClassifier.classProbability(post.wholeText)
+		val productProb = productClassifier.predict(post.wholeText).maxBy(_.prob)
+		if(demandProb.prob > .5) productProb.product else "None"
+	}
+
+	def onlyProductClassifier(post: Document): String = {
+		productClassifier.predict(post.wholeText).maxBy(_.prob).product
 	}
 
 
