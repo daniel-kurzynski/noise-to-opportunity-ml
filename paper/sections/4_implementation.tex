@@ -75,6 +75,18 @@ For the demand classifier, we added the following manually built features, which
 We decided on a na\"{i}ve bayes classifier with a Bernoulli event model.
 The bernoulli event model is especially suited for \todo{write on}.
 
+\begin{equationBlock}
+\begin{alignat}{3}
+	p(d|C)=\prod_{w~\epsilon~V}^{}bernoulli(w,d,C) \\
+	bernoulli(w,d,C)=
+	\begin{cases}
+		product(post)~~~~~~~\text{if }~demand(post) = \operatorname{``demand''} \\
+		NONE~~~~~~~~~~~~~~~\text{otherwise}
+	\end{cases}
+	\end{alignat}
+	\caption{Defining \nto via two-staged classification.}
+\end{equationBlock}
+
 \subsection{Product Classifier}
 To be done.
 \todo{Introduce normalization and binary features.}

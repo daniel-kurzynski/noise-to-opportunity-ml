@@ -46,7 +46,7 @@ Therefore, we split the \nto problem in two subproblems: given a post $p \in POS
 If this is true, we then check whether we can actually categorize the post into one of ACME's products.
 All together, given $demand$ and $product$, we can define \nto:
 
-\begin{figure}
+\begin{equationBlock}
 	\begin{alignat*}{3}
 	  &\mathbf{NTO}: && ~POSTS && \longrightarrow PRODUCT \cup \big\{ NONE \big\} \\
 	  &\mathbf{NTO}: && ~~p   && \longmapsto \begin{cases}
@@ -55,7 +55,7 @@ All together, given $demand$ and $product$, we can define \nto:
 	   \end{cases}
 	\end{alignat*}
 	\caption{Defining \nto via two-staged classification.}
-\end{figure}
+\end{equationBlock}
 
 In our system, both $demand$ and $product$ are implemented by two independent text classification algorithms.
 We are using supervised machine learning for this.
