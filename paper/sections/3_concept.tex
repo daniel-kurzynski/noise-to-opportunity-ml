@@ -20,7 +20,7 @@ Typical phrases, taken from an experiment on our example data set (see Section~\
 \end{center}
 We call this the \emph{demand classification}:
 \begin{align}
-	\mathbf{demand}&: POSTS \longrightarrow \big\{ ``demand", ``\operatorname{no-demand}" \big\}
+	\mathbf{demand}&: POSTS \longrightarrow \big\{ \operatorname{``demand''}, \operatorname{``no-demand''} \big\}
 \end{align}
 
 The second concept is about which product the user is talking about in the post.
@@ -50,7 +50,7 @@ All together, given $demand$ and $product$, we can define \nto:
 	\begin{alignat*}{3}
 	  &\mathbf{NTO}: && ~POSTS && \longrightarrow PRODUCT \cup \big\{ NONE \big\} \\
 	  &\mathbf{NTO}: && ~~p   && \longmapsto \begin{cases}
-		    product(post)~~~~~~~\text{if }~demand(post) = ``demand" \\
+		    product(post)~~~~~~~\text{if }~demand(post) = \operatorname{``demand''} \\
 		    NONE~~~~~~~~~~~~~~~\text{otherwise}
 	   \end{cases}
 	\end{alignat*}
@@ -62,8 +62,8 @@ We are using supervised machine learning for this.
 Supervised learning requires tagged training samples to draw conclusions on unseen test samples.
 
 The training data for the $demand$ classifier comes from posts from social media networks.
-This requires manually classifying posts into ``demand" and ``no-demand".
-We did this manually for a randomly selected sample of social network posts. \todo{What about active learning? Is this random?}
+This requires manually classifying posts into ``demand'' and ``no-demand''.
+We did this manually for a sample of social network posts.
 However, the demand classification does not change for different companies or products.
 It is independent from the product classification, which is why companies do not need to supply training data for the demand classification.
 Rather, they can use a prebuilt demand classifier.
@@ -84,7 +84,7 @@ Figure~\ref{fig:workflow} illustrates the architecture of the system. \todo{How 
 
 Learning demand and product categorization as two concepts with different classifiers also helps overcome data sparsity issues.
 The number of posts that actually are asking for a product of the company is usually very low.
-In our example data set, these posts only cover \todo{XX}~\% of the posts, whereas demand posts occur with \todo{XX}~\% probabilty and product documents with \todo{XX}~\%.
+In our example data set, these posts only cover \todo{XX}~\% of the posts, whereas demand posts occur with \todo{XX}~\% probability and product documents with \todo{XX}~\%.
 If the machine learning would work directly on the positive examples, this would introduce a high data skew.
 The number of positive training samples would be at least a magnitude lower than the number of negative samples.
 This skew has been shown to harm the performance of machine learning systems significantly \cite{monard2002learning,guo2008class}.
