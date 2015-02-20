@@ -1,3 +1,0 @@
-
-plot:
-	gnuplot -p *.plt

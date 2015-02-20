@@ -4,8 +4,11 @@ else
 	pdfviewer=evince
 endif
 
-show: make bibtex
+show: plot make bibtex
 	$(pdfviewer) paper.pdf &
+
+plot:
+	cd plots && make
 
 make:
 	@pdflatex -interaction=nonstopmode -halt-on-error -output-directory .output paper.tex 1>&2 > .output/error

@@ -4,7 +4,7 @@
 
 #set terminal wxt size 800,700
 set terminal svg size 800,700 fname 'Verdana' fsize 14
-set output '../introduction.svg'
+set output '../sampling_optimization.svg'
 
 set xrange [0:16]
 set yrange [30:80]
