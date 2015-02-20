@@ -1,0 +1,10 @@
+id,size,accuracy
+0,Multilayer Perceptron,70.83
+0.25,Multilayer Perceptron,39.17
+0.5,Multilayer Perceptron,0
+1,SMO,80.00
+1.25,SMO,69.17
+1.5,SMO,0
+2,Logistic,74.17
+2.25,Logistic,65.00
+2.5,Logistic,0
