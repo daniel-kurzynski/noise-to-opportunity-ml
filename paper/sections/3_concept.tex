@@ -37,7 +37,7 @@ We call this the \emph{product classification}:
 	\mathbf{product}&: POST \longrightarrow  PRODUCT \cup \big\{ NONE \big\}
 \end{align}
 
-The intersection of the most relevant words for demand and product classification is the empty set.
+The intersection of the most relevant words for demand and product classification is the empty set.\todo{Is it really empty?: What about: Talking about buying a product could express a demand for another product or listing requirements/feautures of a product could express a demand...}
 This observation shows, that these concepts are independent of each other and should be treated separately.
 If a post is about a product of the company, that does not necessarily mean, that the system should make a recommendation and vice versa.
 Demand posts and posts about one of ACME's product have different characteristica, which should be represented in the system's architecture.
@@ -64,7 +64,7 @@ Supervised learning requires tagged training samples to draw conclusions on unse
 
 The training data for the $demand$ classifier comes from posts from social media networks.
 This requires manually classifying posts into ``demand" and ``no-demand".
-We did this manually for a randomly selected sample of social network posts.
+We did this manually for a randomly selected sample of social network posts. \todo{What about active learning? Is this random?}
 However, the demand classification does not change for different companies or products.
 It is independent from the product classification, which is why companies do not need to supply training data for the demand classification.
 Rather, they can use a prebuilt demand classifier.
@@ -73,7 +73,7 @@ The training data for the $product$ classifier needs to be supplied in form of b
 Each brochure must be assigned to one product.
 There can be more than one product.
 The system then automatically learns from the brochures.
-Figure~\ref{fig:workflow} illustrates the architecture of the system.
+Figure~\ref{fig:workflow} illustrates the architecture of the system. \todo{How does Figure\ref{fig:figureone} differentiate from Figure\ref{fig:workflow}. We should not show the sames figures twice}
 
 \begin{figure}
 	\label{fig:workflow}
