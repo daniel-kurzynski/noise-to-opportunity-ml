@@ -4,3 +4,4 @@ inkscape product_translate_amazon_without_none.svg -E product_translate_amazon_w
 inkscape product_feature_selection_with_none.svg -E product_feature_selection_with_none.eps
 inkscape product_feature_selection_without_none.svg -E product_feature_selection_without_none.eps
 inkscape sampling_optimization.svg -E sampling_optimization.eps
+mv *.eps ../figures
