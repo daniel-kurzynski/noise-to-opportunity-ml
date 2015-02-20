@@ -12,5 +12,5 @@ set xlabel "Group size or window size"
 set ylabel "Accuracy"
 set key right bottom
 set datafile separator ","
-plot './data.csv' using 1:2 title 'Grouping' linetype 7 with lines, \
-     './data.csv' using 1:3 title 'Sliding' with lines
+plot './data.csv' using 1:2 title 'Grouping' lt rgb color_1 with lines, \
+     './data.csv' using 1:3 title 'Sliding' lt rgb color_2 with lines
