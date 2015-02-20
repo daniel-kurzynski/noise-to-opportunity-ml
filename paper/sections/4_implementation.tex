@@ -3,18 +3,14 @@
 \section{Implementation}
 \label{sec:implementation}
 
-\todo{
-\begin{itemize}
-	\item Do classifier optimization
-	\item For the concrete data set, how do we split concretely.
-\end{itemize}
-}
+This section will present our implementations for the demand and product classifier.
+We will start with describing our example data set.
 
 \subsection{Example data set}
 \label{sub:initial_data_set}
 We implemented a prototype of our \nto system based on data from a Germany software company called SAP.
 SAP is the biggest software vendor in Europe and builds software for both small and large enterprises.
-SAP provided us with nearly 100 brochures about four SAP software products, which are explained in Table~\ref{table:products}.\todo{there are also texts from wikipedia in the brochures!}
+SAP provided us with nearly 100 brochures about four SAP software products, which are explained in Table~\ref{table:products}.
 We chose LinkedIn as the business-oriented social network, as it is the biggest and most popular platform.
 We crawled approximately 19,000 posts from LinkedIn.
 
@@ -32,16 +28,16 @@ Additionally, we added some book descriptions from Amazon about these products t
 			\textbf{Product} & \multicolumn{2}{l}{\textbf{Explanation}} \\
 			\hline\hline
 			CRM  & \multicolumn{2}{p{10cm}}{\raggedright
-				Customer relationship management software to manage a company's interactions with past, present and future, potential customers.} \\
+				Customer relationship management software helps to manage a company's interactions with past, present, and future potential customers.} \\
 			\hline
 			ECOM  & \multicolumn{2}{p{10cm}}{\raggedright
-				E commerce software helps to automatize sale processes in the context of the internet economy.} \\
+				Ecommerce software helps to automatize sale processes in the context of internet companies.} \\
 			\hline
 			HCM  & \multicolumn{2}{p{10cm}}{\raggedright
-				Human capital management software to support and control personal processes.} \\
+				Human capital management software supports the company in managing human resources and helps in recruitment and employee management.} \\
 			\hline
 			LVM  & \multicolumn{2}{p{10cm}}{\raggedright
-				Landscape virtualization management software that helps to deploy and manage existing applications  in virtualized data centrers and cloud infrastructures.} \\
+				Landscape virtualization management software helps to deploy and manage existing applications in virtualized data centers and cloud infrastructures.} \\
 			\hline
 		\end{tabular}
 	}
@@ -52,7 +48,8 @@ Additionally, we added some book descriptions from Amazon about these products t
 
 At the moment, there exists no data set for a demand classification, which can be used for learning and evaluation purposes.
 Therefore, we tagged some post manually.
-We used an active learning \nr approach to create the gold standard for both training and evaluation:
+We used an active learning \nr approach to create the gold standard for both training and evaluation.
+In an active learning setting, the algorithm ``asks an oracle, typically a human with extensive knowledge of the domain at hand, about [...] the instances for which the model [...] makes unreliable predictions'' \cite{olsson2009literature}.
 first, we randomly tagged some posts, then we built a basic classifier, which we ran over all posts to finally ask for a tagging decision for the most unsure post.
 Then we reran the classification and the classifier asked again.
 Using this approach, we are able to get the most out of our limited tagging time.
@@ -60,37 +57,34 @@ The results of the tagging can be found in Table~\ref{table:data_overview}.
 
 \begin{table}[h]
 	\centering
+	\begin{tabular}{lcc}
+		\hline
+		\textbf{Class} & \textbf{Number of posts} & \textbf{Percentage} \\
+		\hline
+		\hline
+		$\operatorname{demand}$ & 39 & 8.35~\% \\
+		\hline
+		$\operatorname{no-demand}$ & 406 & 86.94~\% \\
+		\hline
+		\hline
+		$\operatorname{CRM}$ & 18 & 3.85~\% \\
+		\hline
+		$\operatorname{ECOM}$ & 6 & 1.29~\% \\
+		\hline
+		$\operatorname{HCM}$ & 19 & 4.07~\% \\
+		\hline
+		$\operatorname{LVM}$ & 54 & 11.56~\% \\
+		\hline
+		$\operatorname{no-product}$ & 348 & 74.52~\% \\
+		\hline
+	\end{tabular}
 	\label{table:data_overview}
-	{
-		\renewcommand\arraystretch{1.25}
-		\begin{tabular}{lcc}
-			\hline
-			\textbf{Class} & \textbf{Number of posts} & \textbf{Percentage} \\
-			\hline
-			\hline
-			$\operatorname{demand}$ & 39 & 8.35~\% \\
-			\hline
-			$\operatorname{no-demand}$ & 406 & 86.94~\% \\
-			\hline
-			\hline
-			$\operatorname{CRM}$ & 18 & 3.85~\% \\
-			\hline
-			$\operatorname{ECOM}$ & 6 & 1.29~\% \\
-			\hline
-			$\operatorname{HCM}$ & 19 & 4.07~\% \\
-			\hline
-			$\operatorname{LVM}$ & 54 & 11.56~\% \\
-			\hline
-			$\operatorname{no-product}$ & 348 & 74.52~\% \\
-			\hline
-		\end{tabular}
-	}
 	\caption{Number of posts in each tagging class.}
 \end{table}
 
 We built a tagging web app which implements the active learning.
 All together, we tagged about 350 LinkedIn posts, both in respect of demand and product.
-In an initial step, each post was tagged by at least two different persons to avoid misclassifications \todo{is this word correct?} because of the opinion of one tagger.
+In an initial step, each post was tagged by at least two different persons to avoid misclassifications because of the opinion of one tagger.
 If there were conflicts between the tagging decisions, a third person was tagging again to solve the conflict.
 To evaluate the demand classifier, we use a ten-fold cross validation of all posts, because we need the posts also for training.
 To evaluate the product classifier, we can use all annotated posts, because the learning works on the brochures.
@@ -104,10 +98,15 @@ For the demand classifier, we added the following manually built features, which
 \end{itemize}
 
 We decided on a na\"{i}ve bayes classifier with a Bernoulli event model.
-The bernoulli event model is especially suited for \todo{write on}.
+The bernoulli event model is especially suited for the demand classification task. 
+As all na\"{i}ve bayes approaches it assumes, that all attributes are independent of each other given the context of a class.  
+Equation~\ref{equation:bernoulli} shows the formula of the Bernoulli na\"{i}ve bayes approach.
+The probability that a document d belongs to a class C is calculated in respect to all the set of vocabularies.
+This means that term influences the probability also if the term is not in the document.
 
 \begin{equationBlock}
 \begin{align*}
+	\label{equation:bernoulli}
 	p(d|C) &= \prod_{w~\epsilon~V} bernoulli(w, d, C) \\
 	bernoulli(w, d, C) &=
 	\begin{cases}
@@ -115,15 +114,110 @@ The bernoulli event model is especially suited for \todo{write on}.
 		\overline{p(w|C)} 		&\text{otherwise}
 	\end{cases}
 	\end{align*}
-	\caption{Bernoulli na\"{i}ve bayes definition~\cite{mccallum1998comparison}}
+	\caption{Bernoulli na\"{i}ve bayes definition~\cite{mccallum1998comparison}.\todo{Do not start with small letter.} d is the document. C is the class. w is a term in a document and vocabulary V is the set of all terms in all documents}
 \end{equationBlock}
 
 \subsection{Product Classifier}
+For the product classifier we evaluated several classifiers and variants of the feature vector using the most important words as features as described in Section~\ref{sec:feature-selection}.
+The results are shown in Figure~\ref{fig:product-classifier}.
+
+\begin{figure}
+	\centering
+	\begin{subfigure}[t]{0.3\textwidth}
+		\centering
+		\begin{tabular}{r | r | r}
+			& \textbf{N} 	& \textbf{\textoverline{N}}\\
+			\hline
+			\textbf{B} 					& 52.0~\%		& 48.0~\% \\
+			\textbf{\textoverline{B}}	& 42.0~\% 		& 47.33~\% \\
+		\end{tabular}
+		\caption{Logistic Regression~\cite{leCessie1992}}
+	\end{subfigure}~
+	\begin{subfigure}[t]{0.3\textwidth}
+		\centering
+		\begin{tabular}{r | r | r}
+			& \textbf{N} 	& \textbf{\textoverline{N}}\\
+			\hline
+			\textbf{B} 					& 52.67~\%		& 35.33~\% \\
+			\textbf{\textoverline{B}}	& 46.0~\% 		& 20.0~\% \\
+		\end{tabular}
+		\caption{Support Vector Machine~\cite{Platt1998}}
+	\end{subfigure}~
+	\begin{subfigure}[t]{0.3\textwidth}
+		\centering
+		\begin{tabular}{r | r | r}
+			& \textbf{N} 	& \textbf{\textoverline{N}}\\
+			\hline
+			\textbf{B} 					& 54.67~\%		& 50.67~\% \\
+			\textbf{\textoverline{B}}	& 44.0~\% 		& 24.0~\% \\
+		\end{tabular}
+		\caption{Multilayer Perceptron~\cite{ruck1990multilayer}}
+	\end{subfigure}
+	
+	\begin{subfigure}[t]{0.3\textwidth}
+		\centering
+		\begin{tabular}{r | r | r}
+			& \textbf{N} 	& \textbf{\textoverline{N}}\\
+			\hline
+			\textbf{B} 					& 42.0~\%		& 42.0~\% \\
+			\textbf{\textoverline{B}}	& 42.0~\% 		& 38.67~\% \\
+		\end{tabular}
+		\caption{J48 Decision Tree~\cite{Quinlan1993}}
+	\end{subfigure}~
+	\begin{subfigure}[t]{0.3\textwidth}
+		\centering
+		\begin{tabular}{r | r | r}
+			& \textbf{N} 	& \textbf{\textoverline{N}}\\
+			\hline
+			\textbf{B} 					& 38.66~\%		& 26.0~\% \\
+			\textbf{\textoverline{B}}	& 51.33~\% 		& 21.33~\% \\
+		\end{tabular}
+		\caption{Nearest Neighbour~\cite{Aha1991}}
+	\end{subfigure}~
+	\begin{subfigure}[t]{0.3\textwidth}
+		\centering
+		\begin{tabular}{r | r | r}
+			& \textbf{N} 	& \textbf{\textoverline{N}}\\
+			\hline
+			\textbf{B} 					& 43.33~\%		& 44.67~\% \\
+			\textbf{\textoverline{B}}	& 56.67~\% 		& 24.0~\% \\
+		\end{tabular}
+		\caption{Bernoulli Naive Bayes~\cite{John1995}}
+	\end{subfigure}~
+	\caption{Precision of the classifier. N indicates whether the feature vector was normalized with the L1-Norm. B indicates whether we use binary features per document. \todo{}}
+	\label{fig:product-classifier}
+\end{figure}
+
 To be done.
 \todo{Introduce normalization and binary features.}
 
 \subsection{Sampling algorithm}
 As already mentioned in the previous sections, we extend our training set further by splitting the brochures and Amazon product texts into smaller chunks.
-We end up with 994 documents, which we use for the training of the product classifier.
+We did this to solve the \emph{document mismatch} and \emph{small corpus problem}.
+In the following, we compare two different splitting strategies:
+\begin{itemize}
+	\item
+		\textbf{Grouping:}
+		We split each brochure into groups of $k$ sentences.
+		It is important to note, that groups are disjoint, i.e. no sentence appears in two different groups.
+		If there are less than $k$ sentences left at the end, we simply build a brochure of the remaining sentences.
+		For example, if one brochure contains 15 sentences and we split into groups of six, we end up with three brochures with six, six, and three sentences.
+	\item
+		\textbf{Sliding:}
+		We move a sliding window of size $k$ over the sentences in one group.
+		Thereby, one sentence occurs in several windows and hence in several brochures at the end.
+		If we have eight sentences, and a window size of six, we end up with three documents $1 - 6$, $2 - 7$, and $3 - 8$.
+		Obviously, there are more brochures here, but also more duplicate sentences.
+\end{itemize}
 
-How we split.
+We evaluated these two strategies for different values of $k$, see Figure~\ref{fig:sampling_optimization}.
+We received the best results for grouping and $k = 6$.
+Of course this value largely depends on the concrete data set at hand, so this optimization needs to be done again for every application of our \nto approach.
+
+\begin{figure}
+	\label{fig:sampling_optimization}
+	\begin{center}
+		\includegraphics[width=0.6\textwidth]{figures/sampling_optimization.eps}
+	\end{center}
+	\caption{Comparing grouping and sliding for different group sizes/window sizes. Plotted against the overall precision of the system, i.e. how many of the predictions were correct. The best results were obtained for $k$ and the grouping strategy.}
+\end{figure}
