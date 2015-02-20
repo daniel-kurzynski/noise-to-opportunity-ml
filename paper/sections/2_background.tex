@@ -80,10 +80,9 @@ Then, the problem can be modelled as a function $\nto$, such that:
 \begin{displaymath}
 	\nto: POSTS \to PRODUCTS \cup \{NONE\}
 \end{displaymath}
-This function can also be seen as a assignment of a post to a salesman.
-Usually, there is one salesman responsible for one product.
-If the \nto function outputs $CRM$, then the post is shown to the CRM salesman for review.
-\todo{salesmen are responsible for different products: only for one -> Use \nto function to detect posts that belong to salesman}
+This function can also be seen as an assignment of a post to a salesman.
+Usually, one salesman is not responsible for all products of \acme, but rather specializes in a few.
+If the \nto function outputs $CRM$, then the post is shown to one of the CRM salesmen for review.
 
 A classification of a post $p \in POSTS$ is $correct$, if $\nto(p)$ is indeed the product that seems to be needed by the user who posted $p$ or $NONE$ if the user does not need a product offered by the company \acme.
 If $p$ is a post, then we propose $p$ to a salesman if $\nto(p) \neq NONE$.
@@ -102,9 +101,8 @@ The classifier needs a data set where some documents are already tagged with res
 This is called a gold standard.
 However, salesmen do not want to read through hundreds of posts to tag them manually.
 Therefore, we need a different data source.
-\todo{Decide, whether this is duplicate content with the introduction}
 We decide to use advertisement brochures describing \acme's products. 
-Using brochures a problem arises from the theoretical learning perspective.
+As a consequence of using brochures a problem arises from the theoretical learning perspective.
 
 In a learning task the instances should be drawn from the same population in the training phase as the instances which are to be classified in the end.\nr
 In our approach, training phase works on brochures, while later we want to classify social network posts. 
