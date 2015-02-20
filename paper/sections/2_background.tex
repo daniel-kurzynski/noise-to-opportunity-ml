@@ -12,17 +12,17 @@
 \subsection{Problem Definition}
 \label{sec:background-problem}
 
-In this section we formally define the noise to opportunity problem.
+In this section we formally define the \emph{noise to opportunity problem}.
 We also talk about problems that occur while solving the task. 
 
-\todo{change \acme definition}
-Let \acme be our example software company that offers products like customer relationship management systems or human capital management systems. 
-As in every company there are salesmen who want to get in contact with potential buyers of these products. 
-To find these buyers we help \acme to identify people on business networks who seems to have a need for products offered by \acme.
+Let \acme be an example company that offers a wide range of different products.
+As in every company, there are salesmen who want to get in contact with potential buyers of these products. 
+For different products, there are different salesman responsible and different potential buyers.
+To find these buyers we help \acme to identify people on business networks, who seem to have a need for products offered by \acme.
 
-\todo{Noise refers to both: amount and quality of input}
 We call our approach Noise-To-Opportunity conversion or the \nto problem.
-We choose the word noise because of the amount of daily status updates in business networks which makes it infeasible to listen to all off them.
+We choose the word noise because of the amount of daily status updates in business networks, which makes it infeasible to listen to all of them.
+Also, status updates are usually quite diverse: people write posts, which differ in length, use different words for the same thing, use  different abbreviations or even invent new words.
 Nevertheless, there are many posts which are a good opportunity the get in contact with people who want to buy products a salesman's company offers. 
 
 Post~\ref{post:demand-and-product}, ~\ref{post:demand-only}, and~\ref{post:product-only} shows how posts in such business-oriented social networks look like. 
@@ -36,7 +36,7 @@ We have to decide which of these posts are written by potentially customers of \
 		We're in the process of finding a CRM platform to help us manage our player base. 
 		Do you have any recommendations?
 	}
-	\caption{The user wants to buy a new product, here a CRM system. The system should make a recommendation.}
+	\caption{The user wants to buy a new product, here a software for customer relationship management (CRM). Assuming that \acme sells this type of product, the system should make a recommendation.}
 	\label{post:demand-and-product}
 \end{post}
 
@@ -47,7 +47,7 @@ We have to decide which of these posts are written by potentially customers of \
 		Which car should I buy next?
 		Do you have any recommendations
 	}
-	\caption{The user wants to buy something, but assuming that the company does not sell cars, the system should not make a recommendation.}
+	\caption{The user wants to buy something, but assuming that \acme does not sell cars, the system should not make a recommendation.}
 	\label{post:demand-only}
 \end{post}
 
@@ -62,17 +62,16 @@ We have to decide which of these posts are written by potentially customers of \
 \end{post}
 
 We would only recommend post~\ref{post:demand-and-product} to \acme.
-Post~\ref{post:demand-and-product} expresses that the user is searching for a new CRM system.
+Post~\ref{post:demand-and-product} expresses that the user is searching for a new customer relationship managment (CRM) system.
 This is offered by \acme.
-In Post~\ref{post:demand-only} the user is searching for a product. 
-However, this post is uninteresting for \acme because a car is not in \acme's product portfolio. 
-In contrast post~\ref{post:product-only} is about CRM systems, but the user is not interested in a new CRM system.
+In Post~\ref{post:demand-only}, the user is searching for a product. 
+However, this post is uninteresting for \acme because cars are not in \acme's product portfolio. 
+In contrast, Post~\ref{post:product-only} is about CRM systems, but the user is not interested in a new CRM system.
 Therefore the post should not be shown to a salesman.
 
-The decision, whether to recommend a post, depends on two characteristics.
-The post should express that users needs something, e.g. a certain product.
-The product needed by the user should be offered by \acme.
-
+The decision, whether to recommend a post, depends on two characteristics:
+First, the post should express that users needs something, e.g. a certain product.
+Second, the product needed by the user should be offered by \acme.
 
 Formally, the problem can be defined as: 
 Let $p \in POSTS$ be a post from a business-oriented social networking service.

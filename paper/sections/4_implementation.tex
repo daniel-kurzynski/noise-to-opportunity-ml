@@ -56,6 +56,37 @@ We used an active learning \nr approach to create the gold standard for both tra
 first, we randomly tagged some posts, then we built a basic classifier, which we ran over all posts to finally ask for a tagging decision for the most unsure post.
 Then we reran the classification and the classifier asked again.
 Using this approach, we are able to get the most out of our limited tagging time.
+The results of the tagging can be found in Table~\ref{table:data_overview}.
+
+\begin{table}[h]
+	\centering
+	\label{table:data_overview}
+	{
+		\renewcommand\arraystretch{1.25}
+		\begin{tabular}{lcc}
+			\hline
+			\textbf{Class} & \textbf{Number of posts} & \textbf{Percentage} \\
+			\hline
+			\hline
+			$\operatorname{demand}$ & 39 & 8.35~\% \\
+			\hline
+			$\operatorname{no-demand}$ & 406 & 86.94~\% \\
+			\hline
+			\hline
+			$\operatorname{CRM}$ & 18 & 3.85~\% \\
+			\hline
+			$\operatorname{ECOM}$ & 6 & 1.29~\% \\
+			\hline
+			$\operatorname{HCM}$ & 19 & 4.07~\% \\
+			\hline
+			$\operatorname{LVM}$ & 54 & 11.56~\% \\
+			\hline
+			$\operatorname{no-product}$ & 348 & 74.52~\% \\
+			\hline
+		\end{tabular}
+	}
+	\caption{Number of posts in each tagging class.}
+\end{table}
 
 We built a tagging web app which implements the active learning.
 All together, we tagged about 350 LinkedIn posts, both in respect of demand and product.
@@ -68,7 +99,7 @@ To evaluate the product classifier, we can use all annotated posts, because the 
 For the demand classifier, we added the following manually built features, which have been show to increase the overall performance:
 \begin{itemize}
 	\item Number of questions in the post. Demand posts usually have more questions.
-	\item Number of imperatives in the post. Demand posts usually have more imperatives like ``Please help me out" or ``Give me advice".
+	\item Number of imperatives in the post. Demand posts usually have more imperatives like ``Please help me out'' or ``Give me advice''.
 	\item Whether an e-mail address was given in the post. Demand posts often give an e-mail address to send answers to.
 \end{itemize}
 

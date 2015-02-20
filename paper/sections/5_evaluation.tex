@@ -3,7 +3,7 @@
 \section{Evaluation}
 \label{sec:evaluation}
 
-\todo{Write something here}
+The following \todo{}
 
 \subsection{Evaluation measures}
 \label{sub:evaluation_measures}
@@ -12,17 +12,21 @@ as already mentioned in a previous section, the demand classifier can be optimiz
 Therefore, we consider three values:
 \begin{itemize}
 	\item
-		\emph{Precision of demand posts} \todo{formula}
+		\emph{Precision of demand posts}
+		$P_{demand} = \frac{correct~predicted~demands}{predicted~demands}$
 	\item
-		\emph{Recall of demand posts} \todo{formula}
+		\emph{Recall of demand posts}
+		$R_{demand} = \frac{correct~predicted~demands}{all~demand~posts}$
 	\item
-		\emph{Overall accuracy} \todo{formula}
+		\emph{Overall precision}
+		$P_{all} = \frac{correct~predictions}{all~predictions}$
 \end{itemize}
-This captures the most important aspects of our system: If we predict a demand, how likely is it really a demand post, and how many of all demand posts can we actually find.
-Finally, the overall accuracy is usually quite high because of the data skew in the demand tagging.
+This measures capture the most important aspects of our system: If we predict a demand, how likely is it really a demand post, and how many of all demand posts can we actually find.
+Finally, the overall precision is usually quite high because of the data skew in the demand tagging.
+A tagger, which always returns ``no-demand'' will have an overall precision of \todo{percent}, as seen in Table~\todo{NUMBER}.
 However, we left this in for the sake of completeness.
 
-Since there is no such data skew in the product classifier, we just consider the overall precision, i.e. what percentage of our recommendations were correct.
+Since there is no such data skew in the product classifier, we just consider the overall accuracy, i.e. what percentage of our predictions were correct.
 
 
 \subsection{Results}
