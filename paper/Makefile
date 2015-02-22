@@ -10,6 +10,9 @@ show: make bibtex
 plot:
 	cd plots && make
 
+convert:
+	cd plots && make convert
+
 make:
 	@pdflatex -interaction=nonstopmode -halt-on-error -output-directory .output paper.tex 1>&2 > .output/error
 	@mv .output/paper.pdf .

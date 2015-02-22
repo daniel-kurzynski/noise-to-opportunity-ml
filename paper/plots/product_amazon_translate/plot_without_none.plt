@@ -10,7 +10,7 @@ set xrange [-0.4:2.9]
 set yrange [0:100]
 # set xlabel "Group size or window size"
 set ylabel "Accuracy in %"
-set xtics ("Multilayer Perceptron" 0.3, "SMO" 1.3, "Logistic" 2.3)
+set xtics ("Perceptron" 0.3, "SVM" 1.3, "Logistic" 2.3)
 set key right top
 set boxwidth 0.2
 set style fill solid

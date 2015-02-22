@@ -10,7 +10,7 @@ set xrange [-0.4:3.9]
 set yrange [0:100]
 # set xlabel "Group size or window size"
 set ylabel "Accuracy in %"
-set xtics ("K-Nearest Neighbor" 0.2, "Multilayer Perceptron" 1.2, "SMO" 2.2, "Logistic" 3.2)
+set xtics ("K-Nearest Neighbor" 0.2, "Perceptron" 1.2, "SVM" 2.2, "Logistic" 3.2)
 set key right top
 set boxwidth 0.4
 set style fill solid

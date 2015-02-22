@@ -20,7 +20,6 @@ Additionally, we added some book descriptions from Amazon about these products t
 
 \begin{table}[h]
 	\centering
-	\label{table:products}
 	{
 		\renewcommand\arraystretch{1.25}
 		\begin{tabular}{lll}
@@ -42,6 +41,7 @@ Additionally, we added some book descriptions from Amazon about these products t
 		\end{tabular}
 	}
 	\caption{Different products in the training data set of SAP brochures.}
+	\label{table:products}
 \end{table}
 
 \subsection{Manual annotation of the LinkedIn posts}
@@ -78,8 +78,8 @@ The results of the tagging can be found in Table~\ref{table:data_overview}.
 		$\operatorname{no-product}$ & 348 & 74.52~\% \\
 		\hline
 	\end{tabular}
-	\label{table:data_overview}
 	\caption{Number of posts in each tagging class.}
+	\label{table:data_overview}
 \end{table}
 
 We built a tagging web app which implements the active learning.
@@ -98,8 +98,8 @@ For the demand classifier, we added the following manually built features, which
 \end{itemize}
 
 We decided on a na\"{i}ve bayes classifier with a Bernoulli event model.
-The bernoulli event model is especially suited for the demand classification task. 
-As all na\"{i}ve bayes approaches it assumes, that all attributes are independent of each other given the context of a class.  
+The bernoulli event model is especially suited for the demand classification task.
+As all na\"{i}ve bayes approaches it assumes, that all attributes are independent of each other given the context of a class.
 Equation~\ref{equation:bernoulli} shows the formula of the Bernoulli na\"{i}ve bayes approach.
 The probability that a document d belongs to a class C is calculated in respect to all the set of vocabularies.
 This means that term influences the probability also if the term is not in the document.
@@ -118,13 +118,13 @@ This means that term influences the probability also if the term is not in the d
 \end{equationBlock}
 
 \subsection{Product Classifier}
-For the product classifier we evaluated several classifiers and variants of the feature vector using the most important words as features as described in Section~\ref{sec:feature-selection}.
+For the product classifier we evaluated several classifiers and variants of the feature vector using the most important words as features as described in Section~\ref{sub:feature-selection}.
 The results are shown in Figure~\ref{fig:product-classifier}.
 
-Generally the linear classifiers like logistic regression, svm, and perceptron performs better then the others. 
+Generally the linear classifiers like logistic regression, svm, and perceptron performs better then the others.
 Therefore we decide to use a linear classifier.
 For the linear classifier using binary features is best. Here binary features means that we just take into account whether a documents contains a word and not how often.
-Normalization also improves the classification result. We normalize the vector by dividing with the sum of the binary feature vector.    
+Normalization also improves the classification result. We normalize the vector by dividing with the sum of the binary feature vector.
 
 \begin{figure}
 	\centering
@@ -159,7 +159,7 @@ Normalization also improves the classification result. We normalize the vector b
 		\caption{Multilayer Perceptron~\cite{ruck1990multilayer}}
 		\center
 	\end{subfigure}
-	
+
 	\begin{subfigure}[t]{0.3\textwidth}
 		\centering
 		\begin{tabular}{r | r | r}

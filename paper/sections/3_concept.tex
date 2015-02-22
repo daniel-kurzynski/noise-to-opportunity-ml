@@ -92,7 +92,7 @@ However, even with two classifiers, the number of positive samples is much lower
 Therefore, we employ techniques of feature selection and training data sampling, which are shown in the next two sections.
 
 \subsection{Feature Selection}
-\label{sec:feature-selection}
+\label{sub:feature-selection}
 As we use supervised machine-learning for the text categorization, we need to define features, which are good for predicting a demand and a certain product.
 The general approach to features in text classification is the bag-of-words model \cite{yang1997comparative,zhang2010understanding}.
 This model treats each text as a multiset of words in the text.
@@ -101,8 +101,8 @@ Our classifiers are based on a bag-of-word approach.
 
 Because we have both the \emph{problem of document mismatch} and the \emph{problem of a small corpus}, we use a strict feature selection to avoid any overfitting to the training data and selecting the wrong words.
 
-For the demand classifier, the first observation is, that there no specific words for no-demand posts.
-Almost every randomly selected post does not express a demand, and it could be about any topic.
+For the demand classifier, the first observation is, that there are no specific words for no-demand posts.
+Almost every randomly selected post does not express a demand, and it could be about any possible topic.
 Therefore, we choose to select only words, which express a demand (e.g. ``recommend'', ``help'', ``looking'', ``need'').
 The intuition is, that if enough of demand words occur, we classify a demand, otherwise a no-demand.
 To identify these words we run two statistics on the data:

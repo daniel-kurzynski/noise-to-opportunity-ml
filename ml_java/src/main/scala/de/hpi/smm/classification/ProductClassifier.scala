@@ -84,7 +84,7 @@ class ProductClassifier(
 	private def determineFeatures(wordCounts: mutable.Map[String, mutable.Map[String, Double]]): Array[String] = {
 		var result = mutable.Set[String]()
 		wordCounts.foreach { case (className, counts) =>
-			counts.toList.sortBy(-_._2).take(10).foreach { case (word, _) =>
+			counts.toList.sortBy(-_._2).take(1000).foreach { case (word, _) =>
 				result += word
 			}
 		}

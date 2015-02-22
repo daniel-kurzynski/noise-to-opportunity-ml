@@ -44,9 +44,10 @@ object ProductMain {
 
 	val groupSizes  = List(6)
 	val classifiers = List(
-		new Logistic
-		, new SMO()
-		,new MultilayerPerceptron()
+//		new Logistic
+//		, new SMO()
+//		,
+		new MultilayerPerceptron()
 		//		,
 		//		new TheirClassifier
 	)
