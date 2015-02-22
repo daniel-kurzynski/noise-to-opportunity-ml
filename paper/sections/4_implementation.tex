@@ -48,7 +48,7 @@ Additionally, we added some book descriptions from Amazon about these products t
 
 At the moment, there exists no data set for a demand classification, which can be used for learning and evaluation purposes.
 Therefore, we tagged some post manually.
-We used an active learning \nr approach to create the gold standard for both training and evaluation.
+We used an active learning approach to create the gold standard for both training and evaluation.
 In an active learning setting, the algorithm ``asks an oracle, typically a human with extensive knowledge of the domain at hand, about [...] the instances for which the model [...] makes unreliable predictions'' \cite{olsson2009literature}.
 first, we randomly tagged some posts, then we built a basic classifier, which we ran over all posts to finally ask for a tagging decision for the most unsure post.
 Then we reran the classification and the classifier asked again.
