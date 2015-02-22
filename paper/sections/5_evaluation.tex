@@ -10,24 +10,21 @@ We start with defining relevant evaluation measures and then evaluate our two cl
 \label{sub:evaluation_measures}
 We will use the following measures to evaluate our approach:
 As already mentioned in a previous section, the demand classifier can be optimized for either precision or recall, depending on the use case.
-Therefore, we consider three values:
-\begin{itemize}
-	\item
-		\emph{Precision of demand posts}
-		$P_{demand} = \frac{correct~predicted~demands}{predicted~demands}$
-	\item
-		\emph{Recall of demand posts}
-		$R_{demand} = \frac{correct~predicted~demands}{all~demand~posts}$
-	\item
-		\emph{Overall precision}
-		$P_{all} = \frac{correct~predictions}{all~predictions}$
-\end{itemize}
-This measures capture the most important aspects of our system: If we predict a demand, how likely is it really a demand post, and how many of all demand posts can we actually find.
-Finally, the overall precision is usually quite high because of the data skew in the demand tagging.
+Therefore, we consider \todo{three or four} values:
+
+\begin{align*}
+ \emph{Precision of the demand classifier}: P_{demand} &= \frac{correct~predicted~demands}{predicted~demands} \\
+ \emph{Recall of the demand classifier}: R_{demand} &= \frac{correct~predicted~demands}{all~demand~posts} \\
+ \emph{Overall precision of the demand classifier}: P_{all} &= \frac{correct~predictions}{all~predictions} \\
+ \emph{Accuracy of product classifier}: A_{product} &= \frac{correct~predictions}{all~predictions} \\
+\end{align*}
+
+This measures capture the most important aspects of our system: If we predict a demand, how likely is it really a demand post ($P_{demand}$), and how many of all demand posts can we actually find ($R_{demand}$).
+Finally, the overall precision ($P_{all}$) is usually quite high because of the data skew in the demand tagging.
 A tagger, which always returns ``no-demand'' will have an overall precision of \todo{percent}, as seen in Table~\todo{NUMBER}.
 However, we left this in for the sake of completeness.
 
-Since there is no such data skew in the product classifier, we just consider the overall accuracy, i.e. what percentage of our predictions were correct.
+Since there is no such data skew in the product classifier, we just consider the overall accuracy, i.e. what percentage of our predictions were correct.\todo{Accuracy and overall precision are the same?}
 
 \begin{figure}
 	\label{fig:product_eval}
