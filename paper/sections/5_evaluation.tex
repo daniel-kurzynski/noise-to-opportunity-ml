@@ -48,6 +48,9 @@ Since there is no such data skew in the product classifier, we just consider the
 	\label{fig:product_feature_selection}
 \end{figure}
 
+\todo{Find better descriptions for data}
+\todo{Avoid glich of values in bars}
+
 \begin{figure}
 	\centering
 	\begin{subfigure}[t]{0.5\textwidth}
@@ -100,7 +103,10 @@ So having same problems with other data sets, we assume that this design decisio
 \subsection{Two stage classifier}
 \label{sub:two_stage_classifier}
 
-As we propose in our work to use a two stage classifier for the \nto problem, we have also compared the performance of the product classifier alone against a combination of the demand and the product classifier.
+As we propose in our work to use a two stage classifier for the \nto problem.
+To evaluate this approach we compare our two-stage classifier against just a one-stage classifier using the brochures as traning data.
+This one-stage classifier is identical to our product classifier.
+
 For that evaluation we have changed the test set annotations in the way, that if an annotated (our manual annotation) post was been classified as ``no-demand'', the product classification will be ignored, so it will be ``no-product''.
 Thus we can compare the predictions of the product classifier (which are one of the products or ``no-product'') with the predictions of the two stage classifier (which are ``demand'' or ``no-demand'' and if ``demand'' then one of the products or ``no-product'').
 Because the demand classifier is also trained on the LinkedIn posts, we have to do a cross validation on the LinkedIn posts, because otherwise, we would learn and train on the same data.
@@ -119,5 +125,7 @@ As you can see, the two stage approach performs better than the single product c
 	\label{table:two_stage_eval}
 \end{table}
 
-\todo{noch weiter ausführen, was das ergbniss nun heißt? und warum wir so gut sind?}
+\todo{To make it fair we better should evaluate our classifier against a one-stage classifier also using the demand post as training data.}
+\todo{noch weiter ausführen, was das ergbniss nun heißt? und warum wir so gut sind? \\
+--> Wir sind so gut, weil der product classifier alleine natürlich keine chance hat demand zu erkennen bzw zu lernen ...}
 

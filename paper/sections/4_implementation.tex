@@ -104,6 +104,7 @@ Equation~\ref{equation:bernoulli} shows the formula of the Bernoulli na\"{i}ve b
 The probability that a document d belongs to a class C is calculated in respect to all the set of vocabularies.
 This means that term influences the probability also if the term is not in the document.
 
+\captionsetup{singlelinecheck=off}
 \begin{equationBlock}
 \begin{align*}
 	\label{equation:bernoulli}
@@ -114,7 +115,12 @@ This means that term influences the probability also if the term is not in the d
 		\overline{p(w|C)} 		&\text{otherwise}
 	\end{cases}
 	\end{align*}
-	\caption{Bernoulli na\"{i}ve bayes definition~\cite{mccallum1998comparison}. \todo{Do not start with small letter.} The letter d is the document. C is the class. w is a term in a document and vocabulary V is the set of all terms in all documents}
+	\caption{
+		Bernoulli na\"{i}ve bayes~\cite{mccallum1998comparison} definition. 
+		It describs the propability that a document d belongs to a class C. 
+		A document consists of terms w. 
+		The set of all terms w forms the vocabulary V. 
+}
 \end{equationBlock}
 
 \subsection{Product Classifier}
