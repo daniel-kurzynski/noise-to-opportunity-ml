@@ -42,15 +42,13 @@ This observation shows, that these concepts are independent of each other and sh
 If a post is about a product of the company, that does not necessarily mean, that the system should make a recommendation and vice versa.
 Demand posts and posts about one of ACME's product have different characteristica, which should be represented in the system's architecture.
 
-Therefore, we split the \nto problem in two subproblems: given a post $p \in POSTS$ we first identify, whether the posts expresses a demand for any product in general.
+Therefore, we split the \nto problem in two subproblems as shown in Equation~\ref{eq:two-stages}. Given a post $p \in POSTS$ we first identify, whether the posts expresses a demand for any product in general.
 If this is true, we then check whether we can actually categorize the post into one of ACME's products.
 All together, given $demand$ and $product$, we can define \nto:
 
-\todo{Reference it!}
-
 
 \begin{equationBlock}
-	\label{equation:two-stages}
+	\label{eq:two-stages}
 	\[
 		\begin{array}{l l}
 			\mathbf{NTO}: POSTS & \longmapsto PRODUCT \cup \big\{ NONE \big\} \\
