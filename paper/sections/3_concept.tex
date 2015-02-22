@@ -47,15 +47,20 @@ If this is true, we then check whether we can actually categorize the post into 
 All together, given $demand$ and $product$, we can define \nto:
 
 \todo{Reference it!}
+
+
 \begin{equationBlock}
 	\label{equation:two-stages}
-	\begin{alignat*}{3}
-	  &\mathbf{NTO}: && ~POSTS && \longrightarrow PRODUCT \cup \big\{ NONE \big\} \\
-	  &\mathbf{NTO}: && ~~p   && \longmapsto \begin{cases}
-		    product(post)~~~~~~~\text{if }~demand(post) = \operatorname{``demand''} \\
-		    NONE~~~~~~~~~~~~~~~\text{otherwise}
-	   \end{cases}
-	\end{alignat*}
+	\[
+		\begin{array}{l l}
+			\mathbf{NTO}: POSTS & \longmapsto PRODUCT \cup \big\{ NONE \big\} \\
+			\mathbf{NTO}: p  & \longmapsto \left\{
+				\begin{array}{l l}
+				  product(post) & \quad \text{if}~demand(post) = \operatorname{``demand''}\\
+				  NONE & \quad \text{otherwise}
+				\end{array} \right.
+		\end{array} .
+	\]
 	\caption{Defining \nto via two-staged classification.}
 \end{equationBlock}
 
