@@ -20,7 +20,7 @@ Therefore, we consider three values:
 
 This measures capture the most important aspects of our system: If we predict a demand, how likely is it really a demand post ($P_{demand}$), and how many of all demand posts can we actually find ($R_{demand}$).
 Finally, the overall precision ($P_{all}$) of the demand classifier is usually quite high because of the data skew in the demand tagging.
-For example, a tagger, which always returns ``no-demand'' will have a relatively high overall precision of $\frac{406}{445}$ = $89.23\%$ , as seen in Table~\ref{table:only_no_demand_classifier}.
+For example, a tagger, which always returns ``no-demand'' will have a relatively high overall precision of $\frac{406}{445}$ = $89.23~\%$ , as seen in Table~\ref{table:only_no_demand_classifier}.
 However, we left this in for the sake of completeness and take all three measure in count to evaluate demand classifier performance.
 Since there is no such data skew in the product classifier, the overall precision is sufficient to describe the product classifier performance.
 
@@ -33,7 +33,7 @@ Since there is no such data skew in the product classifier, the overall precisio
 			0 & 406 & no-demand\\
 		\end{tabular}
 	}
-	\caption{worst case scenario: confusion matrix of a classifier predicting only ``no-demand''}
+	\caption{Worst case scenario: confusion matrix of a classifier predicting only ``no-demand''}
 	\label{table:only_no_demand_classifier}
 \end{table}
 
@@ -59,7 +59,6 @@ Since there is no such data skew in the product classifier, the overall precisio
 	\label{fig:product_feature_selection}
 \end{figure}
 
-\todo{Find better descriptions for data}
 \todo{Avoid glich of values in bars}
 
 \begin{figure}
@@ -111,25 +110,25 @@ Therefore, we decrease the work load of salesmen.
 
 As we said before, linear classifiers performed best for the product classification.
 Because they only have a small difference, we will evaluate on three linear classifiers: logistic regression, perceptron, and support vector machines.
-Comparing these classifiers with a base approach (K-Nearest-Neighbor classification) we can see a better performance as it is shown in figure \ref{fig:product_eval}.
+Comparing these classifiers with a base approach (K-Nearest-Neighbor classification) we can see a better performance as it is shown in Figure \ref{fig:product_eval}.
 In this figure you can see the four classifiers, which are predicting for each post exactly one of the four products.
 Additionally to this ``forced'' prediction (the without ``no-product'' prediction) we have modified the linear classifiers in the way, that they predict for each post the four product if and only if one of the product predictions has a significantly greater probability.
 In the other case, so if all products are predicted with quite equal probability, ``no-product'' is predicted as the product.
 This classification mode is nearer to the real world scenario, since not every LinkedIn post we have crawled can be mapped to one of the product classes.
-And as the figure \ref{fig:product_eval} shows, this approach increases the accuracy by about seven to ten percent.
+And as the Figure \ref{fig:product_eval} shows, this approach increases the accuracy by about seven to ten percent.
 
 For the final product classifier we have made some improvements, which are based on some design decisions.
 We will introduce and evaluate two of these design decisions in the following subsections.
 
 \subsubsection{Design decision 1: feature selection}
-As already mentioned in the section \ref{sub:feature-selection}, we use for the product classifier the classical tf-idf feature selection.
+As already mentioned in the Section \ref{sub:feature-selection}, we use for the product classifier the classical tf-idf feature selection.
 Additionally we pick only the ten words with the highest tf-idf assuming, that these words describe the product best.
-The comparison of the ten-best approach with the 100-best and 1000-best approaches you can see in the figure \ref{fig:product_feature_selection}
+The comparison of the ten-best approach with the 100-best and 1000-best approaches you can see in the Figure \ref{fig:product_feature_selection}
 As you can see, both classification modes (with and without ``no-demand'' prediction), the ten-best feature selection performs best.
 
 \subsubsection{Design decision 2: translation and book descriptions}
 Section \ref{sub:initial_data_set} described our approach for enlargement and linguistic adaptation of the training set.
-Compared with a naive approach, using the brochures as they are, the translation of the German brochures and the enlargement of the training brings an improvement of 17-20\% (for without-no-product mode) and 16-28\% (for the with-no-product mode) for the demand classifier as it is shown in the figure \ref{fig:product_translate_amazon}.
+Compared with a naive approach, using the brochures as they are, the translation of the German brochures and the enlargement of the training brings an improvement of 17-20\% (for without-no-product mode) and 16-28\% (for the with-no-product mode) for the demand classifier as it is shown in the Figure \ref{fig:product_translate_amazon}.
 We can also see, that each of the steps, the translation and the enlargement, improves the performance.
 So having same problems with other data sets, we assume that this design decision could improve any other classifier implementation in the same manner.
 
