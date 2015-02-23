@@ -36,12 +36,19 @@ class ExtendedNTOClassifier(val dataReader: DataReader, stopWordsFile: File, pos
 			demand_posts += post
 		}("demand")
 
+		val brochures = mutable.ArrayBuffer[Document]()
+
+		dataReader.readBrochuresLinewise(List("en")) { brochure =>
+			brochures += brochure
+		}
+
 
 		List(ourClassifier _, onlyProductClassifier _).foreach { classifier =>
 			var accuracy = 0.0
 			(0 to 10).foreach{ value =>
 				val train_posts = new Random().shuffle(demand_posts).take((demand_posts.size * 0.9).toInt)
 				trainDemand(train_posts.asJava)
+				trainProduct((brochures ++ train_posts).asJava)
 				val train_ids = train_posts.map(_.id)
 				val test_posts = nto_posts.filter {doc => !train_ids.contains(doc.id)}
 				val correctlyPredicted = test_posts.count { post =>
