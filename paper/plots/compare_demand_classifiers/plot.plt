@@ -3,7 +3,7 @@
 #
 
 # set terminal wxt size 800,700
-set terminal svg size 800,700 fname fontname fsize fontsize
+set terminal svg size 800,700 fname fontname fsize fontsize-5
 set output '../compare_demand_classifiers.svg'
 
 

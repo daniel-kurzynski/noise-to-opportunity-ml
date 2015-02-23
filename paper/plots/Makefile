@@ -1,4 +1,4 @@
-gnuplot_args=-e "fontname='Verdana'; fontsize='21'; color_1='\#222222'; color_2='\#666666'; color_3='\#AAAAAA'; color_4='\#000000'"
+gnuplot_args=-e "width=800;height=900;fontname='Verdana'; fontsize='26'; color_1='\#222222'; color_2='\#666666'; color_3='\#AAAAAA'; color_4='\#000000'"
 
 run:
 	cd sampling_optimization && gnuplot $(gnuplot_args) -p *.plt
