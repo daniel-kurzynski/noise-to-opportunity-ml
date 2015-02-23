@@ -16,7 +16,7 @@ set boxwidth 0.4
 set style fill solid
 set datafile separator ","
 plot \
-	'./data.csv' every 2::1 using 1:3 with boxes lt rgb color_1 title "Without \"No-Product\" Prediction" , \
+	'./data.csv' every 2::1 using 1:3 with boxes lt rgb color_1 title "Without \"NONE\" Prediction" , \
 	'./data.csv' every 2::1 using 1:($3+2):3 with labels notitle, \
-	'./data.csv' every 2 		using 1:3 with boxes lt rgb color_2 title "With \"No-Product\" Prediction", \
+	'./data.csv' every 2 		using 1:3 with boxes lt rgb color_2 title "With \"NONE\" Prediction", \
 	'./data.csv' every 2 		using 1:($3+2):3 with labels notitle
