@@ -2,28 +2,24 @@
 \section{Conclusion and Future Work}
 \label{sec:conclusion}
 
-\todo{The contribution of this paper was}
+The contribution of this paper was a new approach to find users who are likely to buy a product in social networks using marketing material as training data.
+Salesmen can use our automated system instead of manually searching the social network.
+Thus, we can decrease the salesmen's work load and efficiency.
 
-In this work we presented a new approach to online marketing. Since load of salesmen increases we showed an approach to identify costumers in social networks automatically using a combination of supervised machine learning algorithms.
-
+We achieved this by using a combination of supervised machine learning algorithms.
 We showed that classifying posts in two steps works best. 
 First, we detect whether a post describes a need in something.
 Second, we detect which product the post is about.
-Using a separate product classification step, we can use marketing articles as product descriptions instead of letting salesmen read though and tag thousands of post to create training examples.
+Using a separate product classification step, we can use marketing articles as training samples instead of letting salesmen read through and tag thousands of post to create training examples.
 
 However, usually brochures are not appropriate to use as training examples when classifying posts.
-They are different in style, length and count. 
-We showed how to overcome these problems.
+They are different in style and length and only a few brochures exist for each product.
+We showed how to solve these problems by employing feature selection and document sampling.
 
 This work focused on business-oriented social networks, however the approach can also be adapted towards consumer-oriented networks like Facebook.
 Users might ask for the best running shoes to buy, or where to buy the latest computer laptop.
-\todo{This is more about displaying advertisement automatically instead of let a salesmen contact the user.}
+This application is more about displaying advertisement automatically instead of letting salesmen contact the user.
 
 Using this a approach in production salesmen a feedback loop similar to active learning can be introduced to improve the results. When a post is shown to salesmen they can reject, forward, or handle this post. We can use this information to tag the post and use it as a new training example.
 
-%\begin{itemize}
-%	\item Conclude your work by repeating the contributions
-%	\item Highlight the best evaluation results
-%	\item Identify future directions (what would be the next topic of the next paper?)
 %	\item Learning loop: iterative learning, use reuse salesmen tags
-%\end{itemize}
