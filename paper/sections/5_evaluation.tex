@@ -64,11 +64,12 @@ By optimizing for precision we make sure to decrease the work load of the salesm
 As we said before, linear classifiers performed best for the product classification.
 Because they only have a small difference, we will evaluate on three linear classifiers: Logistic Regression, Perceptron, and Support Vector Machines.
 We compare these classifiers with a baseline approach (k-nearest-neighbor classification), see Figure~\ref{fig:product_eval}.
-In this figure you can see the four classifiers, which are predicting for each post exactly one of the four products.
-Additionally to this ``forced'' prediction (the without ``no-product'' prediction) we have modified the linear classifiers in the way, that they predict for each post the four product if and only if one of the product predictions has a significantly greater probability.
-In the other case, so if all products are predicted with quite equal probability, ``no-product'' is predicted as the product.
-This classification mode is nearer to the real world scenario, since not every LinkedIn post we have crawled can be mapped to one of the product classes.
-And as the Figure \ref{fig:product_eval} shows, this approach increases the accuracy by about seven to ten percent.
+In this figure you can see the four classifiers, which are predicting exactly one of the four products for each post.
+We evaluated two different cases:
+first, we only predicted on posts, which we tagged as belonging to one of the four products.
+In the second case, we evaluated on all posts, so that the classifier sometimes has to predict ``None''.
+Of course this value is lower than the first one, because the classifier can now also wrongly predict the ``None'' class.
+This case is nearer to the real world scenario, since not every LinkedIn post we have crawled can be mapped to one of the product classes.
 
 \begin{figure}
 	\begin{center}
@@ -78,15 +79,13 @@ And as the Figure \ref{fig:product_eval} shows, this approach increases the accu
 	\label{fig:product_eval}
 \end{figure}
 
-For the final product classifier we have made some improvements, which are based on some design decisions.
-We will introduce and evaluate two of these design decisions in the following subsections.
+In the following, we will take a closer look at some of the design decisions and evaluate their impact on the overall performance.
 
 \subsubsection{Design decision 1: feature selection}
-As already mentioned in the Section \ref{sub:feature-selection}, we use for the product classifier the classical tf-idf feature selection.
+As already mentioned in the Section~\ref{sub:feature-selection}, we use tf-idf feature selection for the product classifier.
+Figure~\ref{fig:product_feature_selection} shows the performance of the system for different numbers of features we select.
 Additionally we pick only the ten words with the highest tf-idf assuming, that these words describe the product best.
-The comparison of the ten-best approach with the 100-best and 1000-best approaches you can see in the Figure \ref{fig:product_feature_selection}
-As you can see, both classification modes (with and without ``no-demand'' prediction), the ten-best feature selection performs best.
-
+The best performance was reached when picking only the ten words with the highest tf-idf values, which captures the intuition, that we have to be very strict to cope with the \emph{document mismatch problem}.
 \begin{figure}
 	\centering
 	\begin{subfigure}[t]{0.5\textwidth}
@@ -97,13 +96,13 @@ As you can see, both classification modes (with and without ``no-demand'' predic
 		\includegraphics[width=\textwidth]{figures/product_feature_selection_without_none.eps}
 		\caption{without ``no-product'' prediction}
 	\end{subfigure}
-	\caption{Feature Selection: comparison of ten-, 100- and 1000-most occurred words selected as tf-idf features}
+	\caption{Comparison of 10-, 100- and 1000-most occuring words (with respect to their tf-idf values) selected as features.}
 	\label{fig:product_feature_selection}
 \end{figure}
 
-\subsubsection{Design decision 2: translation and book descriptions}
+\subsubsection{Design decision 2: translations and book descriptions}
 Section \ref{sub:initial_data_set} described our approach for enlargement and linguistic adaptation of the training set.
-Compared with a naive approach, using the brochures as they are, the translation of the German brochures and the enlargement of the training brings an improvement of 17-20\% (for without-no-product mode) and 16-28\% (for the with-no-product mode) for the demand classifier as it is shown in the Figure \ref{fig:product_translate_amazon}.
+Compared with a na\"ive approach, using the brochures as they are, the translation of the German brochures and the enlargement of the training brings an improvement of 17-20\% (for without-no-product mode) and 16-28\% (for the with-no-product mode) for the demand classifier as it is shown in the Figure \ref{fig:product_translate_amazon}.
 We can also see, that each of the steps, the translation and the enlargement, improves the performance.
 So having same problems with other data sets, we assume that this design decision could improve any other classifier implementation in the same manner.
 
