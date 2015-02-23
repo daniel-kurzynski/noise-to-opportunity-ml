@@ -8,7 +8,7 @@ set output '../product_feature_selection_with_none.svg'
 
 # set xrange [-0.4:3.9]
 set yrange [0:100]
-set ylabel "Accuracy in %"
+set ylabel "Overall Precision in %"
 set xtics ("Perceptron" 0.2, "SVM" 1.2, "Logistic" 2.2)
 set key right top
 set boxwidth 0.25

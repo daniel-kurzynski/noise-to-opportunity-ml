@@ -94,7 +94,7 @@
 	<path stroke='black'  d='M96.1,22.3 L96.1,652.0 L766.6,652.0 L766.6,22.3 L96.1,22.3 Z  '/></g>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
 	<g transform="translate(23.5,337.2) rotate(270)" stroke="none" fill="black" font-family="Verdana" font-size="16.00"  text-anchor="middle">
-		<text><tspan font-family="Verdana" >Accuracy in %</tspan></text>
+		<text><tspan font-family="Verdana" >Overall Precision in %</tspan></text>
 	</g>
 </g>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
@@ -184,6 +184,9 @@
 	<path stroke='rgb(170, 170, 170)'  d='M688.0,100.3 L744.4,100.3 L744.4,88.3 L688.0,88.3 L688.0,100.3 Z  '/></g>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
 	<g stroke='none' shape-rendering='crispEdges'>
+		<polygon fill = 'rgb(170, 170, 170)' points = '263.7,652.0 311.7,652.0 311.7,421.0 263.7,421.0 '/>
+	</g>
+	<path stroke='rgb(170, 170, 170)'  d='M263.7,652.0 L263.7,421.1 L311.6,421.1 L311.6,652.0 L263.7,652.0 Z  '/>	<g stroke='none' shape-rendering='crispEdges'>
 		<polygon fill = 'rgb(170, 170, 170)' points = '455.3,652.0 503.3,652.0 503.3,221.6 455.3,221.6 '/>
 	</g>
 	<path stroke='rgb(170, 170, 170)'  d='M455.3,652.0 L455.3,221.7 L503.2,221.7 L503.2,652.0 L455.3,652.0 Z  '/>	<g stroke='none' shape-rendering='crispEdges'>
@@ -193,8 +196,8 @@
 	</g>
 	<g id="gnuplot_plot_6" ><title>gnuplot_plot_6</title>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-	<g transform="translate(287.7,645.4)" stroke="none" fill="black" font-family="Verdana" font-size="16.00"  text-anchor="middle">
-		<text><tspan font-family="Verdana" >0</tspan></text>
+	<g transform="translate(287.7,414.5)" stroke="none" fill="black" font-family="Verdana" font-size="16.00"  text-anchor="middle">
+		<text><tspan font-family="Verdana" >36.67</tspan></text>
 	</g>
 	<g transform="translate(479.2,215.1)" stroke="none" fill="black" font-family="Verdana" font-size="16.00"  text-anchor="middle">
 		<text><tspan font-family="Verdana" >68.33</tspan></text>

@@ -99,7 +99,7 @@
 	<path stroke='black'  d='M96.1,22.3 L96.1,652.0 L766.6,652.0 L766.6,22.3 L96.1,22.3 Z  '/></g>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
 	<g transform="translate(23.5,337.2) rotate(270)" stroke="none" fill="black" font-family="Verdana" font-size="16.00"  text-anchor="middle">
-		<text><tspan font-family="Verdana" >Accuracy in %</tspan></text>
+		<text><tspan font-family="Verdana" >Overall Precision in %</tspan></text>
 	</g>
 </g>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">

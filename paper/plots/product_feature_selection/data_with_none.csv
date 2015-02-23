@@ -1,7 +1,7 @@
 id,size,accuracy
 0,Perceptron,62.67
 0.25,Perceptron,32.00
-0.5,Perceptron,0
+0.5,Perceptron,31.33
 1,SVM,60.00
 1.25,SVM,54.67
 1.5,SVM,49.33
