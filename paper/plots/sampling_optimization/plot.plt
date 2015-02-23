@@ -9,7 +9,7 @@ set output '../sampling_optimization.svg'
 set xrange [0:16]
 set yrange [30:80]
 set xlabel "Group size or window size"
-set ylabel "Overall Precision"
+set ylabel "Overall Precision in %"
 set key right bottom
 set datafile separator ","
 plot './data.csv' using 1:2 title 'Grouping' lt rgb color_1 with lines, \
