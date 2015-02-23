@@ -4,19 +4,18 @@
 \label{sec:evaluation}
 
 The following sections show the evaluation of our approach.
-We start with defining relevant evaluation measures and then evaluate our two classifiers and relevant design decisions.
+We start with defining our evaluation measures and then evaluate our two classifiers and relevant design decisions.
 
 \subsection{Evaluation measures}
 \label{sub:evaluation_measures}
 We will use the following measures to evaluate our approach:
 As already mentioned in a previous section, the demand classifier can be optimized for either precision or recall, depending on the use case.
-Additionally, we look at the overall precision of both, the demand and product classifiers.
 Therefore, we consider three values:
 
 \begin{align*}
 	\emph{Precision of the demand classifier}: P_{demand} 			&= \frac{correct~predicted~demands}{predicted~demands} \\
 	\emph{Recall of the demand classifier}: R_{demand} 				&= \frac{correct~predicted~demands}{all~demand~posts} \\
-	\emph{Overall precision of both classifiers}: P_{all} &= \frac{correct~predictions}{all~predictions} \\
+	\emph{Overall precision for both classes}: P_{all} &= \frac{correct~predictions}{all~predictions} \\
 \end{align*}
 
 This measures capture the most important aspects of our system: If we predict a demand, how likely is it really a demand post ($P_{demand}$), and how many of all demand posts can we actually find ($R_{demand}$).
@@ -134,7 +133,7 @@ Compared with a naive approach, using the brochures as they are, the translation
 We can also see, that each of the steps, the translation and the enlargement, improves the performance.
 So having same problems with other data sets, we assume that this design decision could improve any other classifier implementation in the same manner.
 
-\subsection{Two stage classifier}
+\subsubsection{Design decision 3: two-stage classifier}
 \label{sub:two_stage_classifier}
 
 As we propose in our work to use a two stage classifier for the \nto problem.
