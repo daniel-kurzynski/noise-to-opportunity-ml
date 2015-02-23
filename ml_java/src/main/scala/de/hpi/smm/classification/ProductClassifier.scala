@@ -74,7 +74,8 @@ class ProductClassifier(
 		if (PRINT_FEATURE_WORDS)
 			println(featureWords)
 		val classes = new java.util.ArrayList[String](wordCountWithTfIdf.keySet.asJava)
-		classes.add("None")
+		if (!classes.contains("None"))
+			classes.add("None")
 		classAttr = new Attribute("@@class@@", classes)
 
 		featureAttributes = new java.util.ArrayList[Attribute](featureWords.keys.map(new Attribute(_)).asJavaCollection)
