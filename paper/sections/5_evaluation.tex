@@ -15,9 +15,9 @@ As already mentioned in a previous section, the demand classifier can be optimiz
 Therefore, we consider three values:
 
 \begin{align*}
-	\emph{Precision of the demand classifier}: P_{demand} 			&= \frac{correct~predicted~demands}{predicted~demands} \\
-	\emph{Recall of the demand classifier}: R_{demand} 				&= \frac{correct~predicted~demands}{all~demand~posts} \\
-	\emph{Overall precision for both classes}: P_{all} &= \frac{correct~predictions}{all~predictions} \\
+	\emph{Precision of the demand classifier}~P_{demand} 			&= \frac{correct~predicted~demands}{predicted~demands} \\
+	\emph{Recall of the demand classifier}~R_{demand} 				&= \frac{correct~predicted~demands}{all~demand~posts} \\
+	\emph{Overall precision for both classes}~P_{all} &= \frac{correct~predictions}{all~predictions} \\
 \end{align*}
 
 This measures capture the most important aspects of our system: If we predict a demand, how likely is it really a demand post ($P_{demand}$), and how many of all demand posts can we actually find ($R_{demand}$).
@@ -26,42 +26,6 @@ Finally, the overall precision ($P_{all}$) of the demand classifier is usually q
 For example, a tagger, which always returns ``no-demand'' will have a relatively high overall precision of $\frac{406}{445}$ = $89.23~\%$, as seen in Table~\ref{table:data_overview}.
 However, we left this in for the sake of completeness and take all three measure in count to evaluate demand classifier performance.
 Since there is no such data skew in the product classifier, the overall precision is sufficient to describe the product classifier performance.
-
-\begin{figure}
-	\begin{center}
-		\includegraphics[width=0.5\textwidth]{figures/product_eval.eps}
-	\end{center}
-	\caption{Comparison of different classifiers and different classification modes}
-	\label{fig:product_eval}
-\end{figure}
-
-\begin{figure}
-	\centering
-	\begin{subfigure}[t]{0.5\textwidth}
-		\includegraphics[width=\textwidth]{figures/product_feature_selection_with_none.eps}
-		\caption{with ``no-product'' prediction}
-	\end{subfigure}~
-	\begin{subfigure}[t]{0.5\textwidth}
-		\includegraphics[width=\textwidth]{figures/product_feature_selection_without_none.eps}
-		\caption{without ``no-product'' prediction}
-	\end{subfigure}
-	\caption{Feature Selection: comparison of ten-, 100- and 1000-most occurred words selected as tf-idf features}
-	\label{fig:product_feature_selection}
-\end{figure}
-
-\begin{figure}
-	\centering
-	\begin{subfigure}[t]{0.5\textwidth}
-		\includegraphics[width=\textwidth]{figures/product_translate_amazon_with_none.eps}
-		\caption{with ``no-product'' prediction}
-	\end{subfigure}~
-	\begin{subfigure}[t]{0.5\textwidth}
-		\includegraphics[width=\textwidth]{figures/product_translate_amazon_without_none.eps}
-		\caption{without ``no-product'' prediction}
-	\end{subfigure}
-	\caption{Feature Selection: comparison of ten-, 100- and 1000-most occurred words selected as tf-idf features}
-	\label{fig:product_translate_amazon}
-\end{figure}
 
 \subsection{Results}
 \label{sub:results}
@@ -106,6 +70,14 @@ In the other case, so if all products are predicted with quite equal probability
 This classification mode is nearer to the real world scenario, since not every LinkedIn post we have crawled can be mapped to one of the product classes.
 And as the Figure \ref{fig:product_eval} shows, this approach increases the accuracy by about seven to ten percent.
 
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=0.5\textwidth]{figures/product_eval.eps}
+	\end{center}
+	\caption{Comparison of different classifiers and different classification modes}
+	\label{fig:product_eval}
+\end{figure}
+
 For the final product classifier we have made some improvements, which are based on some design decisions.
 We will introduce and evaluate two of these design decisions in the following subsections.
 
@@ -115,11 +87,39 @@ Additionally we pick only the ten words with the highest tf-idf assuming, that t
 The comparison of the ten-best approach with the 100-best and 1000-best approaches you can see in the Figure \ref{fig:product_feature_selection}
 As you can see, both classification modes (with and without ``no-demand'' prediction), the ten-best feature selection performs best.
 
+\begin{figure}
+	\centering
+	\begin{subfigure}[t]{0.5\textwidth}
+		\includegraphics[width=\textwidth]{figures/product_feature_selection_with_none.eps}
+		\caption{with ``no-product'' prediction}
+	\end{subfigure}~
+	\begin{subfigure}[t]{0.5\textwidth}
+		\includegraphics[width=\textwidth]{figures/product_feature_selection_without_none.eps}
+		\caption{without ``no-product'' prediction}
+	\end{subfigure}
+	\caption{Feature Selection: comparison of ten-, 100- and 1000-most occurred words selected as tf-idf features}
+	\label{fig:product_feature_selection}
+\end{figure}
+
 \subsubsection{Design decision 2: translation and book descriptions}
 Section \ref{sub:initial_data_set} described our approach for enlargement and linguistic adaptation of the training set.
 Compared with a naive approach, using the brochures as they are, the translation of the German brochures and the enlargement of the training brings an improvement of 17-20\% (for without-no-product mode) and 16-28\% (for the with-no-product mode) for the demand classifier as it is shown in the Figure \ref{fig:product_translate_amazon}.
 We can also see, that each of the steps, the translation and the enlargement, improves the performance.
 So having same problems with other data sets, we assume that this design decision could improve any other classifier implementation in the same manner.
+
+\begin{figure}
+	\centering
+	\begin{subfigure}[t]{0.5\textwidth}
+		\includegraphics[width=\textwidth]{figures/product_translate_amazon_with_none.eps}
+		\caption{with ``no-product'' prediction}
+	\end{subfigure}~
+	\begin{subfigure}[t]{0.5\textwidth}
+		\includegraphics[width=\textwidth]{figures/product_translate_amazon_without_none.eps}
+		\caption{without ``no-product'' prediction}
+	\end{subfigure}
+	\caption{Feature Selection: comparison of ten-, 100- and 1000-most occurred words selected as tf-idf features}
+	\label{fig:product_translate_amazon}
+\end{figure}
 
 \subsubsection{Design decision 3: two-stage classifier}
 \label{sub:two_stage_classifier}
