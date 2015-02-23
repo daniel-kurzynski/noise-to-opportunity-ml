@@ -67,8 +67,8 @@ We compare these classifiers with a baseline approach (k-nearest-neighbor classi
 In this figure you can see the four classifiers, which are predicting exactly one of the four products for each post.
 We evaluated two different cases:
 First, we only predicted on posts, which we tagged as belonging to one of the four products.
-In the second case, we evaluated on all posts, so that the classifier sometimes has to predict ``None''.
-Of course this value is lower than the first one, because the classifier can now also wrongly predict the ``None'' class.
+In the second case, we evaluated on all posts, so that the classifier sometimes has to predict ``NONE''.
+Of course this value is lower than the first one, because the classifier can now also wrongly predict the ``NONE'' class.
 This case is nearer to the real world scenario, since not every LinkedIn post we have crawled can be mapped to one of the product classes.
 
 \begin{figure}
@@ -90,11 +90,11 @@ The best performance was reached when picking only the ten words with the highes
 	\centering
 	\begin{subfigure}[t]{0.5\textwidth}
 		\includegraphics[width=\textwidth]{figures/product_feature_selection_with_none.eps}
-		\caption{with ``no-product'' prediction}
+		\caption{with ``NONE'' prediction}
 	\end{subfigure}~
 	\begin{subfigure}[t]{0.5\textwidth}
 		\includegraphics[width=\textwidth]{figures/product_feature_selection_without_none.eps}
-		\caption{without ``no-product'' prediction}
+		\caption{without ``NONE'' prediction}
 	\end{subfigure}
 	\caption{Comparison of 10-, 100- and 1000-most occuring words (with respect to their tf-idf values) selected as features.}
 	\label{fig:product_feature_selection}
@@ -102,18 +102,18 @@ The best performance was reached when picking only the ten words with the highes
 
 \subsubsection{Design Decision 2: Translations and Book Descriptions}
 Section \ref{sub:initial_data_set} described our approach for adapting and increasing the training set.
-Compared to a na\"ive approach -- using the brochures as they are -- adding translations and Amazon product descriptions to the training data yields an improvement of 17-20~\% (without ``None'' predictions) and 16-28~\% (with ``None'' predictions) for the product classifier (see Figure~\ref{fig:product_translate_amazon}).
+Compared to a na\"ive approach -- using the brochures as they are -- adding translations and Amazon product descriptions to the training data yields an improvement of 17-20~\% (without ``NONE'' predictions) and 16-28~\% (with ``NONE'' predictions) for the product classifier (see Figure~\ref{fig:product_translate_amazon}).
 We believe that this design decision will improve the performance for every application of our $NTO$ approach.
 
 \begin{figure}[h!]
 	\centering
 	\begin{subfigure}[t]{0.5\textwidth}
 		\includegraphics[width=\textwidth]{figures/product_translate_amazon_with_none.eps}
-		\caption{with ``no-product'' prediction}
+		\caption{with ``NONE'' prediction}
 	\end{subfigure}~
 	\begin{subfigure}[t]{0.5\textwidth}
 		\includegraphics[width=\textwidth]{figures/product_translate_amazon_without_none.eps}
-		\caption{without ``no-product'' prediction}
+		\caption{without ``NONE'' prediction}
 	\end{subfigure}
 	\caption{Feature Selection: comparison of ten-, 100- and 1000-most occurring words selected as tf-idf features}
 	\label{fig:product_translate_amazon}
@@ -128,8 +128,8 @@ The single classifier was trained using both the brochures and the tagged Linked
 By using both the brochures and the tagged posts we make sure, that both classifiers learn on the same amount of data.
 % This one-stage classifier is identical to our product classifier.
 
-For that evaluation we change the test set annotations in the way, that if an annotated post was been classified as ``no-demand'', the product classification will be ignored, and ``no-product'' will be used instead.
-This way we can compare the predictions of the product classifier (which is either ``no-product'' or one of the products) with the predictions of the two-stage classifier (which is also either ``no-product'' or one of the products).
+For that evaluation we change the test set annotations in the way, that if an annotated post was been classified as ``no-demand'', the product classification will be ignored, and ``NONE'' will be used instead.
+This way we can compare the predictions of the product classifier (which is either ``NONE'' or one of the products) with the predictions of the two-stage classifier (which is also either ``NONE'' or one of the products).
 Because both classifiers are trained on the LinkedIn posts, we do a ten-fold cross validation on the LinkedIn posts.
 As shown in Table~\ref{table:two_stage_eval} the two-stage classifier yields an improvement of about 12~\%.
 
