@@ -3,7 +3,7 @@
 #
 
 #set terminal wxt size 800,700
-set terminal svg size 800,700 fname fontname fsize fontsize
+set terminal svg size 800,700 fname fontname fsize fontsize+5
 set output '../sampling_optimization.svg'
 
 set xrange [0:16]
@@ -12,5 +12,8 @@ set xlabel "Group size or window size"
 set ylabel "Overall Precision in %"
 set key right bottom
 set datafile separator ","
-plot './data.csv' using 1:2 title 'Grouping' lt rgb color_1 with lines, \
-     './data.csv' using 1:3 title 'Sliding' lt rgb color_2 with lines
+set style line 1 lc rgb color_1 lt 1 lw 1 pt 7 pi -1 ps 1.5
+set style line 2 lc rgb color_2 lt 1 lw 1 pt 7 pi -1 ps 1.5
+set pointintervalbox 1
+plot './data.csv' using 1:2 title 'Grouping' with linespoints ls 1, \
+     './data.csv' using 1:3 title 'Sliding' with linespoints ls 2
