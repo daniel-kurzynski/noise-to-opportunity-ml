@@ -99,10 +99,10 @@
 </g>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
 </g>
-	<g id="gnuplot_plot_1" ><title>10 most occurred words</title>
+	<g id="gnuplot_plot_1" ><title>10 most occurring words</title>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
 	<g transform="translate(676.9,52.3)" stroke="none" fill="black" font-family="Verdana" font-size="16.00"  text-anchor="end">
-		<text><tspan font-family="Verdana" >10 most occurred words</tspan></text>
+		<text><tspan font-family="Verdana" >10 most occurring words</tspan></text>
 	</g>
 </g>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
@@ -135,10 +135,10 @@
 	</g>
 </g>
 	</g>
-	<g id="gnuplot_plot_3" ><title>100 most occurred words</title>
+	<g id="gnuplot_plot_3" ><title>100 most occurring words</title>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
 	<g transform="translate(676.9,76.3)" stroke="none" fill="black" font-family="Verdana" font-size="16.00"  text-anchor="end">
-		<text><tspan font-family="Verdana" >100 most occurred words</tspan></text>
+		<text><tspan font-family="Verdana" >100 most occurring words</tspan></text>
 	</g>
 </g>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
@@ -171,10 +171,10 @@
 	</g>
 </g>
 	</g>
-	<g id="gnuplot_plot_5" ><title>1000 most occurred words</title>
+	<g id="gnuplot_plot_5" ><title>1000 most occurring words</title>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
 	<g transform="translate(676.9,100.3)" stroke="none" fill="black" font-family="Verdana" font-size="16.00"  text-anchor="end">
-		<text><tspan font-family="Verdana" >1000 most occurred words</tspan></text>
+		<text><tspan font-family="Verdana" >1000 most occurring words</tspan></text>
 	</g>
 </g>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
