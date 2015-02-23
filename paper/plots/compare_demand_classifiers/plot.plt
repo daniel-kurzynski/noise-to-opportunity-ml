@@ -7,7 +7,7 @@ set terminal svg size 800,700 fname fontname fsize fontsize
 set output '../compare_demand_classifiers.svg'
 
 
-set xrange [0:9]
+set xrange [0:7]
 set yrange [70:90]
 # set xlabel "Group size or window size"
 set ylabel "Overall Precision in %"

@@ -1,9 +1,7 @@
 id,classifier,f1score
 1,Bernoulli NB,86.1
-2,Ridge,84.8
 3,Support Vector Machines,84.5
-4,SGD,84.5
-5,Multinomial NB,84.5
-6,Logistic Regression,84.5
-7,Multilayer Perceptron, 84.2
-8,J48 Decision Tree, 79.7
+4,Multinomial NB,84.5
+5,Logistic Regression,84.5
+6,Multilayer Perceptron, 84.2
+7,J48 Decision Tree, 79.7
