@@ -84,7 +84,7 @@ The number of posts that actually are asking for a product of the company is usu
 In our example data set, these posts cover less than 1~\% of the posts, whereas demand posts alone occur with 8.35~\% probability and product documents alone with 25.48~\%.
 If the machine learning would work directly on the positive examples, this would introduce a high data skew.
 The number of positive training samples would be at least a magnitude lower than the number of negative samples.
-This skew has been shown to harm the performance of machine learning systems significantly \cite{guo2008class,monard2002learning}.
+This skew has been shown to harm the performance of machine learning systems significantly~\cite{guo2008class,monard2002learning}.
 
 However, even with two classifiers, the number of positive samples is much lower than the number of negative samples.
 Therefore, we employ techniques of feature selection and training data sampling, which are shown in the next two sections.
@@ -92,7 +92,7 @@ Therefore, we employ techniques of feature selection and training data sampling,
 \subsection{Feature Selection}
 \label{sub:feature-selection}
 As we use supervised machine-learning for the text categorization, we need to define features, which are good for predicting a demand and a certain product.
-The general approach to features in text classification is the bag-of-words model \cite{yang1997comparative,zhang2010understanding}.
+The general approach to features in text classification is the bag-of-words model~\cite{yang1997comparative,zhang2010understanding}.
 This model treats each text as a multiset of words in the text.
 This approach loses the text order, but keeps the information about the frequency of words.
 Our classifiers are based on the bag-of-word approach.
@@ -154,7 +154,7 @@ The final set of demand words is the set union of these two sets.
 These words indicate a demand: if they do occur, then that is a sign for a demand post, if they do not occur, then that is a sign for a no-demand post.
 Using this approach we can overcome the \emph{small corpus problem} for the demand posts.
 
-For the product classifier we use a classical tf-idf\cite{sparck1972statistical} feature selection.
+For the product classifier we use a classical tf-idf~\cite{sparck1972statistical} feature selection.
 Often, only a few keywords indicate membership to a product class.
 Tf-idf helps to find these words, while ignoring words that may occur in every brochure, like the company name, stop words or generic words.
 % The demand classifier is trained on social network posts and also predicts on social network posts.
