@@ -9,7 +9,7 @@ We then talk about what features we select and how we approach the three problem
 \subsection{Two-staged classification}
 As presented in Section~\ref{sec:background-problem} there exist the problem, that brochures are not written from the user perspective.
 We called this the \emph{non-user perspective problem}.
-In fact, there also exist two concepts in the posts.
+In fact, there exist two concepts in the posts.
 These concepts are orthogonal to each other and are shown below.
 
 First, users might express a need, demand, or interest for some product or not.
@@ -25,7 +25,7 @@ We call this the \emph{demand classification}:
 
 The second concept is about which product the user is talking about in the post.
 Here, the decision needs to be made whether this is a product of the company or not.
-In the latter case, we are not interested in the post anymore.
+In the latter case, we are not interested in the post.
 Depending on the actual product, the relevant words vary greatly.
 The following words are relevant words for a customer relationship managment software, also taken from our example data:
 \begin{center}
@@ -81,10 +81,10 @@ Figure~\ref{fig:figureone} illustrates the architecture of the system.
 
 Learning demand and product categorization as two concepts with different classifiers also helps overcome data sparsity issues.
 The number of posts that actually are asking for a product of the company is usually very low.
-In our example data set, these posts only cover less than 1~\% of the posts, whereas demand posts alone occur with 8.35~\% probability and product documents alone with 25.48~\%.
+In our example data set, these posts cover less than 1~\% of the posts, whereas demand posts alone occur with 8.35~\% probability and product documents alone with 25.48~\%.
 If the machine learning would work directly on the positive examples, this would introduce a high data skew.
 The number of positive training samples would be at least a magnitude lower than the number of negative samples.
-This skew has been shown to harm the performance of machine learning systems significantly \cite{monard2002learning,guo2008class}.
+This skew has been shown to harm the performance of machine learning systems significantly \cite{guo2008class,monard2002learning}.
 
 However, even with two classifiers, the number of positive samples is much lower than the number of negative examples.
 Therefore, we employ techniques of feature selection and training data sampling, which are shown in the next two sections.
@@ -95,18 +95,18 @@ As we use supervised machine-learning for the text categorization, we need to de
 The general approach to features in text classification is the bag-of-words model \cite{yang1997comparative,zhang2010understanding}.
 This model treats each text as a multiset of words in the text.
 This approach loses the text order, but keeps the information about the frequency of words.
-Our classifiers are based on a bag-of-word approach.
+Our classifiers are based on the bag-of-word approach.
 
 Because we have both the \emph{problem of document mismatch} and the \emph{problem of a small corpus}, we use a strict feature selection to avoid any overfitting to the training data and selecting the wrong words.
 
 For the demand classifier, the first observation is, that there are no specific words for no-demand posts.
 Almost every randomly selected post does not express a demand, and it could be about any possible topic.
 Therefore, we choose to select only words, which express a demand (e.g. ``recommend'', ``help'', ``looking'', ``need'').
-The intuition is, that if enough of demand words occur, we classify a demand, otherwise a no-demand.
+The intuition is, that if enough demand words occur, we classify a ``demand'', otherwise a ``no-demand''.
 To identify these words we run two statistics on the data:
 which words are more likely to occur in demand-posts, and which words are more likely to not occur in no-demand posts.
-\begin{figure}
-	\label{eq:demand_feature_selection}
+This two statistics are defined in Equation~\ref{eq:demand_feature_selection}.
+\begin{equationBlock}
 	\begin{alignat*}{3}
 		&demand\_prob\_with(w) &&= \dfrac{
 		 		\#~\operatorname{demand}~posts~\mathbf{with}~w
@@ -147,9 +147,10 @@ which words are more likely to occur in demand-posts, and which words are more l
 			}
 	\end{alignat*}
 	\caption{The demand feature selection is based on the two functions $demand\_fraction\_with$ and $demand\_fraction\_without$, which select words, that are an indication for a demand post.}
-\end{figure}
+	\label{eq:demand_feature_selection}
+\end{equationBlock}
 We select those words with the highest $demand\_fraction\_with$ and the highest $demand\_fraction\_without$.
-The final demand words is the set union of these two sets.
+The final set of demand words is the set union of these two sets.
 These words indicate a demand: if they do occur, then that is a sign for a demand post, if they do not occur, then that is a sign for a no-demand post.
 Using this approach we can overcome the \emph{small corpus problem} for the demand posts.
 
@@ -167,3 +168,4 @@ As said before, the number of brochures is usually quite low, hence there is not
 Also, there exists a mismatch between the posts and the brochures.
 One part of this document mismatch is, that brochures are usually much longer than social network posts, which often only contain two or three sentences, while brochures span over pages.
 Hence, a natural approach is to split one long brochure into several smaller brochures, which both creates more training data and adapts the document length closer to the post's document length.
+We therefore split one brochure into several brochures approximately the size of the social network posts.
