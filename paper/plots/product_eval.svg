@@ -104,10 +104,10 @@
 </g>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
 </g>
-	<g id="gnuplot_plot_1" ><title>Without "No-Product" Prediction</title>
+	<g id="gnuplot_plot_1" ><title>Without "NONE" Prediction</title>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
 	<g transform="translate(638.2,68.6)" stroke="none" fill="black" font-family="Verdana" font-size="21.00"  text-anchor="end">
-		<text><tspan font-family="Verdana" >Without "No-Product" Prediction</tspan></text>
+		<text><tspan font-family="Verdana" >Without "NONE" Prediction</tspan></text>
 	</g>
 </g>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
@@ -146,10 +146,10 @@
 	</g>
 </g>
 	</g>
-	<g id="gnuplot_plot_3" ><title>With "No-Product" Prediction</title>
+	<g id="gnuplot_plot_3" ><title>With "NONE" Prediction</title>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
 	<g transform="translate(638.2,100.0)" stroke="none" fill="black" font-family="Verdana" font-size="21.00"  text-anchor="end">
-		<text><tspan font-family="Verdana" >With "No-Product" Prediction</tspan></text>
+		<text><tspan font-family="Verdana" >With "NONE" Prediction</tspan></text>
 	</g>
 </g>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
