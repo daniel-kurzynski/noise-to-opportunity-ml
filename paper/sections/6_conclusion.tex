@@ -16,10 +16,18 @@ However, usually brochures are not appropriate to use as training examples when 
 They are different in style and length and only a few brochures exist for each product.
 We showed how to solve these problems by employing feature selection and document sampling.
 
-This work focused on business-oriented social networks, however the approach can also be adapted towards consumer-oriented networks like Facebook.
+Improvements for our current system could be to automatically detect references to a competitor, especially if the user is unhappy with the system.
+For example, posts like ``Stressful day thanks to problems with Oracle CRM'' could be recommended by first detecting a reference to the competitor ``Oracle CRM'' and then using sentiment analysis to determine the general negative trend in the post.
+Salesmen could then try to contact the user and convince them of their company's solution.
+
+Another idea would be to automatically extract the main phrases in a users post.
+For example, if the user writes ``I was very unhappy with the performance of CRM XYZ'', the system could automatically generate an answer like ``Unhappy with your CRM? Try [COMPANY CRM]''.
+
+Furthermore, this work focused on business-oriented social networks, however the approach can also be adapted towards consumer-oriented networks like Facebook.
 Users might ask for the best running shoes to buy, or where to buy the latest computer laptop.
 This application is more about displaying advertisement automatically instead of letting salesmen contact the user.
 
-Using this a approach in production salesmen a feedback loop similar to active learning can be introduced to improve the results. When a post is shown to salesmen they can reject, forward, or handle this post. We can use this information to tag the post and use it as a new training example.
-
-%	\item Learning loop: iterative learning, use reuse salesmen tags
+Additionally, our approach could be adapted to use more data from production use.
+When a post is shown to salesmen they can either reject, forward, or handle this post.
+This information can be used to tag the post and use it as new training sample.
+This way, the system can become better over time.
