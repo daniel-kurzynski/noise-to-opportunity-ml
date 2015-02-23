@@ -3,6 +3,8 @@
 \section{Evaluation}
 \label{sec:evaluation}
 
+\todo{Avoid glich of values in bars}
+
 The following sections show the evaluation of our approach.
 We start with defining our evaluation measures and then evaluate our two classifiers and relevant design decisions.
 
@@ -20,22 +22,10 @@ Therefore, we consider three values:
 
 This measures capture the most important aspects of our system: If we predict a demand, how likely is it really a demand post ($P_{demand}$), and how many of all demand posts can we actually find ($R_{demand}$).
 Finally, the overall precision ($P_{all}$) of the demand classifier is usually quite high because of the data skew in the demand tagging.
-For example, a tagger, which always returns ``no-demand'' will have a relatively high overall precision of $\frac{406}{445}$ = $89.23~\%$ , as seen in Table~\ref{table:only_no_demand_classifier}.
+
+For example, a tagger, which always returns ``no-demand'' will have a relatively high overall precision of $\frac{406}{445}$ = $89.23~\%$, as seen in Table~\ref{table:data_overview}.
 However, we left this in for the sake of completeness and take all three measure in count to evaluate demand classifier performance.
 Since there is no such data skew in the product classifier, the overall precision is sufficient to describe the product classifier performance.
-
-\begin{table}
-	\centering
-	{
-		\begin{tabular}{ccc}
-			demand & no-demand & $\leftarrow$ classified as \\ \hline \hline
-			0 & 39 & demand\\
-			0 & 406 & no-demand\\
-		\end{tabular}
-	}
-	\caption{Worst case scenario: confusion matrix of a classifier predicting only ``no-demand''}
-	\label{table:only_no_demand_classifier}
-\end{table}
 
 \begin{figure}
 	\begin{center}
@@ -59,8 +49,6 @@ Since there is no such data skew in the product classifier, the overall precisio
 	\label{fig:product_feature_selection}
 \end{figure}
 
-\todo{Avoid glich of values in bars}
-
 \begin{figure}
 	\centering
 	\begin{subfigure}[t]{0.5\textwidth}
@@ -81,11 +69,12 @@ Since there is no such data skew in the product classifier, the overall precisio
 \subsubsection{Demand classifier}
 \label{ssub:demand_classifier}
 
-We optimized our demand classifier in respect to the demand precision.
-Table~\ref{table:demand_evaluation} shows that if we classify 88~\% of the posts, which express a demand, correctly.
+We optimized our demand classifier with respect to the demand precision.
+Table~\ref{table:demand_evaluation} shows that we classify 88~\% of the posts, which express a demand, correctly.
 We measured this number by doing a cross validation on the tagged posts.
-That means, if we propose a post to salesmen to have look on that post, we are quite sure, that the users needs something.
-Therefore, we decrease the work load of salesmen.
+Cross validations means, that we split the data set in ten parts, then run the feature extraction and the learning phase on $9 / 10$ of the data to predict one the remaining $1 / 10$.
+This is done repeatedly for all ten parts.
+By optimizing for precision we make sure to decrease the work load of the salesmen: If we propose a post, we are quite sure, that the users needs something.
 
 \begin{table}[h]
 	\centering
@@ -94,11 +83,11 @@ Therefore, we decrease the work load of salesmen.
 		\textbf{Metric} & \textbf{Result}  \\
 		\hline
 		\hline
-		Precision of the demand classifier & 88~\% \\
+		$P_{demand}$ & 88~\% \\
 		\hline
-		Recall of the demand classifier & 51~\%  \\
+		$R_{demand}$ & 51~\%  \\
 		\hline
-		Overall precision of the demand classifier & 93~\%  \\
+		$P_{all}$ & 93~\%  \\
 		\hline
 	\end{tabular}
 	\caption{Cross validation results on demand classifier}
