@@ -13,6 +13,8 @@ As already mentioned in a previous section, the demand classifier can be optimiz
 Additionally, we look at the overall precision of both, the demand and product classifiers.
 Therefore, we consider three values:
 
+\todo{should be smaller}
+
 \begin{align*}
 	\emph{Precision of the demand classifier}: P_{demand} 			&= \frac{correct~predicted~demands}{predicted~demands} \\
 	\emph{Recall of the demand classifier}: R_{demand} 				&= \frac{correct~predicted~demands}{all~demand~posts} \\
@@ -71,6 +73,12 @@ Since there is no such data skew in the product classifier, the overall precisio
 \subsubsection{Demand classifier}
 \label{ssub:demand_classifier}
 
+We optimized our demand classifier in respect to the demand precision. 
+Table~\ref{table:demand_evaluation} shows that if we classify 88~\% of the posts, which express a demand, correctly. 
+We measured this number by doing a cross validation on the tagged posts. 
+That means, if we propose a post to salesmen to have look on that post, we are quite sure, that the users needs something.
+Therefore, we decrease the work load of salesmen.
+
 \begin{table}[h]
 	\centering
 	\begin{tabular}{lc}
@@ -88,9 +96,6 @@ Since there is no such data skew in the product classifier, the overall precisio
 	\caption{Cross validation results on demand classifier}
 	\label{table:demand_evaluation}
 \end{table}
-
-\todo{WRITE HERE SOMETHING!}
-
 
 \subsubsection{Product classifier}
 \label{ssub:product_classifier}
