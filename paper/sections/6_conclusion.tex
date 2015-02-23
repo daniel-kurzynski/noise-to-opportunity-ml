@@ -6,10 +6,10 @@ The contribution of this paper was a new approach to find users who are likely t
 Salesmen can use our automated system instead of manually searching the social network.
 Thus, we can decrease the salesmen's work load and efficiency.
 
-We achieved this by using a combination of supervised machine learning algorithms.
-We showed that classifying posts in two steps works best. 
+We achieved this result by using a combination of supervised machine learning algorithms.
+We showed that classifying posts in two steps works best.
 First, we detect whether a post describes a need in something.
-Second, we detect which product the post is about.
+Second, we detect, which product the post is about.
 Using a separate product classification step, we can use marketing articles as training samples instead of letting salesmen read through and tag thousands of post to create training examples.
 
 However, usually brochures are not appropriate to use as training examples when classifying posts.
@@ -17,17 +17,17 @@ They are different in style and length and only a few brochures exist for each p
 We showed how to solve these problems by employing feature selection and document sampling.
 
 Improvements for our current system could be to automatically detect references to a competitor, especially if the user is unhappy with the system.
-For example, posts like ``Stressful day thanks to problems with Oracle CRM'' could be recommended by first detecting a reference to the competitor ``Oracle CRM'' and then using sentiment analysis to determine the general negative trend in the post.
+For example, posts such as ``Stressful day thanks to problems with Oracle CRM'' could be recommended by first detecting a reference to the competitor ``Oracle CRM'' and then using sentiment analysis to determine the general negative trend in the post.
 Salesmen could then try to contact the user and convince them of their company's solution.
 
-Another idea would be to automatically extract the main phrases in a users post.
-For example, if the user writes ``I was very unhappy with the performance of CRM XYZ'', the system could automatically generate an answer like ``Unhappy with your CRM? Try [COMPANY CRM]''.
+Another idea would be to automatically extract the main phrases in an users post.
+For example, if the user writes ``I was very unhappy with the performance of CRM XYZ'', the system could automatically generate an answer such as ``Unhappy with your CRM? Try [COMPANY CRM]''.
 
-Furthermore, this work focused on business-oriented social networks, however the approach can also be adapted towards consumer-oriented networks like Facebook.
+Furthermore, this work focused on business-oriented social networks, however the approach can also be adapted towards consumer-oriented networks such as Facebook.
 Users might ask for the best running shoes to buy, or where to buy the latest computer laptop.
 This application is more about displaying advertisement automatically instead of letting salesmen contact the user.
 
 Additionally, our approach could be adapted to use more data from production use.
 When a post is shown to salesmen they can either reject, forward, or handle this post.
 This information can be used to tag the post and use it as new training sample.
-This way, the system can become better over time.
+In this way, the system can become better over time.
