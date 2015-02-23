@@ -1,0 +1,10 @@
+id,classifier,f1score
+1,Bernoulli NB,86.1
+2,Ridge,84.8
+3,Voting,84.5
+4,Linear SVM,84.5
+5,SGD,84.5
+6,Multinomial NB,84.5
+7,Logistic Regression,84.5
+8,Perceptron, 84.2
+9,Decission Tree, 79.7
