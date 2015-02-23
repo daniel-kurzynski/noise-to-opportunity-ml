@@ -13,24 +13,34 @@ As already mentioned in a previous section, the demand classifier can be optimiz
 Additionally, we look at the overall precision of both, the demand and product classifiers.
 Therefore, we consider three values:
 
-\todo{should be smaller}
-
 \begin{align*}
 	\emph{Precision of the demand classifier}: P_{demand} 			&= \frac{correct~predicted~demands}{predicted~demands} \\
 	\emph{Recall of the demand classifier}: R_{demand} 				&= \frac{correct~predicted~demands}{all~demand~posts} \\
-	\emph{Overall precision of the demand and product classifier}: P_{all} &= \frac{correct~predictions}{all~predictions} \\
+	\emph{Overall precision of both classifiers}: P_{all} &= \frac{correct~predictions}{all~predictions} \\
 \end{align*}
 
 This measures capture the most important aspects of our system: If we predict a demand, how likely is it really a demand post ($P_{demand}$), and how many of all demand posts can we actually find ($R_{demand}$).
 Finally, the overall precision ($P_{all}$) of the demand classifier is usually quite high because of the data skew in the demand tagging.
-A tagger, which always returns ``no-demand'' will have an overall precision of \todo{percent}, as seen in Table~\todo{NUMBER}.
+For example, a tagger, which always returns ``no-demand'' will have a relatively high overall precision of $\frac{406}{445}$ = $89.23\%$ , as seen in Table~\ref{table:only_no_demand_classifier}.
 However, we left this in for the sake of completeness and take all three measure in count to evaluate demand classifier performance.
 Since there is no such data skew in the product classifier, the overall precision is sufficient to describe the product classifier performance.
 
+\begin{table}
+	\centering
+	{
+		\begin{tabular}{ccc}
+			demand & no-demand & $\leftarrow$ classified as \\ \hline \hline
+			0 & 39 & demand\\
+			0 & 406 & no-demand\\
+		\end{tabular}
+	}
+	\caption{worst case scenario: confusion matrix of a classifier predicting only ``no-demand''}
+	\label{table:only_no_demand_classifier}
+\end{table}
 
 \begin{figure}
 	\begin{center}
-		\includegraphics[width=0.7\textwidth]{figures/product_eval.eps}
+		\includegraphics[width=0.5\textwidth]{figures/product_eval.eps}
 	\end{center}
 	\caption{Comparison of different classifiers and different classification modes}
 	\label{fig:product_eval}
@@ -73,9 +83,9 @@ Since there is no such data skew in the product classifier, the overall precisio
 \subsubsection{Demand classifier}
 \label{ssub:demand_classifier}
 
-We optimized our demand classifier in respect to the demand precision. 
-Table~\ref{table:demand_evaluation} shows that if we classify 88~\% of the posts, which express a demand, correctly. 
-We measured this number by doing a cross validation on the tagged posts. 
+We optimized our demand classifier in respect to the demand precision.
+Table~\ref{table:demand_evaluation} shows that if we classify 88~\% of the posts, which express a demand, correctly.
+We measured this number by doing a cross validation on the tagged posts.
 That means, if we propose a post to salesmen to have look on that post, we are quite sure, that the users needs something.
 Therefore, we decrease the work load of salesmen.
 
