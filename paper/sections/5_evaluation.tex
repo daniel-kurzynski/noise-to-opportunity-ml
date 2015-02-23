@@ -62,8 +62,8 @@ By optimizing for precision we make sure to decrease the work load of the salesm
 \label{ssub:product_classifier}
 
 As we said before, linear classifiers performed best for the product classification.
-Because they only have a small difference, we will evaluate on three linear classifiers: logistic regression, perceptron, and support vector machines.
-Comparing these classifiers with a base approach (K-Nearest-Neighbor classification) we can see a better performance as it is shown in Figure \ref{fig:product_eval}.
+Because they only have a small difference, we will evaluate on three linear classifiers: Logistic Regression, Perceptron, and Support Vector Machines.
+We compare these classifiers with a baseline approach (k-nearest-neighbor classification), see Figure~\ref{fig:product_eval}.
 In this figure you can see the four classifiers, which are predicting for each post exactly one of the four products.
 Additionally to this ``forced'' prediction (the without ``no-product'' prediction) we have modified the linear classifiers in the way, that they predict for each post the four product if and only if one of the product predictions has a significantly greater probability.
 In the other case, so if all products are predicted with quite equal probability, ``no-product'' is predicted as the product.
