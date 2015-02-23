@@ -8,12 +8,21 @@ Then we give a formal problem definition and show challenges, that have to be so
 
 \subsection{Related Work}
 The text classification task has been researched already in many other works.
-Yang et al.\cite{yang1999re} have compared the performance of different text classifiers in their paper, McCallum et al. \cite{mccallum1998comparison} specifically focus on na\"ive bayes classifiers, Han et al. \cite{han2001text} propose an improved k-Nearest-Neighbors algorithm.
-Concerning the feature selection algorithms, Yang et al. compared in their work\cite{yang1997comparative} different reduction algorithms.
-Nevertheless, we could not find any other works solving the \nto problem or similar problem.
-Thats why we think, that this paper represents a good beginning for the research in this field of text classification.
+Yang et al.\cite{yang1999re} have compared the performance of different text classifiers in their paper.
+They tested linear classifiers, rule-based classifiers, k-nearest-neighbours and naive bayes classifiers.
+In their evaluation, the different classifiers did not differ by more than five percent.
+McCallum et al. \cite{mccallum1998comparison} specifically focus on na\"ive bayes classifiers.
+They found out, that na\"ive bayes classifiers perform good on small corpus and vocabulary sizes.
 
-\todo{Recommender Systems}
+In the area of automatic product recommendations, research has focused on displaying ads in search engines.
+Mehta et al.\cite{mehta2007adwords} present an algorithm to find ads to display given a user's search terms.
+However, for search engines the input mostly is only a few words, while we use entire posts.
+The concept is also different, because companies directly place bids on certain keywords.
+This leads to a large preselection already.
+
+\todo{Recommender Systems, especially for salesmen new field}
+That is why we think, that this paper represents a good beginning for the research in this field of text classification.
+
 
 \subsection{Problem Definition}
 \label{sec:background-problem}
@@ -26,13 +35,13 @@ As in every company, there are salesmen who want to get in contact with potentia
 For different products, there are different salesman responsible and different potential buyers.
 To find these buyers we help \acme to identify people on business networks, who seem to have a need for products offered by \acme.
 
-We call our approach Noise-To-Opportunity conversion or the \nto problem.
+We call our approach noise to opportunity conversion or the \nto problem.
 We choose the word noise because of the amount of daily status updates in business networks, which makes it infeasible to listen to all of them.
 Also, status updates are usually quite diverse: people write posts, which differ in length, use different words for the same thing, use  different abbreviations or even invent new words.
-Nevertheless, there are many posts which are a good opportunity the get in contact with people who want to buy products a salesman's company offers.
+Nevertheless, there are many posts which are a good opportunity to get in contact with people who want to buy products a salesman's company offers.
 
-Post~\ref{post:demand-and-product}, ~\ref{post:demand-only}, and~\ref{post:product-only} shows how posts in such business-oriented social networks look like.
-We have to decide which of these posts are written by potentially customers of \acme.
+Posts~\ref{post:demand-and-product}, ~\ref{post:demand-only}, and~\ref{post:product-only} show how posts in such business-oriented social networks look like.
+We have to decide which of these posts are written by potential customers of \acme.
 
 \begin{post}
 	\centering
@@ -63,16 +72,16 @@ We have to decide which of these posts are written by potentially customers of \
 		Please, join our demo tomorrow. We give you an overview of different CRM systems.
 		We also show how you can improve your customer relations to increase your sales.
 	}
-	\caption{The post is about a product offered by the company, but it is no user wanting to buy the product. The system should not make a recommendation for it.}
+	\caption{The post is about a product offered by the company, but the user does not want to buy the product. The system should not make a recommendation.}
 	\label{post:product-only}
 \end{post}
 
-We would only recommend post~\ref{post:demand-and-product} to \acme.
+We would only recommend Post~\ref{post:demand-and-product} to \acme.
 Post~\ref{post:demand-and-product} expresses that the user is searching for a new customer relationship managment (CRM) system.
-This is offered by \acme.
-In post~\ref{post:demand-only}, the user is searching for a product.
+This product is offered by \acme.
+In Post~\ref{post:demand-only}, the user is searching for a product.
 However, this post is uninteresting for \acme because cars are not in \acme's product portfolio.
-In contrast, post~\ref{post:product-only} is about CRM systems, but the user is not interested in a new CRM system.
+In contrast, Post~\ref{post:product-only} is about CRM systems, but the user is not interested in a new CRM system.
 Therefore the post should not be shown to a salesman.
 
 The decision, whether to recommend a post, depends on two characteristics:
@@ -95,7 +104,7 @@ If $p$ is a post, then we propose $p$ to a salesman if $\nto(p) \neq NONE$.
 
 We can optimize our algorithm for two use cases: helping salesmen find relevant posts or displaying advertisement automatically.
 For helping salesmen it is important to have a high precision.
-If we recommend a post to salesmen we should be very confident, that our recommendation is correct.
+If we recommend a post to salesmen we want to be confident, that our recommendation is correct.
 A high precision reduces the amount of unnecessary work.
 For displaying advertisements automatically the recall should be high.
 It is important to recommend products to as many users as possible.
@@ -103,7 +112,8 @@ It is acceptable if some of the recommendations are not correct.
 
 In the following sections we explain how we approached the problem of approximating the~\nto function.
 We achieve this by learning a classifier from a sample data set.
-The classifier needs a data set where some documents are already tagged with respect to whether our \nto function should recommend a product or not.
+The classifier needs a data set with some classified documents.
+Classified means, that they are already tagged with respect to whether our \nto function should recommend a product or not.
 This is called a gold standard.
 However, salesmen do not want to read through hundreds of posts to tag them manually.
 Therefore, we need a different data source.
@@ -120,14 +130,14 @@ The following problems arise in this setup:
 		\emph{Non-user perspective}:
 		Brochures are written from the perspective of salesmen.
 		However, we want to classify on user-written social network posts.
-		As post~\ref{post:product-only} illustrates, simply finding posts similar to the brochures is not sufficient, as we also need to consider whether the user actually wants feedback and recommendations.
+		As Post~\ref{post:product-only} illustrates, simply finding posts similar to the brochures is not sufficient, as we also need to consider whether the user actually wants feedback and recommendations.
 	\item
 		\emph{Document mismatch}:
 		Brochures are written with a different intent as posts.
 		There is a crucial difference in writing style and word choice between posts.
 		In brochures there are words from the marketing domain.
 		Also, brochures are much longer.
-		Usually, they are at least one pdf page long while social network posts consists only of a few sentences.
+		Usually, they are at least one page long while social network posts consist only of a few sentences.
 	\item
 		\emph{Small corpus}:
 		Using brochures in the learning phase is a problem, because there are only a few brochures for each product.
