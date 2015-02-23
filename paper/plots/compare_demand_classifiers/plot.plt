@@ -11,7 +11,6 @@ set xrange [0:7]
 set yrange [70:90]
 # set xlabel "Group size or window size"
 set ylabel "Overall Precision in %"
-# set xtics ("K-Nearest Neighbor" 0.2, "Perceptron" 1.2, "SVM" 2.2, "Logistic" 3.2)
 set boxwidth 0.5
 set style fill solid
 set xtic rotate by 315 offset -1.5
