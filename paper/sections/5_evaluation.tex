@@ -70,6 +70,25 @@ Since there is no such data skew in the product classifier, we just consider the
 
 \subsubsection{Demand classifier}
 \label{ssub:demand_classifier}
+
+\begin{table}[h]
+	\centering
+	\begin{tabular}{lc}
+		\hline
+		\textbf{Metric} & \textbf{Result}  \\
+		\hline
+		\hline
+		Precision of the demand classifier & 88~\% \\
+		\hline
+		Recall of the demand classifier & 51~\%  \\
+		\hline
+		Overall precision of the demand classifier & 93~\%  \\
+		\hline
+	\end{tabular}
+	\caption{Cross validation results on demand classifier}
+	\label{table:demand_evaluation}
+\end{table}
+
 \todo{WRITE HERE SOMETHING!}
 
 
@@ -78,7 +97,7 @@ Since there is no such data skew in the product classifier, we just consider the
 
 As we said before, linear classifiers performed best for the product classification.
 Because they only have a small difference, we will evaluate on three linear classifiers: logistic regression, perceptron, and support vector machines.
-Comparing these classifiers with a naive approach (K-Nearest-Neighbor classification) we can see a better performance as it is shown in figure \ref{fig:product_eval}.
+Comparing these classifiers with a naive \todo{naive approach? sounds like bashing them!} approach (K-Nearest-Neighbor classification) we can see a better performance as it is shown in figure \ref{fig:product_eval}.
 In this figure you can see the four classifiers, which are predicting for each post exactly one of the four products.
 Additionally to this ``forced'' prediction (the without ``no-product'' prediction) we have modified the linear classifiers in the way, that they predict for each post the four product if and only if one of the product predictions has a significantly greater probability.
 In the other case, so if all products are predicted with quite equal probability, ``no-product'' is predicted as the product.
