@@ -8,7 +8,7 @@
 The following sections show the evaluation of our approach.
 We start with defining our evaluation measures and then evaluate our two classifiers and relevant design decisions.
 
-\subsection{Evaluation measures}
+\subsection{Evaluation Measures}
 \label{sub:evaluation_measures}
 We will use the following measures to evaluate our approach:
 As already mentioned in a previous section, the demand classifier can be optimized for either precision or recall, depending on the use case.
@@ -30,7 +30,7 @@ Since there is no such data skew in the product classifier, the overall precisio
 \subsection{Results}
 \label{sub:results}
 
-\subsubsection{Demand classifier}
+\subsubsection{Demand Classifier}
 \label{ssub:demand_classifier}
 
 We optimized our demand classifier with respect to the demand precision.
@@ -58,7 +58,7 @@ By optimizing for precision we make sure to decrease the work load of the salesm
 	\label{table:demand_evaluation}
 \end{table}
 
-\subsubsection{Product classifier}
+\subsubsection{Product Classifier}
 \label{ssub:product_classifier}
 
 As we said before, linear classifiers performed best for the product classification.
@@ -66,7 +66,7 @@ Because they only have a small difference, we will evaluate on three linear clas
 We compare these classifiers with a baseline approach (k-nearest-neighbor classification), see Figure~\ref{fig:product_eval}.
 In this figure you can see the four classifiers, which are predicting exactly one of the four products for each post.
 We evaluated two different cases:
-first, we only predicted on posts, which we tagged as belonging to one of the four products.
+First, we only predicted on posts, which we tagged as belonging to one of the four products.
 In the second case, we evaluated on all posts, so that the classifier sometimes has to predict ``None''.
 Of course this value is lower than the first one, because the classifier can now also wrongly predict the ``None'' class.
 This case is nearer to the real world scenario, since not every LinkedIn post we have crawled can be mapped to one of the product classes.
@@ -81,7 +81,7 @@ This case is nearer to the real world scenario, since not every LinkedIn post we
 
 In the following, we will take a closer look at some of the design decisions and evaluate their impact on the overall performance.
 
-\subsubsection{Design decision 1: feature selection}
+\subsubsection{Design Decision 1: Feature Selection}
 As already mentioned in the Section~\ref{sub:feature-selection}, we use tf-idf feature selection for the product classifier.
 Figure~\ref{fig:product_feature_selection} shows the performance of the system for different numbers of features we select.
 Additionally we pick only the ten words with the highest tf-idf assuming, that these words describe the product best.
@@ -100,7 +100,7 @@ The best performance was reached when picking only the ten words with the highes
 	\label{fig:product_feature_selection}
 \end{figure}
 
-\subsubsection{Design decision 2: translations and book descriptions}
+\subsubsection{Design Decision 2: Translations and Book Descriptions}
 Section \ref{sub:initial_data_set} described our approach for adapting and increasing the training set.
 Compared to a na\"ive approach -- using the brochures as they are -- adding translations and Amazon product descriptions to the training data yields an improvement of 17-20~\% (without ``None'' predictions) and 16-28~\% (with ``None'' predictions) for the product classifier (see Figure~\ref{fig:product_translate_amazon}).
 We believe that this design decision will improve the performance for every application of our $NTO$ approach.
@@ -119,7 +119,7 @@ We believe that this design decision will improve the performance for every appl
 	\label{fig:product_translate_amazon}
 \end{figure}
 
-\subsubsection{Design decision 3: two-stage classifier}
+\subsubsection{Design Decision 3: Two-stage Classifier}
 \label{sub:two_stage_classifier}
 
 A central point of our work was to propose a two-stage classifier for the \nto problem.
@@ -139,7 +139,7 @@ These values confirm our concept that demand and product classification are two 
 	\centering
 	\begin{tabular}{c|c}
 		\hline
-		Product classification & Two stage classification \\
+		Product classification & Two-stage classification \\
 		\hline \hline
 		69.73\% & 81.35\% \\
 		\hline
