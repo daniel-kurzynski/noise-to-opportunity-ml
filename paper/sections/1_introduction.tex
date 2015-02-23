@@ -79,11 +79,11 @@ Firstly, there are not many documents to learn from.
 The number of brochures per product is usually far below one hundred.
 To overcome this small corpus problem, we employ feature selection to only select the most relevant words and ignore the noise.
 Secondly, if a user posts something about a certain product, this does not automatically allow the conclusion, that the user is actually interested in buying the product.
-Therefore, we introduce a two-staged classifier, which first determines the demand of a user, and then determines, whether the user posts about a product.
+Therefore, we introduce a two-stage classifier, which first determines the demand of a user, and then determines, whether the user posts about a product.
 This approach allows to capture, whether the user actually needs the product.
 
 Section~\ref{sec:background} gives a formal problem definition and shows related work.
-Section~\ref{sec:concept} shows our two-staged classification and how we use feature selection to overcome the small corpus problem.
+Section~\ref{sec:concept} shows our two-stage classification and how we use feature selection to overcome the small corpus problem.
 Section~\ref{sec:implementation} shows the implementation of both the demand and the product classifier.
 It also presents the best configuration for the algorithm.
 In Section~\ref{sec:evaluation}, we evaluate our approach.
