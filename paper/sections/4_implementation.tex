@@ -97,11 +97,11 @@ For the demand classifier, we added the following manually built features, which
 	\item Whether an e-mail address was given in the post. Demand posts often give an e-mail address to send answers to.
 \end{itemize}
 
-\todo{Why na\"{i}ve bayes classifier? Evaluate other classifier! Copy stuff from slides.}
-We decided on a na\"{i}ve bayes classifier with a Bernoulli event model.
+\todo{Why Na\"{i}ve Bayes classifier? Evaluate other classifier! Copy stuff from slides.}
+We decided on a Na\"{i}ve Bayes classifier with a Bernoulli event model.
 The bernoulli event model is especially suited for the demand classification task.
-As all na\"{i}ve bayes approaches it assumes, that all attributes are independent of each other.
-Equation~\ref{equation:bernoulli} shows the formula for the conditional probability in the Bernoulli na\"{i}ve bayes.
+As all Na\"{i}ve Bayes approaches it assumes, that all attributes are independent of each other.
+Equation~\ref{equation:bernoulli} shows the formula for the conditional probability in the Bernoulli Na\"{i}ve Bayes.
 The probability that a document $d$ belongs to a class $C$ is calculated with respect to the entire vocabulary set.
 This especially means, that a term influences the probability, even if it is not in the document.
 This works good with our feature selection, as we also select feature terms based on their non-occurrence.
@@ -117,7 +117,7 @@ This works good with our feature selection, as we also select feature terms base
 	\end{cases}
 	\end{align*}
 	\caption{
-		Bernoulli na\"{i}ve bayes~\cite{mccallum1998comparison} definition.
+		Bernoulli Na\"{i}ve Bayes~\cite{mccallum1998comparison} definition.
 		It describes the probability that a document $d$ is generated for class $C$.
 		A document consists of terms $w$.
 		The set of all terms $w$ forms the vocabulary $V$.
