@@ -20,8 +20,16 @@ However, for search engines the input mostly is only a few words, while we use e
 The concept is also different, because companies directly place bids on certain keywords.
 This leads to a large preselection already.
 
-\todo{Recommender Systems, especially for salesmen new field}
-That is why we think, that this paper represents a good beginning for the research in this field of text classification.
+There is also a wide research on recommender systems. 
+Especially the content-based recommender systems~\cite{lops2011content} are similar to our problem.
+''Content-based recommendations try to recommend items similar to those a given user has liked in the past''~\cite{lops2011content}.
+In our approach we want to identify posts that are similar to post we know that they express a need for a specific product.
+
+\todo{Give an example for content based recommender system}
+
+In contrast to these approaches we focus not on recommending products to users automatically but on identifying posts for salesmen.
+This is why we need to be sure that a recommended post expresses a need for a specific product.
+Therefore, we think, that this paper represents a good beginning for the research in this field of text classification.
 
 
 \subsection{Problem Definition}
@@ -120,10 +128,12 @@ Therefore, we need a different data source.
 We decide to use advertisement brochures describing \acme's products.
 As a consequence of using brochures a problem arises from the theoretical learning perspective.
 
-In a learning task the instances should be drawn from the same population in the training phase as the instances which are to be classified in the end.\todo{Daniel: Needs reference from Bishop. Am besten quoten. Im Bishop nichts passendes gefunden! Daniel, search harder!!!}
-In our approach, training phase works on brochures, while later we want to classify social network posts.
-Both groups of documents are slightly different.
-The following problems arise in this setup:
+From a probabilistic point of view the instances are drawn from an unknown distribution.
+Learning means to find a function, which minimizes the expected loss with respect to this distribution~\cite{trafalis2000support}.
+In our approach, training works on brochures, while later we want to classify social network posts.
+They are not drawn from the same population which means that the distributions are different.
+Therefore, the resulting function might not be the optimal with respect to classifying posts.
+To overcome this, we take a closer look on the differences between brochures and posts:
 
  \begin{itemize}
  	\item
