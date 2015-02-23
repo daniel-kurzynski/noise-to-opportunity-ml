@@ -97,8 +97,20 @@ For the demand classifier, we add the following manually built features, which h
 	\item Whether an e-mail address was given in the post. Demand posts often give an e-mail address to send answers to.
 \end{itemize}
 
-\todo{Why Na\"{i}ve Bayes classifier? Evaluate other classifier! Copy stuff from slides.}
-We decide on a Na\"{i}ve Bayes classifier with a Bernoulli event model.
+We compare several classifiers on the demand classification task. 
+Figure~\ref{fig:compare-demand} shows the result of a cross validation predicting demand for posts.
+As comparison measure we take the f1-score to evaluate both: precision and recall. 
+The Bernoulli Na\"{i}ve Bayes performs best.
+
+\begin{figure}
+	\begin{center}
+	%	\includegraphics[width=0.7\textwidth]{figures/nto_workflow.eps}
+	\end{center}
+	\caption{Comparison of several classifiers doing a cross-validation on the demand classification task}
+	\label{fig:compare-demand}
+\end{figure}
+
+Therefore, we decide on a Na\"{i}ve Bayes classifier with a Bernoulli event model.
 The Bernoulli event model is especially suited for the demand classification task.
 As all Na\"{i}ve Bayes approaches it assumes, that all features are independent of each other.
 Equation~\ref{equation:bernoulli} shows the formula for the conditional probability in the Bernoulli Na\"{i}ve Bayes.
