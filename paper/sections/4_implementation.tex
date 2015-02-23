@@ -111,7 +111,6 @@ This means that term influences the probability also if the term is not in the d
 \captionsetup{singlelinecheck=off}
 \begin{equationBlock}
 \begin{align*}
-	\label{equation:bernoulli}
 	p(d|C) &= \prod_{w~\epsilon~V} bernoulli(w, d, C) \\
 	bernoulli(w, d, C) &=
 	\begin{cases}
@@ -124,7 +123,8 @@ This means that term influences the probability also if the term is not in the d
 		It describs the propability that a document d belongs to a class C. 
 		A document consists of terms w. 
 		The set of all terms w forms the vocabulary V. 
-}
+	}
+	\label{equation:bernoulli}
 \end{equationBlock}
 
 \subsection{Product Classifier}
