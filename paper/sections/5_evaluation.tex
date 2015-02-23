@@ -10,21 +10,21 @@ We start with defining relevant evaluation measures and then evaluate our two cl
 \label{sub:evaluation_measures}
 We will use the following measures to evaluate our approach:
 As already mentioned in a previous section, the demand classifier can be optimized for either precision or recall, depending on the use case.
-Therefore, we consider \todo{three or four} values:
+Additionally, we look at the overall precision of both, the demand and product classifiers.
+Therefore, we consider three values:
 
 \begin{align*}
 	\emph{Precision of the demand classifier}: P_{demand} 			&= \frac{correct~predicted~demands}{predicted~demands} \\
 	\emph{Recall of the demand classifier}: R_{demand} 				&= \frac{correct~predicted~demands}{all~demand~posts} \\
-	\emph{Overall precision of the demand classifier}: P_{all} &= \frac{correct~predictions}{all~predictions} \\
-	\emph{Accuracy of product classifier}: A_{all} 						&= \frac{correct~predictions}{all~predictions} \\
+	\emph{Overall precision of the demand and product classifier}: P_{all} &= \frac{correct~predictions}{all~predictions} \\
 \end{align*}
 
 This measures capture the most important aspects of our system: If we predict a demand, how likely is it really a demand post ($P_{demand}$), and how many of all demand posts can we actually find ($R_{demand}$).
-Finally, the overall precision ($P_{all}$) is usually quite high because of the data skew in the demand tagging.
+Finally, the overall precision ($P_{all}$) of the demand classifier is usually quite high because of the data skew in the demand tagging.
 A tagger, which always returns ``no-demand'' will have an overall precision of \todo{percent}, as seen in Table~\todo{NUMBER}.
-However, we left this in for the sake of completeness.
+However, we left this in for the sake of completeness and take all three measure in count to evaluate demand classifier performance.
+Since there is no such data skew in the product classifier, the overall precision is sufficient to describe the product classifier performance.
 
-Since there is no such data skew in the product classifier, we just consider the overall accuracy($A_{all}$), i.e. what percentage of our predictions were correctly classified.\todo{Accuracy and overall precision are the same?}
 
 \begin{figure}
 	\begin{center}
@@ -138,7 +138,7 @@ As you can see, the two stage approach performs better than the single product c
 	\begin{tabular}{c|c}
 		\hline
 		Product classification & Two stage classification \\ \hline \hline
-		38.92\% & 81.35\% \\ \hline
+		69.73\% & 81.35\% \\ \hline
 	\end{tabular}
 	\caption{Comparison of the standalone product classification with the two stage classification}
 	\label{table:two_stage_eval}
