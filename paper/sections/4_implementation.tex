@@ -50,7 +50,7 @@ At the moment, there exists no data set for a demand classification, which can b
 Therefore, we tagged some post manually.
 We used an active learning approach to create the gold standard for both training and evaluation.
 In an active learning setting, the algorithm ``asks an oracle, typically a human with extensive knowledge of the domain at hand, about [...] the instances for which the model [...] makes unreliable predictions'' \cite{olsson2009literature}.
-first, we randomly tagged some posts, then we built a basic classifier, which we ran over all posts to finally ask for a tagging decision for the most unsure post.
+First, we randomly tagged some posts, then we built a basic classifier, which we ran over all posts to finally ask for a tagging decision for the most unsure post.
 Then we reran the classification and the classifier asked again.
 Using this approach, we are able to get the most out of our limited tagging time.
 The results of the tagging can be found in Table~\ref{table:data_overview}.
@@ -82,14 +82,12 @@ The results of the tagging can be found in Table~\ref{table:data_overview}.
 	\label{table:data_overview}
 \end{table}
 
-\todo{align caption!}
-
 We built a tagging web app which implements the active learning.
 All together, we tagged about 350 LinkedIn posts, both in respect of demand and product.
 In an initial step, each post was tagged by at least two different persons to avoid misclassifications because of the opinion of one tagger.
 If there were conflicts between the tagging decisions, a third person was tagging again to solve the conflict.
 To evaluate the demand classifier, we use a ten-fold cross validation of all posts, because we need the posts also for training.
-To evaluate the product classifier, we can use all annotated posts, because the learning works on the brochures.
+To evaluate the product classifier, we can use all annotated posts, because we are learning on the brochures.
 
 \subsection{Demand Classifier}
 For the demand classifier, we added the following manually built features, which have been show to increase the overall performance:
