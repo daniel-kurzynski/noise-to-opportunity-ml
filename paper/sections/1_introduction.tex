@@ -47,14 +47,6 @@ According to LinkedIn, there were 186 million unique monthly visitors in 2013\fo
 % http://www.forbes.com/sites/cherylsnappconner/2014/05/04/new-research-2014-linkedin-user-trends-and-10-top-surprises/
 The sheer amount of this shows, that technical assistance is needed.
 
-\begin{figure}
-\begin{center}
-\includegraphics[width=0.7\textwidth]{figures/nto_workflow.eps}
-\end{center}
-\caption{Together, a demand classifier trained from social network posts and a product classifier trained from marketing material form a classification-model for unseen posts.}
-\label{fig:figureone}
-\end{figure}
-
 At the moment, the process of finding relevant status updates mostly happens by providing a search engine on the posts.
 Salesmen need to manually find good search terms, enter them in the network's search field and then scan the results for potential buyers.
 This approach requires expertise on the hand of the salesmen to find good search terms and tweak them accordingly.
@@ -72,6 +64,15 @@ Therefore, we propose an approach, which automatically uses the company's brochu
 A company usually has some set of advertising material, flyers, or presentation slides, where they promote their own products.
 Based on this material, we automatically learn to distinguish between products, and then propose posts with selling opportunities to the salesman.
 The architecture of our system is illustrated in Figure~\ref{fig:figureone}.
+
+
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=0.7\textwidth]{figures/nto_workflow.eps}
+	\end{center}
+	\caption{Together, a demand classifier trained from social network posts and a product classifier trained from marketing material form a classification-model for unseen posts.}
+	\label{fig:figureone}
+\end{figure}
 
 Yet, this approach introduces new problems.
 Firstly, there are not many documents to learn from.
