@@ -8,7 +8,7 @@ We start with defining our evaluation measures and then evaluate our two classif
 
 \subsection{Evaluation Measures}
 \label{sub:evaluation_measures}
-We will use the following measures to evaluate our approach:
+We use the following measures to evaluate our approach:
 As already mentioned in a previous section, the demand classifier can be optimized for either precision or recall, depending on the use case.
 Therefore, we consider three values:
 
@@ -19,9 +19,9 @@ Therefore, we consider three values:
 \end{align*}
 
 This measures capture the most important aspects of our system: If we predict a demand, how likely is it really a demand post ($P_{demand}$), and how many of all demand posts can we actually find ($R_{demand}$).
-Finally, the overall precision ($P_{all}$) of the demand classifier is usually quite high because of the data skew in the demand tagging.
+Finally, the overall precision ($P_{all}$) of the demand classifier is usually quite high, because of the data skew in the demand tagging.
 
-For example, a tagger, which always returns ``no-demand'' will have a relatively high overall precision of $\frac{406}{445}$ = $91.24~\%$, as seen in Table~\ref{table:data_overview}.
+For example, a tagger, which always returns ``no-demand'' has a relatively high overall precision of $\frac{406}{445}$ = $91.24~\%$, as seen in Table~\ref{table:data_overview}.
 However, we left this in for the sake of completeness and take all three measure in count to evaluate demand classifier performance.
 Since there is no such data skew in the product classifier, the overall precision is sufficient to describe the product classifier performance.
 
@@ -60,12 +60,12 @@ By optimizing for precision we make sure to decrease the work load of the salesm
 \label{ssub:product_classifier}
 
 As we said before, linear classifiers performed best for the product classification.
-Because they only have a small difference, we will evaluate on three linear classifiers: Logistic Regression, Perceptron, and Support Vector Machines.
+Because they defer only marginally, we evaluate using three linear classifiers: Logistic Regression, Perceptron, and Support Vector Machines.
 We compare these classifiers with a baseline approach (k-nearest-neighbor classification), see Figure~\ref{fig:product_eval}.
 In this figure you can see the four classifiers, which are predicting exactly one of the four products for each post.
-We evaluated two different cases:
-First, we only predicted on posts, which we tagged as belonging to one of the four products.
-In the second case, we evaluated on all posts, so that the classifier sometimes has to predict ``NONE''.
+We evaluate two different cases:
+First, we evaluate only on posts that we tagged as belonging to one of the four products.
+Second, we evaluate on all posts, so that the classifier sometimes has to predict ``NONE''.
 Of course this value is lower than the first one, because the classifier can now also wrongly predict the ``NONE'' class.
 This case is nearer to the real world scenario, since not every LinkedIn post we have crawled can be mapped to one of the product classes.
 
@@ -77,7 +77,7 @@ This case is nearer to the real world scenario, since not every LinkedIn post we
 	\label{fig:product_eval}
 \end{figure}
 
-In the following, we will take a closer look at some of the design decisions and evaluate their impact on the overall performance.
+In the following, we take a closer look at some of the design decisions and evaluate their impact on the overall performance.
 
 \subsubsection{Design Decision 1: Feature Selection}
 As already mentioned in the Section~\ref{sub:feature-selection}, we use tf-idf feature selection for the product classifier.
@@ -125,7 +125,7 @@ The single classifier was trained using both the brochures and the tagged Linked
 By using both the brochures and the tagged posts we make sure, that both classifiers learn on the same amount of data.
 % This one-stage classifier is identical to our product classifier.
 
-For that evaluation we change the test set annotations in the way, that if an annotated post was been classified as ``no-demand'', the product classification will be ignored, and ``NONE'' will be used instead.
+For that evaluation we change the test set annotations in the way, that if an annotated post was been classified as ``no-demand'', the product classification is ignored, and ``NONE'' is used instead.
 In this way we can compare the predictions of the product classifier (which is either ``NONE'' or one of the products) with the predictions of the two-stage classifier (which is also either ``NONE'' or one of the products).
 Because both classifiers are trained on the LinkedIn posts, we do a ten-fold cross validation on the LinkedIn posts.
 As shown in Table~\ref{table:two_stage_eval} the two-stage classifier yields an improvement of about 12~\%.
