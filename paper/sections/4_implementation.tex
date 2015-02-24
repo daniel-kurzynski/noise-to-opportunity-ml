@@ -3,19 +3,19 @@
 \section{Implementation}
 \label{sec:implementation}
 
-This section will present our implementations for the demand and product classifier, based on the concept introduced above.
-We will start with describing our example data set.
+This section presents our implementations for the demand and product classifier, based on the concept introduced above.
+We start with describing our example data set.
 
 \subsection{Example Data Set}
 \label{sub:initial_data_set}
-We implement a prototype of our \nto system based on data from a Germany software company called SAP.
+We implement a prototype of our \nto system based on data from a Germany software company called SAP\@.
 SAP is the biggest software vendor in Europe and builds software for both small and large enterprises.
 SAP provided us with nearly 100 brochures about four SAP software products, which are explained in Table~\ref{table:products}.
 We choose LinkedIn as the business-oriented social network, as it is the biggest and most popular platform.
 Our data set consists of approximately 19,000 posts from LinkedIn.
 
 Unfortunately, around 75~\% of the brochures are in German and the LinkedIn posts are written in English.
-To solve the language mismatch, we translate the documents with an machine translation tools and replace the German brochures with its translations.
+To solve the language mismatch, we translate the documents with a machine translation tool and replace German brochures with its translations.
 Additionally, we add some book descriptions from Amazon about these products to enlarge the training set.
 
 \begin{table}[h]
@@ -52,8 +52,8 @@ We use an active learning approach to create the gold standard for both training
 In an active learning setting, the algorithm ``asks an oracle, typically a human with extensive knowledge of the domain at hand, about [...] the instances for which the model [...] makes unreliable predictions''~\cite{olsson2009literature}.
 First, we randomly tag some posts, then we build a basic classifier, which we run over all posts to finally ask for a tagging decision for the most uncertain post.
 Then we rerun the classification and the classifier asks again.
-Using this approach, we are able to get the most out of our limited tagging time.
-The results of the tagging can be found in Table~\ref{table:data_overview}.
+Using this approach, we are able be as effective as possible with respect to our limited tagging time.
+The results of the tagging process can be found in Table~\ref{table:data_overview}.
 
 \begin{table}[h]
 	\centering
@@ -82,9 +82,9 @@ The results of the tagging can be found in Table~\ref{table:data_overview}.
 	\label{table:data_overview}
 \end{table}
 
-We build a tagging web app which implements the active learning.
+We build a tagging web app, which implements the active learning.
 Our final training data set consists of 445 LinkedIn posts, tagged both with respect to demand and product.
-In an initial step, each post is tagged by at least two different persons to avoid misclassifications because of the opinion of one tagger.
+In an initial step, each post is tagged by at least two different persons to avoid misclassifications, because of the opinion of one tagger.
 If there are conflicts between the tagging decisions, a third person is tagging again to solve the conflict.
 To evaluate the demand classifier, we use a ten-fold cross validation of all posts, because we need the posts for training as well as for evaluation.
 To evaluate the product classifier, we can use all annotated posts, because we are learning on the brochures.
@@ -93,7 +93,7 @@ To evaluate the product classifier, we can use all annotated posts, because we a
 For the demand classifier, we add the following manually built features, which have been shown to increase the overall performance:
 \begin{itemize}
 	\item Number of questions in the post. Demand posts usually have more questions.
-	\item Number of imperatives in the post. Demand posts usually have more imperatives like ``Please help me out'' or ``Give me advice''.
+	\item Number of imperatives in the post. Demand posts usually have more imperatives, such as ``Please help me out'' or ``Give me advice''.
 	\item Whether an e-mail address was given in the post. Demand posts often give an e-mail address to send answers to.
 \end{itemize}
 
@@ -119,8 +119,8 @@ The Bernoulli event model is especially suited for the demand classification tas
 As all Na\"{i}ve Bayes approaches it assumes, that all features are independent of each other.
 Equation~\ref{equation:bernoulli} shows the formula for the conditional probability in the Bernoulli Na\"{i}ve Bayes.
 The probability that a document $d$ belongs to a class $C$ is calculated with respect to the entire vocabulary set.
-This especially means, that a term influences the probability, even if it is not in the document.
-This works good with our feature selection, as we also select feature terms based on their non-occurrence.
+Using the entire vocabulary especially means, that a term influences the probability, even if it is not in the document.
+This approach works good with our feature selection, as we also select feature terms based on their non-occurrence.
 
 \captionsetup{singlelinecheck=off}
 \begin{equationBlock}
@@ -144,14 +144,14 @@ This works good with our feature selection, as we also select feature terms base
 \subsection{Product Classifier}
 For the product classifier we evaluate several classifiers and variants of the feature vector using the most important words as features as described in Section~\ref{sub:feature-selection}.
 The results are shown in Figure~\ref{fig:product-classifier}.
-In general, the linear classifiers like Logistic Regression, SVM, and Perceptron perform better than the others.
+In general, the linear classifiers, such as Logistic Regression, SVM, and Perceptron perform better than the others.
 Therefore, we decide to use a linear classifier.
 
 We test two additional parameters for the classifcation process:
 \begin{itemize}
 	\item
 		\textbf{Binarization}:
-			When using binarization, we count each feature only once per document, e.g. if a word occurs several times, we still count it as if it occured only once.
+			When using binarization, we count each feature only once per document, e.g., if a word occurs several times, we still count it as if it occured only once.
 	\item
 		\textbf{Normalization}:
 			When using normalization, we normalize the resulting feature vector to a sum of one.
@@ -222,19 +222,19 @@ As Figure~\ref{fig:product-classifier} shows, using binarization and normalizati
 		\end{tabular}
 		\caption{Bernoulli Naive Bayes~\cite{John1995}}
 	\end{subfigure}~
-	\caption{Precision of the classifier. N indicates whether the feature vector was normalized with the L1-Norm. B indicates whether we use binary features per document. The linear classifiers like logistic regression, svm, and perceptron perform best.}
+	\caption{Precision of the classifier. N indicates whether the feature vector was normalized with the L1-Norm. B indicates whether we use binary features per document. The linear classifiers, such as logistic regression, svm, and perceptron perform best.}
 	\label{fig:product-classifier}
 \end{figure}
 
 \subsection{Sampling Algorithm}
 As already mentioned in the previous sections, we extend our training set further by splitting the brochures and Amazon product texts into smaller chunks.
-We do this to solve the \emph{document mismatch} and \emph{small corpus problem}.
+We do this preprocessing to solve the \emph{document mismatch} and \emph{small corpus problem}.
 In the following, we compare two different splitting strategies:
 \begin{itemize}
 	\item
 		\textbf{Grouping:}
 		We split each brochure into groups of $k$ sentences.
-		It is important to note, that groups are disjoint, i.e. no sentence appears in two different groups.
+		It is important to note, that groups are disjoint, i.e., no sentence appears in two different groups.
 		If there are less than $k$ sentences left at the end, we simply build a brochure of the remaining sentences.
 		For example, if one brochure contains 15 sentences and we split into groups of six, we end up with three brochures with six, six, and three sentences respectively.
 	\item
@@ -253,6 +253,6 @@ Of course this value largely depends on the concrete data set at hand, so this o
 	\begin{center}
 		\includegraphics[width=0.6\textwidth]{figures/sampling_optimization.eps}
 	\end{center}
-	\caption{Comparing grouping and sliding for different group sizes/window sizes. Plotted against the overall precision of the system, i.e. how many of the predictions were correct. The best results were obtained for $k = 6$ and the grouping strategy.}
+	\caption{Comparing grouping and sliding for different group sizes/window sizes. Plotted against the overall precision of the system, i.e., how many of the predictions were correct. The best results were obtained for $k = 6$ and the grouping strategy.}
 	\label{fig:sampling_optimization}
 \end{figure}
