@@ -84,7 +84,7 @@ The results of the tagging process can be found in Table~\ref{table:data_overvie
 
 We build a tagging web app, which implements the active learning.
 Our final training data set consists of 445 LinkedIn posts, tagged both with respect to demand and product.
-In an initial step, each post is tagged by at least two different persons to avoid misclassifications, because of the opinion of one tagger.
+In an initial step, each post is tagged by at least two different persons to avoid misclassifications because of the opinion of one tagger.
 If there are conflicts between the tagging decisions, a third person is tagging again to solve the conflict.
 To evaluate the demand classifier, we use a ten-fold cross validation of all posts, because we need the posts for training as well as for evaluation.
 To evaluate the product classifier, we can use all annotated posts, because we are learning on the brochures.
@@ -222,7 +222,7 @@ As Figure~\ref{fig:product-classifier} shows, using binarization and normalizati
 		\end{tabular}
 		\caption{Bernoulli Naive Bayes~\cite{John1995}}
 	\end{subfigure}~
-	\caption{Precision of the classifier. N indicates whether the feature vector was normalized with the L1-Norm. B indicates whether we use binary features per document. The linear classifiers, such as logistic regression, svm, and perceptron perform best.}
+	\caption{Precision of the classifier. $N$ indicates whether the feature vector was normalized. $B$ indicates whether we use binary features per document. The linear classifiers, such as Logistic Regression, SVM, and Perceptron perform best.}
 	\label{fig:product-classifier}
 \end{figure}
 
