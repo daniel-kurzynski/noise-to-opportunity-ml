@@ -19,7 +19,7 @@ Therefore, we consider three values:
 \end{align*}
 
 This measures capture the most important aspects of our system: If we predict a demand, how likely is it really a demand post ($P_{demand}$), and how many of all demand posts can we actually find ($R_{demand}$).
-Finally, the overall precision ($P_{all}$) of the demand classifier is usually quite high, because of the data skew in the demand tagging.
+Finally, the overall precision ($P_{all}$) of the demand classifier is usually quite high because of the data skew in the demand tagging.
 
 For example, a tagger, which always returns ``no-demand'' has a relatively high overall precision of $\frac{406}{445}$ = $91.24~\%$, as seen in Table~\ref{table:data_overview}.
 However, we left this in for the sake of completeness and take all three measure in count to evaluate demand classifier performance.
@@ -60,7 +60,7 @@ By optimizing for precision we make sure to decrease the work load of the salesm
 \label{ssub:product_classifier}
 
 As we said before, linear classifiers performed best for the product classification.
-Because they defer only marginally, we evaluate using three linear classifiers: Logistic Regression, Perceptron, and Support Vector Machines.
+Because they differ only marginally, we evaluate using three linear classifiers: Logistic Regression, Perceptron, and Support Vector Machines.
 We compare these classifiers with a baseline approach (k-nearest-neighbor classification), see Figure~\ref{fig:product_eval}.
 In this figure you can see the four classifiers, which are predicting exactly one of the four products for each post.
 We evaluate two different cases:
@@ -112,7 +112,7 @@ We believe that this design decision improves the performance for every applicat
 		\includegraphics[width=\textwidth]{figures/product_translate_amazon_without_none.eps}
 		\caption{without ``NONE'' prediction}
 	\end{subfigure}
-	\caption{Increasement of the training set with translated texts and Amazon book descriptions. Comparison of different variations: using both techniques, adding only translations, adding only Amazon descriptions and using the plain brochures as they are.}
+	\caption{This figure shows different ways to increase the training set size with translations and Amazon book descriptions. Adding both translations and Amazon's texts brings the best performance improvement.}
 	\label{fig:product_translate_amazon}
 \end{figure}
 

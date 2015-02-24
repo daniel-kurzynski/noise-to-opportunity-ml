@@ -8,7 +8,7 @@ We then talk about what features we select and how we handle the three problems 
 
 \subsection{Two-stage Classification}
 As presented in Section~\ref{sec:background-problem} there is the problem, that brochures are not written from the user perspective.
-We called this characteristic the \emph{non-user perspective problem}.
+We called this fact \emph{non-user perspective problem}.
 In fact, there exist two concepts in the posts.
 These concepts are orthogonal to each other and are shown below.
 
@@ -18,12 +18,12 @@ Typical phrases, taken from an experiment on our example data set (see Section~\
 \begin{center}
 	\textit{need, hi, looking for, recommend, please, anyone, appreciate, thank you}
 \end{center}
-We call concept step the \emph{demand classification}:
+We call this concept the \emph{demand classification}:
 \begin{align*}
 	\mathbf{demand}&: POSTS \longrightarrow \big\{ \operatorname{``demand''}, \operatorname{``no-demand''} \big\}
 \end{align*}
 
-The second concept is about, which product the user is talking about in the post.
+The second concept is about which product the user is talking about in the post.
 Here, the decision needs to be made whether this is a product of the company or not.
 In the latter case, we are not interested in the post.
 Depending on the actual product, the relevant words vary greatly.
@@ -43,7 +43,7 @@ If a post is about a product of the company, that does not necessarily mean, tha
 Demand posts and posts about one of ACME's product have different characteristica, which should be represented in the system's architecture.
 
 Therefore, we split the \nto problem in two subproblems as shown in Equation~\ref{eq:two-stages}. Given a post $p \in POSTS$ we first identify, whether the posts expresses a demand for any product in general.
-If this characteristic is true, we then check whether we can actually categorize the post into one of ACME's products.
+If this is true, we then check whether we can actually categorize the post into one of ACME's products.
 All together, given $demand$ and $product$, we can define \nto:
 
 
@@ -80,7 +80,7 @@ The system then automatically learns from the brochures.
 Figure~\ref{fig:figureone} illustrates the architecture of the system.
 
 Learning demand and product categorization as two concepts with different classifiers also helps overcome data sparsity issues.
-Posts that actually are asking for a product of the company are usually rare.
+Posts that are actually asking for a product of the company are usually rare.
 In our example data set, these posts cover less than 1~\% of the posts, whereas demand posts alone occur with 8.35~\% probability and product documents alone with 25.48~\%.
 Letting machine learning work directly on the positive examples would introduce a high data skew.
 The number of positive training samples would be at least a magnitude lower than the number of negative samples.
