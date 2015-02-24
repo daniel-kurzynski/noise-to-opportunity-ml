@@ -52,7 +52,7 @@ We use an active learning approach to create the gold standard for both training
 In an active learning setting, the algorithm ``asks an oracle, typically a human with extensive knowledge of the domain at hand, about [...] the instances for which the model [...] makes unreliable predictions''~\cite{olsson2009literature}.
 First, we randomly tag some posts, then we build a basic classifier, which we run over all posts to finally ask for a tagging decision for the most uncertain post.
 Then we rerun the classification and the classifier asks again.
-Using this approach, we are able be as effective as possible with respect to our limited tagging time.
+Using this approach, we are as effective as possible with respect to our limited tagging time.
 The results of the tagging process can be found in Table~\ref{table:data_overview}.
 
 \begin{table}[h]
