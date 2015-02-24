@@ -44,12 +44,12 @@ For different products, there are different salesman responsible and different p
 To find these buyers we help \acme to identify people on business networks, who seem to have a need for products offered by \acme.
 
 We call our approach noise to opportunity conversion or the \nto problem.
-We choose the word noise because of the amount of daily status updates in business networks, which makes it infeasible to listen to all of them.
+We choose the word noise, because of the amount of daily status updates in business networks, which makes it infeasible to listen to all of them.
 Also, status updates are usually quite diverse: people write posts, which differ in length, use different words for the same thing, use  different abbreviations or even invent new words.
-Nevertheless, there are many posts which are a good opportunity to get in contact with people who want to buy products a salesman's company offers.
+Nevertheless, there are many posts that are a good opportunity to get in contact with people who want to buy products a salesman's company offers.
 
 Posts~\ref{post:demand-and-product}, ~\ref{post:demand-only}, and~\ref{post:product-only} show how posts in such business-oriented social networks look like.
-We have to decide which of these posts are written by potential customers of \acme.
+We have to decide, which of these posts are written by potential customers of \acme.
 
 \begin{post}
 	\centering
@@ -84,16 +84,16 @@ We have to decide which of these posts are written by potential customers of \ac
 	\label{post:product-only}
 \end{post}
 
-We would only recommend Post~\ref{post:demand-and-product} to \acme.
+We would recommend only Post~\ref{post:demand-and-product} to \acme.
 Post~\ref{post:demand-and-product} expresses that the user is searching for a new customer relationship managment (CRM) system.
 This product is offered by \acme.
 In Post~\ref{post:demand-only}, the user is searching for a product.
-However, this post is uninteresting for \acme because cars are not in \acme's product portfolio.
+However, this post is uninteresting for \acme, because cars are not in \acme's product portfolio.
 In contrast, Post~\ref{post:product-only} is about CRM systems, but the user is not interested in a new CRM system.
 Therefore the post should not be shown to a salesman.
 
 The decision, whether to recommend a post, depends on two characteristics:
-First, the post should express that users needs something, e.g. a certain product.
+First, the post should express that users needs something, e.g., a certain product.
 Second, the product needed by the user should be offered by \acme.
 
 Formally, the problem can be defined as:
@@ -119,7 +119,7 @@ It is important to recommend products to as many users as possible.
 It is acceptable if some of the recommendations are not correct.
 
 In the following sections we explain how we approached the problem of approximating the~\nto function.
-We achieve this by learning a classifier from a sample data set.
+We achieve this approximation by learning a classifier from a sample data set.
 The classifier needs a data set with some classified documents.
 Classified means, that they are already tagged with respect to whether our \nto function should recommend a product or not.
 This is called a gold standard.
@@ -131,7 +131,7 @@ As a consequence of using brochures a problem arises from the theoretical learni
 From a probabilistic point of view the instances are drawn from an unknown distribution.
 Learning means to find a function, which minimizes the expected loss with respect to this distribution~\cite{trafalis2000support}.
 In our approach, training works on brochures, while later we want to classify social network posts.
-They are not drawn from the same population which means that the distributions are different.
+They are not drawn from the same population, which means that the distributions are different.
 Therefore, the resulting function might not be the optimal with respect to classifying posts.
 To overcome this, we take a closer look on the differences between brochures and posts:
 
