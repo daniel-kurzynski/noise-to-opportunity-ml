@@ -19,5 +19,5 @@ plot \
 	'./data_with_none.csv' every 3::1 using 1:($3+6):3 with labels rotate by 90 notitle, \
 	'./data_with_none.csv' every 3::2 using 1:3 with boxes lt rgb color_2 title "100 most occurring words" , \
 	'./data_with_none.csv' every 3::2 using 1:($3+6):3 with labels rotate by 90 notitle, \
-	'./data_with_none.csv' every 3 		using 1:3 with boxes lt rgb color_3 title "1000 most occurring words", \
+	'./data_with_none.csv' every 3 		using 1:3 with boxes lt rgb color_3 title "1,000 most occurring words", \
 	'./data_with_none.csv' every 3 		using 1:($3+6):3 with labels rotate by 90 notitle
