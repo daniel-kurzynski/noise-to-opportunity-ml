@@ -7,7 +7,7 @@ set terminal svg size 800,700 fname fontname fsize fontsize+5
 set output '../sampling_optimization.svg'
 
 set xrange [0:16]
-set yrange [45:70]
+set yrange [40:70]
 set xlabel "Group size or window size"
 set ylabel "Overall Precision in %"
 set key right bottom
