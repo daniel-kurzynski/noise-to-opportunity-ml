@@ -1,6 +1,7 @@
 package de.hpi.smm.classification
 
 import com.blog_intelligence.nto.{Document, ProductClassification, RawDocument}
+import de.hpi.smm.classification.helper.NoneClassifier
 import de.hpi.smm.data_reader.DataReader
 import de.hpi.smm.nlp.NLP
 import weka.classifiers.functions.{Logistic, MultilayerPerceptron}

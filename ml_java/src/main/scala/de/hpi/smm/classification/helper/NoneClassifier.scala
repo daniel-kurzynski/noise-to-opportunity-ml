@@ -1,7 +1,7 @@
-package de.hpi.smm.classification
+package de.hpi.smm.classification.helper
 
 import weka.classifiers.AbstractClassifier
-import weka.core.{Instances, Capabilities, Instance}
+import weka.core.{Capabilities, Instance, Instances}
 
 class NoneClassifier(classifier: weka.classifiers.Classifier) extends AbstractClassifier with Serializable {
 	var noneIndex: Int = -1

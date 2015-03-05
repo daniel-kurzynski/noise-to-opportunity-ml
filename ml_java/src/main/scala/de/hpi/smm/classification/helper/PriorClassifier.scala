@@ -1,7 +1,6 @@
-package de.hpi.smm.classification
+package de.hpi.smm.classification.helper
 
-import weka.classifiers.bayes.NaiveBayes
-import weka.core.{Utils, Instances, Capabilities, Instance}
+import weka.core.{Capabilities, Instance, Instances, Utils}
 
 class PriorClassifier(classifier: weka.classifiers.Classifier, parameterFactors: Array[Double]) extends weka.classifiers.Classifier with Serializable {
 	override def buildClassifier(data: Instances): Unit = {
