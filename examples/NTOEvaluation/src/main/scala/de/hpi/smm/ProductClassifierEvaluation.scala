@@ -1,17 +1,19 @@
 package de.hpi.smm
 
 import java.io.File
-import de.hpi.smm.Constants._
+
 import com.blog_intelligence.nto.Document
-import de.hpi.smm.classification.{TheirClassifier, ProductClassifier}
+import de.hpi.smm.Constants._
+import de.hpi.smm.classification.ProductClassifier
 import de.hpi.smm.data_reader.DataReader
 import de.hpi.smm.domain.Word
 import de.hpi.smm.nlp.NLP
-import weka.classifiers.functions.{MultilayerPerceptron, SMO, Logistic}
+import weka.classifiers.functions.MultilayerPerceptron
+
 import scala.collection.mutable
 import scala.util.Random
 
-object ProductMain {
+object ProductClassifierEvaluation {
 
 	val BUILD_RANDOM_POSTS = true
 	val INCLUDE_NONE_POSTS = false

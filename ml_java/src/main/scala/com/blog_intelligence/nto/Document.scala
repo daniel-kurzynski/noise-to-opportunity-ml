@@ -3,14 +3,11 @@ package com.blog_intelligence.nto
 import de.hpi.smm.domain.Word
 
 case class RawDocument(id: String,
-                   title: String,
-                   text: String,
+                 title: String,
+                 text: String,
 	               rawClassification: Map[String, Map[String, String]],
 	               lang: String = null) {
 	def wholeText: String = s"$title $text"
-
-
-
 
 	def extractDemand(): String = {
 		extract("demand")
