@@ -18,8 +18,7 @@ class ProductClassifier(
 		originalClassifier: Classifier = new Logistic(),
 		binaryFeatures: Boolean = true,
 		normalize: Boolean = true,
-		useNoneClassifier: Boolean = false,
-		useTheirClassification: Boolean = false
+		useNoneClassifier: Boolean = false
 	) extends Serializable {
 	val PRINT_FEATURE_WORDS = false
 
@@ -141,14 +140,7 @@ class ProductClassifier(
 		testInstances.setClassIndex(featureAttributes.size() - 1)
 		posts.foreach { doc =>
 			val features = constructFeatureValues(doc)
-			if(useTheirClassification){
-				val theirClassification = DataReader.theirClassifications(doc.id)
-				if (theirClassification.size >= 3)
-					testInstances.add(new CustomTheirInstance(1.0, normalize(features), theirClassification))
-			}
-			else{
-				testInstances.add(new DenseInstance(1.0, normalize(features)))
-			}
+      testInstances.add(new DenseInstance(1.0, normalize(features)))
 		}
 		testInstances
 	}

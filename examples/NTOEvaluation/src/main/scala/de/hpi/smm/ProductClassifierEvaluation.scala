@@ -78,10 +78,9 @@ object ProductClassifierEvaluation {
 			classifiers.foreach { classifier =>
 				binaryFeatures.foreach { useBinaryFeature =>
 					normalize.foreach { normalizeFeatures =>
-//						println(f"Classifier: ${classifier.getClass.getName.split(".").last}, GroupSize: $groupSize, binaryFeature: $useBinaryFeature, normalize: $normalizeFeatures")
-//						println(f"Classifier: ${classifier.getClass.getSimpleName}, GroupSize: $groupSize, binaryFeature: $useBinaryFeature, normalize: $normalizeFeatures")
+						println(f"Classifier: ${classifier.getClass.getSimpleName}, GroupSize: $groupSize, binaryFeature: $useBinaryFeature, normalize: $normalizeFeatures")
 
-						val analyzer = new ProductClassifier(brochures, nlp, groupSize, classifier, useBinaryFeature, normalizeFeatures, INCLUDE_NONE_POSTS, !BUILD_RANDOM_POSTS)
+						val analyzer = new ProductClassifier(brochures, nlp, groupSize, classifier, useBinaryFeature, normalizeFeatures, INCLUDE_NONE_POSTS)
 						analyzer.buildClassifier()
 
 						val productEvaluation = analyzer.validate(posts)
@@ -109,23 +108,4 @@ object ProductClassifierEvaluation {
 			}
 		}
 	}
-
-	def writeBestPredictions(): Unit = {
-//		val result = mutable.Map[Document, Array[Double]]()
-//
-//		analyzer.dataReader.readPostsLinewise { doc =>
-//			result(doc) = analyzer.distributionForInstance(doc)
-//		}("category")
-//
-//		for (i <- 0 to analyzer.wordCountWithTfIdf.size) {
-//			val f = new FileWriter(new File(s"../ml_java/${analyzer.classAttr.value(i)}.csv"))
-//			result.toArray.filter { case (doc, distribution) =>
-//				distribution(i) == distribution.max
-//			}.sortBy(-_._2(i)).take(100).foreach { case (doc, distribution) =>
-//				f.write(doc.id + s": ${distribution(i)}" + "\n" + doc.wholeText + "\n\n")
-//			}
-//			f.close()
-//		}
-	}
-
 }

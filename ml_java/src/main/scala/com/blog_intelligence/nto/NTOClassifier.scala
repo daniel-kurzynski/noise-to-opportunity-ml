@@ -67,6 +67,10 @@ class NTOClassifier(stopWordsFile: File, posModelFile: File) {
 			nlp)
 	}
 
+  def trainProduct(trainingSamples: java.util.List[Document]): Unit = {
+    trainProduct(trainingSamples,false)
+  }
+
 	def trainProduct(trainingSamples: java.util.List[Document], useNoneClassifier: Boolean = false): Unit = {
 		productClassifier = new ProductClassifier(trainingSamples.asScala.toList, nlp, useNoneClassifier = useNoneClassifier)
 		productClassifier.buildClassifier()
