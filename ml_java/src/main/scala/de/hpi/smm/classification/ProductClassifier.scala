@@ -40,16 +40,13 @@ class ProductClassifier(
 		val documentCount = mutable.Map[String, Int]().withDefaultValue(0)
 		var N = 0
 
-//		println(s"Brochure size before ${brochures.size}")
 		brochures = brochures.flatMap { doc =>
-			var i = 0
+			var id = 0
 			doc.sentences.grouped(groupSize).map { sentences =>
-//			doc.sentences.sliding(groupSize).map { sentences =>
-				i += 1
-				Document(s"${doc.id}-$i", "", sentences.mkString(" "), sentences, doc.documentClass)
+				id += 1
+				Document(s"${doc.id}-$id", "", sentences.mkString(" "), sentences, doc.documentClass)
 			}
 		}
-//		println(s"Brochure size after ${brochures.size}")
 		brochures.foreach { doc =>
 			val docClass = doc.documentClass
 
