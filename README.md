@@ -6,8 +6,12 @@ This is part of the Social Media Analysis seminar at Hasso-Plattner-Institute, P
 by Daniel Kurzynski, Dimitri Korsch, Stefan Bunk
 
 
-### Description
+###Description
 This tool is prototype to show a new approach for companies to find potential customers in social networks. By listening to noise from social network posts, we identify users, which express a demand for a certain product. We achieve this identification with a two-stage text categorization classifier: First, we detect whether the post expresses a demand for some product in general. Second, we detect, which product the post is about. By using the company's brochures, we minimize the integration effort of our system.
+
+###Folders
+
+The folder NTOClassification contains the project that should be used to analyze posts. The folder NTOTagger contains a webapp that can be used to create a gold standard for the evaluation of the NTOClassifier or for generating traning examples for the demand classifier.
 
 ### Usage
 
